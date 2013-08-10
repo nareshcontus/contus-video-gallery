@@ -3,7 +3,7 @@
 Plugin Name: Contus Feature Videos
 Plugin URI: http://www.hdflvplayer.net/wordpress-video-gallery/
 Description: Contus Feature Videos widget with the standard system of wordpress.
-Version: 1.0
+Version: 1.1
 Author: Contus Support
 wp-content\plugins\contus-hd-flv-player\ContusFeatureVideos.php
 Date : 21/2/2011
@@ -39,8 +39,8 @@ $dirPage = $dirExp[0];
 </script>
 <!-- For Getting The Page Id More and Video-->
 <?php
-$vPageID = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content='[video]'");
-$moreName =$wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content='[videomore]'");
+$vPageID = $wpdb->get_var("select ID from ".$wpdb->prefix."posts WHERE post_content ='[contusVideo]'");
+$moreName = $wpdb->get_var("select ID from ".$wpdb->prefix."posts WHERE post_content ='[contusMore]'");
 $styleSheet = $wpdb->get_var("select stylesheet from " . $wpdb->prefix . "hdflvvideoshare_settings WHERE settings_id='1'");
 $site_url = get_bloginfo('url');
 
@@ -132,7 +132,7 @@ if (!empty($features))
 // end list
 if (($show < $countF) || ($show==$countF))
   {
-$div .='<div align="right"><a href="'.$site_url.'/?page_id='.$moreName.'&more=fea">More</a></div>';
+$div .='<div align="right"><a href="'.$site_url.'/?page_id='.$moreName.'&more=fea"  class="sprite more">MORE</a></div>';
   }
   else
   {

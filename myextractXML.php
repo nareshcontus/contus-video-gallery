@@ -125,14 +125,21 @@ if (isset($_GET['pid']) || isset($_GET['vid'])) {
             $postroll_id = ' postroll_id = "' . $media->postrollads . '"';
         }
         $tagsList = $wpdb->get_col("SELECT tags_name from " . $wpdb->prefix . "hdflvvideoshare_tags WHERE media_id='$media->vid'");
+        $seoList = $wpdb->get_col("SELECT seo_name from " . $wpdb->prefix . "hdflvvideoshare_tags WHERE media_id='$media->vid'");
         $tagsName = implode(',',$tagsList);
-
+        $seoName  = implode(',',$seoList);
+        if($media->download=='1')
+	    $download = "true";
+		else
+		$download = "false";
             echo '<mainvideo';
             echo ' id = "' . htmlspecialchars($media->vid) . '"';
             echo ' url = "' . htmlspecialchars($media->file) . '"';
             echo ' thu_image = "' . htmlspecialchars($image) . '"';
+             echo 'allow_download="' . htmlspecialchars($download) . '"';
             echo ' Preview = "' . htmlspecialchars($media->image) . '"';
             echo ' Tag =  "'. $tagsName. '"';
+            echo ' Seo = "'. $seoName .'"';
             echo $postroll_id;
             echo $preroll_id;
             echo $postroll;

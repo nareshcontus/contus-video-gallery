@@ -44,7 +44,46 @@ $site_url = get_option('siteurl');?>
             }
         });
     }
+     function savetags(tagsName , mediaId){
+        var tagsname = tagsName.value;
+        $.ajax({
+            type: "GET",
+            url: "<?php echo $site_url; ?>/wp-content/plugins/<?php echo $contus; ?>/functions.php",
+            data: "tagsname="+tagsname+"&media="+mediaId,
+            success: function(msg){
+                var response = msg.split('##');
+                document.getElementById('vtagschecklist').innerHTML = msg;
+            }
+        });
+        document.getElementById('vtagscreate').style.display = "none";
 
+    }
+     function deleteTag(vtagid) {
+        var conform = confirm("Are you sure to Delete");
+        if(!conform)
+            {
+                return false;
+            }
+            else{
+
+  if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+   delTag=new XMLHttpRequest();
+//alert(xmlhttp);
+  }
+
+delTag.onreadystatechange=function()
+  {
+  if (delTag.readyState==4 && delTag.status==200)
+    {
+      window.location = self.location;
+    }
+  }
+
+delTag.open("GET","<?php echo $site_url; ?>/wp-content/plugins/<?php echo $contus; ?>/fbcomment.php?vtagid="+vtagid,true);
+delTag.send();
+}
+}
 
     function validateInput(){
         if(document.getElementById('btn2').checked == true && document.getElementById('filepath1').value == ''){
@@ -653,8 +692,13 @@ class HDFLVShareManage{
                 </div>
                              <!-- End of Playlist -->
 
-                                <div class="inside"><h3 class="hndle"><?php _e('Tags', 'hdflvvideoshare') ?></h3>
-                                    <textarea name="tag_name" rows="5" cols="30" id="tag_name"><?php get_vidtags_dbx($this->act_vid); ?></textarea>
+                                <div class="inside">
+                                    <h3 class="hndle"><?php _e('Tags', 'hdflvvideoshare') ?> <span><a style="cursor:pointer"  onclick="vtagsdisplay()"><?php _e('Create New', 'hdflvvideoshare') ?></a></span></h3>
+                                <div id="vtagscreate"><?php _e('Name', 'hdflvvideoshare'); ?><input type="text" size="20" name="tag_name" id="tag_name" value="" />
+                                    <input type="button" class="button-primary" name="add_tags" value="<?php _e('Add'); ?>" onclick="return savetags(document.getElementById('tag_name') , <?php echo$this->act_vid ?>);" class="button button-highlighted" />
+                                    <a style="cursor:pointer" onclick="vtagsclose()"><b>Close</b></a></div>
+                                <div id="vtagschecklist"><?php get_vidtags_dbx($this->act_vid); ?></div>
+
                     </div>
                                 <!-- End of Tags -->
 
@@ -790,7 +834,18 @@ class HDFLVShareManage{
         document.getElementById('playlistcreate').style.display = "none";
     }
 </script><!--END wrap -->
+<!-- For Video Tags -->
+<script> document.getElementById('vtagscreate').style.display = "none";
 
+    function vtagsdisplay()
+    {
+        document.getElementById('vtagscreate').style.display = "block";
+    }
+    function vtagsclose()
+    {
+        document.getElementById('vtagscreate').style.display = "none";
+    }
+</script><!--END wrap -->
 <?php
         }
 
@@ -1015,7 +1070,14 @@ class HDFLVShareManage{
                     <h3 class="hndle" style="color:white;background:none;background-color:black"><span><?php _e('TAGS', 'hdflvvideoshare') ?></span></h3>
                     <div class="inside" style="color:blue" >
                         <div id="submitpost" class="submitbox">
-                              <div class="misc-pub-section"><textarea rows="5" cols="30" name="tag_name" id="tag_name"></textarea>
+                              <div class="misc-pub-section"><?php //if(mysql_num_rows($playid1)) {  ?>
+                                <h4><?php _e('Tags', 'hdflvvideoshare'); ?>&nbsp;&nbsp;
+                                    <a style="cursor:pointer"  onclick="tagsdisplay()"><?php _e('Create New', 'Tags') ?></a></h4>
+                                <div id="tagscreate1"><?php _e('Name', 'Tags'); ?><input type="text" size="20" name="tag_name" id="tag_name" value="" />
+                                    <input type="button" class="button-primary" name="add_tag" value="<?php _e('Add'); ?>" onclick="return savetags(document.getElementById('tag_name') , <?php echo$this->act_vid ?>);" class="button button-highlighted" />
+                                    <a style="cursor:pointer" onclick="tagsclose()"><b>Close</b></a></div>
+
+                                <div id="vtagschecklist"><?php get_vtags(); ?></div>
                             </div>
                         </div>
                     </div>
@@ -1118,7 +1180,7 @@ class HDFLVShareManage{
     </script>
     <script>
         document.getElementById('playlistcreate1').style.display = "none";
-
+        document.getElementById('tagscreate1').style.display = "";
         document.getElementById('generate').style.visibility  = "hidden";
         function playlistdisplay()
         {
@@ -1128,7 +1190,14 @@ class HDFLVShareManage{
         {
             document.getElementById('playlistcreate1').style.display = "none";
         }
-
+           function tagsdisplay()
+        {
+            document.getElementById('tagscreate1').style.display = "block";
+        }
+        function tagsclose()
+        {
+            document.getElementById('tagscreate1').style.display = "none";
+        }
         function generate12(str1)
         {
             var re= /http:\/\/www\.youtube[^"]+/;

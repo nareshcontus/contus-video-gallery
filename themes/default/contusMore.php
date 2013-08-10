@@ -13,8 +13,8 @@ $dirExp  = explode('/',$dir);
 $dirPage = $dirExp[0];
 ?>
 <?php
-$vPageID = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content='[video]'");
-$moreName = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content='[videomore]'");
+$vPageID = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content='[contusVideo]' and post_status='publish'");
+$moreName = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content='[contusMore]' and post_status='publish'");
 $styleSheet = $wpdb->get_var("select stylesheet from " . $wpdb->prefix . "hdflvvideoshare_settings WHERE settings_id='1'");
 ?>
        <?php
@@ -32,7 +32,7 @@ $styleSheet = $wpdb->get_var("select stylesheet from " . $wpdb->prefix . "hdflvv
 </script>
 <!--  Content For More Page -->
 <?php
-class default_more
+class contusMore
 {
 function listPagesNoTitle($args) //Pagination
 {
@@ -70,7 +70,7 @@ function findPages($count, $limit) { //Pagination
 }
 /*
  * string pageList (int curpage, int pages)
- * Returns a list of pages in the format of "Â« < [pages] > Â»"
+ * Returns a list of pages in the format of "« < [pages] > »"
  * */
 function pageList($curpage, $pages, $more, $page_id , $search = '')
 {
@@ -85,7 +85,7 @@ function pageList($curpage, $pages, $more, $page_id , $search = '')
 
     /* Print the first and previous page links if necessary */
     if (($curpage != 1) && ($curpage)) {
-        $page_list .= "  <a href=\"" . $self . "&page=1\" title=\"First Page\">Â«</a> ";
+        $page_list .= "  <a href=\"" . $self . "&page=1\" title=\"First Page\">«</a> ";
     }
 
     if (($curpage - 1) > 0) {
@@ -108,7 +108,7 @@ function pageList($curpage, $pages, $more, $page_id , $search = '')
     }
 
     if (($curpage != $pages) && ($pages != 0)) {
-        $page_list .= "<a href=\"" . $self . "&page=" . $pages . "\" title=\"Last Page\">Â»</a> ";
+        $page_list .= "<a href=\"" . $self . "&page=" . $pages . "\" title=\"Last Page\">»</a> ";
     }
     $page_list .= "</td>\n";
 
@@ -145,16 +145,16 @@ $site_url = get_bloginfo('url');
 $dir     = dirname(plugin_basename(__FILE__));
 $dirExp  = explode('/',$dir);
 $dirPage = $dirExp[0];
-$vPageID = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content='[video]'");
-$moreName = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content='[videomore]'");
+$vPageID = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content ='[contusVideo]'");
+$moreName = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content ='[contusMore]'");
 $pageFetch = $wpdb->get_row("SELECT page FROM " . $wpdb->prefix . "hdflvvideoshare_settings");
 $limit = $pageFetch->page;
 $div = '<div style="float:left">';
     // Feature Videos listing Starts
     $options = get_option('HDFLVSettings');
     $more = $_REQUEST['more'];
-    if ($more == 'fea')
-    {
+    if ($more == 'fea') 
+    {    
         $div .='<div><h3 class="more_title">Feature Videos</h3>';
            /* Find the start depending on $_GET['page'] (declared if it's null) */
         $start = self::findStart($limit);
@@ -213,7 +213,7 @@ $div = '<div style="float:left">';
                         $div .='</div>';
                         $div .='<div class="playlistName"><a href="'.$site_url.'/?page_id='.$moreName.'&playid='.$playlist_id[$j].'">'.$fetched[$j].'</a></div>';
                     } else {
-
+                        
                         $div .='<div class="imageContus"><a href="'.$site_url.'/?page_id='.$vPageID.'&vid='.$vidF[$j].'">
                             <img src="' . $site_url . '/wp-content/plugins/'.dirname(plugin_basename(__FILE__)).'/images/hdflv.jpg" alt="' . $nameF[$j] . '" class="imgHome" title="'.$nameF[$j].'" /></a></div>';
                         $div .='<a href="'.$site_url.'/?page_id='.$vPageID.'&vid='.$vidF[$j].'" class="videoHname">';
@@ -234,7 +234,7 @@ $div = '<div style="float:left">';
                     $div .= '<div class="contusHome">';
                     if ($imageFea[$j] != '')
                     {
-
+                        
                         $div .='<div class="imageContus"><a href="'.$site_url.'/?page_id='.$vPageID.'&vid='.$vidF[$j].'">
                             <img src="' . $imageFea[$j] . '" alt="' . $nameF[$j] . '" class="imgHome" title="'.$nameF[$j].'" /></a></div>';
                        $div .='<a href="'.$site_url.'/?page_id='.$vPageID.'&vid='.$vidF[$j].'" class="videoHname">';
@@ -293,8 +293,8 @@ $site_url = get_bloginfo('url');
 $dir     = dirname(plugin_basename(__FILE__));
 $dirExp  = explode('/',$dir);
 $dirPage = $dirExp[0];
-$vPageID = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content='[video]'");
-$moreName = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content='[videomore]'");
+$vPageID = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content ='[contusVideo]'");
+$moreName = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content ='[contusMore]'");
 $pageFetch = $wpdb->get_row("SELECT page FROM " . $wpdb->prefix . "hdflvvideoshare_settings");
 $limit = $pageFetch->page;
 $more = $_REQUEST['more'];
@@ -419,7 +419,7 @@ $more = $_REQUEST['more'];
             $div .='<div align="right">'.$pagelist.'</div>';
             $div .='</div>';
         }
-
+ 
  return $div;
 }
 function popularVideos()
@@ -429,16 +429,16 @@ $site_url = get_bloginfo('url');
 $dir     = dirname(plugin_basename(__FILE__));
 $dirExp  = explode('/',$dir);
 $dirPage = $dirExp[0];
-$vPageID = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content='[video]'");
-$moreName = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content='[videomore]'");
+$vPageID = $wpdb->get_var("select 	ID from " . $wpdb->prefix . "posts WHERE post_content ='[contusVideo]'");
+$moreName = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content ='[contusMore]'");
 $pageFetch = $wpdb->get_row("SELECT page FROM " . $wpdb->prefix . "hdflvvideoshare_settings");
 $limit = $pageFetch->page;
 $more = $_REQUEST['more'];
 
 if ($more == 'pop') {
-
+ 
         $div = '<div> <h3 class="more_title">Popular Videos</h3>';
-
+    
             /* Find the start depending on $_GET['page'] (declared if it's null) */
             $start = self::findStart($limit);
             /* Find the number of rows returned from a query; Note: Do NOT use a LIMIT clause in this query */
@@ -559,7 +559,7 @@ if ($more == 'pop') {
             } else
                $div .= "No Popular videos";
             // end list
-
+      
     $pagelist =  self::pageList($_GET['page'], $pages, $more, $_GET['page_id']);
                    $div .='<div class="clear"></div>';
                    $div .='<div align="right">'.$pagelist.'</div>';
@@ -576,18 +576,18 @@ $site_url = get_bloginfo('url');
 $dir     = dirname(plugin_basename(__FILE__));
 $dirExp  = explode('/',$dir);
 $dirPage = $dirExp[0];
-$vPageID = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content='[video]'");
-$moreName = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content='[videomore]'");
+$vPageID = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content ='[contusVideo]'");
+$moreName = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content ='[contusMore]'");
 $pageFetch = $wpdb->get_row("SELECT page FROM " . $wpdb->prefix . "hdflvvideoshare_settings");
 $limit = $pageFetch->page;
 $more = $_REQUEST['more'];
     //Search Videos listing Starts
         if (isset($_REQUEST['playid'])) {
-
+        
              $start = self::findStart($limit);
              $pages = self::findPages($count, $limit);
              $getPlaylist  = $_REQUEST['playid'];
-
+        
  $countCheck = mysql_query("SELECT count(*) FROM " . $wpdb->prefix . "hdflvvideoshare w
         INNER JOIN " . $wpdb->prefix . "hdflvvideoshare_med2play m
         WHERE (m.playlist_id = '$getPlaylist'

@@ -18,8 +18,8 @@ $dirPage = $dirExp[0];
 <link rel="stylesheet" type="text/css" href="<?php echo $site_url; ?>/wp-content/plugins/<?php echo $dirPage;?>/css/style.css" />
 <?php
 // For Getting pageid for More and video file
-$meta = $wpdb->get_var("select 	ID from " . $wpdb->prefix . "posts WHERE post_content='[video]'");
-$moreName = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content='[videomore]'");
+$meta = $wpdb->get_var("select 	ID from " . $wpdb->prefix . "posts WHERE post_content='[contusVideo]' and post_status='publish'");
+$moreName = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content='[contusMore]' and post_status='publish'");
 $styleSheet = $wpdb->get_var("select stylesheet from " . $wpdb->prefix . "hdflvvideoshare_settings WHERE settings_id='1'");
 $sql = "select  * from " . $wpdb->prefix . "hdflvvideoshare WHERE vid='$vid'";
 $videos = $wpdb->get_results($sql);
@@ -39,7 +39,7 @@ if($styleSheet == 'contus')
 </script>
 <!-- Page Content Starts -->
 <?php
-class default_home
+class contusHome
 {
 // For Feature Videos
     function videosSharePlayer()
@@ -138,8 +138,8 @@ function featureVideos()
     $dirExp = explode('/', $dir);
     $dirPage = $dirExp[0];
     $configXML = $wpdb->get_row("SELECT configXML,width,height FROM " . $wpdb->prefix . "hdflvvideoshare_settings");
-    $vPageID = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content='[video]'");
-  $moreName = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content='[videomore]'");
+    $vPageID = $wpdb->get_var("select 	ID from " . $wpdb->prefix . "posts WHERE post_name='contusVideo'");
+    $moreName = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_name='contusMore'");
     // Feature Videos listing Starts
     $settingsFetch = $wpdb->get_row("SELECT * FROM " . $wpdb->prefix . "hdflvvideoshare_settings");
     $site_url = get_bloginfo('url');
@@ -166,13 +166,13 @@ function featureVideos()
             $j = 0;
             $clearwidth = 0;
             $clear = '';
-            $div .='<a href="'.$site_url.'/?page_id='.$moreName.'&more=fea"><h3  style="float:left" class="more_title"> Feature Videos </h3></a>';
-            if (($showF < $countF))
+            $div .='<div style="width:'.$configXML->width .'px;float:left"  class="video_header"><a href="'.$site_url.'/?page_id='.$moreName.'&more=fea" style="float:left"><h3 align="left"> Feature Videos </h3></a>';
+            if (($showF <= $countF))
             {
-                     $div .='<div style="float:right"><a href="'.$site_url.'/?page_id='.$moreName.'&more=fea" class="more">more</a></div>';
-            } else if (($showF == $countF))
+                     $div .='<a href="'.$site_url.'/?page_id='.$moreName.'&more=fea" class="more" style="float:right">more</a><div class="clear"></div></div>';
+            } else 
             {
-                       $div .='<div style="float:right"> </div>';
+                       $div .='</div>';
             }
             foreach ($features as $feature)
             {
@@ -313,8 +313,8 @@ function recentVideos()
     $dirPage = $dirExp[0];
     $configXML = $wpdb->get_row("SELECT configXML,width,height FROM " . $wpdb->prefix . "hdflvvideoshare_settings");
     $settingsFetch = $wpdb->get_row("SELECT * FROM " . $wpdb->prefix . "hdflvvideoshare_settings");
-   $vPageID = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content='[video]'");
-  $moreName = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content='[videomore]'");
+    $vPageID = $wpdb->get_var("select 	ID from " . $wpdb->prefix . "posts WHERE post_name='contusVideo'");
+    $moreName = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_name='contusMore'");
     $recSet = $settingsFetch->recent;
     $rowR   = $settingsFetch->rowsRec;
     $colR   = $settingsFetch->colRec;
@@ -337,14 +337,14 @@ function recentVideos()
         {
             // posts were found, loop through them
             $l = 0;
-            $div .='<a href="'.$site_url.'/?page_id='.$moreName.'&more=rec"><h3  style="float:left" class="more_title">Recent Videos</h3></a>';
-            if (($show < $countR))
+            $div .='<div style="width:'.$configXML->width .'px;float:left"  class="video_header"><a href="'.$site_url.'/?page_id='.$moreName.'&more=rec" style="float:left"><h3 align="left">Recent Videos</h3></a>';
+            if (($show <= $countR))
                 {
-                  $div .='<div style="float:right"><a href="'.$site_url.'/?page_id='.$moreName.'&more=rec" class="more">more</a></div>';
+                  $div .='<a href="'.$site_url.'/?page_id='.$moreName.'&more=rec" class="more" style="float:right">more</a><div class="clear"></div></div>';
 
-                } else if (($show == $countR))
+                } else 
                 {
-                  $div .='<div style="float:right"> </div>';
+                  $div .='</div>';
                 }
             foreach ($posts as $post)
             {
@@ -364,7 +364,7 @@ function recentVideos()
                 if (($l % $colR) == 0)
                 {
                     $rowCount++;
-                    $div .= ' <div class="clear"></div><div class="contusHome">';
+                    $div .= ' <div class="contusHome">';
                     if ($imageRec[$l] != '')
                     {
                         $div .='<div class="imageContus"><a href="'.$site_url.'/?page_id='.$vPageID.'&vid='.$vidR[$l].'">
@@ -491,8 +491,8 @@ function popularVideos (){
     $dir       = dirname(plugin_basename(__FILE__));
     $dirExp    = explode('/', $dir);
     $dirPage   = $dirExp[0];
-    $vPageID = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content='[video]'");
-  $moreName = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content='[videomore]'");
+    $vPageID   = $wpdb->get_var("select 	ID from " . $wpdb->prefix . "posts WHERE post_name='contusVideo'");
+    $moreName  = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_name='contusMore'");
     $configXML     = $wpdb->get_row("SELECT configXML,width,height FROM " . $wpdb->prefix . "hdflvvideoshare_settings");
     $settingsFetch = $wpdb->get_row("SELECT * FROM " . $wpdb->prefix . "hdflvvideoshare_settings");
     $popSet = $settingsFetch->popular; //Popular Videos
@@ -509,14 +509,16 @@ function popularVideos (){
         // were there any posts found?
         if (!empty($populars))
         {
-             $div .='<a href="'.$site_url.'/?page_id='.$moreName.'&more=pop"><h3 style="float:left" class="more_title">Popular Videos</h3></a>';
-             if (($showP < $countP))
+             $div .='<div style="width:'.$configXML->width .'px;float:left" class="video_header"><a href="'.$site_url.'/?page_id='.$moreName.'&more=pop" style="float:left;">
+                 <h3 align="left">Popular Videos</h3></a>';
+             if (($showP <= $countP))
                     {
-                       $div .='<div style="float:right"><a href="'.$site_url.'/?page_id='.$moreName.'&more=pop" class="more">more</a></div>';
-                    } else if (($showP == $countP))
+                       $div .='<a href="'.$site_url.'/?page_id='.$moreName.'&more=pop" class="more" style="float:right;">more</a><div class="clear"></div></div>';
+                    } else 
                     {
-                        $div .='<div style="float:right"> </div>';
+                        $div .='<div class="clear"></div></div>';
                     }
+
             // posts were found, loop through them
             $k = 0;
             foreach ($populars as $popular)
@@ -538,7 +540,7 @@ function popularVideos (){
                 if (($k % $colP) == 0)
                  {
                     $rowCount++;
-                    $div .= ' <div class="clear"></div><div class="contusHome">';
+                    $div .= '<div class="contusHome">';
                     if ($imagePop[$k] != '') {
 
                         $div .='<div  class="imageContus"><a href="'.$site_url.'/?page_id='.$vPageID.'&vid='.$vidP[$k].'">

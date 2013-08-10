@@ -119,23 +119,7 @@ font-family:arial,sans-serif;
 word-wrap: break-word;
 
 }
-.contusHome a:hover
-{
-cursor:pointer;
-display:block;
-text-align:left;
-color: #03C;
-cursor: pointer;
-padding: 0 0 0 1px;
-font-size: 12px;
-font-weight: bold;
-line-height: 1.2;
-margin-bottom: 2px;
-overflow: hidden;
-font-family:arial,sans-serif;
-word-wrap: break-word;
-text-decoration: underline;
-}
+
 .views
 {
 

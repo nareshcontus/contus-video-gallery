@@ -102,8 +102,8 @@ function MM_swapImage() { //v3.0
       }
   </script>
 <?php
-$meta = $wpdb->get_var("select 	ID from " . $wpdb->prefix . "posts WHERE post_content='[video]'");
-$moreName = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content='[videomore]'");
+$meta = $wpdb->get_var("select 	ID from " . $wpdb->prefix . "posts WHERE post_content ='[contusVideo]'");
+$moreName = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content ='[contusMore]'");
 $styleSheet = $wpdb->get_var("select stylesheet from " . $wpdb->prefix . "hdflvvideoshare_settings WHERE settings_id='1'");
 ?>
 <script type="text/javascript">
@@ -116,13 +116,13 @@ $styleSheet = $wpdb->get_var("select stylesheet from " . $wpdb->prefix . "hdflvv
  <?php
         if($styleSheet == 'contus')
         { ?>
-          <link rel="stylesheet" type="text/css" href="<?php echo $site_url; ?>/wp-content/plugins/<?php echo dirname(plugin_basename(__FILE__))?>/css/contusStyle.css" />
+          <link rel="stylesheet" type="text/css" href="<?php echo $site_url; ?>/wp-content/plugins/<?php echo $dirPage;?>/css/contusStyle.css" />
        <?php  } ?>
 
 
-<script type="text/javascript" src="<?php echo $site_url; ?>/wp-content/plugins/<?php echo$dirPage?>/swfobject.js"></script>
+<script type="text/javascript" src="<?php echo $site_url; ?>/wp-content/plugins/<?php echo $dirPage?>/swfobject.js"></script>
 <?php
-class default_videos
+class contusVideos
 {
     function listVideos()
     {
@@ -132,8 +132,8 @@ class default_videos
       $dirExp = explode('/',$dir);
       $dirPage = $dirExp[0];
       $vid = $_GET['vid'];
-      $vPageID = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content='[video]' and post_status='publish'");
-      $moreName = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content='[videomore]' and post_status='publish'");
+      $vPageID = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content ='[contusVideo]'");
+      $moreName = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content ='[contusMore]'");
       $styleSheet = $wpdb->get_var("select stylesheet from " . $wpdb->prefix . "hdflvvideoshare_settings WHERE settings_id='1'");
       $configXML = $wpdb->get_row("SELECT configXML,width,height FROM " . $wpdb->prefix . "hdflvvideoshare_settings");
 
@@ -157,7 +157,7 @@ class default_videos
             $vid = '';
             $i = 0;
 
-            $tagsRst = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "hdflvvideoshare_tags t WHERE t.tags_name LIKE '%$tagName%'");
+            $tagsRst = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "hdflvvideoshare_tags t WHERE t.seo_name LIKE '%$tagName%'");
             foreach ($tagsRst as $tagRslt) {
                 $i++;
 
@@ -289,21 +289,18 @@ class default_videos
                  }
             }
             $uppedPlaylist = $playlist_id.'0';
-            
-                $select = "SELECT * FROM " . $wpdb->prefix . "hdflvvideoshare w";
-                $select .= " LEFT JOIN " . $wpdb->prefix . "hdflvvideoshare_med2play m on m.media_id = w.vid";
-                $select .= " WHERE ($like)";
-                $select .= " OR (m.playlist_id in ($uppedPlaylist))";
-                $select .= " GROUP BY w.vid ";
-               
+             $select = "SELECT * FROM " . $wpdb->prefix . "hdflvvideoshare w LEFT JOIN " . $wpdb->prefix . "hdflvvideoshare_med2play m on m.media_id = w.vid AND m.media_id != '$vid' WHERE vid NOT IN ($vid)";
+             $select .= " AND ($like) ";
+             $select .= " OR (m.playlist_id in ($uppedPlaylist))";
+             $select .= " GROUP BY w.vid ";
+             $themediafiles = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix ."hdflvvideoshare where vid='$vid'");
+             $select_one    = $wpdb->get_results($select);
+             $themediafiles_one =  array_merge($themediafiles,$select_one);
 
-            $related = mysql_query($select);
-
-                if (mysql_num_rows($related) != '') {
                 $relWidth = $configXML->width;
                 //Slide Display Here
-                $div .= '<ul id="mycarousel" class="jcarousel-skin-tango">';
-                while ($relFet = mysql_fetch_object($related)) {
+                $div .= '<ul id="mycarousel" class="jcarousel-skin-tango" style="height:150px">';
+                 foreach ($themediafiles_one as $relFet) {
 
                     if ($relFet->image != '') {
                         $div .='
@@ -324,13 +321,11 @@ class default_videos
                     }
                 }
              $div .= '</ul></div></div>';
-            } else {
-               $div .='<div></div>';
-            }
 
     $configXML = $wpdb->get_row("SELECT configXML,width,height,keyApps FROM " . $wpdb->prefix . "hdflvvideoshare_settings");
     if ($configXML->keyApps != '') {
-         $div .= '<br/><div id="facebook"></div>';
+        $div .='<h3 style="border-bottom:2px solid #ccc" align="left">Facebook</h3>';
+         $div .= '<div style="clear:both"></div><div id="facebook"></div>';
     }
 $div .='<div class="clear"></div></div>';
 $div .='</div>';

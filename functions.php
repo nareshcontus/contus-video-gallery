@@ -12,6 +12,9 @@ require_once( dirname(__FILE__) . '/hdflv-config.php');
 if(isset($_GET['name'])){
     return hd_ajax_add_playlist($_GET['name'], $_GET['media']);
 }
+if(isset($_GET['tagsname'])){
+    return hd_ajax_add_tags($_GET['tagsname'], $_GET['media']);
+}
 /*
 +----------------------------------------------------------------+
 +	hdflv-admin-functions
@@ -55,6 +58,8 @@ function get_sortorder($mediaid = 0,$pid) {
 
 	$mediaid  = (int)$mediaid;
 	$result = $wpdb->get_var("SELECT sorder FROM ". $wpdb->prefix."hdflvvideoshare_med2play WHERE media_id = $mediaid and playlist_id= $pid");
+    //echo "SELECT sorder FROM ". $wpdb->prefix."hdflvvideoshare_med2play WHERE media_id = $mediaid and playlist_id= $pid";
+
 
 	return $result;
 }
@@ -127,9 +132,26 @@ function get_playlist_for_dbx($mediaid) {
 
 function get_vidtags_dbx($mediaid) {
 	global $wpdb;
+        $dir  = dirname(plugin_basename(__FILE__));
+$dirExp = explode('/',$dir);
+$dirPage = $dirExp[0];
 
-$vtagid = $wpdb->get_var("SELECT vtag_id FROM  ". $wpdb->prefix."hdflvvideoshare_tags WHERE media_id='$mediaid'");
-echo get_tagsname_by_ID($vtagid);
+	// get playlist ID's
+       //  $tagids = $wpdb->get_col("SELECT vtag_id FROM ". $wpdb->prefix."hdflvvideoshare_tags");
+       	echo "<table>";
+           $getTagsid = $wpdb->get_col("SELECT vtag_id FROM  ". $wpdb->prefix."hdflvvideoshare_tags WHERE media_id='$mediaid'");
+           	   foreach ($getTagsid  as $taglist) {
+                   $vtagid =  $taglist;
+
+        // $checked_id = in_array($vtagid, $checked_playlist);
+	 //$hiddenvtags =$wpdb->get_col("SELECT vtagid FROM ". $wpdb->prefix."hdflvvideoshare_vgads WHERE ads_id='$vtagid'");
+		        echo '<tr><td style="font-size:11px"><label for="vtags-'.$vtagid
+			.'" class="selectit"> '.get_tagsname_by_ID($vtagid)."</label></td>&nbsp;<td style='font-size:11px;padding-left:13px'><div style='cursor:pointer' onclick='deleteTag($vtagid);'><img src='../wp-content/plugins/$dirPage/images/close_icon.gif'></div></td></tr>
+            ";
+	}
+    echo "</table>";
+
+
 }
 // End of Tags
 
@@ -272,7 +294,7 @@ function hd_add_media($wptfile_abspath, $wp_urlpath) {
 	if (!empty($act_filepath)) {
 		$ytb_pattern = "@youtube.com\/watch\?v=([0-9a-zA-Z_-]*)@i";
 		if ( preg_match($ytb_pattern, stripslashes($act_filepath), $match) ) {
-
+            //print_r($match);
 			$youtube_data = hd_GetSingleYoutubeVideo($match[1]);
 			if ( $youtube_data ) {
 				if ($act_name == '') 	$act_name = addslashes($youtube_data['title']);
@@ -298,22 +320,14 @@ function hd_add_media($wptfile_abspath, $wp_urlpath) {
         if($img2 != '')
             $act_opimage = $wp_urlpath."$img2";
 	}
-         if($_POST['tag_name'] != '')
-        {
-             $tag_name  =  $_POST['tag_name'];
-              $seo_tag = preg_replace('/[&:\s]+/i', '-', $tag_name);
-        }
     $now   =   date("Y-m-d H:i:s", time());
      $insert_video = $wpdb->query("INSERT INTO ".$wpdb->prefix."hdflvvideoshare ( name, file, hdfile, image, opimage , download, link, featured, hitcount, post_date,prerollads,postrollads)
    VALUES ( '$act_name',  '$act_filepath','$act_hdpath', '$act_image', '$act_opimage', '$act_download', '$act_link' ,'$act_feature','0','$now','$prerollads','$postrollads')")or die('not inserting');
     if ($insert_video != 0) {
  		$video_aid = $wpdb->insert_id;  // get index_id
+		 $exe = $wpdb->query(" UPDATE ".$wpdb->prefix."hdflvvideoshare_tags SET media_id = '$video_aid' WHERE media_id=0");
 
-
-    $insert_tlist = mysql_query(" INSERT INTO " . $wpdb->prefix . "hdflvvideoshare_tags (tags_name,seo_name,media_id)
-                                                                                 VALUES ('$tag_name','$seo_tag','$video_aid')");
-
-				//wp_set_object_terms($video_aid, $tags, WORDTUBE_TAXONOMY);
+		//wp_set_object_terms($video_aid, $tags, WORDTUBE_TAXONOMY);
         	render_message(__('Media file','hdflvvideoshare').' '.$video_aid.__(' added successfully','hdflvvideoshare'));
 	}
 
@@ -333,12 +347,13 @@ function hd_add_media($wptfile_abspath, $wp_urlpath) {
        $i=0;
         foreach ($pieces as $new_list) {
 		$wpdb->query(" UPDATE ".$wpdb->prefix."hdflvvideoshare_med2play SET sorder= '$sorder[$i]' WHERE media_id = '$video_aid' and playlist_id = '$new_list'");
-
                 $i++;
 	}
 
 }
 
+//Add tags for the videos
+       $wpdb->query(" UPDATE ".$wpdb->prefix."hdflvvideoshare_tags SET media_id='$video_aid' WHERE media_id='0')");
 
        $i=0;
         foreach ($pieces as $new_list) {
@@ -394,7 +409,16 @@ function hd_ajax_add_tags($tagsname,$media) {
         return ;
     }
 
+    // Add playlist in db
+    if (!empty($tagsname)) {
+        $seo_tag = preg_replace('/[&:\s]+/i', '-', $tagsname);
 
+        $insert_tlist = mysql_query(" INSERT INTO " . $wpdb->prefix . "hdflvvideoshare_tags (tags_name,seo_name,media_id) VALUES ('$tags_name','$seo_tag','$media')");
+        if ($insert_tlist != 0) {
+            $tid = $wpdb->insert_id;  // get index_id
+            render_message(__('Tags', 'hdflvvideoshare') . ' ' . $name . __(' added successfully', 'hdflvvideoshare')).get_vidtags_dbx($media);
+        }
+    }
     return ;
 }
 
@@ -488,16 +512,43 @@ function hd_update_media( $media_id ) {
 				$wpdb->query(" INSERT INTO ".$wpdb->prefix."hdflvvideoshare_med2play (media_id, playlist_id,sorder) VALUES ($media_id, $new_list, $sorder[$new_list1])");
 		}
 	}
-
+    //print_r($pieces);
+    //print_r($sorder);
         $i=0;
         foreach ($pieces as $new_list) {
 				$wpdb->query(" UPDATE ".$wpdb->prefix."hdflvvideoshare_med2play SET sorder= '$sorder[$i]' WHERE media_id = '$media_id' and playlist_id = '$new_list'");
                 $i++;
         }
+  // For Tags
 
+	$act_vtags 	= $_POST['vtags'];
+        $tags = explode(',',$act_vtags);
+
+
+        if (!$tags) $tags = array();
 	if (empty($act_autostart)) $act_autostart = 0; // need now for sql_mode, see http://bugs.mysql.com/bug.php?id=18551
 
+	// Read the old playlist status
+	$old_vtags = $wpdb->get_col(" SELECT vtag_id FROM ".$wpdb->prefix."hdflvvideoshare_tags WHERE media_id = $media_id");
 
+	if (!$old_vtags) {
+	 	$old_vtags = array();
+	} else {
+		$old_vtags = array_unique($old_vtags);
+	}
+
+
+
+
+	if ($act_vtags) {
+		foreach ($act_vtags as $newTags_list) {
+                $newTags_list1 = $newTags_list-1;
+                if( $sorder[$newTags_list1] == '') $sorder[$newTags_list1] = '0';
+                $seo_tag = preg_replace('/[&:\s]+/i', '-', $newTags_list);
+				$wpdb->query(" INSERT INTO ".$wpdb->prefix."hdflvvideoshare_tags (vtag_id,seo_name,media_id) VALUES ( $newTags_list,$seo_tag,$media_id)");
+		}
+	}
+    //print_r($pieces);
     //print_r($sorder);
         $i=0;
         foreach ($pieces as $new_list) {
@@ -505,17 +556,10 @@ function hd_update_media( $media_id ) {
                 $i++;
         }
 // End of Tags
-if($_POST['tag_name'] != '')
-        {
-            echo $tag_name  =  $_POST['tag_name'];
-              $seo_tag = preg_replace('/[&:\s]+/i', '-', $tag_name);
-               $wpdb->query("UPDATE " . $wpdb->prefix . "hdflvvideoshare_tags SET tags_name='$tag_name',seo_name='$seo_tag' WHERE media_id='$media_id'");
 
-        }
 	if(!empty($act_filepath)) {
 
 		$result = $wpdb->query("UPDATE ".$wpdb->prefix."hdflvvideoshare SET postrollads = '$act_postrollads' , prerollads = '$act_prerollads' , name = '$act_name',  file='$act_filepath' ,hdfile='$act_hdpath' , image='$act_image' , opimage='$act_opimg' , download='$act_download', link='$act_link', featured='$act_feature'  WHERE vid = '$media_id' ");
-
 	}
 
 	// Finished

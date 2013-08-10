@@ -3,7 +3,7 @@
 Plugin Name: Contus Popular Videos
 Plugin URI: http://www.hdflvplayer.net/wordpress-video-gallery/
 Description: Contus Popular Videos widget with the standard system of wordpress.
-Version: 1.0
+Version: 1.1
 Author: Contus Support
 Date : 21/2/2011
 */
@@ -35,8 +35,8 @@ $dirPage = $dirExp[0];
 
         <!-- For Getting The Page Id More and Video Page-->
         <?php
-       $vPageID = $wpdb->get_var("select 	ID from " . $wpdb->prefix . "posts WHERE post_content='[video]'");
-       $moreName =$wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content='[videomore]'");
+        $vPageID = $wpdb->get_var("select ID from ".$wpdb->prefix."posts WHERE post_content ='[contusVideo]'");
+        $moreName = $wpdb->get_var("select ID from ".$wpdb->prefix."posts WHERE post_content ='[contusMore]'");
         $styleSheet = $wpdb->get_var("select stylesheet from " . $wpdb->prefix . "hdflvvideoshare_settings WHERE settings_id='1'");
         ?>
         <!-- Getting our contus style -->
@@ -139,7 +139,7 @@ else
 //For More Button
 if (($show < $countP) || ($show==$countP))
   {
-$div .='<div align="right"><a href="'.$site_url.'/?page_id='.$moreName.'&more=pop">More</a></div>';
+$div .='<div align="right"><a href="'.$site_url.'/?page_id='.$moreName.'&more=pop" class=" more">MORE</a></div>';
   } else
   {
     $div .='<div align="right"> </div>';

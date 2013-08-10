@@ -1,28 +1,28 @@
 <?php
 /*
   Plugin Name: Contus VideoGallery Plugin
-  Version: 1.0
+  Version: 1.1
   Plugin URI: http://www.hdflvplayer.net/wordpress-video-gallery/
   Description: Simplifies the process of adding video to a WordPress blog. Powered by Contus Support HDFLVPlayer and SWFObject.
   Author: Contus Support.
-
+ 
  */
 
 $videoid = 0;
-$site_url = get_option('siteurl');
+$site_url = get_option('siteurl'); 
 
 function HDFLV_ShareParse($content) {
     $content = preg_replace_callback('/\[hdvideo ([^]]*)\o]/i', 'HDFLV_shareRender', $content);
-    $content = preg_replace_callback('/\[videohome\]/', 'HDFLV_homepage', $content);
-    $content = preg_replace_callback('/\[videomore\]/', 'HDFLV_morepage', $content);
-    $content = preg_replace_callback('/\[video\]/', 'HDFLV_videopage', $content);
+    $content = preg_replace_callback('/\[contusHome\]/', 'HDFLV_Hpages', $content);
+    $content = preg_replace_callback('/\[contusMore\]/', 'HDFLV_Mpages', $content);
+    $content = preg_replace_callback('/\[contusVideo\]/', 'HDFLV_Vpages', $content);
     return $content;
 }
-function HDFLV_homepage()
+function HDFLV_Hpages()
 {
     global $wpdb;
-    include_once("themes/default/home.php");
-    $pageObj    = new default_home();
+    include_once("themes/default/contusHome.php");
+    $pageObj    = new contusHome();
     $returnPlayer  = $pageObj->videosSharePlayer();
     $returnFeatures= $pageObj->featureVideos();
     $returnRecent = $pageObj->recentVideos();
@@ -30,11 +30,11 @@ function HDFLV_homepage()
     return $returnPlayer.$returnFeatures.$returnRecent.$returnPopular;
 
 }
-function HDFLV_morepage()
+function HDFLV_Mpages()
 {
     global $wpdb;
-    include("themes/default/more.php");
-    $moreObj = new default_more();
+    include("themes/default/contusMore.php");
+    $moreObj = new contusMore();
     $moreFeature = $moreObj->featureVideos();
     $moreRecent  = $moreObj->recentVideos();
     $morePopular = $moreObj->popularVideos();
@@ -42,11 +42,11 @@ function HDFLV_morepage()
     return $moreFeature.$moreRecent.$morePopular.$morePlaylist;
 
 }
-function HDFLV_videopage()
+function HDFLV_Vpages()
 {
     global $wpdb;
-    include("themes/default/video.php");
-    $pageVideos = new default_videos();
+    include("themes/default/contusVideo.php");
+    $pageVideos = new contusVideos();
     $listVideos = $pageVideos->listVideos();
     return $listVideos;
 
@@ -55,7 +55,7 @@ function HDFLV_videopage()
 function HDFLV_shareRender($arguments= array()) {
     global $wpdb;
     global $videoid, $site_url;
-
+    
     $configXML = $wpdb->get_row("SELECT configXML,width,height FROM " . $wpdb->prefix . "hdflvvideoshare_settings");
     if(isset($arguments['width']))
     {
@@ -73,7 +73,7 @@ function HDFLV_shareRender($arguments= array()) {
     {
        $height =  $configXML->height;
     }
-
+  
     $output .= "\n" . '<div id="mediaspace"><span id="video' . $videoid . '" class="HDFLV">' . "\n";
     $output .= '<a href="http://www.macromedia.com/go/getflashplayer">Get the Flash Player</a> to see this player.</span>' . "\n";
     $output .= '<script type="text/javascript">' . "\n";
@@ -87,7 +87,7 @@ function HDFLV_shareRender($arguments= array()) {
     if (isset($arguments['playlistid']) && isset($arguments['id'])) {
         $flashvars .="&pid=" . $arguments['playlistid'];
          $flashvars .="&vid=" . $arguments['id'];
-
+        
     } elseif (isset($arguments['playlistid'])) {
         $flashvars .="&pid=" . $arguments['playlistid'];
     } else {
@@ -97,7 +97,7 @@ function HDFLV_shareRender($arguments= array()) {
     {
           $flashvars .= '&'.$arguments['flashvars'];
 
-
+      
     }
     $output .= 's' . $videoid . '.addParam("FlashVars","' . $flashvars . '");' . "\n";
     $output .= 's' . $videoid . '.write("video' . $videoid . '");' . "\n";
@@ -247,15 +247,15 @@ function FlashShareOptions() {
         }
         move_uploaded_file($_FILES["logopath"]["tmp_name"], "../wp-content/plugins/" . dirname(plugin_basename(__FILE__)) . "/hdflvplayer/images/" . $_FILES["logopath"]["name"]);
         $message = '<div class="updated"><p><strong>Options saved.</strong></p></div>';
-
+   
 
      $langSettings = $wpdb->get_col("SELECT * FROM " . $wpdb->prefix . "hdflvvideoshare_language");
       if (count($langSettings) > 0) {
-
+          
                     $langsetUpdate ="UPDATE " . $wpdb->prefix . "hdflvvideoshare_language SET
 	   play= '" . $_POST['play']. "',pause= '" . $_POST['pause']. "',hdison= '" . $_POST['hdison']. "',hdisoff= '" . $_POST['hdisoff']. "',lang_zoom= '" . $_POST['lang_zoom']. "'
            ,lang_share= '" . $_POST['lang_share']. "',lang_fullscreen= '" . $_POST['lang_fullscreen']. "',relatedvideos= '" . $_POST['relatedvideos']. "'
-           ,sharetheword= '" . $_POST['sharetheword']. "',sendanemail= '" . $_POST['sendanemail']."' ,`to`= '" . $_POST['to']. "',`from`= '" . $_POST['from']. "',`note`= '" . $_POST['note']. "',`send`= '" . $_POST['send']. "',`copylink`= '" . $_POST['copylink']. "'
+           ,sharetheword= '" . $_POST['sharetheword']. "',sendanemail= '" . $_POST['sendanemail']."' ,download= '" . $_POST['ldownload']. "' ,`to`= '" . $_POST['to']. "',`from`= '" . $_POST['from']. "',`note`= '" . $_POST['note']. "',`send`= '" . $_POST['send']. "',`copylink`= '" . $_POST['copylink']. "'
            ,`copyembed`= '" . $_POST['copyembed']. "',`facebook`= '" . $_POST['facebook']. "',reddit= '" . $_POST['reddit']. "',friendfeed= '" . $_POST['friendfeed']. "',slashdot= '" . $_POST['slashdot']. "'
            ,delicious= '" . $_POST['delicious']. "',myspace= '" . $_POST['myspace']. "',wong= '" . $_POST['wong']. "',digg= '" . $_POST['digg']. "',blinklist= '" . $_POST['blinklist']. "'
            ,bebo= '" . $_POST['bebo']. "',fark= '" . $_POST['fark']. "',tweet= '" . $_POST['tweet']. "',furl= '" . $_POST['furl']. "' WHERE lang_id=1";
@@ -265,12 +265,12 @@ function FlashShareOptions() {
       } else {
          $langsetInsert = $wpdb->query(" INSERT INTO " . $wpdb->prefix . "hdflvvideoshare_language
              VALUES(" . $_POST['play'] . "," . $_POST['pause'] . "," . $_POST['hdison'] . "," . $_POST['hdisoff'] . "," . $_POST['lang_zoom'] .
-                  "," . $_POST['lang_share'] . "," . $_POST['lang_fullscreen'] . "," . $_POST['relatedvideos'] ."," . $_POST['sharetheword']  . "," . $_POST['sendanemail'] .
+                  "," . $_POST['lang_share'] . "," . $_POST['lang_fullscreen'] . "," . $_POST['relatedvideos'] ."," . $_POST['sharetheword']  . "," . $_POST['sendanemail'] ."," . $_POST['ldownload'] .
                   "," . $_POST['to'] . "," . $_POST['from'] . "," . $_POST['note'] ."," . $_POST['send']  . "," . $_POST['copylink'] .
                   "," . $_POST['copyembed'] . "," . $_POST['facebook'] . "," . $_POST['reddit'] ."," . $_POST['friendfeed']  . "," . $_POST['slashdot'] .
                   "," . $_POST['delicious'] . "," . $_POST['myspace'] . "," . $_POST['wong'] ."," . $_POST['digg'] ."," . $_POST['blinklist'] .
                   "," . $_POST['bebo'] ."," . $_POST['fark'] ."," . $_POST['tweet'] ."," . $_POST['furl'] .")");
-
+         
       }
 
  }
@@ -380,7 +380,7 @@ function FlashShareOptions() {
                             <tr>
                                 <th scope='row'>Playlist</th>
                                 <td><input type='checkbox' class='check' name="playlist" <?php if ($fetchSettings->playlist == 1) { ?> checked <?php } ?> value="1" size=45   /></td>
-
+                                 
                             </tr>
                             <tr>
                                 <th scope='row'>HD Default</th>
@@ -389,7 +389,7 @@ function FlashShareOptions() {
                             <tr>
                                 <th scope='row'>Playlist Autoplay</th>
                                 <td><input type='checkbox' class='check' <?php if ($fetchSettings->playlistauto == 1) { ?> checked <?php } ?> name="playlistauto" value="1" size=45  /></td>
-
+                                
                             </tr>
                         </table>
                     </div>
@@ -700,6 +700,10 @@ function FlashShareOptions() {
                 <th scope='row'>Send an Email</th>
                 <td><input type='text' class='text' name="sendanemail"  value="<?php echo $fetchLanguage->sendanemail;?>"  size=25  /></td>
                 </tr>
+                 <tr>
+                <th scope='row'>Download</th>
+                <td><input type='text' class='text' name="ldownload"  value="<?php echo $fetchLanguage->download;?>"  size=25  /></td>
+                </tr>
                 <tr>
                 <th scope='row'>To</th>
                 <td><input type='text' class='text' name="to"  value="<?php echo $fetchLanguage->to;?>"  size=25  /></td>
@@ -727,7 +731,7 @@ function FlashShareOptions() {
                 <td><input type='text' class='text' name="copyembed"  value="<?php echo $fetchLanguage->copyembed;?>"  size=25  /></td>
                 </tr>
 
-
+                
 
                 <tr>
                 <th scope='row'>Facebook</th>
@@ -817,7 +821,7 @@ function HdflvloadSharedefaults() {
                       'true','',0,0,'on', '3', '3', 'on', '3', '3', 'on', '3', '3', '3' ,'contus')");
     $insertLanguage = $wpdb->query("INSERT INTO " . $wpdb->prefix . "hdflvvideoshare_language
 						VALUES (1,'play','pause','HD is On','HD is Off','Zoom','Share','Fullscreen','Related Videos',
-                                                'Share the Word','Send an Email','To','From','Note (Optional)','Send','Copy Link',
+                                                'Share the Word','Send an Email',Download,'To','From','Note (Optional)','Send','Copy Link',
                                                 'Copy Embedcode','Facebook','reddit','friendfeed','slashdot','delicious','myspace','wong',
                                                 'digg','blinklist','bebo', 'fark','tweet','furl')");
 

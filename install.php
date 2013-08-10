@@ -67,7 +67,7 @@ function hdflv_install()
                     hdfile MEDIUMTEXT NULL,
                     image MEDIUMTEXT NULL,
                     opimage MEDIUMTEXT NULL,
-                    download varchar(10) NOT NULL,
+                    download tinyint(1) NOT NULL,
                     link MEDIUMTEXT NULL,
                     featured varchar(25) NOT NULL,
                     hitcount int(25) NOT NULL,
@@ -81,6 +81,10 @@ function hdflv_install()
  else {
      $sql = "ALTER TABLE ".$table_name." ADD `postrollads` VARCHAR(25) NOT NULL, ADD `prerollads` VARCHAR(25) NOT NULL";
      $res = $wpdb->get_results($sql);
+
+     $sql_down = "ALTER TABLE ".$table_name." ADD `download` tinyint(1) NOT NULL";
+     $res_down = $wpdb->get_results($sql_down);
+
  }
 
     if (!$pfound)
@@ -184,12 +188,13 @@ if (!$settingsFound)
   `pause` varchar(50) NOT NULL,
   `hdison` varchar(50) NOT NULL,
   `hdisoff` varchar(50) NOT NULL,
-  `zoom` varchar(50) NOT NULL,
-  `share` varchar(50) NOT NULL,
+  `lang_zoom` varchar(50) NOT NULL,
+  `lang_share` varchar(50) NOT NULL,
   `lang_fullscreen` varchar(50) NOT NULL,
   `relatedvideos` varchar(50) NOT NULL,
   `sharetheword` varchar(50) NOT NULL,
   `sendanemail` varchar(50) NOT NULL,
+  `download` varchar(25) NOT NULL,
   `to` varchar(50) NOT NULL,
   `from` varchar(50) NOT NULL,
   `note` varchar(50) NOT NULL,
@@ -218,6 +223,8 @@ if (!$settingsFound)
     $fullscrAlt = "ALTER TABLE ".$table_language." CHANGE `fullscreen` `lang_fullscreen` VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL";
     $zoomAlt = "ALTER TABLE ".$table_language." CHANGE `zoom` `lang_zoom` VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL";
     $shareAlt = "ALTER TABLE ".$table_language." CHANGE `share` `lang_share` VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL";
+    $sql_down = "ALTER TABLE ".$table_language." ADD download VARCHAR(25) NOT NULL AFTER sendanemail";
+    $res_down = $wpdb->get_results($sql_down);
     $resF = $wpdb->get_results($fullscrAlt);
     $resZ = $wpdb->get_results($zoomAlt);
     $resS = $wpdb->get_results($shareAlt);
@@ -227,20 +234,25 @@ if (!$settingsFound)
     $sqlTags = "CREATE TABLE IF NOT EXISTS $table_tags  (
   `vtag_id` int(25) NOT NULL AUTO_INCREMENT,
   `tags_name` varchar(50) NOT NULL,
-        `seo_name` text NOT NULL,
+  `seo_name` varchar(100) NOT NULL,
   `media_id` varchar(50) NOT NULL,
   PRIMARY KEY (`vtag_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1";
+  ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1";
     $resTags = $wpdb->get_results($sqlTags);
+   }
+   else
+   {
+      $sql = "ALTER TABLE ".$table_tags." ADD `seo_name` varchar(100) NOT NULL AFTER tags_name";
+      $res = $wpdb->get_results($sql);
    }
    
 $site_url = get_option('siteurl');
     // Creating the pages for the contus-more,contus-home and contus- video pages
-$postM = $wpdb->get_results("SELECT * FROM ".$wpdb->prefix."posts where post_content='[videomore]'");
+$postM = $wpdb->get_results("SELECT * FROM ".$wpdb->prefix."posts where post_content='[contusMore]'");
 if (empty($postM)) {
 $contus_more   =  "INSERT INTO ".$wpdb->prefix."posts(`post_author`, `post_date`, `post_date_gmt`, `post_content`, `post_title`, `post_excerpt`, `post_status`, `comment_status`, `ping_status`, `post_password`, `post_name`, `to_ping`, `pinged`, `post_modified`, `post_modified_gmt`, `post_content_filtered`, `post_parent`, `guid`, `menu_order`, `post_type`, `post_mime_type`, `comment_count`)
         VALUES
-                  (1, NOW(), NOW(), '[videomore]', '', '', 'publish', 'closed', 'open', '', 'Video More', '', '', '2011-01-10 10:42:23',
+                  (1, NOW(), NOW(), '[contusMore]', '', '', 'publish', 'closed', 'open', '', 'contusMore', '', '', '2011-01-10 10:42:23',
                    '2011-01-10 10:42:23', '','', '$site_url/?page_id=',0, 'page', '', 0)";
 
 $resMore       =  $wpdb->get_results($contus_more);
@@ -253,12 +265,12 @@ $moreUpdate    =  $wpdb->get_results($moreUpd);
 //echo '--------------------------------------------------------------------------------------------------------------------------------------';
 
 
-$postV = $wpdb->get_results("SELECT * FROM ".$wpdb->prefix."posts where post_content='[video]'");
+$postV = $wpdb->get_results("SELECT * FROM ".$wpdb->prefix."posts where post_content='[contusVideo]'");
  if (empty($postV)) {
 
 $contus_video    =  "INSERT INTO ".$wpdb->prefix."posts(`post_author`, `post_date`, `post_date_gmt`, `post_content`, `post_title`, `post_excerpt`, `post_status`, `comment_status`, `ping_status`, `post_password`, `post_name`, `to_ping`, `pinged`, `post_modified`, `post_modified_gmt`, `post_content_filtered`, `post_parent`, `guid`, `menu_order`, `post_type`, `post_mime_type`, `comment_count`)
         VALUES
-                    (1, NOW(), NOW(), '[video]', '', '', 'publish', 'open', 'open', '', 'Video', '', '', '2011-01-10 10:42:43',
+                    (1, NOW(), NOW(), '[contusVideo]', '', '', 'publish', 'open', 'open', '', 'contusVideo', '', '', '2011-01-10 10:42:43',
                     '2011-01-10 10:42:43', '','', '$site_url/?page_id=',0, 'page', '', 0)";
 
 $resVideo       =  $wpdb->get_results($contus_video);
@@ -270,12 +282,12 @@ $videoUpdate    =  $wpdb->get_results($videoUpd);
 //echo '--------------------------------------------------------------------------------------------------------------------------------------';
 //echo '--------------------------------------------------------------------------------------------------------------------------------------';
 
-$postH = $wpdb->get_results("SELECT * FROM ".$wpdb->prefix."posts where post_content='[videohome]'");
+$postH = $wpdb->get_results("SELECT * FROM ".$wpdb->prefix."posts where post_content='[contusHome]'");
 if (empty($postH)) {
 
 $contus_home   =  "INSERT INTO ".$wpdb->prefix."posts(`post_author`, `post_date`, `post_date_gmt`, `post_content`, `post_title`, `post_excerpt`, `post_status`, `comment_status`, `ping_status`, `post_password`, `post_name`, `to_ping`, `pinged`, `post_modified`, `post_modified_gmt`, `post_content_filtered`, `post_parent`, `guid`, `menu_order`, `post_type`, `post_mime_type`, `comment_count`)
         VALUES
-                 (1, NOW(), NOW(), '[videohome]', 'Video Home', '', 'publish', 'closed', 'open', '', 'Video Home', '', '', '2011-01-10 10:42:06',
+                 (1, NOW(), NOW(), '[contusHome]', 'contusHome', '', 'publish', 'closed', 'open', '', 'contusHome', '', '', '2011-01-10 10:42:06',
                  '2011-01-10 10:42:06', '','', '$site_url/?page_id=',0, 'page', '', 0)";
 
 $resHome       =  $wpdb->get_results($contus_home);
@@ -285,7 +297,7 @@ $homeUpdate    =  $wpdb->get_results($homeUpd);
 $post_meta     =   "INSERT INTO ".$wpdb->prefix."postmeta (`post_id`, `meta_key`, `meta_value`) VALUES
 ('$homeId', '_edit_last', '1'),
 ('$homeId', '_edit_lock', ''),
-('$homeId', '_wp_page_template', 'home.php')";
+('$homeId', '_wp_page_template', 'contusHome.php')";
 $postmetaIns = $wpdb->get_results($post_meta);
 }
 // For the postmeta table

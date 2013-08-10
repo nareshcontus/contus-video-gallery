@@ -99,6 +99,9 @@ if (count($langSettings) > 0)
     echo '<adindicator><![CDATA[Your selection will follow this sponsorss message in - seconds]]>';
     echo '</adindicator>';
     echo '<Skip><![CDATA[Skip this Video]]></Skip>';
+    echo '<Download>';
+    echo '<![CDATA['.$langSettings->download.']]>';
+    echo '</Download>';
     echo '<errormessage><![CDATA['.$rs_lang[0]->errormessage.']]></errormessage>';
     echo '<buttonname><![CDATA['.$rs_lang[0]->btnname.']]></buttonname>';
     echo '</language>';

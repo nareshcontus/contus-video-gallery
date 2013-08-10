@@ -12,9 +12,9 @@ Date : 21/2/2011
 }
 ul li{
     list-style:none;
-    
+
    }
-  
+
 .widget-title
 {
     margin: 0 0 0 0 !important;
@@ -41,6 +41,19 @@ display: inline-block;
 overflow: hidden;
 padding: 4px;
 
+}
+
+
+.video_header
+{
+    border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: rgb(204, 204, 204);
+}
+.line_right {
+border-bottom: 1px solid #CCC;
+float: left;
+height: 30px;
+margin-bottom: 5px;
+width: 630px;
 }
 .sideThumb .imgBorder a{
     padding:0 !important;
@@ -74,6 +87,14 @@ border-top-right-radius: 3px 3px;
 display: inline-block;
 overflow: hidden;
 
+
+}
+.line_right {
+border-bottom: 1px solid #CCC;
+float: left;
+height: 30px;
+margin-bottom: 5px;
+width: 630px;
 }
 .imageContus img{
     margin:0;
@@ -93,21 +114,24 @@ overflow: hidden;
 }
 #contusrecent{
     width:100% !important;
-    
+
 }
 #contuspopular{
      width:100% !important;
-    
+
 }
 .videoName
 {
     cursor: pointer;
-    
+
 }
 .more{
-
+     background-image:url(../images/morebtn.jpg);
     color:olive;
     font-size: 12px;
+    display: block;
+    width: 52px;
+    height :22px;
 }
 .related{
 
@@ -127,7 +151,7 @@ overflow: hidden;
 .songname{
     color: blue;
     font-weight: bold;
-   
+
 }
 .searchVideos
 {
@@ -199,11 +223,11 @@ overflow: hidden;
   display: block;
   height: 80px;
   width: 11px;
-  
+
   text-indent: -999px;
-  
+
 /*  top: 37px;*/
-  
+
   cursor: pointer;
 }
 
@@ -212,7 +236,7 @@ overflow: hidden;
   float: right;
 /*  display: block;*/
   margin: 10px 0;
-  
+
 }
 
 .infiniteCarousel .back {
@@ -220,13 +244,14 @@ overflow: hidden;
   float: left;
 /*  display: block;*/
   margin: 10px 0;
-  
+
 }
 .more_title
 {
     font-size: 16px;
     color:black;
     font-weight: bold;
+
 }
 
 .tagViews
@@ -244,6 +269,7 @@ padding: 1px 0px 1px 0px;
 text-align: left;
 word-wrap: break-word;
 }
+
 
 
 

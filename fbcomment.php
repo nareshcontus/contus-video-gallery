@@ -16,7 +16,7 @@ $dirPage     = $_REQUEST['folder'];
 $vtagid = $_REQUEST['vtagid'];
 
 if($vid != '') {
-$div .= '<div id="fbcomments"><fb:comments numposts="10" css="'.$site_url.'/wp-content/plugins/'.$dirPage.'/css/fb_comments.css" width="550" xid="'.$vid.'"
+$div .= '<div id="fbcomments"><fb:comments numposts="10" href="'.$site_url.'/contusvideo/?vid='.$vid.'" width="550"
     title="'.$vname.'" publish_feed="true"></fb:comments></div>';
 echo  $div;
 exit;
