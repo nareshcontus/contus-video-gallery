@@ -3,12 +3,11 @@
 Name: Wordpress Video Gallery
 Plugin URI: http://www.apptha.com/category/extension/Wordpress/Video-Gallery
 Description: Wordpress video gallery Recent videos widget.
-Version: 2.0
+Version: 2.1
 Author: Apptha
 Author URI: http://www.apptha.com
 License: GPL2
 */
-
 class widget_ContusRecentVideos_init extends WP_Widget {
 
     function widget_ContusRecentVideos_init() {
@@ -94,7 +93,7 @@ class widget_ContusRecentVideos_init extends WP_Widget {
 // were there any posts found?
         if (!empty($posts)) {
             // posts were found, loop through them
-            $image_path = str_replace('plugins/video-gallery/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
+            $image_path = str_replace('plugins/contus-video-gallery/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
             $_imagePath = APPTHA_VGALLERY_BASEURL . 'images' . DS;
             foreach ($posts as $post) {
                 $file_type = $post->file_type; // Video Type
@@ -151,7 +150,6 @@ class widget_ContusRecentVideos_init extends WP_Widget {
 
 // Register widget for use
 }
-
 // Run code and init
 add_action('widgets_init', create_function('', 'return register_widget("widget_ContusRecentVideos_init");'));
 ?>

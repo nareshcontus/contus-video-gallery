@@ -3,12 +3,11 @@
 Name: Wordpress Video Gallery
 Plugin URI: http://www.apptha.com/category/extension/Wordpress/Video-Gallery
 Description: Video Controller.
-Version: 2.0
+Version: 2.1
 Author: Apptha
 Author URI: http://www.apptha.com
 License: GPL2
 */
-
 include_once($adminModelPath . 'video.php'); //including video model file for get database information.
 
 if (class_exists('VideoController') != true) {//checks if the VideoController class has been defined start
@@ -118,7 +117,7 @@ if (class_exists('VideoController') != true) {//checks if the VideoController cl
                     $duration = $this->convertTime($sec);
                 } else {
                     $act_filepath1 = $_REQUEST['normalvideoform-value'];
-                    $video_path=str_replace('plugins/video-gallery/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
+                    $video_path=str_replace('plugins/contus-video-gallery/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
                     $act_filepath1=$video_path.$act_filepath1;
                     $act_filepath = addslashes(trim($_POST['customurl']));
                     $ffmpeg_path = $this->_settingsData->ffmpeg_path;
@@ -602,4 +601,3 @@ if ($adminPage == 'video') {//including video form if starts
 else if ($adminPage == 'newvideo') {//including newvideo ad form if starts
     require_once(APPTHA_VGALLERY_BASEDIR . DS . 'admin/views/video/addvideo.php');
 }//including newvideo ad form if ends
-

@@ -3,12 +3,11 @@
 Name: Wordpress Video Gallery
 URI: http://www.apptha.com/category/extension/Wordpress/Video-Gallery
 Description: Wordpress Video Gallery Installation file.
-Version: 2.0
+Version: 2.1
 Author: Apptha
 Author URI: http://www.apptha.com
 License: GPL2
 */
-
 function AddColumnIfNotExists($errorMsg, $table, $column, $attributes = "INT( 11 ) NOT NULL DEFAULT '0'") {
      global $wpdb;
     $columnExists = false;
@@ -477,3 +476,4 @@ function videogallery_install() {
 ");
     }
 }
+?>

@@ -3,14 +3,12 @@
 Name: Wordpress Video Gallery
 Plugin URI: http://www.apptha.com/category/extension/Wordpress/Video-Gallery
 Description: video settings view file.
-Version: 2.0
+Version: 2.1
 Author: Apptha
 Author URI: http://www.apptha.com
 License: GPL2
 */
-
 ?>
-
 <!--   MENU OPTIONS STARTS  --->
 <div class="apptha_gallery">   
 <h2 class="nav-tab-wrapper">
@@ -151,6 +149,44 @@ License: GPL2
                         </div>
 
                         <div class="portlet">
+                    <div class="portlet-header"><b><?php _e("General Settings", "video_gallery"); ?></b></div>
+                            <div class="portlet-content">
+                                <table class="form-table">
+
+                                    <tr>
+                                <th scope='row'><?php _e("FFMPEG Path", "video_gallery"); ?></th>
+                                <td><input type='text' name="ffmpeg_path" value="<?php echo $settingsGrid->ffmpeg_path; ?>" size=45  /></td>
+                                    </tr>
+                                    <tr>
+                                <th scope='row'><?php _e("Normal Scale", "video_gallery"); ?></th>
+                                <td>
+                                    <select name="normalscale" style="width:150px;">
+                                        <option value="0" <?php if ($settingsGrid->normalscale == 0) { ?> selected="selected" <?php } ?> ><?php _e("Aspect Ratio", "video_gallery"); ?></option>
+                                        <option value="1" <?php if ($settingsGrid->normalscale == 1) { ?> selected="selected" <?php } ?>><?php _e("Original Screen", "video_gallery"); ?></option>
+                                        <option value="2" <?php if ($settingsGrid->normalscale == 2) { ?> selected="selected" <?php } ?>><?php _e("Fit To Screen", "video_gallery"); ?></option>
+                                    </select>
+                                </td>
+                                    </tr>
+                                    <tr>
+                                <th scope='row'><?php _e("Full Screen Scale", "video_gallery"); ?></th>
+                                <td>
+                                    <select name="fullscreenscale" style="width:150px;">
+                                        <option value="0" <?php if ($settingsGrid->fullscreenscale == 0) { ?> selected="selected" <?php } ?>><?php _e("Aspect Ratio", "video_gallery"); ?></option>
+                                        <option value="1" <?php if ($settingsGrid->fullscreenscale == 1) { ?> selected="selected" <?php } ?>><?php _e("Original Screen", "video_gallery"); ?></option>
+                                        <option value="2" <?php if ($settingsGrid->fullscreenscale == 2) { ?> selected="selected" <?php } ?>><?php _e("Fit To Screen", "video_gallery"); ?></option>
+                                    </select>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th scope='row'><?php _e("Embed Visible", "video_gallery"); ?></th>
+                                <td><input type='checkbox' class='check' <?php if ($settingsGrid->embed_visible == 1) { ?> checked <?php } ?> name="embed_visible" value="1" size=45  /></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="portlet">
                             <div class="portlet-header"><b><?php _e("Playlist Configuration", "video_gallery"); ?></b></div>
                             <div class="portlet-content">
                                 <table class="form-table">
@@ -173,38 +209,7 @@ License: GPL2
                         </div>
 
 
-                        <div class="portlet">
-                            <div class="portlet-header"><b><?php _e("Facebook Settings", "video_gallery"); ?></b></div>
-                            <div class="portlet-content">
-                                <table class="form-table">
-                                    <tr>
-                                        <th scope='row'><?php _e("Select Comment Type", "video_gallery"); ?></th>
-                                        <td>
-                                      <select name="comment_option" onchange="enablefbapi(this.value)">
-						<option value="0"
-						<?php if ($settingsGrid->comment_option == 0)
-						echo "selected=selected"; ?>>None</option>
-						<option value="1"
-						<?php if ($settingsGrid->comment_option == 1)
-						echo "selected=selected"; ?>>Face Book Comment</option>
-						<option value="2"
-						<?php if ($settingsGrid->comment_option == 2)
-						echo "selected=selected"; ?>>DisQus Comment</option>
-						</select>
 
-                                    </tr>
-                                    <tr id="facebook_api" style="display: none;" >
-                                        <th scope='row'><?php _e("App ID", "video_gallery"); ?></th>
-                                        <td><input type='text' name="keyApps" value="<?php echo $settingsGrid->keyApps ?>" size=45  /></td>
-                                    </tr>
-                                    <tr id="disqus_api" style="display: none;" >
-                                        <th scope='row'><?php _e("Shot Name", "video_gallery"); ?></th>
-                                        <td><input type='text' name="keydisqusApps" value="<?php echo $settingsGrid->keydisqusApps ?>" size=45  /></td>
-                                    </tr>
-                                    <tr><td> <a href="http://developers.facebook.com/" target="_blank"><?php _e("Link to create Facebook App ID", "video_gallery"); ?></a></td></tr>
-                                </table>
-                            </div>
-                        </div>
                         <div class="portlet">
                             <div class="portlet-header"><b><?php _e("Ads Settings", "video_gallery"); ?></b></div>
                             <div class="portlet-content">
@@ -235,40 +240,36 @@ License: GPL2
                         </div>
               </div>
               <div class="column">
+
                   <div class="portlet">
-                    <div class="portlet-header"><b><?php _e("General Settings", "video_gallery"); ?></b></div>
+                            <div class="portlet-header"><b><?php _e("Facebook Settings", "video_gallery"); ?></b></div>
                     <div class="portlet-content">
                         <table class="form-table">
-
                             <tr>
-                                <th scope='row'><?php _e("FFMPEG Path", "video_gallery"); ?></th>
-                                <td><input type='text' name="ffmpeg_path" value="<?php echo $settingsGrid->ffmpeg_path; ?>" size=45  /></td>
-                            </tr>
-                            <tr>
-                                <th scope='row'><?php _e("Normal Scale", "video_gallery"); ?></th>
+                                        <th scope='row'><?php _e("Select Comment Type", "video_gallery"); ?></th>
                                 <td>
-                                    <select name="normalscale" style="width:150px;">
-                                        <option value="0" <?php if ($settingsGrid->normalscale == 0) { ?> selected="selected" <?php } ?> ><?php _e("Aspect Ratio", "video_gallery"); ?></option>
-                                        <option value="1" <?php if ($settingsGrid->normalscale == 1) { ?> selected="selected" <?php } ?>><?php _e("Original Screen", "video_gallery"); ?></option>
-                                        <option value="2" <?php if ($settingsGrid->normalscale == 2) { ?> selected="selected" <?php } ?>><?php _e("Fit To Screen", "video_gallery"); ?></option>
+                                      <select name="comment_option" onchange="enablefbapi(this.value)">
+						<option value="0"
+						<?php if ($settingsGrid->comment_option == 0)
+						echo "selected=selected"; ?>>None</option>
+						<option value="1"
+						<?php if ($settingsGrid->comment_option == 1)
+						echo "selected=selected"; ?>>Face Book Comment</option>
+						<option value="2"
+						<?php if ($settingsGrid->comment_option == 2)
+						echo "selected=selected"; ?>>DisQus Comment</option>
                                     </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th scope='row'><?php _e("Full Screen Scale", "video_gallery"); ?></th>
-                                <td>
-                                    <select name="fullscreenscale" style="width:150px;">
-                                        <option value="0" <?php if ($settingsGrid->fullscreenscale == 0) { ?> selected="selected" <?php } ?>><?php _e("Aspect Ratio", "video_gallery"); ?></option>
-                                        <option value="1" <?php if ($settingsGrid->fullscreenscale == 1) { ?> selected="selected" <?php } ?>><?php _e("Original Screen", "video_gallery"); ?></option>
-                                        <option value="2" <?php if ($settingsGrid->fullscreenscale == 2) { ?> selected="selected" <?php } ?>><?php _e("Fit To Screen", "video_gallery"); ?></option>
-                                    </select>
-                                </td>
-                            </tr>
 
-                            <tr>
-                                <th scope='row'><?php _e("Embed Visible", "video_gallery"); ?></th>
-                                <td><input type='checkbox' class='check' <?php if ($settingsGrid->embed_visible == 1) { ?> checked <?php } ?> name="embed_visible" value="1" size=45  /></td>
                             </tr>
+                                    <tr id="facebook_api" style="display: none;" >
+                                        <th scope='row'><?php _e("App ID", "video_gallery"); ?></th>
+                                        <td><input type='text' name="keyApps" value="<?php echo $settingsGrid->keyApps ?>" size=45  /></td>
+                            </tr>
+                                    <tr id="disqus_api" style="display: none;" >
+                                        <th scope='row'><?php _e("Shot Name", "video_gallery"); ?></th>
+                                        <td><input type='text' name="keydisqusApps" value="<?php echo $settingsGrid->keydisqusApps ?>" size=45  /></td>
+                            </tr>
+                                    <tr><td> <a href="http://developers.facebook.com/" target="_blank"><?php _e("Link to create Facebook App ID", "video_gallery"); ?></a></td></tr>
                         </table>
                     </div>
                 </div>                  
@@ -400,11 +401,11 @@ License: GPL2
 
                               <tr class="gallery_separator">
                                   <th><?php _e("Category Videos", "video_gallery"); ?></th>
-<!--                                  <td><input type='radio' name="homecategory"  value="1" <?php if ($settingsGrid->homecategory == 1)
+                                  <td><input type='radio' name="homecategory"  value="1" <?php if ($settingsGrid->homecategory == 1)
                                                   echo 'checked'; ?> /><label><?php _e("Enable", "video_gallery"); ?></label>
                                       <input type='radio' name="homecategory"  value="0"  <?php if ($settingsGrid->homecategory == 0)
                                                   echo 'checked'; ?> /><label><?php _e("Disable", "video_gallery"); ?></label>
-                                  </td>-->
+                                  </td>
                               </tr>
 
                               <tr class="gallery_separator_row">
@@ -412,6 +413,9 @@ License: GPL2
                                   <td><label><?php _e("Columns", "video_gallery"); ?></label><input type="text" name="colCat" id="colCat" size="10" value="<?php echo $settingsGrid->colCat; ?>">
                                    </td>
                               </tr>
+                              <tr class="gallery_separator"><th><?php _e("No Of Categories in Home page", "video_gallery"); ?></th>
+                                      <td><input type="text" name="category_page" id="category_page" size="20" value="<?php echo $settingsGrid->category_page; ?>"></td>
+                                  </tr>
                                <tr class="gallery_separator"><th><?php _e("More Page", "video_gallery"); ?></th>
 
                                </tr>

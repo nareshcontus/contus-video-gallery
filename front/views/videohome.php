@@ -3,7 +3,7 @@
 Name: Wordpress Video Gallery
 Plugin URI: http://www.apptha.com/category/extension/Wordpress/Video-Gallery
 Description: Video home page view file
-Version: 2.0
+Version: 2.1
 Author: Apptha
 Author URI: http://www.apptha.com
 License: GPL2
@@ -29,7 +29,9 @@ if (class_exists('ContusVideoView') != true) {
             $this->_vId = filter_input(INPUT_GET, 'vid');
             $this->_pId = filter_input(INPUT_GET, 'pid');
             $this->_tagname = $this->Tag_detail($this->_vId);
+            $this->_pagenum         = filter_input(INPUT_GET, 'pagenum');
             $this->_showF = 5;
+            $this->_colCat          = $this->_settingsData->colCat;
             $this->_site_url = get_bloginfo('url');
             $this->_singlevideoData = $this->home_playerdata();
             $this->_featuredvideodata = $this->home_featuredvideodata();
@@ -55,7 +57,7 @@ if (class_exists('ContusVideoView') != true) {
             }
             $moduleName = "playerModule";
             $div = '<div align="center">'; //video player starts
-            $div .= '<style type="text/css"> .video-block {  padding-left:' . $settingsData->gutterspace . 'px} </style>';
+            $div .= '<style type="text/css"> .video-block {padding-left:' . $settingsData->gutterspace . 'px} </style>';
             if (!empty($this->_vId)) {
                 $baseref = '&amp;vid=' . $this->_vId;
             }else {
@@ -183,16 +185,29 @@ if (class_exists('ContusVideoView') != true) {
                         $type_name='featured';
                         $morePage = 'fea';
                         break;
+
+                    case 'cat':
+                        if($this->_settingsData->homecategory==1){
+                        $rowF           = $this->_settingsData->rowCat;
+                        $colF           = $this->_settingsData->colCat;
+                        $category_page           = $this->_settingsData->category_page;
+                        $dataLimit      = $rowF * $colF;
+                        $TypeOFvideos   = $this->home_categoriesthumbdata($this->_pagenum, $category_page);
+                        $CountOFVideos  = $this->Countof_Videocategories();
+                        $typename       = __('Video Categories', 'video_gallery');
+                        return $this->categoryList($CountOFVideos, $TypeOFvideos, $this->_pagenum, $dataLimit, $category_page);
+                }
+                        break;
                 }
 
                 $class = $div = '';
 ?>
 
 <?php
-                $image_path = str_replace('plugins/video-gallery/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
+                $image_path = str_replace('plugins/contus-video-gallery/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
                 if ($TypeSet) { //CHECKING FAETURED VIDEOS ENABLE STARTS
                     $div = '<div class="video_wrapper" id="'.$type_name.'_video">';
-                    $div .= '<style type="text/css"> .video-block {  padding-left:' . $this->_settingsData->gutterspace . 'px} </style>';
+                    $div .= '<style type="text/css"> .video-block {padding-left:' . $this->_settingsData->gutterspace . 'px} </style>';
 //                    echo "<pre>";print_r($TypeOFvideos);
                     if (!empty($TypeOFvideos)) {
                         $div .='<h2 class="video_header">' . $typename . ' '.__('Videos', 'video_gallery').'</h2>';
@@ -234,8 +249,8 @@ if (class_exists('ContusVideoView') != true) {
                                 }
                                 $div .= '</div>';
                                 $div .='<h5><a href="' . $guid[$j] . '" class="videoHname">';
-                                if (strlen($nameF[$j]) > 25) {
-                                    $div .=substr($nameF[$j], 0, 25) . '';
+                                if (strlen($nameF[$j]) > 30) {
+                                    $div .=substr($nameF[$j], 0, 30) . '';
                                 } else {
                                     $div .=$nameF[$j];
                                 }
@@ -274,6 +289,99 @@ if (class_exists('ContusVideoView') != true) {
             }
         }
 
+
+        function categoryList($CountOFVideos, $TypeOFvideos, $pagenum, $dataLimit, $category_page) {
+            global $wpdb;
+            $div        = '';
+            $pagenum    = isset($pagenum) ? absint($pagenum) : 1; // Calculating page number
+            $start      = ( $pagenum - 1 ) * $dataLimit;     // Video starting from
+?>
+
+<?php
+            $div .= '<style> .video-block { padding-left:' . $this->_settingsData->gutterspace . 'px } </style>';
+            foreach ($TypeOFvideos as $catList) {
+// Fetch videos for every category
+               $sql            = "SELECT s.guid,w.* FROM " . $wpdb->prefix . "hdflvvideoshare as w
+                    INNER JOIN " . $wpdb->prefix . "hdflvvideoshare_med2play as m ON m.media_id = w.vid
+                    INNER JOIN " . $wpdb->prefix . "hdflvvideoshare_playlist as p on m.playlist_id = p.pid
+                     INNER JOIN " . $this->_wpdb->prefix . "posts s ON s.ID=w.slug
+WHERE w.publish='1' and p.is_publish='1' and m.playlist_id=" . intval($catList->pid) . " GROUP BY w.vid LIMIT ".$dataLimit;
+                $playLists      = $wpdb->get_results($sql);
+                $playlistCount  = count($playLists);
+//echo "<pre>";print_r($playLists);
+                $div .='<div> <h4 class="clear more_title">' . $catList->playlist_name . '</h4></div>';
+                if (!empty($playlistCount)) {
+                    $inc        = 1;
+                    $image_path = str_replace('plugins/contus-video-gallery/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
+                    $div .= '<ul class="video-block-container">';
+                    foreach ($playLists as $playList) {
+
+                        $duration   = $playList->duration;
+                        $imageFea   = $playList->image; //VIDEO IMAGE
+                        $file_type  = $playList->file_type; // Video Type
+                        $guid = $playList->guid; //guid
+                        if ($imageFea == '') {  //If there is no thumb image for video
+                            $imageFea = $this->_imagePath . 'nothumbimage.jpg';
+                        } else {
+                            if ($file_type == 2) {          //For uploaded image
+                                $imageFea = $image_path . $imageFea;
+                            }
+                        }
+                        if (strlen($playList->name) > 30) {
+                            $playListName = substr($playList->name, 0, 30) . "";
+                        } else {
+                            $playListName = $playList->name;
+                        }
+
+                        $div .='<li class="video-block"><div class="video-thumbimg"><a href="' . $guid . '"><img src="' . $imageFea . '" alt="" class="imgHome" title=""></a>';
+                        if ($duration != 0.00) {
+                            $div .='<span class="video_duration">' . $duration . '</span>';
+                        }
+                        $div .='</div><h5><a href="' . $guid . '" class="videoHname">' . $playListName . '</a></h5><div class="vid_info">';
+
+                            $div .='<span class="video_views">' . $playList->hitcount . ' '.__('Views', 'video_gallery') . '</span>';
+
+                        $div .='</div></li>';
+
+if (($inc % $this->_colCat ) == 0 && $inc!=0) {//COLUMN COUNT
+                                $div .= '</ul><div class="clear"></div><ul class="video-block-container">';
+                            }
+                        $inc++;
+                    }
+                    $div .='</ul>';
+                    if (($playlistCount > 8)) {
+
+                        $div .='<a class="video-more" href="' . $this->_site_url . '/?page_id=' .  $this->_mPageid . '&playid=' . $catList->pid . '">'.__('More Videos', 'video_gallery').'</a>';
+                    } else {
+                        $div .='<div align="right"> </div>';
+                    }
+                } else { // If there is no video for category
+                    $div .='<div>'.__('No Videos For this Category', 'video_gallery').'</div>';
+                }
+            }
+
+            $div .='<div class="clear"></div>';
+
+            //PAGINATION STARTS
+            $total          = $CountOFVideos;
+            $num_of_pages   = ceil($total / $category_page);
+            $page_links     = paginate_links(array(
+                        'base'      => add_query_arg('pagenum', '%#%'),
+                        'format'    => '',
+                        'prev_text' => __('&laquo;', 'aag'),
+                        'next_text' => __('&raquo;', 'aag'),
+                        'total'     => $num_of_pages,
+                        'current'   => $pagenum
+                    ));
+
+            if ($page_links) {
+                $div .='<div class="tablenav"><div class="tablenav-pages" >' . $page_links . '</div></div>';
+            }
+
+            //PAGINATION ENDS
+            return $div;
+        }
+
         ////CATEGORY FUNCTION ENDS
     }
 
@@ -283,4 +391,3 @@ else {
     echo 'class contusVideo already exists';
 }
 ?>
-

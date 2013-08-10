@@ -3,12 +3,11 @@
 Name: Wordpress Video Gallery
 Plugin URI: http://www.apptha.com/category/extension/Wordpress/Video-Gallery
 Description: video home page model file
-Version: 2.0
+Version: 2.1
 Author: Apptha
 Author URI: http://www.apptha.com
 License: GPL2
 */
-
 if(class_exists('ContusVideo') != true)
 {//checks the ContusVideo class has been defined if starts
     class ContusVideo
@@ -32,6 +31,23 @@ if(class_exists('ContusVideo') != true)
         {//function for getting settings data starts
             $query = "SELECT * FROM " . $this->_videoinfotable;
             return $this->_wpdb->get_results($query);
+        }//function for getting settings data ends
+
+        public function get_Countof_Videocategories()
+        {//function for getting settings data starts
+            global $wpdb;
+             $query = "SELECT count(*) FROM " . $wpdb->prefix . "hdflvvideoshare_playlist WHERE is_publish='1'";
+            return $this->_wpdb->get_var($query);
+        }//function for getting settings data ends
+
+        public function get_categoriesthumdata($pagenum,$dataLimit)
+        {//function for getting settings data starts
+            global $wpdb;
+            $pagenum = isset($pagenum ) ? absint($pagenum ) : 1;
+            $offset = ( $pagenum - 1 ) * $dataLimit;
+            $query = "SELECT * FROM " . $wpdb->prefix . "hdflvvideoshare_playlist WHERE is_publish='1' LIMIT " . $offset . "," . $dataLimit ;
+            $result = $wpdb->get_results($query);
+            return $result;
         }//function for getting settings data ends
 
         public function get_more_pageid()
@@ -130,7 +146,7 @@ if(class_exists('ContusVideo') != true)
         $select .= " INNER JOIN " . $wpdb->prefix . "hdflvvideoshare_med2play m";
         $select .= " WHERE (m.playlist_id = '".intval($playlist_id)."'";
         $select .= " AND m.media_id = w.vid) GROUP BY w.vid ";
-        $select .= " ORDER BY m.sorder ASC , m.porder " . $playlist->playlist_order . " ,w.vid " . $playlist->playlist_order;
+        $select .= " ORDER BY m.sorder ASC , m.porder ASC ,w.vid ASC";
         $themediafiles = $wpdb->get_results($wpdb->prepare($select));
     }
 
@@ -171,8 +187,7 @@ if(class_exists('ContusVideo') != true)
               INNER JOIN " . $this->_wpdb->prefix . "posts s ON s.ID=w.slug
                 WHERE w.publish='1' AND p.is_publish='1' $where GROUP BY w.vid ORDER BY ".$thumImageorder." LIMIT ".$dataLimit;
             return $this->_wpdb->get_results($query);
-        }//function for getting settings data ends
-
-        
+        }//function for getting settings data ends       
     }//ContusVideo class ends
 }//checks the ContusVideo class has been defined if ends
+?>

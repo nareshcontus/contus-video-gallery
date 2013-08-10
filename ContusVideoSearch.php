@@ -3,7 +3,7 @@
 Name: Wordpress Video Gallery
 Plugin URI: http://www.apptha.com/category/extension/Wordpress/Video-Gallery
 Description: Wordpress Video Gallery Video Search Widget.
-Version: 2.0
+Version: 2.1
 Author: Apptha
 Author URI: http://www.apptha.com
 License: GPL2
@@ -83,6 +83,5 @@ class widget_ContusVideoSearch_init extends WP_Widget {
     }
 
 }
-
 add_action('widgets_init', create_function('', 'return register_widget("widget_ContusVideoSearch_init");')); //adding product tag widget
 ?>

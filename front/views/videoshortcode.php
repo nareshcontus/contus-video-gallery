@@ -3,7 +3,7 @@
   Name: Wordpress Video Gallery
   Plugin URI: http://www.apptha.com/category/extension/Wordpress/Video-Gallery
   Description: Video detail and short tag page view file.
-  Version: 2.0
+  Version: 2.1
   Author: Apptha
   Author URI: http://www.apptha.com
   License: GPL2
@@ -423,7 +423,7 @@ if ($configXML->embed_visible == 1) {
                 if ($result != '') {
                     //Slide Display Here
                     $output .= '<ul id="mycarousel" class="jcarousel-skin-tango" style="margin:0 !important;">';
-                    $image_path = str_replace('plugins/video-gallery/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
+                    $image_path = str_replace('plugins/contus-video-gallery/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
                     while ($relFet = mysql_fetch_object($related)) {
                         $file_type = $relFet->file_type; // Video Type
                         $imageFea = $relFet->image; //VIDEO IMAGE
@@ -489,4 +489,3 @@ dsq.src = "http://"+ disqus_shortname + ".disqus.com/embed.js";
     echo 'class contusVideo already exists';
 }
 ?>
-

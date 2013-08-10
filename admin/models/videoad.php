@@ -3,7 +3,7 @@
 Name: Wordpress Video Gallery
 Plugin URI: http://www.apptha.com/category/extension/Wordpress/Video-Gallery
 Description: video ad model file.
-Version: 2.0
+Version: 2.1
 Author: Apptha
 Author URI: http://www.apptha.com
 License: GPL2
@@ -80,5 +80,4 @@ if(class_exists('VideoadModel') != true)
         
     }//VideoadModel class ends
 }//checks the VideoadModel class has been defined if ends
-
 ?>

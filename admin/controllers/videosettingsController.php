@@ -3,12 +3,11 @@
 Name: Wordpress Video Gallery
 Plugin URI: http://www.apptha.com/category/extension/Wordpress/Video-Gallery
 Description: Video Settings Controller.
-Version: 2.0
+Version: 2.1
 Author: Apptha
 Author URI: http://www.apptha.com
 License: GPL2
 */
-
 WPimport('models/videosetting.php'); //including settings model file for get database information.
 
 if (class_exists('SettingsController') != true) {//checks if the SettingsController class has been defined starts
@@ -61,6 +60,7 @@ if (class_exists('SettingsController') != true) {//checks if the SettingsControl
                 $buffer = filter_input(INPUT_POST, 'buffer');
                 $volume = filter_input(INPUT_POST, 'volume');
                 $gutterSpace = filter_input(INPUT_POST, 'gutterspace');
+                $category_page = filter_input(INPUT_POST, 'category_page');
                 $rowsPop = filter_input(INPUT_POST, 'rowsPop');
                 $colPop = filter_input(INPUT_POST, 'colPop');
                 $rowsRec = filter_input(INPUT_POST, 'rowsRec');
@@ -78,6 +78,7 @@ if (class_exists('SettingsController') != true) {//checks if the SettingsControl
 
                 $settingsData = array(
                     'default_player' => $default_player,
+                    'category_page' => $category_page,
                     'autoplay' => $autoPlay,
                     'HD_default' => $hdDefault,
                     'playlistauto' => $playListauto,
@@ -125,7 +126,7 @@ if (class_exists('SettingsController') != true) {//checks if the SettingsControl
                     'skin' => $playerSkin
                 );
 
-                $settingsDataformat = array('%d','%d', '%d', '%d', '%s', '%s', '%d', '%d', '%d', '%d', '%d', '%d',
+                $settingsDataformat = array('%d','%d','%d', '%d', '%d', '%s', '%s', '%d', '%d', '%d', '%d', '%d', '%d',
                     '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%s', '%s', '%s',
                     '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%d',
                     '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%s');
@@ -189,5 +190,4 @@ if ($handle = opendir($ski)) {
 if ($adminPage == 'hdflvvideosharesettings') {//including settings form if starts
     require_once(APPTHA_VGALLERY_BASEDIR . DS . 'admin/views/videosetting.php');
 }//including settings form if starts
-
-
+?>

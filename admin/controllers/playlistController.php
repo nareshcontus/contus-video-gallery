@@ -3,7 +3,7 @@
 Name: Wordpress Video Gallery
 Plugin URI: http://www.apptha.com/category/extension/Wordpress/Video-Gallery
 Description: Playlist Controller.
-Version: 2.0
+Version: 2.1
 Author: Apptha
 Author URI: http://www.apptha.com
 License: GPL2
@@ -218,9 +218,6 @@ $Playlist_count = $playlistOBJ->Playlist_count($searchMsg,$searchBtn);
 $playlistEdit = $playlistOBJ->playlist_edit($playListId);
 $displayMsg = $playlistOBJ->get_message();
 $adminPage = filter_input(INPUT_GET, 'page');
-
-
-
 $adminPage = filter_input(INPUT_GET, 'page');
 if ($adminPage == 'playlist')
 {//including playlist form if starts
@@ -230,4 +227,4 @@ else if ($adminPage == 'newplaylist')
 {//including newplaylist ad form if starts
     require_once(APPTHA_VGALLERY_BASEDIR . DS . 'admin/views/playlist/addplaylist.php');
 }//including newplaylist ad form if ends
-
+?>

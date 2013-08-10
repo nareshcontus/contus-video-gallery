@@ -3,13 +3,11 @@
 Name: Wordpress Video Gallery
 Plugin URI: http://www.apptha.com/category/extension/Wordpress/Video-Gallery
 Description: Wordpress video gallery Featured videos widget.
-Version: 2.0
+Version: 2.1
 Author: Apptha
 Author URI: http://www.apptha.com
 License: GPL2
 */
-
-
 class widget_ContusFeaturedVideos_init extends WP_Widget {
 
     function widget_ContusFeaturedVideos_init() {
@@ -94,7 +92,7 @@ class widget_ContusFeaturedVideos_init extends WP_Widget {
 // were there any posts found?
         if (!empty($features)) {
             // posts were found, loop through them
-            $image_path = str_replace('plugins/video-gallery/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
+            $image_path = str_replace('plugins/contus-video-gallery/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
             $_imagePath = APPTHA_VGALLERY_BASEURL . 'images' . DS;
 //            echo "<pre>";print_r($features);
             foreach ($features as $feature) {

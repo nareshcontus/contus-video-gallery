@@ -3,12 +3,11 @@
 Name: Wordpress Video Gallery
 Plugin URI: http://www.apptha.com/category/extension/Wordpress/Video-Gallery
 Description: Video detail and short tags controller file.
-Version: 2.0
+Version: 2.1
 Author: Apptha
 Author URI: http://www.apptha.com
 License: GPL2
 */
-
 include_once($frontModelPath . 'videoshortcode.php');//including ContusVideo model file for get database information.
 if(class_exists('ContusVideoShortcodeController') != true)
     {

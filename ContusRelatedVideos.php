@@ -3,12 +3,11 @@
 Name: Wordpress Video Gallery
 Plugin URI: http://www.apptha.com/category/extension/Wordpress/Video-Gallery
 Description: Wordpress video gallery Related videos widget.
-Version: 2.0
+Version: 2.1
 Author: Apptha
 Author URI: http://www.apptha.com
 License: GPL2
 */
-
 class widget_ContusRelatedVideos_init extends WP_Widget {
 
     function widget_ContusRelatedVideos_init() {
@@ -101,7 +100,7 @@ if(isset($_GET['p']))
             // were there any posts found?
             if (!empty($relatedVideos)) {
                 // posts were found, loop through them
-                $image_path = str_replace('plugins/video-gallery/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
+                $image_path = str_replace('plugins/contus-video-gallery/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
                 $_imagePath = APPTHA_VGALLERY_BASEURL . 'images' . DS;
                 foreach ($relatedVideos as $feature) {
                     $file_type = $feature->file_type; // Video Type
@@ -258,7 +257,6 @@ if(isset($_GET['p']))
     }
 
 }
-
 // Run code and init
 add_action('widgets_init', create_function('', 'return register_widget("widget_ContusRelatedVideos_init");')); //adding product tag widget
 ?>

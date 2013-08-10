@@ -3,7 +3,7 @@
 Name: Wordpress Video Gallery
 Plugin URI: http://www.apptha.com/category/extension/Wordpress/Video-Gallery
 Description: Video more page view file.
-Version: 2.0
+Version: 2.1
 Author: Apptha
 Author URI: http://www.apptha.com
 License: GPL2
@@ -103,7 +103,7 @@ if (class_exists('ContusMoreView') != true) {
                         return $this->categoryList($CountOFVideos, $TypeOFvideos, $this->_pagenum, $dataLimit);
                         break;
                     case 'search':
-                        $thumImageorder = "( t4.tags_name REGEXP '[[:<:]]$this->_video_search [[:>:]]' || t1.description REGEXP '[[:<:]]$this->_video_search [[:>:]]' || t1.name LIKE '%" . $this->_video_search . "%')";
+                        $thumImageorder = "( t4.tags_name LIKE '%" . $this->_video_search . "%' || t1.description LIKE '%" . $this->_video_search . "%' || t1.name LIKE '%" . $this->_video_search . "%')";
                         $TypeSet = $this->_settingsData->feature;
                         $rowF = $this->_settingsData->rowMore;
                         $colF = $this->_settingsData->colMore;
@@ -121,12 +121,17 @@ if (class_exists('ContusMoreView') != true) {
 $pagenum    = isset($this->_pagenum) ? absint($this->_pagenum) : 1;
                 $div = '<div class="video_wrapper" id="'.$type_name.'_video">';
                 $div .= '<style type="text/css"> .video-block {  padding-left:' . $this->_settingsData->gutterspace . 'px} </style>';
-                if (!empty($TypeOFvideos)) {
+                $playlist_name = $this->_wpdb->get_var("SELECT playlist_name FROM " . $this->_wpdb->prefix . "hdflvvideoshare_playlist WHERE pid='".intval($this->_playid)."'");
+                    if($typename=='Category'){
+                    $div .='<h2 >'.$playlist_name.' </h2>';
+                    } else {
                     $div .='<h2 >' . $typename . ' '.__('Videos', 'video_gallery').' </h2>';
+                    }
+                if (!empty($TypeOFvideos)) {
                     $j          = 0;
                     $clearwidth = 0;
                     $clear      = $fetched[$j] = '';
-                    $image_path = str_replace('plugins/video-gallery/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
+                    $image_path = str_replace('plugins/contus-video-gallery/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
                     foreach ($TypeOFvideos as $video) {
                         $duration[$j] = $video->duration; //VIDEO DURATION
                         $imageFea[$j] = $video->image; //VIDEO IMAGE
@@ -158,8 +163,8 @@ $pagenum    = isset($this->_pagenum) ? absint($this->_pagenum) : 1;
                     $div .= '<div>';
                     $div .= '<ul class="video-block-container">';
                     for ($j = 0; $j < count($TypeOFvideos); $j++) {
-                        if (strlen($nameF[$j]) > 25) { // Displaying Video Title
-                                $videoname = substr($nameF[$j], 0, 25) . '';
+                        if (strlen($nameF[$j]) > 30) { // Displaying Video Title
+                                $videoname = substr($nameF[$j], 0, 30) . '';
                             }
                             else {
                                 $videoname = $nameF[$j];
@@ -243,7 +248,7 @@ WHERE w.publish='1' and p.is_publish='1' and m.playlist_id=" . intval($catList->
                 if (!empty($playlistCount)) {
                     $i          = 0;
                     $inc        = 1;
-                    $image_path = str_replace('plugins/video-gallery/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
+                    $image_path = str_replace('plugins/contus-video-gallery/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
                     $div .= '<ul class="video-block-container">';
                     foreach ($playLists as $playList) {
 
@@ -258,8 +263,8 @@ WHERE w.publish='1' and p.is_publish='1' and m.playlist_id=" . intval($catList->
                                 $imageFea = $image_path . $imageFea;
                             }
                         }
-                        if (strlen($playList->name) > 25) {
-                            $playListName = substr($playList->name, 0, 25) . "";
+                        if (strlen($playList->name) > 30) {
+                            $playListName = substr($playList->name, 0, 30) . "";
                         } else {
                             $playListName = $playList->name;
                         }
@@ -336,7 +341,7 @@ if (($inc % $this->_colCat ) == 0 && $inc!=0) {//COLUMN COUNT
                 if (!empty($TypeOFvideos)) {
                     $i          = 0;
                     $inc        = 0;
-                    $image_path = str_replace('plugins/video-gallery/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
+                    $image_path = str_replace('plugins/contus-video-gallery/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
                     $div .= '<ul class="video-block-container">';
 
                     foreach ($TypeOFvideos as $playList) {
@@ -352,8 +357,8 @@ if (($inc % $this->_colCat ) == 0 && $inc!=0) {//COLUMN COUNT
                                 $imageFea = $image_path . $imageFea;
                             }
                         }
-                        if (strlen($playList->name) > 25) {
-                            $playListName = substr($playList->name, 0, 25) . "";
+                        if (strlen($playList->name) > 30) {
+                            $playListName = substr($playList->name, 0, 30) . "";
                         } else {
                             $playListName = $playList->name;
                         }
@@ -411,4 +416,3 @@ if (($inc % $this->_colF ) == 0 && $inc!=0) {//COLUMN COUNT
     echo 'class contusMore already exists';
 }
 ?>
-

@@ -3,12 +3,11 @@
 Name: Wordpress Video Gallery
 Plugin URI: http://www.apptha.com/category/extension/Wordpress/Video-Gallery
 Description: Video hitcount file.
-Version: 2.0
+Version: 2.1
 Author: Apptha
 Author URI: http://www.apptha.com
 License: GPL2
 */
-
 require_once( dirname(__FILE__) . '/hdflv-config.php');
 $listitem=$_POST['listItem'];
 		$ids = implode(',', $listitem);
@@ -18,7 +17,5 @@ $listitem=$_POST['listItem'];
 		}
 		$sql .= ' END WHERE vid IN ('.$ids.')';
 		$wpdb->query($sql);
-
 		exit();
-
 ?>
