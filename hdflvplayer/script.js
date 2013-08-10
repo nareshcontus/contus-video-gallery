@@ -1,5 +1,6 @@
 function currentvideo(vid,title,tag){
-     document.getElementById('video_tag').innerHTML = '';
+
+document.getElementById('video_tag').innerHTML = '';
      fbcomments(vid,title);
      document.getElementById('video_title').innerHTML=title;
      if(tag != '')
@@ -45,9 +46,10 @@ else
   {
     if (xmlhttp.readyState==4)
     {
-        //alert('i am ready');
+       // alert('i am ready');
     }
   }
+
 xmlhttp.open("GET",baseurl+"/wp-content/plugins/"+folder+"/hitCount.php?vid="+vid,true);
 xmlhttp.send();
 
