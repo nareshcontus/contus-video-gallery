@@ -146,7 +146,7 @@ class default_videos {
         $vPageID    = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content='[video]' and post_status='publish' and post_type='page' limit 1");
         $moreName   = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content='[videomore]' and post_status='publish' and post_type='page' limit 1");
         $styleSheet = $wpdb->get_var("select stylesheet from " . $wpdb->prefix . "hdflvvideoshare_settings WHERE settings_id='1'");
-        $configXML  = $wpdb->get_row("SELECT configXML,comment_option,width,height,keyApps FROM " . $wpdb->prefix . "hdflvvideoshare_settings");
+        $configXML  = $wpdb->get_row("SELECT configXML,comment_option,width,height,keyApps,enable_social_share FROM " . $wpdb->prefix . "hdflvvideoshare_settings");
         $fbAppId = $configXML->keyApps;
         $vid = $_GET['vid'];
         if ($vid != '') {
@@ -229,9 +229,12 @@ class default_videos {
                         <b>Tags          </b>: ' . $videoTags . ' ' . '</li>
 
  <li class="views"><b>Description     </b>: ' . $description . '</li>
-   </ul>
-         ' . $this->social_share() . '
-          <div class="clear"></div>
+  </ul>';
+        if($configXML->enable_social_share == '1')
+        {
+        	$div .= $this->social_share();
+        }
+        $div .= '<div class="clear"></div>
           <div class="clear"></div>';
 
         //--------------------------------HTML5 START-------------------------------------------------------------//
@@ -327,7 +330,7 @@ class default_videos {
         }
       
          $select = "select distinct(a.vid),name,description,file,hdfile,file_type,duration,image,opimage,download,link,featured,hitcount,
-post_date,postrollads,prerollads from " . $wpdb->prefix . "hdflvvideoshare a INNER JOIN " . $wpdb->prefix . "hdflvvideoshare_med2play b ON a.vid=b.media_id WHERE b.playlist_id=" . $getPlaylist[0]->playlist_id . " AND a.vid != ".$vid." ORDER BY a.vid DESC";
+post_date,postrollads,prerollads from " . $wpdb->prefix . "hdflvvideoshare a INNER JOIN " . $wpdb->prefix . "hdflvvideoshare_med2play b ON a.vid=b.media_id WHERE b.playlist_id=" . $getPlaylist[0]->playlist_id . " AND a.vid != ".$vid." ORDER BY b.sorder ASC";
   
         $uppedPlaylist = $playlist_id . '0';
 
@@ -371,7 +374,7 @@ post_date,postrollads,prerollads from " . $wpdb->prefix . "hdflvvideoshare a INN
         $vPageID = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content='[video]'");
         if ($configXML->comment_option == 1) {
             $div .='<h3 class="related-videos">Post Your Comments</h3>';
-            $div .='<div class=\"fbcomments\"><script src="http://connect.facebook.net/en_US/all.js#xfbml=1"></script>
+            $div .='<div class="fbcomments"><script src="http://connect.facebook.net/en_US/all.js#xfbml=1"></script>
             <fb:comments href="' .$currentURI.  '" num_posts="10" xid="' . $_GET['vid'] . '" width="500"  canpost="true"    ></fb:comments>
             </div>';
   

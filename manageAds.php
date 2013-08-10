@@ -425,13 +425,13 @@ class HDVIDEOManageAds {
         }
 
         if ($plfilter != '0' && $plfilter != 'no') {
-            $join = " LEFT JOIN " . $wpdb->prefix . "hdflv_med2play ON (vid = media_id) ";
+            $join = " LEFT JOIN " . $wpdb->prefix . "hdflvvideoshare_med2play ON (vid = media_id) ";
             if ($where != '')
                 $where .= " AND ";
             $where .= " (playlist_id = '" . $plfilter . "') ";
             $pledit = true;
         } elseif ($plfilter == 'no') {
-            $join = " LEFT JOIN " . $wpdb->prefix . "hdflv_med2play ON (vid = media_id) ";
+            $join = " LEFT JOIN " . $wpdb->prefix . "hdflvvideoshare_med2play ON (vid = media_id) ";
             if ($where != '')
                 $where .= " AND ";
             $where .= " (media_id IS NULL) ";

@@ -204,7 +204,7 @@ function get_vtags() {
   /*************************************************************** */
 
 function hd_add_media($wptfile_abspath, $wp_urlpath) {
-    global $wpdb;
+	global $wpdb;
     $uploadPath = $wpdb->get_row("SELECT uploads,ffmpeg_path FROM " . $wpdb->prefix . "hdflvvideoshare_settings order by settings_id desc limit 1");
     $uPath = $uploadPath->uploads;
     $pieces = explode(",", $_POST['hid']);
@@ -307,8 +307,18 @@ function hd_add_media($wptfile_abspath, $wp_urlpath) {
         $seo_tag = preg_replace('/[&:\s]+/i', '-', $tag_name);
     }
     $now = date("Y-m-d H:i:s", time());
-    $insert_video = $wpdb->query("INSERT INTO " . $wpdb->prefix . "hdflvvideoshare ( name,description,file, file_type,duration, hdfile, image, opimage , download, link, featured, hitcount, post_date,prerollads,postrollads)
+    
+    $getLastVideoData = $wpdb->get_row("SELECT * FROM " . $wpdb->prefix . "hdflvvideoshare WHERE `vid` = (SELECT MAX(vid) FROM " . $wpdb->prefix. "hdflvvideoshare) ");
+    $videoName = $getLastVideoData->name;
+    $file = $getLastVideoData->file;
+    $image = $getLastVideoData->image;
+    $link = $getLastVideoData->link;
+    //SELECT * FROM `wp_hdflvvideoshare` WHERE `vid` = (SELECT MAX(vid) FROM `wp_hdflvvideoshare`)
+    if(($act_name != $videoName) && ($file != $act_filepath) && ($image != $act_image) && ($link != $act_link))
+    {
+   $insert_video = $wpdb->query("INSERT INTO " . $wpdb->prefix . "hdflvvideoshare ( name,description,file, file_type,duration, hdfile, image, opimage , download, link, featured, hitcount, post_date,prerollads,postrollads)
    VALUES ( '$act_name','$act_description','$act_filepath','$file_type','$duration','$act_hdpath', '$act_image', '$act_opimage', '$act_download', '$act_link' ,'$act_feature','0','$now','$prerollads','$postrollads')") or die('not inserting');
+    }
 
     if ($insert_video != 0) {
         $video_aid = $wpdb->insert_id;  // get index_id
@@ -437,7 +447,8 @@ function hd_update_media($media_id,$videourlmyfile,$hdurlmyfile,$thumurlmyfile,$
     $pieces = explode(",", $_POST['hid']);
     //print_r($pieces);
     $sorder = $_POST['sorder'];
-    $act_name = addslashes(trim($_POST['act_name']));
+ $act_name = addslashes(trim($_POST['act_name']));
+ 
     $act_description = addslashes(trim($_POST['act_description']));
     $act_filepath = addslashes(trim($_POST['act_filepath']));
     $act_image = addslashes(trim($_POST['act_image']));

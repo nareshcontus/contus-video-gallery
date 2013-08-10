@@ -68,9 +68,18 @@ if ($styleSheet == 'contus') {
 
        $homebannercategories = $wpdb->get_row("SELECT * FROM " . $wpdb->prefix . "hdflvvideoshare_settings ");
        $bannertype = $homebannercategories->vbannercategory;
-       $show = $homebannercategories->numvideos; 
-       $bannerwidth = $homebannercategories->bannerw;
-       $playerwidth = $homebannercategories->playerw;
+       $show = $homebannercategories->numvideos;
+       if($homebannercategories->enable_banner_slider == '1')
+        {
+        	$bannerwidth = $homebannercategories->bannerw;
+        	$playerwidth = $homebannercategories->playerw;
+        }
+        else 
+        {
+       		$bannerwidth = "500";
+       		$playerwidth = "500";
+        }
+       
 
           switch ($bannertype) {
         case 'vpopular' :
@@ -79,7 +88,7 @@ if ($styleSheet == 'contus') {
             break;
         case 'vrecent' :
             $bannervideos = "select  * from " . $wpdb->prefix . "hdflvvideoshare ORDER BY post_date DESC LIMIT " . $show;
-     
+
          break;
         case 'vfeatured' :
             $bannervideos = "select * from " . $wpdb->prefix . "hdflvvideoshare WHERE featured='ON' ORDER BY vid DESC LIMIT " . $show;
@@ -110,15 +119,6 @@ if ($styleSheet == 'contus') {
         <script type="text/javascript">
             $(document).ready(function(){
                 var get_width = 'auto';
-                // Getting the width of the theme to fix the banner fix
-                //            if(get_width == 'auto')
-                //            {
-                //                var theme_width  = <?php //echo $bannerwidth;  ?>;
-                //            }
-               // var border_width = parseInt('10');
-                //var actual_width = parseInt(theme_width) - (border_width);
-
-                //$("#featured").css('width',actual_width);
                 $("#slider_banner > ul").tabs({fx:{opacity: "toggle"}}).tabs("rotate",  '3000', true);
             });
         </script>
@@ -143,18 +143,39 @@ if ($styleSheet == 'contus') {
         $dir = dirname(plugin_basename(__FILE__));
         $dirExp = explode('/', $dir);
         $dirPage = $dirExp[0];
-      
+
         $div .='<ul class="ulwidget">';
         if (!empty($bannerSlideShow)) {
         //$bannerSlideShow[$i]->vid;
-        
+
 ?>
+<?php
+$mobile = default_home::detect_mobile();?>
 <div id="featured" style="width: 100%;" >
     <div id="lofslidecontent45"	class="page-lof-slidecontent" style="width:<?php echo $bannerwidth; ?>px ">
         <div class="right_side">
-<?php for ($i = 0; $i < count($bannerSlideShow); $i++) { 
+<?php for ($i = 0; $i < count($bannerSlideShow); $i++) {
  //echo $site_url . '/wp-content/plugins/' . dirname(plugin_basename(__FILE__)) . '/hdflvplayer/hdplayer.swf'; ?>
                 <div id="fragment-<?php echo $i + 1; ?>" class="ui-tabs-panel" style="height:100%;float:right">
+                    <?php 
+if($mobile === true){
+   if ($bannerSlideShow[$i]->file_type == 2){ $video=$bannerSlideShow[$i]->link;?>
+    <video id="video" src="<?php echo $video; ?>"  autobuffer controls onerror="failed(event)" width="701" height="303">
+             Html5 Not support This video Format.
+     </video>
+   <?php } elseif ($bannerSlideShow[$i]->file_type == 1)
+                        {
+                           if (preg_match('/www\.youtube\.com\/watch\?v=[^&]+/', $bannerSlideShow[$i]->link, $vresult))
+                            {
+                               $urlArray = explode("=", $vresult[0]);
+                               $videoid = trim($urlArray[1]);
+                            }
+?>
+                           <iframe  type="text/html" width=<?php echo $playerwidth?>px height="318px" src="http://www.youtube.com/embed/<?php echo $videoid; ?>" frameborder="0">
+                           </iframe>
+<?php
+                       }
+}else{?>
                     <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
                             codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0"
                            style="width:<?php echo $playerwidth?>px; height: 318px">
@@ -172,22 +193,26 @@ if ($styleSheet == 'contus') {
                             allowScriptAccess="always" type="application/x-shockwave-flash"
                             wmode="transparent"></embed>
                     </object>
+                    <?php } ?>
                 </div>
 <?php } ?>
         </div>
         <!-- NAVIGATOR -->
+        <?php if($homebannercategories->enable_banner_slider == '1')
+        {
+        ?>
         <div class="page-bannershort" id="slider_banner" >
             <ul class="page-lof-navigator">
 <?php for ($i = 0; $i < count($bannerSlideShow); $i++) { ?>
 
                 <li class="ui-tabs-nav-item ui-tabs-selected" id="nav-fragment-<?php echo $i + 1; ?>">
                     <div class="nav_container">
-                        <a href="#fragment-<?php echo $i + 1; ?>">
+                        <a href="#fragment-<?php echo $i + 1; ?>" onclick="return hitCountVideo('<?php echo $bannerSlideShow[$i]->vid?>','<?php echo $i?>');">
                             <div class="page-thumb-img"><img src="<?php echo $bannerSlideShow[$i]->image; ?>"  alt="thumb image" /></div>
                             <div class="slide_video_info" >
 <?php echo substr($bannerSlideShow[$i]->name, 0, 35); ?>
                                 <div class="views">
-<?php echo $bannerSlideShow[$i]->duration . ' ' . '|' . ' ' . $bannerSlideShow[$i]->hitcount ?> views
+<?php echo $bannerSlideShow[$i]->duration . ' ' . '|' . ' <label id="'.$i.'">' . $bannerSlideShow[$i]->hitcount.'</label>' ?> views
                                 </div>
                             </div>
                         </a>
@@ -196,6 +221,7 @@ if ($styleSheet == 'contus') {
 <?php } ?>
             </ul>
         </div>
+        <?php } ?>
         <!-- NAVIGATOR -->
     </div>
 
@@ -204,10 +230,92 @@ if ($styleSheet == 'contus') {
         else {
             echo "No Banner videos";
         }
+        ?>
+        <script>
+        function hitCountVideo(vid,position)
+        {
+            var position = parseInt(position);
+            
+        	 var baseurl;
+             baseurl = '<?php echo $site_url; ?>';
+        	var xmlhttp;
+        	if (window.XMLHttpRequest)
+        	  {// code for IE7+, Firefox, Chrome, Opera, Safari
+        	  xmlhttp=new XMLHttpRequest();
+        	  }
+        	else
+        	  {// code for IE6, IE5
+        	  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+        	  }
+        	xmlhttp.onreadystatechange=function()
+        	  {
+        	  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+        	    {
+        	    	document.getElementById(position).innerHTML=xmlhttp.responseText;
+      	    	
+        	    }
+        	  }
+        	xmlhttp.open("GET",baseurl+"/wp-content/plugins/"+folder+"/hitCount.php?vid="+vid,true);
+        	xmlhttp.send();
+        }
+        </script>
+        <?php
         // end list
         // echo widget closing tag;
     }
 
+    function detect_mobile()
+{
+    $_SERVER['ALL_HTTP'] = isset($_SERVER['ALL_HTTP']) ? $_SERVER['ALL_HTTP'] : '';
+
+    $mobile_browser = '0';
+
+    $agent = strtolower($_SERVER['HTTP_USER_AGENT']);
+
+    if(preg_match('/(up.browser|up.link|mmp|symbian|smartphone|midp|wap|phone|iphone|ipad|ipod|android|xoom)/i', $agent))
+        $mobile_browser++;
+
+    if((isset($_SERVER['HTTP_ACCEPT'])) and (strpos(strtolower($_SERVER['HTTP_ACCEPT']),'application/vnd.wap.xhtml+xml') !== false))
+        $mobile_browser++;
+
+    if(isset($_SERVER['HTTP_X_WAP_PROFILE']))
+        $mobile_browser++;
+
+    if(isset($_SERVER['HTTP_PROFILE']))
+        $mobile_browser++;
+
+    $mobile_ua = substr($agent,0,4);
+    $mobile_agents = array(
+                        'w3c ','acs-','alav','alca','amoi','audi','avan','benq','bird','blac',
+                        'blaz','brew','cell','cldc','cmd-','dang','doco','eric','hipt','inno',
+                        'ipaq','java','jigs','kddi','keji','leno','lg-c','lg-d','lg-g','lge-',
+                        'maui','maxo','midp','mits','mmef','mobi','mot-','moto','mwbp','nec-',
+                        'newt','noki','oper','palm','pana','pant','phil','play','port','prox',
+                        'qwap','sage','sams','sany','sch-','sec-','send','seri','sgh-','shar',
+                        'sie-','siem','smal','smar','sony','sph-','symb','t-mo','teli','tim-',
+                        'tosh','tsm-','upg1','upsi','vk-v','voda','wap-','wapa','wapi','wapp',
+                        'wapr','webc','winw','xda','xda-'
+                        );
+
+    if(in_array($mobile_ua, $mobile_agents))
+        $mobile_browser++;
+
+    if(strpos(strtolower($_SERVER['ALL_HTTP']), 'operamini') !== false)
+        $mobile_browser++;
+
+    // Pre-final check to reset everything if the user is on Windows
+    if(strpos($agent, 'windows') !== false)
+        $mobile_browser=0;
+
+    // But WP7 is also Windows, with a slightly different characteristic
+    if(strpos($agent, 'windows phone') !== false)
+        $mobile_browser++;
+
+    if($mobile_browser>0)
+        return true;
+    else
+        return false;
+}
 
 		function featureVideos() {
 
@@ -230,7 +338,7 @@ if ($styleSheet == 'contus') {
 			$thumbTotalWidth = 0;
 			$class = '';
 			$remainPlayer = 0;
-                        
+
 			if ($feaSet == on) {
 				$div = '<div style="width:100%" class="paddBotm">';
                                 $div .= '<style type="text/css"> .video-block {  padding-right:'.$configXML->gutterspace.'px} </style>';
@@ -469,7 +577,7 @@ if ($styleSheet == 'contus') {
 								$div .='</a></h5>';
 
 
-								
+
 								$div .= ' <div class="clear"></div>';
 													if ($hitcount[$l] != 0) {
 									$div .='</a><div class="views">';
@@ -498,7 +606,7 @@ if ($styleSheet == 'contus') {
 									$div .=$nameR[$l];
 								}
 								$div .='</a></h5>';
-								
+
 								$div .= ' <div class="clear"></div>';
 													if ($hitcount[$l] != 0) {
 									$div .='</a><div class="views">';
@@ -530,7 +638,7 @@ if ($styleSheet == 'contus') {
 									$div .=$nameR[$l];
 								}
 								$div .='</a></h5>';
-								
+
 								$div .= ' <div class="clear"></div>';
 													if ($hitcount[$l] != 0) {
 									$div .='</a><div class="views">';
@@ -558,7 +666,7 @@ if ($styleSheet == 'contus') {
 									$div .=$nameR[$l];
 								}
 								$div .='</a></h5>';
-								
+
 								$div .= '<div class="clear"></div>';
 													if ($hitcount[$l] != 0) {
 									$div .='</a><div class="views">';
@@ -657,7 +765,7 @@ if ($styleSheet == 'contus') {
 									$div.=$nameP[$k] . '<br />';
 								}
 								$div .='</a></h5>';
-								
+
 								$div .= ' <div class="clear"></div>';
 									if ($hitcount[$k] != 0) {
 									$div .='</a><div class="views">';
@@ -684,7 +792,7 @@ if ($styleSheet == 'contus') {
 								}
 								$div .='</a></h5>';
 
-								
+
 								$div .= ' <div class="clear"></div>';
 									if ($hitcount[$k] != 0) {
 									$div .='</a><div class="views">';
@@ -715,7 +823,7 @@ if ($styleSheet == 'contus') {
 									$div.=$nameP[$k] . '<br />';
 								}
 								$div .='</a></h5>';
-								
+
 								$div .= ' <div class="clear"></div>';
 									if ($hitcount[$k] != 0) {
 									$div .='</a><div class="views">';
@@ -742,7 +850,7 @@ if ($styleSheet == 'contus') {
 									$div.=$nameP[$k] . '<br />';
 								}
 								$div .='</a></h5>';
-								
+
 								$div .= ' <div class="clear"></div>';
 								if ($hitcount[$k] != 0) {
 									$div .='</a><div class="views">';
@@ -797,7 +905,7 @@ if ($styleSheet == 'contus') {
                         . " LEFT JOIN " . $wpdb->prefix . "hdflvvideoshare_tags AS t4"
 			. " ON t4.media_id = t1.vid"
 			. " WHERE ( t4.tags_name REGEXP '[[:<:]]$stringsearch [[:>:]]' || t1.description REGEXP '[[:<:]]$stringsearch [[:>:]]' || t1.name LIKE '%" . $stringsearch . "%')"
-			. "LIMIT " . $start . "," . $limit . ""; 
+			. "LIMIT " . $start . "," . $limit . "";
 
 			$get_feature_list = $wpdb->get_results($searchSqlStr);
 			$searchCount = count($get_feature_list);
@@ -960,7 +1068,7 @@ $content = '';
     $content .='<div class="clear"></div></div>';
     /*     * ***************************Search Videos listing Starts***************************************************************** */
 
- 
+
     $content .='<div class="clear"></div><div class="home-category"><h3 class="home-category" ><a href="' . $site_url . '?page_id='.$moreName.'&more=categories">Video Categories</a></h3>';
          $content .='<div class="line_right"></div>';
            $div .='<div class="line_right"></div>';

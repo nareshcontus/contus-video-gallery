@@ -20,5 +20,7 @@ $hitList = mysql_fetch_object($hit);
 $hitCount= $hitList->hitcount;
 $hitInc  = ++$hitCount;
 mysql_query(" UPDATE " . $wpdb->prefix . "hdflvvideoshare SET hitcount='$hitInc' WHERE vid = '$vid'");
-
+$hitCountVal = mysql_query("select hitcount,duration from " . $wpdb->prefix . "hdflvvideoshare where vid='$vid'");
+$hitCountVal = mysql_fetch_object($hitCountVal);
+echo $hitCountVal->hitcount;
 ?>

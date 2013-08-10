@@ -17,10 +17,10 @@ $title = 'hdflv Playlist';
 $pid1 = $_GET['playid'];
 
 foreach ($_GET['listItem'] as $position => $item) :
-    mysql_query("UPDATE $wpdb->prefix"."hdflv_med2play SET `sorder` = $position WHERE `media_id` = $item and playlist_id=$pid1 ");
+    mysql_query("UPDATE $wpdb->prefix"."hdflvvideoshare_med2play SET `sorder` = $position WHERE `media_id` = $item and playlist_id=$pid1 ");
 endforeach;
 
-$tables = $wpdb->get_results("SELECT vid FROM $wpdb->prefix"."hdflv LEFT JOIN ".$wpdb->prefix."hdflv_med2play ON (vid = media_id) WHERE (playlist_id = '$pid1') ORDER BY sorder ASC, vid ASC");
+$tables = $wpdb->get_results("SELECT vid FROM $wpdb->prefix"."hdflvvideoshare LEFT JOIN ".$wpdb->prefix."hdflvvideoshare_med2play ON (vid = media_id) WHERE (playlist_id = '$pid1') ORDER BY sorder ASC, vid ASC");
 
 
 if($tables) {
@@ -28,6 +28,10 @@ if($tables) {
                           $playstore1  .= $table->vid.",";
                     }
                 }
+
+ $f= fopen('text.txt','w');
+fwrite($f,print_r($playstore1,true));
+fclose($f);
 
                //$comma_playstore = implode(",", $playstore);
                print_r($playstore1);

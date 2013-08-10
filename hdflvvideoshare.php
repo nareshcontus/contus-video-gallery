@@ -325,7 +325,7 @@ function show_Sharemenu() {
                     }
                     $query .=",colCat = '" . $_POST['colCat'] . "',rowCat = '" . $_POST['rowCat'] . "',comment_option = '" . $_POST['comment_option'] . "',logo_target='" . $_POST['logotarget'] . "',volume='" . $_POST['volume'] . "',logoalign='" . $_POST['logoalign'] . "',hdflvplayer_ads='" . $_POST['hdflvplayer_ads']
                             . "',HD_default='" . $_POST['HD_default'] . "',download='" . $_POST['download'] . "',logoalpha='" . $_POST['logoalpha'] . "',skin_autohide='" . $_POST['skin_autohide']
-                            . "',stagecolor='" . $_POST['stagecolor'] . "',skin='" . $_POST['skin'] . "',embed_visible='" . $_POST['embed_visible'] . "',shareURL='" . $_POST['shareURL']
+                            . "',stagecolor='" . $_POST['stagecolor'] . "',skin='" . $_POST['skin'] . "',embed_visible='" . $_POST['embed_visible'] . "',enable_social_share='" . $_POST['enable_social_share'] . "',enable_banner_slider='".$_POST['enable_banner_slider']."',shareURL='" . $_POST['shareURL']
                             . "',playlistXML='" . $_POST['playlistXML'] . "',debug='" . $_POST['debug'] . "',timer='" . $_POST['timer'] . "',zoom='" . $_POST['zoom']
                             . "',email='" . $_POST['email'] . "',fullscreen='" . $_POST['fullscreen'] . "',width='" . $_POST['width'] . "',height='" . $_POST['height']
                             . "',display_logo='" . $_POST['display_logo'] . "',uploads='" . $_POST['uploads'] . "',license='" . trim($_POST['license']) . "',ffmpeg_path='" . $_POST['ffmpeg_path']
@@ -685,6 +685,14 @@ function show_Sharemenu() {
                             <th scope='row'>Embed Visible</th>
                             <td><input type='checkbox' class='check' <?php if ($fetchSettings->embed_visible == 1) { ?> checked <?php } ?> name="embed_visible" value="1" size=45  /></td>
                         </tr>
+                        <tr>
+                            <th scope='row'>Enable social share</th>
+                            <td><input type='checkbox' class='check' <?php if ($fetchSettings->enable_social_share == 1) { ?> checked <?php } ?> name="enable_social_share" value="1" size=45  /></td>
+                        </tr>
+                        <tr>
+                            <th scope='row'>Enable banner slider</th>
+                            <td><input type='checkbox' class='check' <?php if ($fetchSettings->enable_banner_slider == 1) { ?> checked <?php } ?> name="enable_banner_slider" value="1" size=45  /></td>
+                        </tr>
 <!--                        <tr>
                             <th scope='row'>Debug</th>
                             <td><input type='checkbox' class='check' <?php //if ($fetchSettings->debug == 1) {  ?> checked <?php //}  ?> name="debug" value="1" size=45  /></td>
@@ -776,10 +784,9 @@ function show_Sharemenu() {
                                                   <th>Banner Videos</th>
 
                                                   <td><input  onclick="vbanner(this.value,'');" type='radio' name="vbannercategory"  value="vpopular" <?php if ($fetchSettings->vbannercategory == vpopular)
-                                                  echo 'checked'; ?> />Popular Videos<br/>
+                                                  echo 'checked'; ?> /><?php _e('Popular Videos','hdflvvideoshare');?><br/>
                                                       <input  onclick="vbanner(this.value,'');" type='radio' name="vbannercategory"  value="vrecent"  <?php if ($fetchSettings->vbannercategory == vrecent)
                                                   echo 'checked'; ?> />Recent Videos<br/>
-
                                                       <input onclick="vbanner(this.value,'');" type='radio'  name="vbannercategory"  value="vfeatured"  <?php if ($fetchSettings->vbannercategory == vfeatured)
                                                   echo 'checked'; ?> />Featured Videos<br/>
                                       <input onclick="vbanner(this.value,'');" type='radio'  name="vbannercategory"  onclick="vbanner(this.value,'<?php echo $vbannercategorylist->vbanner_categorylist; ?>');" value="vcategory"  <?php if ($fetchSettings->vbannercategory == vcategory)
@@ -1226,76 +1233,11 @@ function show_Sharemenu() {
                                                 'Share the Word','Send an Email','To','From','Note (Optional)','Send','Copy Link',
                                                 'Copy Embedcode','Facebook','reddit','friendfeed','slashdot','delicious','myspace','wong',
                                                 'digg','blinklist','bebo', 'fark','tweet','furl')");
-
-                                      $insertLanguage = $wpdb->query("INSERT INTO " . $wpdb->prefix . " hdflvvideoshare_playlist (`pid`, `playlist_name`, `playlist_desc`, `playlist_order`) VALUES
-                                                                           (2, 'Movie Trailer', '', 'ASC'),
-        (3, 'Animation', '', 'ASC'),
-        (4, 'Animals', '', 'ASC'),
-        (5, 'Cricket', '', 'ASC'),
-        (6, 'Video Game', '', 'ASC') ");
-                                      $insertLanguage = $wpdb->query("INSERT INTO " . $wpdb->prefix . "hdflvvideoshare (`vid`, `name`, `description`, `file`, `hdfile`, `file_type`, `duration`, `image`, `opimage`, `download`, `link`, `featured`, `hitcount`, `post_date`, `postrollads`, `prerollads`) VALUES
-('1', 'Fast And Furious 5 (Official Trailer) HD', '', 'www.youtube.com/watch?v=4PspF_GA-9U', '', 1, '2:27', 'http://img.youtube.com/vi/4PspF_GA-9U/1.jpg', 'http://img.youtube.com/vi/4PspF_GA-9U/0.jpg', '', 'http://www.youtube.com/watch?v=4PspF_GA-9U', 'ON', 2, '2011-11-15 07:22:39', '0', '0'),
-('2', 'Im Legend Trailer 1080p', '', 'www.youtube.com/watch?v=kAxppVB3SHo', '', 1, '2:04', 'http://img.youtube.com/vi/kAxppVB3SHo/1.jpg', 'http://img.youtube.com/vi/kAxppVB3SHo/0.jpg', '', 'http://www.youtube.com/watch?v=kAxppVB3SHo', 'ON', 1, '2011-11-15 07:23:32', '0', '0'),
-('3', 'Mission Impossible III Trailer 1', 'trailer of mission impossible 3 with tom cruise', 'www.youtube.com/watch?v=1E-9XIJzQdc&feature=related', '', 1, '1:36', 'http://img.youtube.com/vi/1E-9XIJzQdc/1.jpg', 'http://img.youtube.com/vi/1E-9XIJzQdc/0.jpg', '', 'http://www.youtube.com/watch?v=1E-9XIJzQdc&feature=related', 'ON', 1, '2011-11-15 07:23:51', '0', '0'),
-('4', 'Titanic - Official Trailer [1997]', 'Deep-sea explorer Brock Lovett has reached the most famous shipwreck of all - the Titanic. Emerging with a safe believed to contain a diamond called ', 'www.youtube.com/watch?v=zCy5WQ9S4c0', '', 1, '4:09', 'http://img.youtube.com/vi/zCy5WQ9S4c0/1.jpg', 'http://img.youtube.com/vi/zCy5WQ9S4c0/0.jpg', '', 'http://www.youtube.com/watch?v=zCy5WQ9S4c0', 'ON', 1, '2011-11-15 07:24:11', '0', '0'),
-('5', 'Harry Potter and the Deathly Hallows Trailer Official HD', '', 'www.youtube.com/watch?v=_EC2tmFVNNE', '', 1, '2:30', 'http://img.youtube.com/vi/_EC2tmFVNNE/1.jpg', 'http://img.youtube.com/vi/_EC2tmFVNNE/0.jpg', '', 'http://www.youtube.com/watch?v=_EC2tmFVNNE', 'ON', 1, '2011-11-15 07:24:34', '0', '0'),
-('6', 'Into the Wild -  Trailer', 'into the wild - trailer', 'www.youtube.com/watch?v=2LAuzT_x8Ek&feature=related', '', 1, '2:24', 'http://img.youtube.com/vi/2LAuzT_x8Ek/1.jpg', 'http://img.youtube.com/vi/2LAuzT_x8Ek/0.jpg', '', 'http://www.youtube.com/watch?v=2LAuzT_x8Ek&feature=related', 'ON', 1, '2011-11-15 07:24:49', '0', '0'),
-('7', 'Cecelia - The Balcony Girl - Dilsukhnagar Arena - 3D Animation Short Film', '', 'www.youtube.com/watch?v=JhKQz2TwSAE', '', 1, '4:04', 'http://img.youtube.com/vi/JhKQz2TwSAE/1.jpg', 'http://img.youtube.com/vi/JhKQz2TwSAE/0.jpg', '', 'http://www.youtube.com/watch?v=JhKQz2TwSAE', 'ON', 4, '2011-11-15 07:25:19', '0', '0'),
-('8', '3D Animation Short - Bolt [2009] - I Found Myself [HD]', 'Bolt finally realises what it', 'www.youtube.com/watch?v=aKFKixs3IkU', '', 1, '2:20', 'http://img.youtube.com/vi/aKFKixs3IkU/1.jpg', 'http://img.youtube.com/vi/aKFKixs3IkU/0.jpg', '', 'http://www.youtube.com/watch?v=aKFKixs3IkU', 'ON', 3, '2011-11-15 07:25:52', '0', '0'),
-('9', 'Feel  the Punch - Dilsukhnagar Arena - Award-Winning 3D Animation Short Film', 'A mind-game between a beggar and a commuter waiting to board a bus takes a startling turn as the commuter realizes he is outsmarted.', 'www.youtube.com/watch?v=BO3N6VdYCjY', '', 1, '3:20', 'http://img.youtube.com/vi/BO3N6VdYCjY/1.jpg', 'http://img.youtube.com/vi/BO3N6VdYCjY/0.jpg', '0', 'http://www.youtube.com/watch?v=BO3N6VdYCjY', 'ON', 2, '2011-11-15 07:26:12', '0', '0'),
-('10', 'Short Animation -ALARM- HD720', 'Moo-hyun Jang, a director of  independent Animation team, MESAI. Let me introduce the second short animation film, ALARM.', 'www.youtube.com/watch?v=vN83DfmH9Tw', '', 1, '8:50', 'http://img.youtube.com/vi/vN83DfmH9Tw/1.jpg', 'http://img.youtube.com/vi/vN83DfmH9Tw/0.jpg', '', 'http://www.youtube.com/watch?v=vN83DfmH9Tw', 'ON', 3, '2011-11-15 07:26:36', '0', '0'),
-('11', 'Lufuno the White Lion - HD 720p', 'Lufuno is one of the few male White Lions in North America and the only one of his kind to be professionally trained for film and commercial work. ', 'www.youtube.com/watch?v=gyE4wyqvOU4', '', 1, '2:43', 'http://img.youtube.com/vi/gyE4wyqvOU4/1.jpg', 'http://img.youtube.com/vi/gyE4wyqvOU4/0.jpg', '', 'http://www.youtube.com/watch?v=gyE4wyqvOU4', 'ON', 3, '2011-11-15 07:27:22', '0', '0'),
-('12', 'White Lion Cubs birth part 2 - eating meat', 'Four week old white lion cubs eating meat', 'www.youtube.com/watch?v=pogrcbuybRY', '', 1, '9:53', 'http://img.youtube.com/vi/pogrcbuybRY/1.jpg', 'http://img.youtube.com/vi/pogrcbuybRY/0.jpg', '', 'http://www.youtube.com/watch?v=pogrcbuybRY', 'ON', 1, '2011-11-15 07:27:39', '0', '0'),
-('13', 'HD: Lioness Hunts Zebra The Great Migration - BBC One', '', 'www.youtube.com/watch?v=INcW26-iyqU', '', 1, '0:38', 'http://img.youtube.com/vi/INcW26-iyqU/1.jpg', 'http://img.youtube.com/vi/INcW26-iyqU/0.jpg', '', 'http://www.youtube.com/watch?v=INcW26-iyqU', 'ON', 2, '2011-11-15 07:27:56', '0', '0'),
-('14', 'Longest Six by Sachin', 'Sachin Tendulkar Best and Longest Six', 'www.youtube.com/watch?v=uPxQLRJOMZ4', '', 1, '0:42', 'http://img.youtube.com/vi/uPxQLRJOMZ4/1.jpg', 'http://img.youtube.com/vi/uPxQLRJOMZ4/0.jpg', '', 'http://www.youtube.com/watch?v=uPxQLRJOMZ4', 'ON', 3, '2011-11-15 07:30:19', '0', '0'),
-('15', 'Quick Recap of Cricket World Cup 2011 Highlights HD HQ....', 'Cricket World Cup 2011 best ever highlights HD HQ....', 'www.youtube.com/watch?v=q76yIVfVBaI', '', 1, '4:52', 'http://img.youtube.com/vi/q76yIVfVBaI/1.jpg', 'http://img.youtube.com/vi/q76yIVfVBaI/0.jpg', '', 'http://www.youtube.com/watch?v=q76yIVfVBaI', 'ON', 2, '2011-11-15 07:30:35', '0', '0'),
-('16', 'Grand Theft Auto 5 Trailer (GTA V)', 'Check out GTA5 @ Rockstar Games ', 'www.youtube.com/watch?v=MXRqUjGmA7A', '', 1, '1:25', 'http://img.youtube.com/vi/MXRqUjGmA7A/1.jpg', 'http://img.youtube.com/vi/MXRqUjGmA7A/0.jpg', '', 'http://www.youtube.com/watch?v=MXRqUjGmA7A', 'ON', 3, '2011-11-15 07:32:10', '0', '0'),
-('17', 'BrainShake 2 the Hot New iPad Game', '', 'www.youtube.com/watch?v=5PX1PnfvzHs', '', 1, '1:18', 'http://img.youtube.com/vi/5PX1PnfvzHs/1.jpg', 'http://img.youtube.com/vi/5PX1PnfvzHs/0.jpg', '', 'http://www.youtube.com/watch?v=5PX1PnfvzHs', 'ON', 3, '2011-11-15 07:32:31', '0', '0')
-");
+                                     
+                                   
                                       $table_tags = $wpdb->prefix . 'hdflvvideoshare_tags';
                                       $table_tagsdata = $wpdb->get_results("SELECT * FROM " . $table_tags);
-                                      if (empty($table_tagsdata)) {
-
-                                          $table_tagsdatainsert = $wpdb->query("INSERT INTO " . $wpdb->prefix . "hdflvvideoshare_tags (`vtag_id`, `tags_name`, `seo_name`, `media_id`) VALUES
-                    ('', 'The\, Fast\, And\, Furious\, (Official\, Trailer)\, velo', 'The-Fast-And-Furious-(Official-Trailer)-velo', '1'),
-                    ('', 'am\, Legend\, Movie\, Will Smith\, Richard\, Matheson', 'am,-Legend,-Movie,-Will-Smith,-Richard,-Matheson,-', '2'),
-                    ('', 'Mission\, Impossible\, III\, Trailer', 'Mission,-Impossible,-III,-Trailer,-1', '3'),
-                    ('', 'James\, Cameron\, Leonardo\, DiCaprio\, Kate\, Winslet', 'James,-Cameron,-Leonardo,-DiCaprio,-Kate,-Winslet,', '4'),
-                    ('', 'Harry\, Potter\, and\, the\, Deathly\, Hallows\, Trailer', 'Harry,-Potter,-and,-the,-Deathly,-Hallows,-Trailer', '5'),
-                    ('', 'into\, the\, wild\, kristen\, stewart\, Emile\, Hirsch ', 'into,-the,-wild,-kristen,-stewart,-Emile,-Hirsch,-', '6'),
-                    ('', 'DNA Incubation\, Cecelia\, The Balcony GirlDNA Incub', 'DNA-Incubation,-Cecelia,-The-Balcony-GirlDNA-Incub', '7'),
-                    ('', 'Bolt\, Found\, Myself\, Puppy\, Dog\, American\, White ', 'Bolt,-Found,-Myself,-Puppy,-Dog,-American,-White,-', '8'),
-                    ('', 'DNA Incubation\, Dilsukhnagar Arena Animation\, Stud', 'DNA-Incubation,-Dilsukhnagar-Arena-Animation,-Stud', '9'),
-                    ('', 'Animation\, 3d\, CG\, HD\, ALARM\, movie\, mentalray', 'Animation,-3d,-CG,-HD,-ALARM,-movie,-mentalray,-ma', '10'),
-                    ('', 'white lion\, way west media\, lion hd\, lio', 'white-lion,-way-west-media,-lion-hd,-lions-hd,-lio', '11'),
-                    ('', 'White\, lion\, cubs\, safari\, park\, feed\, cute\, eatin', 'White,-lion,-cubs,-safari,-park,-feed,-cute,-eatin', '12'),
-                    ('', 'lion\, chase\, hunt\, wildebeest\, baby\, calf\, zebra ', 'lion,-chase,-hunt,-wildebeest,-baby,-calf,-zebra,-', '13'),
-                    ('', 'Sachin\, Tendulkar\, Best\, Six\, Cricket', 'Sachin,-Tendulkar,-Best,-Six,-Cricket', '14'),
-                    ('', 'Cricket\, WC\, 2011\, Recap....', 'Cricket,-WC,-2011,-Recap....', '15'),
-                    ('', 'Grand\, Theft\, Auto\, gta\, gtav\, five\, GTA V\, GTA 5', 'Grand,-Theft,-Auto,-gta,-gtav,-five,-GTA-V,-GTA-5,', '16'),
-                    ('', 'iPad\, iPhone\, iPod touch\, game\, games', 'iPad,-iPhone,-iPod-touch,-game,-games,mobile', '17')
-");
-                                      }
-
-                                      $insertLanguage = $wpdb->query("INSERT INTO " . $wpdb->prefix . "hdflvvideoshare_med2play (`rel_id`, `media_id`, `playlist_id`, `porder`, `sorder`) VALUES
-(6, 27, 3, 0, 0),
-(7, 1, 2, 0, 0),
-(8, 2, 2, 0, 0),
-(9, 3, 2, 0, 0),
-(10, 4, 2, 0, 0),
-(11, 5, 2, 0, 0),
-(12, 6, 2, 0, 0),
-(13, 7, 3, 0, 0),
-(14, 8, 3, 0, 0),
-(15, 9, 3, 0, 0),
-(16, 10, 3, 0, 0),
-(17, 12, 4, 0, 0),
-(18, 13, 4, 0, 0),
-(19, 14, 5, 0, 0),
-(20, 15, 5, 0, 0),
-(21, 16, 6, 0, 0),
-(22, 17, 6, 0, 0),
-(23, 11, 4, 0, 0)");
+                                     
                                   }
                                   
                                   
@@ -1383,14 +1325,7 @@ function show_Sharemenu() {
 		return $response;
 	}                         
                                   
-                                  
-                                  
-                                  
-                                  
-                                  
-                                  
-                                  
-                                  
+                              
 
                                   /* Function to uninstall player plugin */
 
@@ -1410,20 +1345,16 @@ function show_Sharemenu() {
 
                                       require_once(dirname(__FILE__) . '/install.php');
                                       hdflv_install();
+                                      HdflvloadSharedefaults();
                                   }
 
                                   /* Function to activate player plugin */
 
-                                  function hdflv_Shareactivate() {
-                                      HdflvloadSharedefaults();
-                                      //update_option('HDFLVSettings', HdflvloadSharedefaults());
-                                  }
-
+                               
                                   register_activation_hook(plugin_basename(dirname(__FILE__)) . '/hdflvvideoshare.php', 'hd_ShareInstall');
-                                  register_activation_hook(__FILE__, 'hdflv_Shareactivate');
                                   register_uninstall_hook(__FILE__, 'hdflv_Sharedeinstall');
 
-
+								  add_action('plugins_loaded', 'hd_ShareInstall');
                                   /* Function to deactivate player plugin */
 
                                   function hdflv_Sharedeactivate() {
@@ -1441,6 +1372,7 @@ function show_Sharemenu() {
 
 // OPTIONS MENU
                                   add_action('admin_menu', 'HDFLVShareAddPage');
+                                  // For upgrade
                                   register_uninstall_hook(__FILE__, 'videopluginUninstalling');
 
                                  // register_deactivation_hook(__FILE__, 'videopluginUninstalling');

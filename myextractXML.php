@@ -51,7 +51,7 @@ if (isset($_GET['pid']) || isset($_GET['vid'])) {
         $select = "SELECT * FROM " . $wpdb->prefix ."hdflvvideoshare where vid='$vid'";
 
         $themediafiles = $wpdb->get_results($select);
-        $getPlaylist   = $wpdb->get_results("SELECT playlist_id FROM ".$wpdb->prefix."hdflvvideoshare_med2play WHERE media_id='$vid'");
+        $getPlaylist   = $wpdb->get_results("SELECT * FROM ".$wpdb->prefix."hdflvvideoshare_med2play WHERE media_id='$vid' ORDER BY sorder ASC ");
          foreach ($getPlaylist as $getPlaylists)
         {
             if ($getPlaylists->playlist_id != '')
@@ -64,10 +64,11 @@ if (isset($_GET['pid']) || isset($_GET['vid'])) {
             }
 
 
-        $fetch_video   = "SELECT * FROM " . $wpdb->prefix . "hdflvvideoshare w
+       $fetch_video   = "SELECT * FROM " . $wpdb->prefix . "hdflvvideoshare w
         INNER JOIN " . $wpdb->prefix . "hdflvvideoshare_med2play m
         WHERE (m.playlist_id = '$playlist_id'
-        AND m.media_id = w.vid AND m.media_id != '$vid') GROUP BY w.vid";
+        AND m.media_id = w.vid AND m.media_id != '$vid') GROUP BY w.vid ORDER BY m.sorder ASC";
+      
         $fetched       = $wpdb->get_results($fetch_video);
         $themediafiles = array_merge($themediafiles,$fetched);
         }

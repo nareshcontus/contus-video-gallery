@@ -88,10 +88,18 @@ function hdflv_install() {
                     ) $charset_collate;";
 
 		$res = $wpdb->get_results($sql);
-	} else {
-		$sql = "ALTER TABLE " . $table_name . " ADD `postrollads` VARCHAR(25) NOT NULL, ADD `prerollads` VARCHAR(25) NOT NULL, ADD `description` VARCHAR(255) NOT NULL";
-		$res = $wpdb->get_results($sql);
 	}
+	else{
+            	    $isCol = $wpdb->query("SELECT * FROM information_schema.COLUMNS
+									WHERE COLUMN_NAME='description' AND TABLE_NAME='$table_name'  ");
+            		if(!$isCol)
+            		{
+            			$wpdb->query("ALTER TABLE $table_name
+									ADD COLUMN `description` varchar(255)");
+            		}
+            		
+      }
+		
 	if (!$pfound) {
 		$sql = "CREATE TABLE " . $table_playlist . " (
                 pid BIGINT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
@@ -182,24 +190,69 @@ function hdflv_install() {
                 ) $charset_collate;";
                 $res = $wpdb->get_results($sql);
 	} else {
-		$sql = "ALTER TABLE " . $table_settings . "ADD rowCat INT(25) NOT NULL, ADD colCat INT(25) NOT NULL, ADD category_page INT(25) NOT NULL,
-                ADD comment_option TINYINT(1) NOT NULL , 
-                ADD homecategory varchar(25) NOT NULL ,
-                ADD bannercategory varchar(25) NOT NULL , ADD  banner_categorylist INT(3) NOT NULL DEFAULT '1',
-                ADD hbannercategory varchar(25) NOT NULL , ADD  hbanner_categorylist INT(3) NOT NULL DEFAULT '1',
-                ADD vbannercategory varchar(25) NOT NULL , ADD  vbanner_categorylist INT(3) NOT NULL DEFAULT '1',
-                ADD bannerw varchar(25) NOT NULL ,
-                ADD playerw varchar(25) NOT NULL ,
-                ADD numvideos varchar(25) NOT NULL ";
-		$res = $wpdb->get_results($sql);
-
-		$sql = "ALTER TABLE " . $table_settings . "ADD preroll TINYINT(1) NOT NULL, ADD preroll TINYINT(1) NOT NULL";
-		$res = $wpdb->get_results($sql);
-
-                $sql = "ALTER TABLE " . $table_settings . "ADD gutterspace INT(3) NOT NULL";
-		$res = $wpdb->get_results($sql);
-
-	}
+	$isCol = $wpdb->query("SELECT * FROM information_schema.COLUMNS
+									WHERE COLUMN_NAME='ffmpeg_path' AND TABLE_NAME='$table_settings'  ");
+            		if(!$isCol)
+            		{
+            			$wpdb->query("ALTER TABLE $table_settings
+									ADD COLUMN `ffmpeg_path` varchar(255) NOT NULL");
+            		}
+	$isCol = $wpdb->query("SELECT * FROM information_schema.COLUMNS
+									WHERE COLUMN_NAME='enable_social_share' AND TABLE_NAME='$table_settings'  ");
+            		if(!$isCol)
+            		{
+            			$wpdb->query("ALTER TABLE $table_settings
+									ADD COLUMN `enable_social_share` int(3) NOT NULL");
+            		}
+	$isCol = $wpdb->query("SELECT * FROM information_schema.COLUMNS
+									WHERE COLUMN_NAME='enable_banner_slider' AND TABLE_NAME='$table_settings'  ");
+            		if(!$isCol)
+            		{
+            			$wpdb->query("ALTER TABLE $table_settings
+									ADD COLUMN `enable_banner_slider` int(3) NOT NULL");
+            		}
+            		
+	$column[] = 'rowCat';
+	$column[] = 'colCat';
+	$column[] = 'category_page';
+	$column[] = 'comment_option';
+	$column[] = 'homecategory';
+	$column[] = 'bannercategory';
+    $column[] = 'banner_categorylist';
+	$column[] = 'hbannercategory';
+	$column[] = 'hbanner_categorylist';
+	$column[] = 'vbannercategory';
+	$column[] = 'vbanner_categorylist';
+	$column[] = 'bannerw';
+	$column[] = 'playerw';
+	$column[] = 'numvideos';
+	$column[] = 'gutterspace';
+	
+	$attribute[] = 'INT(25) NOT NULL';
+	$attribute[] = 'INT(25) NOT NULL';
+	$attribute[] = 'INT(25) NOT NULL';
+	$attribute[] = 'TINYINT(1) NOT NULL';
+	$attribute[] = 'varchar(25) NOT NULL';
+	$attribute[] = 'varchar(25) NOT NULL';
+	$attribute[] = 'INT(3) NOT NULL';
+	$attribute[] = 'INT(25) NOT NULL';
+	$attribute[] = 'INT(3) NOT NULL';
+	$attribute[] = 'INT(25) NOT NULL';
+	$attribute[] = 'INT(3) NOT NULL';
+	$attribute[] = 'INT(25) NOT NULL';
+	$attribute[] = 'varchar(25) NOT NULL';
+	$attribute[] = 'varchar(25) NOT NULL';
+	$attribute[] = 'INT(3) NOT NULL';
+	
+	$tablename = $table_settings;
+	$result = array_combine($column, $attribute);
+   
+		   foreach($result as $key => $value)
+		  {
+		   	Addcolumn($tablename,$key,$value);
+		  }
+   }
+   
 	if (!$rollfound) {
 		$sqlRoll = "CREATE TABLE IF NOT EXISTS " . $table_vgads . " (
      `ads_id` bigint(10) NOT NULL AUTO_INCREMENT,
@@ -251,6 +304,7 @@ function hdflv_install() {
 		$resF = $wpdb->get_results($fullscrAlt);
 		$resZ = $wpdb->get_results($zoomAlt);
 		$resS = $wpdb->get_results($shareAlt);
+		
 	}
 	if (!$tags) {
 		$sqlTags = "CREATE TABLE IF NOT EXISTS $table_tags  (
@@ -349,7 +403,7 @@ function hdflv_install() {
 	//------------Video Categories-----------------
 
 	$videoCategories = $wpdb->get_results("SELECT * FROM " . $table_name);
-	if (empty($videoCategories)) {
+	/* if (empty($videoCategories)) {
 
 		$contus_videoCategories = $wpdb->query("INSERT INTO ".$wpdb->prefix."hdflvvideoshare (`vid`, `name`, `description`, `file`, `hdfile`, `file_type`, `duration`, `image`, `opimage`, `download`, `link`, `featured`, `hitcount`, `post_date`, `postrollads`, `prerollads`) VALUES
 ('', 'Fast And Furious 5 (Official Trailer) HD', '', 'www.youtube.com/watch?v=4PspF_GA-9U', '', 1, '2:27', 'http://img.youtube.com/vi/4PspF_GA-9U/1.jpg', 'http://img.youtube.com/vi/4PspF_GA-9U/0.jpg', '', 'http://www.youtube.com/watch?v=4PspF_GA-9U', 'ON', 2, '2011-11-15 07:22:39', '0', '0'),
@@ -371,7 +425,7 @@ function hdflv_install() {
 ('', 'BrainShake 2 the Hot New iPad Game', '', 'www.youtube.com/watch?v=5PX1PnfvzHs', '', 1, '1:18', 'http://img.youtube.com/vi/5PX1PnfvzHs/1.jpg', 'http://img.youtube.com/vi/5PX1PnfvzHs/0.jpg', '', 'http://www.youtube.com/watch?v=5PX1PnfvzHs', 'ON', 3, '2011-11-15 07:32:31', '0', '0')
 ");
            
-	}
+	} */
 
 	//------------Movie Trailer -----------------
 	$movieTrailer = $wpdb->get_results("SELECT * FROM " . $table_playlist);
@@ -389,14 +443,14 @@ function hdflv_install() {
 	$videoSettings = $wpdb->get_results("SELECT * FROM " . $table_settings);
 	if (empty($videoSettings)) {
 
-		$contus_videoSettings = $wpdb->query("INSERT INTO " . $table_settings . "(`settings_id`, `autoplay`, `playlist`, `playlistauto`, `buffer`, `normalscale`, `fullscreenscale`, `logopath`, `logo_target`, `volume`, `logoalign`, `hdflvplayer_ads`, `HD_default`, `download`, `logoalpha`, `skin_autohide`, `stagecolor`, `skin`, `embed_visible`, `shareURL`, `playlistXML`, `debug`, `timer`, `zoom`, `email`, `fullscreen`, `width`, `height`, `display_logo`, `configXML`, `uploads`, `license`, `hideLogo`, `keyApps`, `preroll`, `postroll`, `feature`, `rowsFea`, `colFea`, `recent`, `rowsRec`, `colRec`, `popular`, `rowsPop`, `colPop`,
+		$contus_videoSettings = $wpdb->query("INSERT INTO " . $table_settings . "(`settings_id`, `autoplay`, `playlist`, `playlistauto`, `buffer`, `normalscale`, `fullscreenscale`, `logopath`, `logo_target`, `volume`, `logoalign`, `hdflvplayer_ads`, `HD_default`, `download`, `logoalpha`, `skin_autohide`, `stagecolor`, `skin`, `embed_visible`, `enable_social_share`,`enable_banner_slider`,`shareURL`, `playlistXML`, `debug`, `timer`, `zoom`, `email`, `fullscreen`, `width`, `height`, `display_logo`, `configXML`, `uploads`, `license`, `hideLogo`, `keyApps`, `preroll`, `postroll`, `feature`, `rowsFea`, `colFea`, `recent`, `rowsRec`, `colRec`, `popular`, `rowsPop`, `colPop`,
                     `page`, `category_page`, `ffmpeg_path`, `stylesheet`,
                     `comment_option`, `rowCat`, `colCat`,`homecategory`,`bannercategory`,
                     `banner_categorylist`,`hbannercategory`,`hbanner_categorylist`,`vbannercategory`,
                     `vbanner_categorylist`,
-                    `bannerw`,`playerw`,`numvideos`)
+                    `bannerw`,`playerw`,`numvideos`,`gutterspace`)
         VALUES
-                    (1, 1, 0, 1, 100, 0, 0, 'platoon.jpg', '', 50, 'TL', 0, 0, 1, 0, 0, '', 'skin_black', 0, '', '', 0, 0, 0, 0, 0, 620, 400, 0, '0', '', '', 'true', '', '0', '0', 'on', '2', '4', 'on', '2', '4', 'on', '2', '4', '20', '4', '', '','1','2','4','off','popular','1','hpopular','1','vpopular','1','650','450','5')");
+                    (1, 1, 0, 1, 100, 0, 0, 'platoon.jpg', '', 50, 'TL', 0, 0, 1, 0, 0, '', 'skin_black', 0,1,1,'', '', 0, 0, 0, 0, 0, 620, 400, 0, '0', '', '', 'true', '', '0', '0', 'on', '2', '4', 'on', '2', '4', 'on', '2', '4', '20', '4', '', '','1','2','4','off','popular','1','hpopular','1','vpopular','1','650','450','5','5')");
 	}
 	//------------Media to play -----------------
 
@@ -448,6 +502,24 @@ function hdflv_install() {
 ");
 	}
 }
-
+function Addcolumn($tablename,$column,$attributes)
+    {
+ global $wpdb;
+    $query = 'SHOW COLUMNS FROM ' . $tablename;
+    $result = $wpdb->get_results($query);
+   if (!$result) {
+        return false;
+    }
+  	foreach ($result as $valueColumn) {
+        if ($valueColumn->Field == $column) {
+            $columnExists = 1;
+          break;
+        }
+    }
+  	if ($columnExists != 1) {
+           $query = 'ALTER TABLE ' . $tablename . ' ADD ' . $column . ' ' .$attributes.'';
+           $wpdb->query($query);
+        }
+    }
 // get the default options after reset or installation
 ?>
