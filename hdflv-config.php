@@ -1,6 +1,6 @@
 <?php
 /*
-  Version: 2.0
+  Version: 1.2
   Plugin URI: www.hdflvplayer.net/hdvideoshare-wordpress
   Description: Simplifies the process of adding video to a WordPress blog. Powered by Contus Support HDFLVPlayer and SWFObject by Geoff Stearns.
   Author: Contus Support.

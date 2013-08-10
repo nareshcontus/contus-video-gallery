@@ -4,7 +4,7 @@
  * Edited by : John THomas
  * Email : johnthomas@contus.in
  * Purpose : Common functions needed throughout the plugin
- * Path:/wp-content/plugins/contus-video-gallery/manage.php
+ * Path:/wp-content/plugins/wordpress-video-gallery/manage.php
  * Date:13/1/11
  *
  */
@@ -372,7 +372,8 @@ class HDVIDEOManageAds {
 
        
         if (isset($_POST['edit_update'])) {
-            hd_update_ads($this->ads_vid);
+            $editfilepath = $_FILES["myfile"];
+            hd_update_ads($this->ads_vid,$editfilepath);
             $this->mode = 'main';
         }
 
@@ -463,7 +464,7 @@ class HDVIDEOManageAds {
                 </ul>
                 <p class="search-box">
                     <input type="text" class="search-input" name="search" value="<?php echo $search; ?>" size="10" />
-                    <input type="submit" class="button-primary" value="<?php _e('Search Video', 'hdflv'); ?>" />
+                    <input type="submit" class="button-primary" value="<?php _e('Search Video ADs', 'hdflv'); ?>" />
                     <input type="hidden" name="cancel" value="2"/>
                 </p>
                 
@@ -471,7 +472,7 @@ class HDVIDEOManageAds {
         <table class="widefat" cellspacing="0">
             <thead>
                 <tr>
-                    <th id="id" class="manage-column column-id" scope="col"><?php _e('ID', 'ads'); ?> </th>
+                    <th id="id" class="manage-column column-id" scope="col"><?php // _e('ID', 'ads'); ?> </th>
                     <th id="title" class="manage-column column-title" scope="col"><?php _e('Title', 'ads'); ?> </th>
                     <th id="path" class="manage-column column-path"  scope="col"><?php _e('Path', 'ads'); ?> </th>
                     <?php if (isset($_REQUEST['plfilter']) && $_REQUEST['plfilter'] != 'no' && $_REQUEST['plfilter'] != '0' || isset($_REQUEST['playid'])) {
@@ -489,7 +490,7 @@ class HDVIDEOManageAds {
                         foreach ($tables as $table) {
                             $class = ( $class == 'class="alternate"' ) ? '' : 'class="alternate"';
                             echo "<tr $class id=\"listItem=$table->ads_id\" >\n";
-                            echo "<th scope=\"row\" >$table->ads_id";
+                            echo "<th scope=\"row\" >$table1->ads_id";
                             if ($id1 == '1') {
                                 echo "<img src='../wp-content/plugins/" . dirname(plugin_basename(__FILE__)) . "/arrow.png' alt='move' width='16' height='16' class='handle' /></th>\n";
                             }
@@ -508,14 +509,14 @@ class HDVIDEOManageAds {
                             $i++;
                         }
                     } else {
-                        echo '<tr><td colspan="7" align="center"><b>' . __('No entries found', 'ads') . '</b></td></tr>';
+                        echo '<tr><td colspan="7" ><b>' . __('No entries found', 'ads') . '</b></td></tr>';
                     }
             ?>
                     </tbody>
                 </table>
                 <div class="tablenav">
                     <div class="alignleft actions">
-                        <input class="button-secondary" type="submit" value="<?php _e('Add Ads', 'ads') ?> &raquo;" name="show_add"/>
+                        <input class="button-secondary" type="submit" value="<?php _e('Add Video Ad', 'ads') ?> &raquo;" name="show_add"/>
                     </div>
                     <br class="clear"/>
                 </div>
@@ -540,7 +541,7 @@ class HDVIDEOManageAds {
                     <!-- Edit Video -->
                     <div class="wrap">
                         <h2> <?php _e('Edit video file', 'hdflv') ?> </h2>
-                        <form name="table_options" method="post" id="video_options">
+                        <form name="table_options" method="post" id="video_options" enctype="multipart/form-data" >
                             <div id="poststuff" class="has-right-sidebar">
                   
             <div id="post-body" class="has-sidebar">
@@ -552,11 +553,13 @@ class HDVIDEOManageAds {
                         </tr>
                         <tr valign="top">
                             <th scope="row"><?php _e('Ads URL', 'ads') ?></th>
-                            <td><input type="text" size="80"  name="ads_filepath" value="<?php echo $ads_filepath ?>" />
+
+                            <td><input type="text" size="80"  name="ads_filepath" value="<?php echo $ads_filepath ?>" /> <input type="file" name="myfile" value="" size=40  />
                                 <br /><?php _e('Here you need to enter the URL to the file ( MP4, M4V, M4A, MOV, Mp4v or F4V)', 'ads') ?>
                                 <br /><?php echo _e('It also accept Youtube links. Example: http://www.youtube.com/watch?v=tTGHCRUdlBs', 'hdflv') ?>
-                            </td>
+                        </td>
                         </tr>
+                        
                     </table>
                 </div>
                 <p>
@@ -684,7 +687,7 @@ class HDVIDEOManageAds {
                     </div>
 
                 </div>
-                <p><input type="submit" name="add_ads" class="button-primary" onclick="return validateInput();" value="<?php _e('Add Ads', 'ads'); ?>" class="button" /><input type="submit" class="button-secondary" name="cancel" value="<?php _e('Cancel'); ?>" class="button" /></p>
+                <p><input type="submit" name="add_ads" class="button-primary" onclick="return validateInput();" value="<?php _e('Add Video Ad', 'ads'); ?>" class="button" /><input type="submit" class="button-secondary" name="cancel" value="<?php _e('Cancel'); ?>" class="button" /></p>
             </div>
         </div><!--END Poststuff -->
 
@@ -700,5 +703,6 @@ class HDVIDEOManageAds {
 <?php
                                 }
 }
+
 
 ?>

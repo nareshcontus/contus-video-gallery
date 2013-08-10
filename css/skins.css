@@ -1,12 +1,10 @@
 
 #wrap
 {
-  height:80px;
-  padding-bottom: 20px;
 }
 .jcarousel-skin-tango .jcarousel-container {
     -moz-border-radius: 10px;
-    background: #fff;
+
     border: 0px solid #000;
 }
 
@@ -19,25 +17,25 @@
 
 .jcarousel-skin-tango .jcarousel-container-vertical {
     width: 75px;
-    height: 245px;
+    height: auto;
     padding: 0px 0px;
 }
 
 .jcarousel-skin-tango .jcarousel-clip-horizontal {
     width:  430px;
-    height: 100px;
+    height: auto;
     margin-top:2px;
 }
 
 .jcarousel-skin-tango .jcarousel-clip-vertical {
     width:  80px;
-    height: 70px;
+    height: auto;
     margin-top:15px;
 }
 
 .jcarousel-skin-tango .jcarousel-item {
     width: 140px;
-    height: 100px;
+    height: auto;
 }
 
 .jcarousel-skin-tango .jcarousel-item-horizontal {
@@ -58,12 +56,13 @@
  */
 .jcarousel-skin-tango .jcarousel-next-horizontal {
     position: absolute;
-    top: -5px;
-    right: 90px;
+    top: 15px;
+    right: 5px;
     width: 11px;
     height: 80px;
     cursor: pointer;
-    background: transparent url('../images/arrow_right.jpg') no-repeat 0 0;
+    float: right;
+    background: transparent url('../images/arrow_right-rel.png') no-repeat 0 0;
 }
 
 
@@ -77,14 +76,14 @@
 
 .jcarousel-skin-tango .jcarousel-prev-horizontal {
     position: absolute;
-    top: -5px;
-    left :30px;
-    margin-left: 20px;
-    *margin-left: -35px;
+    top: 15px;
+    left: 5px;
+/*    margin-left: 33px;
+    margin-left: -35px;*/
     width: 11px;
     height: 80px;
     cursor: pointer;
-    background: transparent url('../images/arrow_left.jpg') no-repeat 0 0;
+    background: transparent url('../images/arrow_left-rel.png') no-repeat 0 0;
 }
 
 
@@ -105,7 +104,7 @@
     width: 11px;
     height: 80px;
     cursor: pointer;
-    background: transparent url('../images/arrow_right.jpg') no-repeat 0 0;
+    background: transparent url('../images/arrow_right-rel.png') no-repeat 0 0;
 }
 
 .jcarousel-skin-tango .jcarousel-next-disabled-vertical,
@@ -122,7 +121,7 @@
     width:11px;
     height: 80px;
     cursor: pointer;
-    background: transparent url(../images/arrow_left.jpg) no-repeat 0 0;
+/*    background: transparent url(../images/arrow_left.jpg) no-repeat 0 0;*/
 }
 
 .jcarousel-skin-tango .jcarousel-prev-vertical:hover {

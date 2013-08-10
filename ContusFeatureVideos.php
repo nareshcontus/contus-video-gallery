@@ -1,27 +1,50 @@
 <?php
-/*
-Plugin Name: Contus Feature Videos
-Plugin URI: http://www.hdflvplayer.net/wordpress-video-gallery/
-Description: Contus Feature Videos widget with the standard system of wordpress.
-Version: 1.1
-Author: Contus Support
-wp-content\plugins\contus-hd-flv-player\ContusFeatureVideos.php
-Date : 21/2/2011
-*/
+// Video Gallery Featured Videos
+ //Featured Videos widget with the standard system of wordpress.
 
-function widget_ContusFeatureVideos_init() {
-    if ( !function_exists('register_sidebar_widget') )
-    return;
-    function widget_ContusFeatureVideos($args)
-    {
+
+
+class widget_ContusFeaturedVideos_init  extends WP_Widget  {
+
+function widget_ContusFeaturedVideos_init()
+{
+     $widget_ops = array('classname' => 'widget_ContusFeaturedVideos_init ', 'description' => 'Contus Featured Videos');
+     $this->WP_Widget('widget_ContusFeaturedVideos_init', 'Contus Featured Videos', $widget_ops);
+}
+
+	 function form($instance) {
+            $instance = wp_parse_args((array) $instance, array('title' => 'Featured Videos','show' => '3',));
+            global $wpdb, $wp_version, $popular_posts_current_ID;
+           // These are our own options
+            $options = get_option('widget_ContusVideoCategory');
+            $title = $instance['title'];
+             $show = $instance['show'];
+    ?>
+            <p><label for="<?php echo $this->get_field_id('title'); ?>">Title: <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo attribute_escape($title); ?>" /></label></p>
+            <p><label for="<?php echo $this->get_field_id('show'); ?>">Show: <input class="widefat" id="<?php echo $this->get_field_id('show'); ?>" name="<?php echo $this->get_field_name('show'); ?>" type="text" value="<?php echo  attribute_escape($show);  ?>" /></label></p>
+    <?php
+     }
+
+        function update($new_instance, $old_instance) {
+            $instance = $old_instance;
+            $instance['title'] = $new_instance['title'];
+             $instance['show'] = $new_instance['show'];
+            return $instance;
+        }
+	function widget($args,$instance) {
         // and after_title are the array keys." - These are set up by the theme
-
-        extract($args);
+          extract($args, EXTR_SKIP);
+          echo $before_widget;
+            $title = empty($instance['title']) ? ' ' : apply_filters('widget_title', $instance['title']);
+            if (!empty($title))
+                echo $before_title .  $after_title;
+            // WIDGET CODE GOES HERE
+            $tt = 1;
         global $wpdb, $wp_version, $popular_posts_current_ID;
         // These are our own options
-            $options = get_option('widget_ContusFeatureVideos');
-            $title = $options['title'];  // Title in sidebar for widget
-            $show = $options['show'];  // # of Posts we are showing
+            $options = get_option('widget_ContusFeaturedVideos');
+            $title = $instance['title'];  // Title in sidebar for widget
+            $show = $instance['show'];  // # of Posts we are showing
             $excerpt = $options['excerpt'];  // Showing the excerpt or not
             $exclude = $options['exclude'];  // Categories to exclude
             $site_url = get_bloginfo('url');
@@ -29,7 +52,7 @@ function widget_ContusFeatureVideos_init() {
 $dirExp = explode('/', $dir);
 $dirPage = $dirExp[0];
 ?>
-  <!-- Recent videos -->
+<!-- Recent videos -->
 <script type="text/javascript" src="<?php echo $site_url;?>/wp-content/plugins/<?php echo dirname(plugin_basename(__FILE__))?>/js/script.js"></script>
 <link rel="stylesheet" type="text/css" href="<?php echo $site_url; ?>/wp-content/plugins/<?php echo dirname(plugin_basename(__FILE__))?>/css/style.css" />
 <script type="text/javascript">
@@ -39,8 +62,8 @@ $dirPage = $dirExp[0];
 </script>
 <!-- For Getting The Page Id More and Video-->
 <?php
-$vPageID = $wpdb->get_var("select ID from ".$wpdb->prefix."posts WHERE post_content ='[contusVideo]'");
-$moreName = $wpdb->get_var("select ID from ".$wpdb->prefix."posts WHERE post_content ='[contusMore]'");
+$vPageID = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content='[video]' and post_status='publish' and post_type='page' limit 1");
+$moreName =$wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content='[videomore]' and post_status='publish' and post_type='page' limit 1");
 $styleSheet = $wpdb->get_var("select stylesheet from " . $wpdb->prefix . "hdflvvideoshare_settings WHERE settings_id='1'");
 $site_url = get_bloginfo('url');
 
@@ -52,13 +75,13 @@ $site_url = get_bloginfo('url');
           <link rel="stylesheet" type="text/css" href="<?php echo $site_url; ?>/wp-content/plugins/<?php echo dirname(plugin_basename(__FILE__))?>/css/contusStyle.css" />
        <?php  } ?>
 
-<!-- For Feature videos -->
+<!-- For Featured Videos -->
 <?php
 echo $before_widget;
-$div = '<div id="contusfeatured"  class="sidebar-wrap clearfix">
-<div><a href="'.$site_url.'/?page_id='.$moreName.'&more=fea"><h2 class="widget-title">Feature Videos</h2></a></div>';
-$show   =$options['show'];
-$sql = "select * from ".$wpdb->prefix."hdflvvideoshare WHERE featured='ON' LIMIT ".$show;
+$div = '<div id="featured-videos"  class="sidebar-wrap clearfix">
+<h3 class="widget-title"><a href="'.$site_url.'/?page_id='.$moreName.'&more=fea">'.$title.'</a></h3>';
+$show   = $instance['show'];
+$sql = "select * from ".$wpdb->prefix."hdflvvideoshare WHERE featured='ON' ORDER BY vid DESC LIMIT ".$show;
 $features = $wpdb->get_results($sql);
 $moreF = $wpdb->get_results("select count(*) as contus from " . $wpdb->prefix . "hdflvvideoshare WHERE featured='ON'");
 $countF = $moreF[0]->contus;
@@ -80,38 +103,51 @@ if (!empty($features))
         if($imageFea!='')
         //output to screen
         {
+                 $div .='<div class="durationtimer">'.$feature1->duration.'</div>';
+                 $div .='<li class="clearfix sideThumb">';
 
-                 $div .='<li><div class="sideThumb"><div class="imgBorder">
-                         <a href="'.$site_url.'/?page_id='.$vPageID.'&vid='.$feature->vid.'">
+                 $div .='<div class="imgBorder">
+                         <a href="'.$site_url.'/?page_id=' . $vPageID . 'video&vid='.$feature->vid.'">
                    <img src="'.$imageFea.'" alt="'.$feature->post_title.'"  class="img" />
                     </a></div>';
-                  $div .='<div class="videoName"><a href="'.$site_url.'/?page_id='.$vPageID.'&vid='.$feature->vid.'">';
+                  $div .='<div class="videoName"><a href="'.$site_url.'/?page_id=' . $vPageID . 'video&vid='.$feature->vid.'">';
                   if($name > 25) {
-                     $div .= substr($feature->name, 0, 25).'...'; }
+                     $div .= substr($feature->name, 0, 25).''; }
                       else {
                        $div .= $feature->name;
 
                        }
-                  $div .='</a>';
-                  $div .='<div class="clear"></div>';
-                  if($feature->hitcount != 0) {
-                       $div .='<div class="views">'.$feature->hitcount.' views'.'</div>';
+                  $div .='</a>';    $div .='<div class="clear"></div>';
+                    if($feature->hitcount != 0) {
+                      if($feature->duration == 0.00)
+                      {
+                          $div .='<span class="views">'.$feature->hitcount.' views'.'</span>';
+                      }else
+                      {
+                          $div .='<span class="views">'.$feature->duration.' '.'|'.' '.$feature->hitcount.' views'.'</span>';
+                      }
                      }
-                     $div .='<div class="playlistName"><a href="'.$site_url.'/?page_id='.$moreName.'&playid='.$playlist_id.'">'.$fetched.'</a></div>';
+                     $div .='<div class="clear"></div>';
+                       $div .='<div class="clear"></div><a class="playlistName"  href="' . $site_url .'?page_id='.$moreName.'&playid=' . $playlist_id . '">'.$fetched.'</a>';
+
+                     $div .='<div class="clear"></div>';
+
                      $div .='</div>';
-                     $div .='</div></li>';
+                     $div .='</li>';
+                       $div .='<div class="clear"></div>';
 
         }
         else
         {
-            $div .='<li><div class="sideThumb">';
-            $div .= '<div class="imgBorder">
-                     <a href="'.$site_url.'/?page_id='.$vPageID.'&vid='.$feature->vid.'">
+            $div .='<div class="durationtimer">'.$feature1->duration.'</div>';
+            $div .='<li class="clearfix sideThumb">';
+            $div .= '<div class="imgBorder">';
+            $div .='<a href="'.$site_url.'/?vid='.$feature->vid.'">
                      <img src="'.$site_url.'/wp-content/plugins/' . dirname(plugin_basename(__FILE__)) . '/images/hdflv.jpg" alt="'.$post->post_title.'" class="img" />
                      </a></div>';
-                    $div .='<div class="videoName"><a href="'.$site_url.'/?page_id='.$vPageID.'&vid='.$feature->vid.'">';
+                    $div .='<div class="videoName"><a href="'.$site_url.'/?vid='.$feature->vid.'">';
                     if($name > 25) {
-                       $div .=substr($feature->name, 0, 25).'...';}
+                       $div .=substr($feature->name, 0, 25).'';}
                        else {
                            $div .=$feature->name;
                              }
@@ -119,20 +155,27 @@ if (!empty($features))
                     $div .='<div class="clear"></div>';
 
                    if($feature->hitcount != 0) {
-                        $div .='<div class="views">';
-                        $div .=$feature->hitcount.' views';
-                        $div .='</div>';
+                        $div .='<span class="views">';
+                        if($feature->duration == 0.00) {
+                            $div .=$feature->hitcount.' views';
                         }
-                   $div .='<div class="playlistName"><a href="'.$site_url.'/?page_id='.$moreName.'&playid='.$playlist_id.'">'.$fetched.'</a></div></div>';
-                   $div .='</div></li>';
-
+                        else{
+                            $div .=$feature->duration.' '.'|'.' '.$feature->hitcount.' views';
+                        }
+                        $div .='</span>';
+                        }
+                    $div .='<div class="clear"></div>';
+                   $div .='<span class="playlistName"><a href="'.$site_url.'/?page_id='.$moreName.'&playid='.$playlist_id.'">'.$fetched.'</a></span></div>';
+                   $div .='</li>';
+  $div .='<div class="clear"></div>';
               }
       }
-} else $div .="<li>No Feature videos</li>";
+}  else $div .="<li>No Featured Videos</li>";
 // end list
 if (($show < $countF) || ($show==$countF))
   {
-$div .='<div align="right"><a href="'.$site_url.'/?page_id='.$moreName.'&more=fea"  class="sprite more">MORE</a></div>';
+$div .='<div class="video-more"><a href="'.$site_url.'/?page_id='.$moreName.'&more=fea">More videos</a></div>';
+  $div .='<div class="clear"></div>';
   }
   else
   {
@@ -142,54 +185,8 @@ $div .='</ul></div>';
 echo $div;
 // echo widget closing tag
 echo $after_widget;
-}
-
-// Settings form
-function widget_ContusFeatureVideos_control()
-{
-// Get options
-$options = get_option('widget_ContusFeatureVideos');
-// options exist? if not set defaults
-if ( !is_array($options) )
-{
-  $options = array('title'=>'Feature Videos', 'show'=>'3', 'excerpt'=>'1','exclude'=>'');
-}
-// form posted?
-if ( $_POST['ContusFeatureVideos-submit'] )
-    {
-
-        // Remember to sanitize and format use input appropriately.
-        $options['title'] = strip_tags(stripslashes($_POST['ContusFeatureVideos-title']));
-        $options['show'] = strip_tags(stripslashes($_POST['ContusFeatureVideos-show']));
-        $options['excerpt'] = strip_tags(stripslashes($_POST['ContusFeatureVideos-excerpt']));
-        $options['exclude'] = strip_tags(stripslashes($_POST['ContusFeatureVideos-exclude']));
-        update_option('widget_ContusFeatureVideos', $options);
-   }
-// Get options for form fields to show
-$title = htmlspecialchars($options['title'], ENT_QUOTES);
-$show = htmlspecialchars($options['show'], ENT_QUOTES);
-$excerpt = htmlspecialchars($options['excerpt'], ENT_QUOTES);
-$exclude = htmlspecialchars($options['exclude'], ENT_QUOTES);
-
-// The form fields
-echo '<p style="text-align:right;">
-        <label for="ContusFeatureVideos-title">' . __('Title:') . '
-        <input style="width: 200px;" id="ContusFeatureVideos-title" name="ContusFeatureVideos-title" type="text" value="'.$title.'" />
-        </label></p>';
-echo '<p style="text-align:right;">
-        <label for="ContusFeatureVideos-show">' . __('Show:') . '
-        <input style="width: 200px;" id="ContusFeatureVideos-show" name="ContusFeatureVideos-show" type="text" value="'.$show.'" />
-        </label></p>';
-
-echo '<input type="hidden" id="ContusFeatureVideos-submit" name="ContusFeatureVideos-submit" value="1" />';
-}
-
-// Register widget for use
-register_sidebar_widget(array('Contus Feature Videos', 'widgets'), 'widget_ContusFeatureVideos');
-
-// Register settings for use, 300x100 pixel form
-register_widget_control(array('Contus Feature Videos', 'widgets'), 'widget_ContusFeatureVideos_control', 300, 200);
+    }
 }
 // Run code and init
-add_action('widgets_init', 'widget_ContusFeatureVideos_init');
+add_action('widgets_init', create_function('', 'return register_widget("widget_ContusFeaturedVideos_init");'));//adding product tag widget
 ?>

@@ -1,8 +1,8 @@
 <?php
 /*
-Description:  Contus VideoGallery
+Description:  Wordpress video gallery
 Edited By: Saranya
-Version: 1.0
+Version: 1.2
 Plugin URI: www.hdflvplayer.net/wordpress-video-gallery/
 wp-content\plugins\contus-hd-flv-player\hitCount.php
 Date : 21/2/2011

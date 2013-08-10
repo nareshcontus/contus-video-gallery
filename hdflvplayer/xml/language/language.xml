@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <english>
-
 <play>Play</play>
 
 <pause>Pause</pause>
@@ -58,5 +57,10 @@
 <tweet>tweet</tweet>
 
 <furl>furl</furl>
+<download>Download</download>
+<download>Download</download>
+<download>Download</download>
+<download>Download</download>
+<download>Download</download>
 
 </english>

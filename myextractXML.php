@@ -78,6 +78,21 @@ if (isset($_GET['pid']) || isset($_GET['vid'])) {
         $ap = 'false';
     }
 
+
+
+$vid = $_GET['vid'];
+ $entiredownload = $wpdb->get_col("SELECT download FROM " . $wpdb->prefix . "hdflvvideoshare_settings");
+ $individualdownload = $wpdb->get_col("SELECT download FROM " . $wpdb->prefix . "hdflvvideoshare where vid='$vid'");
+       if ($entiredownload[0] == 1 && $individualdownload[0]==1)
+    {
+        $download = 'true';
+    } else
+    {
+        $download = 'false';
+    }
+
+
+
 // Create XML output of playlist
     header("content-type:text/xml;charset = utf-8");
     echo '<?xml version = "1.0" encoding = "utf-8"?>';
@@ -125,28 +140,24 @@ if (isset($_GET['pid']) || isset($_GET['vid'])) {
             $postroll_id = ' postroll_id = "' . $media->postrollads . '"';
         }
         $tagsList = $wpdb->get_col("SELECT tags_name from " . $wpdb->prefix . "hdflvvideoshare_tags WHERE media_id='$media->vid'");
-        $seoList = $wpdb->get_col("SELECT seo_name from " . $wpdb->prefix . "hdflvvideoshare_tags WHERE media_id='$media->vid'");
         $tagsName = implode(',',$tagsList);
-        $seoName  = implode(',',$seoList);
-        if($media->download=='1')
-	    $download = "true";
-		else
-		$download = "false";
+
             echo '<mainvideo';
             echo ' id = "' . htmlspecialchars($media->vid) . '"';
             echo ' url = "' . htmlspecialchars($media->file) . '"';
             echo ' thu_image = "' . htmlspecialchars($image) . '"';
-             echo 'allow_download="' . htmlspecialchars($download) . '"';
             echo ' Preview = "' . htmlspecialchars($media->image) . '"';
             echo ' Tag =  "'. $tagsName. '"';
-            echo ' Seo = "'. $seoName .'"';
             echo $postroll_id;
             echo $preroll_id;
             echo $postroll;
             echo $preroll;
             echo ' hd = "' . $hd . '"';
-            echo ' hdpath = "' . $media->hdfile . '">';
+            echo 'allow_download = "' . $download . '"';
+            echo ' hdpath = "' . $media->hdfile . '"';
+            echo ' copylink = "'.$media->link.'">';
             echo '<title><![CDATA[' . htmlspecialchars($media->name) . ']]></title> ';
+            echo '<description><![CDATA[' . htmlspecialchars($media->description) . ']]></description> ';
             echo htmlspecialchars($media->name);
             echo '' . '</mainvideo>';
         }

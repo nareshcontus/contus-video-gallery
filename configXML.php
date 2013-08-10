@@ -29,6 +29,7 @@ $zoom = $settingsRecord->zoom == 1 ? 'true' : 'false';
 $email = $settingsRecord->email ? 'true' : 'false';
 $fullscreen = $settingsRecord->fullscreen == 1 ? 'true' : 'false';
 $autoplay = ($settingsRecord->autoplay == 1) ? 'true' : 'false';
+$playlistauto = ($settingsRecord->playlistauto == 1) ? 'true' : 'false';
 $HD_default = ($settingsRecord->HD_default == 1) ? 'true' : 'false';
 $download = ($settingsRecord->download == 1) ? 'true' : 'false';
 $skin_autohide = ($settingsRecord->skin_autohide == 1) ? 'true' : 'false';
@@ -53,6 +54,7 @@ echo '<config
       logopath="' . $logoPath . $settingsRecord->logopath . '"
       logo_target="'.$settingsRecord->logo_target.'"
       autoplay  ="' . $autoplay . '"
+      playlistauto  ="' . $playlistauto . '"
       Volume="' . $settingsRecord->volume . '"
       logoalign="' . $settingsRecord->logoalign . '"
       HD_default="' . $HD_default . '"

@@ -12,16 +12,6 @@ function get_out_now() { exit; }
 add_action('shutdown', 'get_out_now', -1);
 
 
-
-
-
-
-
-
-
-
-
-
 $file_name = '';
 $error = "";
 $errorcode = 12;

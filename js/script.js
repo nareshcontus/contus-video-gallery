@@ -1,23 +1,21 @@
-function currentvideo(vid,title,tag,seo){
-
+function currentvideo(vid,title,tag){
      document.getElementById('video_tag').innerHTML = '';
      fbcomments(vid,title);
      document.getElementById('video_title').innerHTML=title;
      if(tag != '')
      {
-     var tagSplit = tag.split(",");
-     var seoSplit = seo.split(",");
-     var tags ='<div class="tags">Tags:&nbsp;</div>';
+     var tagSplit=tag.split(",");
+     var tags ='<div class="tags">Tags:&nbsp;&nbsp;</div>';
 
        for (var i = 0; i < tagSplit.length; i++)
         {
            if(i <(tagSplit.length)-1)
                {
-                   tags += "<a href='"+baseurl+"?page_id="+videoPage+"&tagname="+seoSplit[i]+"' class='tagViews'>"+tagSplit[i]+', '+"</a>";
+                   tags += "<a href='"+baseurl+"?page_id="+videoPage+"&tagname="+tagSplit[i]+"' class='tagViews'>"+tagSplit[i]+', '+"</a>";
                }
                else
                    {
-                       tags += "<a href='"+baseurl+"?page_id="+videoPage+"&tagname="+seoSplit[i]+"'  class='tagViews'>"+tagSplit[i]+"</a>";
+                       tags += "<a href='"+baseurl+"?page_id="+videoPage+"&tagname="+tagSplit[i]+"'  class='tagViews'>"+tagSplit[i]+"</a>";
                    }
 
         }
