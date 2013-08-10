@@ -1,19 +1,21 @@
 <?php
-/*
- *
-  Plugin URI: http://www.hdflvplayer.net/wordpress-video-gallery/
-  Description: Contus Videos Share with the standard system of wordpress.
-  Edited By: Saranya
-  Version: 1.0
-  wp-content\plugins\contus-hd-flv-player\themes\default\contusVideo.php
-  Date : 21/2/2011
- */
+/**
+ * @name          : Wordpress VideoGallery.
+ * @version	  : 1.3
+ * @package       : apptha
+ * @subpackage    : contus-video-galleryversion-10
+ * @author        : Apptha - http://www.apptha.com
+ * @copyright     : Copyright (C) 2011 Powered by Apptha
+ * @license	  : GNU General Public License version 2 or later; see LICENSE.txt
+ * @Purpose       : Increase the hitcounts for the video.
+ * @Creation Date : Feb 21 2011
+ * @Modified Date : December 07 2011
+ * */
+
 ?>
 
 <?php
 global $wpdb;
-
-
 $site_url = get_bloginfo('url');
 $dir = dirname(plugin_basename(__FILE__));
 $dirExp = explode('/', $dir);
@@ -141,10 +143,10 @@ class default_videos {
         $dirExp = explode('/', $dir);
         $dirPage = $dirExp[0];
         $vid = $_GET['vid'];
-        $vPageID = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content='[video]' and post_status='publish' and post_type='page' limit 1");
-        $moreName = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content='[videomore]' and post_status='publish' and post_type='page' limit 1");
+        $vPageID    = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content='[video]' and post_status='publish' and post_type='page' limit 1");
+        $moreName   = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content='[videomore]' and post_status='publish' and post_type='page' limit 1");
         $styleSheet = $wpdb->get_var("select stylesheet from " . $wpdb->prefix . "hdflvvideoshare_settings WHERE settings_id='1'");
-        $configXML = $wpdb->get_row("SELECT configXML,comment_option,width,height,keyApps FROM " . $wpdb->prefix . "hdflvvideoshare_settings");
+        $configXML  = $wpdb->get_row("SELECT configXML,comment_option,width,height,keyApps FROM " . $wpdb->prefix . "hdflvvideoshare_settings");
         $fbAppId = $configXML->keyApps;
         $vid = $_GET['vid'];
         if ($vid != '') {
@@ -202,7 +204,7 @@ class default_videos {
 
         $div = '<div class="video-cat-thumb">';
 
-        $div .='<h3 id="video_title" class="more_title" align="left">' . $title . '</h3>';
+        $div .='<h1 id="video_title" class="entry-title" align="left">' . $title . '</h1>';
         $div .='<div name="mediaspace" id="mediaspace" class="mediaspace">';
         $div .='<script type="text/javascript">';
         $div .= 'var s' . $videoid . ' = new SWFObject("' . $site_url . '/wp-content/plugins/' . $dirPage . '/hdflvplayer/hdplayer.swf' . '","n' . $videoid . '","' . $configXML->width . '","' . $configXML->height . '","7");' . "\n";
@@ -227,15 +229,9 @@ class default_videos {
                         <b>Tags          </b>: ' . $videoTags . ' ' . '</li>
 
  <li class="views"><b>Description     </b>: ' . $description . '</li>
-
-
-
-     
-          </ul>
+   </ul>
          ' . $this->social_share() . '
           <div class="clear"></div>
-     
-         
           <div class="clear"></div>';
 
         //--------------------------------HTML5 START-------------------------------------------------------------//
@@ -350,7 +346,7 @@ post_date,postrollads,prerollads from " . $wpdb->prefix . "hdflvvideoshare a INN
 
                 if ($relFet->image != '') {
                     $div.='
-                           <li><div  class="imgBorder"><a href="' . $site_url . '/?page_id=' . $vPageID . '&vid=' . $relFet->vid . '">
+                           <li><div  class="imgSidethumb"><a href="' . $site_url . '/?page_id=' . $vPageID . '&vid=' . $relFet->vid . '">
                                <img src="' . $relFet->image . '" alt="' . $relFet->post_title . '" class="related" /></a></div>';
                     $div .='<div class="vid_info"><h5><a href="' . $site_url . '/?page_id=' . $vPageID . '&vid=' . $relFet->vid . '" class="videoHname">';
                     $div .= substr($relFet->name, 0, 30);
@@ -390,48 +386,18 @@ post_date,postrollads,prerollads from " . $wpdb->prefix . "hdflvvideoshare a INN
 <meta name="description" content="<?php echo $des ; ?> " />
 <link rel="image_src" href="<?php echo $imgurl; ?>"/>
 <?php
-//        $div .= "<div class=\"fbcomments\">
-//
-//
-//
-//
-//<div id=\"fb-root\"></div>
-//<script type=\"text/javascript\">
-//  window.fbAsyncInit = function() {
-//    FB.init({
-//      appId  : '$fbAppId',
-//      status : true, // check login status
-//      cookie : true, // enable cookies to allow the server to access the session
-//      xfbml  : true  // parse XFBML
-//    });
-////  };
-////  (function() {
-////    var e = document.createElement('script');
-////    e.src = document.location.protocol + '//connect.facebook.net/en_US/all.js';
-////    e.async = true;
-////    document.getElementById('fb-root').appendChild(e);
-////  }());
-////</script>
-//// <fb:comments xid=\"".$_GET['vid']."\"
-////              url=\"".get_permalink()."\"
-////              simple='1'
-////              css=\"".$pluginPath."/wordpress-video-gallery/css/fb_comment.css\" width=\"700\"></fb:comments>
-//            </div>";
         }
         $configXML = $wpdb->get_row("SELECT configXML,width,height,keyApps FROM " . $wpdb->prefix . "hdflvvideoshare_settings");
         if ($configXML->keyApps != '') {
-
         }
         $div .='<div class="clear"></div></div>';
         $div .='<script type="text/javascript">
         function facebook_share(bookmarkf){
         document.getElementById("fb_share").href = bookmarkf;
         }</script>';
-
         $div .='';
         return $div;
     }
-
     public function social_share() {
         $dir = dirname(plugin_basename(__FILE__));
         $dirExp = explode('/', $dir);
@@ -465,17 +431,4 @@ post_date,postrollads,prerollads from " . $wpdb->prefix . "hdflvvideoshare a INN
     }
 
 }
-
-/*
-  <div class="floatleft" style="width:90px">
-  <script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) {return;}
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
-  fjs.parentNode.insertBefore(js, fjs);
-  }(document, "script", "facebook-jssdk"));</script>
-  <div class="fb-like" data-send="false" data-layout="button_count" data-width="300" data-show-faces="false"></div>		</div>
-  </div>
- */
 ?>

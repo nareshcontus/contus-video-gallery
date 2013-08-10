@@ -30,7 +30,7 @@ function widget_ContusPopularVideos_init()
         }
 	function widget($args,$instance) {
         // and after_title are the array keys." - These are set up by the theme
-          extract($args, EXTR_SKIP);  echo $before_widget;
+          extract($args, EXTR_SKIP);  
             $title = empty($instance['title']) ? ' ' : apply_filters('widget_title', $instance['title']);
             if (!empty($title))
                 echo $before_title .  $after_title;
@@ -48,36 +48,26 @@ function widget_ContusPopularVideos_init()
 		$dirExp = explode('/', $dir);
 		$dirPage = $dirExp[0];
 		?>
-<script
-	type="text/javascript"
-	src="<?php echo $site_url; ?>/wp-content/plugins/<?php echo dirname(plugin_basename(__FILE__))?>/js/script.js"></script>
-<link
-	rel="stylesheet" type="text/css"
-	href="<?php echo $site_url; ?>/wp-content/plugins/<?php echo dirname(plugin_basename(__FILE__))?>/css/style.css" />
+<script	type="text/javascript" src="<?php echo $site_url; ?>/wp-content/plugins/<?php echo dirname(plugin_basename(__FILE__))?>/js/script.js"></script>
+<script type="text/javascript">
+    var baseurl;
+    baseurl = '<?php echo $site_url; ?>';
+    folder  = '<?php echo $dirPage ;?>'
+</script>
+<link rel="stylesheet" type="text/css"	href="<?php echo $site_url; ?>/wp-content/plugins/<?php echo dirname(plugin_basename(__FILE__))?>/css/style.css" />
 <!-- For Getting The Page Id More and Video Page-->
 		<?php
 		$vPageID = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content='[video]' and post_status='publish' and post_type='page' limit 1");
 		$moreName =$wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content='[videomore]' and post_status='publish' and post_type='page' limit 1");
 		$styleSheet = $wpdb->get_var("select stylesheet from " . $wpdb->prefix . "hdflvvideoshare_settings WHERE settings_id='1'");
 		?>
-<!-- Getting our contus style -->
-		<?php
-		if($styleSheet == 'contus')
-		{ ?>
-<link
-	rel="stylesheet" type="text/css"
-	href="<?php echo $site_url; ?>/wp-content/plugins/<?php echo dirname(plugin_basename(__FILE__))?>/css/contusStyle.css" />
-		<?php  } ?>
-<script type="text/javascript">
-    var baseurl;
-    baseurl = '<?php echo $site_url; ?>';
-    folder  = '<?php echo $dirPage ;?>'
-</script>
+
+
 <!-- For Popular videos -->
 		<?php
 		echo $before_widget;
 		$div = '<div id="popular-videos" class="sidebar-wrap clearfix">
-        <h3 class="widget-title"><a href="'.$site_url.'/?page_id='.$moreName.'&more=pop">'.$title.'</a></h3>';
+                <h3 class="widget-title"><a href="'.$site_url.'/?page_id='.$moreName.'&more=pop">'.$title.'</a></h3>';
 		$show       = $instance['show']; //Number of shows
 		$sql        = "select * from ".$wpdb->prefix."hdflvvideoshare ORDER BY hitcount DESC LIMIT ".$show;
 		$populars   = $wpdb->get_results($sql);

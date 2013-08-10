@@ -1,12 +1,17 @@
 <?php
-/*
-  Version: 1.2
-  Plugin URI: www.hdflvplayer.net/hdvideoshare-wordpress
-  Description: Simplifies the process of adding video to a WordPress blog. Powered by Contus Support HDFLVPlayer and SWFObject by Geoff Stearns.
-  Author: Contus Support.
-  HDFLVPlayer for Wordpress
+/**
+ * @name          : Wordpress VideoGallery.
+ * @version	  : 1.3
+ * @package       : apptha
+ * @subpackage    : contus-video-galleryversion-10
+ * @author        : Apptha - http://www.apptha.com
+ * @copyright     : Copyright (C) 2011 Powered by Apptha
+ * @license	  : GNU General Public License version 2 or later; see LICENSE.txt
+ * @Purpose       : Loads the wodpress configuration to the plugin.
+ * @Creation Date : Feb 21 2011
+ * @Modified Date : December 07 2011
+ * */
 
- */
 
 
 /**

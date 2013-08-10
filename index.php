@@ -1,13 +1,18 @@
 <?php
 
-/*
-  Plugin URI: http://www.hdflvplayer.net/wordpress-video-gallery/
-  Description: Contus Install with the standard system of wordpress.
-  Edited By: Saranya
-  wp-content\plugins\contus-hd-flv-player\install.php
-  Version : 1.2
-  Date : 21/2/2011
- */
+/**
+ * @name          : Wordpress VideoGallery.
+ * @version	  : 1.3
+ * @package       : apptha
+ * @subpackage    : contus-video-galleryversion-10
+ * @author        : Apptha - http://www.apptha.com
+ * @copyright     : Copyright (C) 2011 Powered by Apptha
+ * @license	  : GNU General Public License version 2 or later; see LICENSE.txt
+ * @Purpose       : Create the tables for the installation.
+ * @Creation Date : Fev 21 2011
+ * @Modified Date : December 07 2011
+ * */
+
 /* * ************************************************************* */
 /* Install routine for hdflvplayer
   /*************************************************************** */

@@ -31,10 +31,10 @@ function widget_ContusRecentVideos_init()
         }
 	function widget($args,$instance) {
         // and after_title are the array keys." - These are set up by the theme
-          extract($args, EXTR_SKIP);  echo $before_widget;
+          extract($args, EXTR_SKIP);  
             $title = empty($instance['title']) ? ' ' : apply_filters('widget_title', $instance['title']);
             if (!empty($title))
-                echo $before_title .  $after_title;
+               // echo $before_title .  $after_title;
             // WIDGET CODE GOES HERE
             $tt = 1;
         global $wpdb, $wp_version, $popular_posts_current_ID;
@@ -46,8 +46,8 @@ function widget_ContusRecentVideos_init()
         $exclude = $options['exclude'];  // Categories to exclude
         $site_url = get_bloginfo('url');
         $dir = dirname(plugin_basename(__FILE__));
-$dirExp = explode('/', $dir);
-$dirPage = $dirExp[0];
+        $dirExp = explode('/', $dir);
+        $dirPage = $dirExp[0];
 ?>
 <script type="text/javascript">
     var baseurl;
@@ -56,7 +56,7 @@ $dirPage = $dirExp[0];
 </script>
 <!-- For Getting The Page Id More and Video-->
 <?php
-        $vPageID = $wpdb->get_var("select 	ID from " . $wpdb->prefix . "posts WHERE post_content='[video]' and post_status='publish' and post_type='page' limit 1");
+        $vPageID = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content='[video]' and post_status='publish' and post_type='page' limit 1");
        $moreName =$wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content='[videomore]' and post_status='publish' and post_type='page' limit 1");
         $styleSheet = $wpdb->get_var("select stylesheet from " . $wpdb->prefix . "hdflvvideoshare_settings WHERE settings_id='1'");
         $site_url = get_bloginfo('url');
@@ -180,10 +180,8 @@ $dirPage = $dirExp[0];
   echo $after_widget;
  }
 
- 
 // Register widget for use
- 
-  }
+   }
 // Run code and init
  add_action('widgets_init', create_function('', 'return register_widget("widget_ContusRecentVideos_init");'));
   ?>

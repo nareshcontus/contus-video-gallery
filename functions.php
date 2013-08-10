@@ -1,13 +1,17 @@
 <?php
-/*
-  Contus VideoGallery
-  version : 1.2
-  Edited by : Saranya
-  Plugin URI: www.hdflvplayer.net/hdvideoshare-wordpress
-  Purpose : Common functions needed throughout the plugin
-  wp-content\plugins\hdvideoshare\functions.php
-  Date : 21/2/2011
- */
+/**
+ * @name          : Wordpress VideoGallery.
+ * @version	  : 1.3
+ * @package       : apptha
+ * @subpackage    : contus-video-galleryversion-10
+ * @author        : Apptha - http://www.apptha.com
+ * @copyright     : Copyright (C) 2011 Powered by Apptha
+ * @license	  : GNU General Public License version 2 or later; see LICENSE.txt
+ * @Purpose       : Common function need throughout the plugin.
+ * @Creation Date : Feb 21 2011
+ * @Modified Date : December 07 2011
+ * */
+
 
 require_once( dirname(__FILE__) . '/hdflv-config.php');
 if (isset($_GET['name'])) {

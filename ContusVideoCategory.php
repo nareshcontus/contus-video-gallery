@@ -30,10 +30,10 @@ function widget_ContusVideoCategory_init() {
 	function widget($args,$instance) {
         // and after_title are the array keys." - These are set up by the theme
       extract($args, EXTR_SKIP);
-            echo $before_widget;
+            
             $title = empty($instance['title']) ? ' ' : apply_filters('widget_title', $instance['title']);
             if (!empty($title))
-                echo $before_title .  $after_title;
+             //   echo $before_title .  $after_title;
             // WIDGET CODE GOES HERE
             $tt = 1;
         global $wpdb, $wp_version, $popular_posts_current_ID;
@@ -73,16 +73,17 @@ function widget_ContusVideoCategory_init() {
         <!-- For Featured Videos -->
 <?php
         echo $before_widget;
-        $div = '<div id="featured-videos"  class="sidebar-wrap clearfix">
-
-                    <h3 class="widget-title"><a href="' . $site_url . '/?page_id=' . $moreName . '&more=categories">'.$title.'</a></h3>
-                 ';
-  
+      
         $sql = "select * from " . $wpdb->prefix . "hdflvvideoshare_playlist WHERE 1 LIMIT " . $show;
         $features = $wpdb->get_results($sql);
         $moreCategories = $wpdb->get_results("select count(*) as contus from " . $wpdb->prefix . "hdflvvideoshare_playlist WHERE 1");
         $countCategories = $moreCategories[0]->contus;
-        $div .='<ul class="ulwidget">';
+        $div .= '<div id="featured-videos"  class="sidebar-wrap clearfix">
+
+                    <h3 class="widget-title"><a href="' . $site_url . '/?page_id=' . $moreName . '&more=categories">'.$title.'</a></h3>
+                 ';
+
+        $div .='<ul class="ulwidget clearfix">';
         // were there any posts found?
         if (!empty($features)) {
             // posts were found, loop through them
@@ -100,9 +101,9 @@ function widget_ContusVideoCategory_init() {
         }
 // end list
         if (($show < $countCategories)) {
-            $div .='<div class="right video-more"><a href="' . $site_url . '/?page_id=' . $moreName . '&more=categories">More Categories</a></div>';
+            $div .='<li  class="right"><a href="' . $site_url . '/?page_id=' . $moreName . '&more=categories">More Categories</a></li>';
         } else {
-            $div .='<div align="right"> </div>';
+            $div .='<li align="right"></li>';
         }
         $div .='</ul></div>';
 

@@ -1,15 +1,17 @@
 <?php
 
-/*
- * version : 1.3
- * Edited by : k.laxmi
- * Email : lakshmi.rani@contus.in
- * Purpose : Create ads for player
- * Path:/wp-content/plugins/contus-hd-flv-player/myadsXML.php
- * Date:3/3/11
- *
- */
-
+/**
+ * @name          : Wordpress VideoGallery.
+ * @version	  : 1.3
+ * @package       : apptha
+ * @subpackage    : contus-video-galleryversion-10
+ * @author        : Apptha - http://www.apptha.com
+ * @copyright     : Copyright (C) 2011 Powered by Apptha
+ * @license	  : GNU General Public License version 2 or later; see LICENSE.txt
+ * @Purpose       : Create ads for player
+ * @Creation Date : Fev 21 2011
+ * @Modified Date : December 07 2011
+ * */
 
 /* Used to import plugin configuration */
 require_once( dirname(__FILE__) . '/hdflv-config.php');

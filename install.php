@@ -1,13 +1,17 @@
 <?php
 
-/*
- Plugin URI: http://www.hdflvplayer.net/wordpress-video-gallery/
- Description: Contus Install with the standard system of wordpress.
- Edited By: Saranya
- wp-content\plugins\contus-hd-flv-player\install.php
- Version : 1.2
- Date : 21/2/2011
- */
+/**
+ * @name          : Wordpress VideoGallery.
+ * @version	  : 1.3
+ * @package       : apptha
+ * @subpackage    : contus-video-galleryversion-10
+ * @author        : Apptha - http://www.apptha.com
+ * @copyright     : Copyright (C) 2011 Powered by Apptha
+ * @license	  : GNU General Public License version 2 or later; see LICENSE.txt
+ * @Purpose       : Create the tables for the installation.
+ * @Creation Date : Fev 21 2011
+ * @Modified Date : December 07 2011
+ * */
 /* * ************************************************************* */
 /* Install routine for hdflvplayer
  /*************************************************************** */
@@ -171,12 +175,12 @@ function hdflv_install() {
                 hbanner_categorylist INT(3) NOT NULL DEFAULT '1',
                 vbannercategory varchar(25) NOT NULL,
                 vbanner_categorylist INT(3) NOT NULL DEFAULT '1',
-            bannerw varchar(25) NOT NULL,
+                bannerw varchar(25) NOT NULL,
                 playerw varchar(25) NOT NULL,
-            numvideos varchar(25) NOT NULL
+                numvideos varchar(25) NOT NULL,
+                gutterspace INT(3) NOT NULL
                 ) $charset_collate;";
-
-		$res = $wpdb->get_results($sql);
+                $res = $wpdb->get_results($sql);
 	} else {
 		$sql = "ALTER TABLE " . $table_settings . "ADD rowCat INT(25) NOT NULL, ADD colCat INT(25) NOT NULL, ADD category_page INT(25) NOT NULL,
                 ADD comment_option TINYINT(1) NOT NULL , 
@@ -190,6 +194,9 @@ function hdflv_install() {
 		$res = $wpdb->get_results($sql);
 
 		$sql = "ALTER TABLE " . $table_settings . "ADD preroll TINYINT(1) NOT NULL, ADD preroll TINYINT(1) NOT NULL";
+		$res = $wpdb->get_results($sql);
+
+                $sql = "ALTER TABLE " . $table_settings . "ADD gutterspace INT(3) NOT NULL";
 		$res = $wpdb->get_results($sql);
 
 	}

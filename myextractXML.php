@@ -1,12 +1,17 @@
 <?php
-/*
-  Plugin URI: www.hdflvplayer.net/wordpress-video-gallery/
-  Edited by : Saranya
-  Version: 1.0
-  Purpose : Create playlist for player
- * wp-content\plugins\contus-hd-flv-player\myextractXML.php
-  Date : 21/2/2011
- */
+
+/**
+ * @name          : Wordpress VideoGallery.
+ * @version	  : 1.3
+ * @package       : apptha
+ * @subpackage    : contus-video-galleryversion-10
+ * @author        : Apptha - http://www.apptha.com
+ * @copyright     : Copyright (C) 2011 Powered by Apptha
+ * @license	  : GNU General Public License version 2 or later; see LICENSE.txt
+ * @Purpose       : Create playlist for player
+ * @Creation Date : Fev 21 2011
+ * @Modified Date : December 07 2011
+ * */
 
 // look up for the path
 require_once( dirname(__FILE__) . '/hdflv-config.php');

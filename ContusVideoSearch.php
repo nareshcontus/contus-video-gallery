@@ -26,10 +26,10 @@ function widget_ContusVideoSearch_init() {
 	function widget($args,$instance) {
 		// and after_title are the array keys." - These are set up by the theme
       extract($args, EXTR_SKIP);
-            echo $before_widget;
+           
             $title = empty($instance['title']) ? ' ' : apply_filters('widget_title', $instance['title']);
             if (!empty($title))
-                echo $before_title . $after_title;
+             //   echo $before_title . $after_title;
             // WIDGET CODE GOES HERE
             $tt = 1;
 		global $wpdb, $wp_version, $popular_posts_current_ID;

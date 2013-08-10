@@ -1,13 +1,17 @@
 <?php
-/*
- Plugin Name: Wordpress Video Gallery
- Plugin URI: http://www.hdflvplayer.net/wordpress-video-gallery/
- Description: Contus Videos Share with the standard system of wordpress.
- Version: 1.0
- Edited By: Saranya
- wp-content\plugins\hdvideoshare\themes\default\contusHome.php
- Date : 21/2/2011
- */
+/**
+ * @name          : Wordpress VideoGallery.
+ * @version	  : 1.3
+ * @package       : apptha
+ * @subpackage    : contus-video-galleryversion-10
+ * @author        : Apptha - http://www.apptha.com
+ * @copyright     : Copyright (C) 2011 Powered by Apptha
+ * @license	  : GNU General Public License version 2 or later; see LICENSE.txt
+ * @Purpose       : Increase the hitcounts for the video.
+ * @Creation Date : Feb 21 2011
+ * @Modified Date : December 07 2011
+ * */
+
 global $wpdb;
 $site_url = get_bloginfo('url');
 $dir = dirname(plugin_basename(__FILE__));
@@ -15,12 +19,8 @@ $dirExp = explode('/', $dir);
 $dirPage = $dirExp[0];
 require_once('pagination.php');
 ?>
-<script
-	type="text/javascript"
-	src="<?php echo $site_url; ?>/wp-content/plugins/<?php echo $dirPage; ?>/js/script.js"></script>
-<link
-	rel="stylesheet" type="text/css"
-	href="<?php echo $site_url; ?>/wp-content/plugins/<?php echo $dirPage; ?>/css/style.css" />
+<script	type="text/javascript" 	src="<?php echo $site_url; ?>/wp-content/plugins/<?php echo $dirPage; ?>/js/script.js"></script>
+<link rel="stylesheet" type="text/css" href="<?php echo $site_url; ?>/wp-content/plugins/<?php echo $dirPage; ?>/css/style.css" />
 <?php
 // For Getting pageid for More and video file
 $meta = $wpdb->get_var("select 	ID from " . $wpdb->prefix . "posts WHERE post_content='[video]' and post_status='publish' and post_type='page' limit 1");
@@ -66,8 +66,8 @@ if ($styleSheet == 'contus') {
 //[banner type="popular"  width="600" height="300" ][banner type="recent"  width="600" height="300" ][banner type="featured"  width="600" height="300"][banner type="category" catid="2" width="600" height="300"]
         global $wpdb;
 
-        $homebannercategories = $wpdb->get_row("SELECT * FROM " . $wpdb->prefix . "hdflvvideoshare_settings ");
-      $bannertype = $homebannercategories->vbannercategory;
+       $homebannercategories = $wpdb->get_row("SELECT * FROM " . $wpdb->prefix . "hdflvvideoshare_settings ");
+       $bannertype = $homebannercategories->vbannercategory;
        $show = $homebannercategories->numvideos; 
        $bannerwidth = $homebannercategories->bannerw;
        $playerwidth = $homebannercategories->playerw;
@@ -91,8 +91,6 @@ if ($styleSheet == 'contus') {
             break;
         default;
     }
-
-    
 ?>
         <script language="javascript" type="text/javascript" src="<?php echo $pluginPath; ?>/js/jquery.min.js"></script>
         <script language="javascript" type="text/javascript" src="<?php echo $pluginPath; ?>/js/jquery-ui-min.js"></script>
@@ -124,9 +122,6 @@ if ($styleSheet == 'contus') {
                 $("#slider_banner > ul").tabs({fx:{opacity: "toggle"}}).tabs("rotate",  '3000', true);
             });
         </script>
-
-
-
 <?php
         $dirPage = $dirExp[0];
         $sql = $bannervideos;
@@ -146,17 +141,16 @@ if ($styleSheet == 'contus') {
         $moreF = $wpdb->get_results("select count(*) as contus from " . $wpdb->prefix . "hdflvvideoshare WHERE featured='ON'");
         $countF = $moreF[0]->contus;
         $dir = dirname(plugin_basename(__FILE__));
-$dirExp = explode('/', $dir);
-$dirPage = $dirExp[0];
-
+        $dirExp = explode('/', $dir);
+        $dirPage = $dirExp[0];
+      
         $div .='<ul class="ulwidget">';
         if (!empty($bannerSlideShow)) {
-          
-            //$bannerSlideShow[$i]->vid;
+        //$bannerSlideShow[$i]->vid;
         
 ?>
-<div id="featured" style="width:<?php echo $bannerwidth; ?>px ">
-    <div id="lofslidecontent45"	class="page-lof-slidecontent">
+<div id="featured" style="width: 100%;" >
+    <div id="lofslidecontent45"	class="page-lof-slidecontent" style="width:<?php echo $bannerwidth; ?>px ">
         <div class="right_side">
 <?php for ($i = 0; $i < count($bannerSlideShow); $i++) { 
  //echo $site_url . '/wp-content/plugins/' . dirname(plugin_basename(__FILE__)) . '/hdflvplayer/hdplayer.swf'; ?>
@@ -215,108 +209,6 @@ $dirPage = $dirExp[0];
     }
 
 
-
-
-
-
-
-
-
-		// For Featured Videos
-//		function videosSharePlayer() {
-//			global $wpdb;
-//			$site_url = get_bloginfo('url');
-//			$dir = dirname(plugin_basename(__FILE__));
-//			$dirExp = explode('/', $dir);
-//			$dirPage = $dirExp[0];
-//			$configXML = $wpdb->get_row("SELECT configXML,width,height FROM " . $wpdb->prefix . "hdflvvideoshare_settings");
-//			//For Default Video To Play
-//			$vidDb = $wpdb->get_row("select vid,name from " . $wpdb->prefix . "hdflvvideoshare WHERE featured='ON' ORDER BY vid DESC LIMIT 1");
-//			if ($vidDb->vid == '') {
-//				$vid = '1';
-//			} else {
-//				$vid = $vidDb->vid;
-//			}
-//			$div = '<div>';
-//
-//			$div .='<h3 id="video_title" class="more_title" align="left"></h3>';
-//			$videoid = 0;
-//			// Player Starts Here
-//			$div .='<div  name="mediaspace" id="mediaspace" class="mediaspace"><div id="flashplayer">';
-//			$div .='<script type="text/javascript">';
-//			$div .= 'var s' . $videoid . ' = new SWFObject("' . $site_url . '/wp-content/plugins/' . $dirPage . '/hdflvplayer/hdplayer.swf' . '","n' . $videoid . '","' . $configXML->width . '","' . $configXML->height . '","7");' . "\n";
-//			$div .= 's' . $videoid . '.addParam("allowfullscreen","true");' . "\n";
-//			$div .= 's' . $videoid . '.addParam("allowscriptaccess","always");' . "\n";
-//			$div .= 's' . $videoid . '.addParam("wmode","opaque");' . "\n";
-//			$div .= 's' . $videoid . '.addVariable("baserefW","' . $site_url . '");' . "\n";
-//			$div .= 's' . $videoid . '.addVariable("vid","' . $vid . '");' . "\n";
-//			$div .= 's' . $videoid . '.write("mediaspace");' . "\n";
-//			$div .='</script></div>';
-//			//--------------------------------HTML5 START-------------------------------------------------------------//
-//
-//			/* Error Msg for Video not supported to player. */
-//
-//			/* Player Div */
-//			$div .='<div id="player" style="display:none;">';
-//			$select = "SELECT * FROM " . $wpdb->prefix . "hdflvvideoshare where vid='$vid'";
-//			$fetched = $wpdb->get_results($select);
-//			foreach ($fetched as $media) {
-//				$videourl = $media->file;
-//				$imgurl = $media->image;
-//			}
-//			/* if video is youtube. */
-//			if (preg_match("/www\.youtube\.com\/watch\?v=[^&]+/", $videourl, $vresult)) {
-//				$urlArray = split("=", $vresult[0]);
-//				$videoid = trim($urlArray[1]);
-//				$div .='<iframe  type="text/html" width="' . $configXML->width . '" height="' . $configXML->height . '"  src="http://www.youtube.com/embed/' . $videoid . '" frameborder="0"></iframe>';
-//			}
-//
-//			/* if video is uploaded or direct path. */ else {
-//
-//
-//			$div .= '<script type="text/javascript">
-//
-//            function failed(e) {
-//            txt =  navigator.platform ;
-//
-//
-//            if(txt =="iPod"|| txt =="iPad" || txt == "iPhone" || txt == "Linux armv7I")
-//            {
-//            alert("Player doesnot support this video."); } }</script>';
-//
-//
-//			$div .='<video id="video" poster="' . $imgurl . '"   src="' . $videourl . '" width="' . $configXML->width . '" height="' . $configXML->height . '" autobuffer controls onerror="failed(event)">
-//     Html5 Not support This video Format.
-//</video>';
-//			}
-//			$div .='</div>';
-//
-//			/* Player Div closed.
-//			 * Script for checking platform.
-//			 */
-//
-//			$div .=' <script>
-//            txt =  navigator.platform ;
-//
-//            if(txt =="iPod"|| txt =="iPad" || txt == "iPhone" || txt == "Linux armv7I")
-//            {
-//               document.getElementById("player").style.display = "block";
-//                document.getElementById("flashplayer").style.display = "none";
-//
-//            }else{
-//                document.getElementById("player").style.display = "none";
-//                document.getElementById("flashplayer").style.display = "block";
-//
-//            }
-//        </script>';
-//			//--------------------------------HTML5 End-------------------------------------------------------------//
-//			$div .='<div class="clear"></div>';
-//			$div .='<div id="video_tag"></div>';
-//			$div .='</div>';
-//
-//			return $div;
-//		}
-
 		function featureVideos() {
 
 			global $wpdb;
@@ -324,7 +216,7 @@ $dirPage = $dirExp[0];
 			$dir = dirname(plugin_basename(__FILE__));
 			$dirExp = explode('/', $dir);
 			$dirPage = $dirExp[0];
-			$configXML = $wpdb->get_row("SELECT configXML,width,height FROM " . $wpdb->prefix . "hdflvvideoshare_settings");
+			$configXML = $wpdb->get_row("SELECT configXML,width,height,bannerw,gutterspace FROM " . $wpdb->prefix . "hdflvvideoshare_settings");
 			$vPageID = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content='[video]' and post_status='publish' and post_type='page' limit 1");
 			$moreName = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content='[videomore]' and post_status='publish' and post_type='page' limit 1");
 			// Featured Videos listing Starts
@@ -338,8 +230,10 @@ $dirPage = $dirExp[0];
 			$thumbTotalWidth = 0;
 			$class = '';
 			$remainPlayer = 0;
+                        
 			if ($feaSet == on) {
-				$div = '<div style="width:' . $configXML->width . 'px;" class="paddBotm">';
+				$div = '<div style="width:100%" class="paddBotm">';
+                                $div .= '<style type="text/css"> .video-block {  padding-right:'.$configXML->gutterspace.'px} </style>';
 				$sql1 = "select * from " . $wpdb->prefix . "hdflvvideoshare WHERE featured='ON'ORDER BY vid DESC LIMIT " . $showF . "";
 				$moreF = $wpdb->get_results("select count(*) as contus from " . $wpdb->prefix . "hdflvvideoshare WHERE featured='ON'");
 				$countF = $moreF[0]->contus;
@@ -354,7 +248,7 @@ $dirPage = $dirExp[0];
 					$clearwidth = 0;
 					$clear = '';
                                         foreach ($features as $feature) {
-                                             $duration[$j] = $feature->duration;
+                                                $duration[$j] = $feature->duration;
 						$imageFea[$j] = $feature->image; //Video Image
 						$vidF[$j] = $feature->vid; //Video Id
 						$nameF[$j] = $feature->name; //Video Name
@@ -528,7 +422,7 @@ $dirPage = $dirExp[0];
 			if ($recSet == on) {
 
 
-				$div = '<div style="width:' . $configXML->width . 'px" class="paddBotm">';
+				$div = '<div style="width:100%" class="paddBotm">';
 				$rowCount = 0;
 				$show = $rowR * $colR;
 				$sql = "select * from " . $wpdb->prefix . "hdflvvideoshare
@@ -720,7 +614,7 @@ $dirPage = $dirExp[0];
 			$colP = $settingsFetch->colPop; //column field of popular videos
 			$showP = $rowP * $colP;
 			if ($popSet == on) {
-				$div = '<div style="width:' . $configXML->width . 'px" class="paddBotm">';
+				$div = '<div style="width:100%" class="paddBotm">';
 				$sql2 = "select * from " . $wpdb->prefix . "hdflvvideoshare ORDER BY hitcount DESC LIMIT " . $showP . "";
 				$moreCount = $wpdb->get_results("select count(*) as contus from " . $wpdb->prefix . "hdflvvideoshare");
 				$countP = $moreCount[0]->contus;

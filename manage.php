@@ -1,14 +1,15 @@
 <?php
-/*
-  Wordpress VideoGallery
-  Plugin URI: www.hdflvplayer.net/hdvideoshare-wordpress
-  Edited By: Saranya
-  version : 1.0
-  wp-content\plugins\hdvideoshare\manage.php
-  Date : 21/2/2011
- */
-
-
+/**
+ * @name          : Wordpress VideoGallery.
+ * @version	  : 1.3
+ * @package       : apptha
+ * @subpackage    : contus-video-galleryversion-10
+ * @author        : Apptha - http://www.apptha.com
+ * @copyright     : Copyright (C) 2011 Powered by Apptha
+ * @license	  : GNU General Public License version 2 or later; see LICENSE.txt
+ * @Creation Date : Fev 21 2011
+ * @Modified Date : December 07 2011
+ * */
 $contus = dirname(plugin_basename(__FILE__));
 $site_url = get_option('siteurl');
 ?>
@@ -375,6 +376,7 @@ class HDFLVShareManage {
         $this->act_vid = (int) $_GET['id'];
         $this->act_pid = (int) $_GET['pid'];
 
+     
 //TODO:Include nonce !!!
 
         if (isset($_POST['add_media'])) {
@@ -498,13 +500,21 @@ class HDFLVShareManage {
         $tables = $wpdb->get_results("SELECT DISTINCT name,file,featured,vid FROM " . $wpdb->prefix . "hdflvvideoshare" . $join . $where . $orderby . "");
         
         
-        
+            $folder   = dirname(plugin_basename(__FILE__));
+            $site_url = get_bloginfo('url');
+            $get_title = $wpdb->get_var("SELECT license FROM ".$wpdb->prefix."hdflvvideoshare_settings WHERE settings_id=1");
+            $get_key     = app_videogall_encrypt();
+                  
         
 ?>
 
         <!-- Manage Video-->
         <div class="wrap">
-            <form name="filterType" method="post" id="posts-filter">
+        <?php   if($get_title != $get_key)   { ?>
+         <a href="http://www.apptha.com/shop/checkout/cart/add/product/12" target="_blank">
+         <img src="<?php echo $site_url.'/wp-content/plugins/'.$folder.'/images/buynow.png';?>" style="float:right;margin-top: 10px;" width="125" height="28"  height="43" /></a>
+         <?php } ?>
+	        <form name="filterType" method="post" id="posts-filter">
                 <h2><?php _e('Manage Video Files', 'hdflvvideoshare'); ?></h2>
                 <div style='background:#D0D0D0;list-style:none;width:850px;float:left'><p style='padding-left:6px'>
 Once you install "Wordpress video gallery" plugin, the page "Videos" will be created automatically. If you would like to display the video gallery on any other page or post, you can use the following plugin code.-
@@ -523,7 +533,11 @@ Both the video id and playlist id will generated automatically once you add new 
 You can use the plugin code with flashvars when you would like to display a player on any page/post with some specific settings.<br><br>
 
 [hdvideo id=3 flashvars="autoplay=true & zoom=false"] 
-                      </div><div style=clear:both></div>
+                      </div>
+
+
+                
+                <div style=clear:both></div>
                 <ul class="subsubsub">
                     <li>&nbsp;</li>
                 </ul>
@@ -623,6 +637,7 @@ You can use the plugin code with flashvars when you would like to display a play
         </div><script></script>
         <!-- Manage Playlist-->
         <div class="wrap">
+            
             <h2><?php _e('Playlist', 'hdflvvideoshare') ?> (<a href="<?php echo $this->base_page; ?>&mode=playlist"><?php _e('Add or Edit', 'hdflvvideoshare') ?></a>)</h2>
             <!--<p><?php //_e('You can show all videos files in a playlist. Show this playlist with the tag', 'hdflvvideoshare')  ?> <strong> [hdplay playlistid=id ]</strong></p> -->
             <form name="selectlist" method="post">
@@ -657,6 +672,10 @@ You can use the plugin code with flashvars when you would like to display a play
 ?>
                     <!-- Edit Video -->
                     <div class="wrap">
+                    <?php if($get_title != $get_key)    {  ?>
+                       <a href="http://www.apptha.com/shop/checkout/cart/add/product/12" target="_blank">
+                       <img src="<?php echo $site_url.'/wp-content/plugins/'.$folder.'/images/buynow.png';?>" style="float:right;margin-top: 10px;" width="125" height="28"  height="43" /></a>
+	        <?php } ?>
                         <h2> <?php _e('Edit Video File', 'hdflvvideoshare') ?> </h2>
                         <form name="table_options" method="post" id="video_options" enctype="multipart/form-data">
                             <div id="poststuff" class="has-right-sidebar">
@@ -884,8 +903,14 @@ You can use the plugin code with flashvars when you would like to display a play
 
                                            </script>
 
+            
+            
                                            <h2> <?php _e('Add a new video file', 'hdflv'); ?> </h2>
                                            <div id="poststuff" class="has-right-sidebar">
+                                              <?php if($get_title != $get_key)    {  ?>
+                                              <a href="http://www.apptha.com/shop/checkout/cart/add/product/12" target="_blank">
+                                              <img src="<?php echo $site_url.'/wp-content/plugins/'.$folder.'/images/buynow.png';?>" style="float:right;margin-top: 4px;" width="125" height="28"  height="43" /></a>
+	        								<?php  } ?>
                                                <div class="stuffbox" name="youtube" >
                                                    <h3 class="hndle"><span><input type="radio" name="agree" id="btn1" value="y" onClick="t1(this)" /> Upload file
                                                            <input type="radio" name="agree" id="btn2" value="c" checked ="checked" onClick="t1(this)" /> YouTube URL
@@ -1231,8 +1256,13 @@ You can use the plugin code with flashvars when you would like to display a play
 
                            <!-- Edit Playlist -->
                            <div class="wrap">
+                              <?php if($get_title != $get_key)    {  ?>
+                               <a href="http://www.apptha.com/shop/checkout/cart/add/product/12" target="_blank">
+                               <img src="<?php echo $site_url.'/wp-content/plugins/'.$folder.'/images/buynow.png';?>" style="float:right;margin-top: 10px;" width="125" height="28"  height="43" /></a>
+	                            <?php } ?>           
                                <h2><?php _e('Manage Playlist', 'hdflvvideoshare'); ?></h2>
                                <br class="clear"/>
+                               
                                <form id="editplist" name="editplist" action="<?php echo $this->base_page; ?>" method="post">
                                    <table class="widefat" cellspacing="0">
                                        <thead>
@@ -1276,6 +1306,7 @@ You can use the plugin code with flashvars when you would like to display a play
                            </div>
 
                            <div class="wrap">
+                                 
                                <div id="poststuff" class="metabox-holder">
                                    <div id="playlist_edit" class="stuffbox">
                                        <h3><?php

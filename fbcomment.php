@@ -1,12 +1,17 @@
 <?php
-/*
-Plugin URI: http://www.hdflvplayer.net/wordpress-video-gallery/
-Description: Contus Videos Share with the standard system of wordpress.
-Edited By: Saranya
-Version: 1.2
-wp-content\plugins\contus-hd-flv-player\themes\default\fbcomment.php
-Date : 29/3/2011
-*/
+/**
+ * @name          : Wordpress VideoGallery.
+ * @version	  : 1.3
+ * @package       : apptha
+ * @subpackage    : contus-video-galleryversion-10
+ * @author        : Apptha - http://www.apptha.com
+ * @copyright     : Copyright (C) 2011 Powered by Apptha
+ * @license	  : GNU General Public License version 2 or later; see LICENSE.txt
+ * @Purpose       : Facebook comments page.
+ * @Creation Date : Feb 21 2011
+ * @Modified Date : December 07 2011
+ * */
+
 require_once( dirname(__FILE__) . '/hdflv-config.php');
 global $wpdb;
 $vid = $_REQUEST['vid'];

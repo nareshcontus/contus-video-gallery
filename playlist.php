@@ -1,12 +1,16 @@
 <?php
-/*
-  Wordpress VideoGallery
-  Plugin URI: www.hdflvplayer.net/hdvideoshare-wordpress
-  Edited By: Saranya
-  version : 1.2
-  wp-content\plugins\hdvideoshare\manage.php
-  Date : 21/2/2011
- */
+/**
+ * @name          : Wordpress VideoGallery.
+ * @version	  : 1.3
+ * @package       : apptha
+ * @subpackage    : contus-video-galleryversion-10
+ * @author        : Apptha - http://www.apptha.com
+ * @copyright     : Copyright (C) 2011 Powered by Apptha
+ * @license	  : GNU General Public License version 2 or later; see LICENSE.txt
+ * @Purpose       : Create playlist for player
+ * @Creation Date : Fev 21 2011
+ * @Modified Date : December 07 2011
+ * */
 
 
 $contus = dirname(plugin_basename(__FILE__));
@@ -316,6 +320,8 @@ class HDFLVShareManage {
                            <!-- Edit Playlist -->
                            <div class="wrap">
                                <h2><?php _e('Manage Playlist', 'hdflvvideoshare'); ?></h2>
+                                <a href="http://www.apptha.com/shop/checkout/cart/add/product/12" target="_blank"><img src="http://192.168.1.25/wp_dev/slider_gallery/wp-content/plugins/contus-video-galleryversion-10/images/buynow.png" style="float:right;margin-top:10px" width="125" height="28"  height="43" /></a>
+	           
                                <br class="clear"/>
                                <form id="editplist" name="editplist" action="<?php echo $this->base_page; ?>" method="post">
                                    <table class="widefat" cellspacing="0">
@@ -596,6 +602,15 @@ class HDFLVShareManage {
                            <div class="wrap">
                                <h2><?php _e('Manage Playlist', 'hdflvvideoshare'); ?></h2>
                                <br class="clear"/>
+                                <?php 
+	    $folder   = dirname(plugin_basename(__FILE__));
+            $site_url = get_bloginfo('url');
+            $get_title = $wpdb->get_var("SELECT license FROM ".$wpdb->prefix."hdflvvideoshare_settings WHERE settings_id=1");
+            $get_key     = app_videogall_encrypt();
+            if($get_title != $get_key)        {            ?>
+            <a href="http://www.apptha.com/shop/checkout/cart/add/product/12" target="_blank"><img src="<?php echo $site_url.'/wp-content/plugins/'.$folder.'/images/buynow.png';?>" style="float:right;margin-bottom:3px" width="125" height="28"  height="43" /></a>
+            <?php  } ?>
+	          
                                <form id="editplist" name="editplist" action="<?php echo $this->base_page; ?>" method="post">
                                    <table class="widefat" cellspacing="0">
                                        <thead>

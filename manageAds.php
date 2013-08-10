@@ -1,13 +1,17 @@
 <?php
-/*
- * version : 1.3
- * Edited by : John THomas
- * Email : johnthomas@contus.in
- * Purpose : Common functions needed throughout the plugin
- * Path:/wp-content/plugins/wordpress-video-gallery/manage.php
- * Date:13/1/11
- *
- */
+
+/**
+ * @name          : Wordpress VideoGallery.
+ * @version	  : 1.3
+ * @package       : apptha
+ * @subpackage    : contus-video-galleryversion-10
+ * @author        : Apptha - http://www.apptha.com
+ * @copyright     : Copyright (C) 2011 Powered by Apptha
+ * @license	  : GNU General Public License version 2 or later; see LICENSE.txt
+ * @Purpose       : Common functions needed throughout the plugin
+ * @Creation Date : Fev 21 2011
+ * @Modified Date : December 07 2011
+ * */
 
 $contus = dirname(plugin_basename(__FILE__));
 $site_url = get_option('siteurl');
@@ -453,13 +457,21 @@ class HDVIDEOManageAds {
 
 // Generates retrieve request.
         $tables = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "hdflvvideoshare_vgads" . $join . $where . $orderby . "");
-?>
-
-        <!-- Manage Video-->
+            
+            $folder   = dirname(plugin_basename(__FILE__));
+            $site_url = get_bloginfo('url');
+            $get_title = $wpdb->get_var("SELECT license FROM ".$wpdb->prefix."hdflvvideoshare_settings WHERE settings_id=1");
+            $get_key     = app_videogall_encrypt($customerurl);
+          ?>
+      <!-- Manage Video-->
         <div class="wrap">
             <form name="filterType" method="post" id="posts-filter">
                 <h2><?php _e('Manage Ads', 'ads'); ?></h2>
-                <ul class="subsubsub">
+                <?php if($get_title != $get_key)   {  ?>
+                 <a href="http://www.apptha.com/shop/checkout/cart/add/product/12" target="_blank">
+                 <img src="<?php echo $site_url.'/wp-content/plugins/'.$folder.'/images/buynow.png';?>" style="float:right;margin-bottom:10px" width="125" height="28"  height="43" /></a>
+                 <?php } ?>
+	            <ul class="subsubsub">
                     <li>&nbsp;</li>
                 </ul>
                 <p class="search-box">

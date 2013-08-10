@@ -1,7 +1,7 @@
 <?php
 /*
   Plugin Name: Wordpress Video Gallery
-  Version: 1.2
+  Version: 1.3
   Plugin URI: http://www.apptha.com/category/extension/Wordpress/Video-Gallery
   Description: Simplifies the process of adding video to a WordPress blog. Powered by Apptha.
   Author: Apptha
@@ -73,7 +73,12 @@ function HDFLV_banner($content) {
     $returnPlayer = $pageObj->videosbanner($content);
     return $returnPlayer;
 }
-
+/* * ** CONDITION FOR INCLUDE PLAUGIN LAYOUT FROM THEMES. *** */
+$videoGalleryPath = get_template_directory() . '/html/contusvideogallery.php';
+if (file_exists($videoGalleryPath)) {
+//File include from current theme.
+    require_once($videoGalleryPath);
+} else {
 function HDFLV_homemainplayer() {
     global $wpdb;
     include_once("themes/default/home.php");
@@ -97,12 +102,6 @@ function HDFLV_homemainplayer() {
     }
 }
 
-/* * ** CONDITION FOR INCLUDE PLAUGIN LAYOUT FROM THEMES. *** */
-$videoGalleryPath = get_template_directory() . '/html/contusvideogallery.php';
-if (file_exists($videoGalleryPath)) {
-//File include from current theme.
-    require_once($videoGalleryPath);
-} else {
 
     function HDFLV_homepage() {
         global $wpdb;
@@ -331,7 +330,7 @@ function show_Sharemenu() {
                             . "',email='" . $_POST['email'] . "',fullscreen='" . $_POST['fullscreen'] . "',width='" . $_POST['width'] . "',height='" . $_POST['height']
                             . "',display_logo='" . $_POST['display_logo'] . "',uploads='" . $_POST['uploads'] . "',license='" . trim($_POST['license']) . "',ffmpeg_path='" . $_POST['ffmpeg_path']
                             . "',hideLogo='" . $_POST['hideLogo'] . "',keyApps ='" . $_POST['keyApps'] . "',preroll ='" . $_POST['preroll'] . "',postroll ='" . $_POST['postroll'] . "',feature='" . $_POST['feature'] . "',recent='" . $_POST['recent'] . "',popular='" . $_POST['popular']
-                            . "',rowsFea='" . $_POST['rowsFea'] . "',colFea='" . $_POST['colFea'] . "',rowsRec='" . $_POST['rowsRec'] . "',colRec='" . $_POST['colRec']
+                            . "',gutterspace='" . $_POST['gutterspace']. "',rowsFea='" . $_POST['rowsFea'] . "',colFea='" . $_POST['colFea'] . "',rowsRec='" . $_POST['rowsRec'] . "',colRec='" . $_POST['colRec']
                             . "',rowsPop='" . $_POST['rowsPop'] . "',colPop='" . $_POST['colPop'] . "',page='" . $_POST['page'] . "',category_page='" . $_POST['category_page'] . "',stylesheet='" . $_POST['stylesheet'] . "',homecategory='" . $_POST['homecategory'] . "',bannercategory='" . $_POST['bannercategory'] . "',banner_categorylist='" . $_POST['banner_categorylist'] . "',hbannercategory='" . $_POST['hbannercategory'] . "',hbanner_categorylist='" . $_POST['hbanner_categorylist']
                             . "',vbannercategory='" . $_POST['vbannercategory'] . "',vbanner_categorylist='" . $_POST['vbanner_categorylist']
                             . "',bannerw='" . $_POST['bannerw'] . "',playerw='" . $_POST['playerw'] . "',numvideos='" . $_POST['numvideos']
@@ -348,7 +347,7 @@ function show_Sharemenu() {
                                     . "," . $_POST['uploads'] . "," . $_POST['debug'] . "," . $_POST['timer'] . "," . $_POST['zoom'] . "," . $_POST['email']
                                     . "," . $_POST['fullscreen'] . "," . $_POST['width'] . "," . $_POST['height'] . "," . $_POST['display_logo'] . "," . $_POST['uploadurl'] . "," . trim($_POST['license'])
                                     . "," . $_POST['hideLogo'] . "," . $_POST['keyApps'] . "," . $_POST['preroll'] . "," . $_POST['postroll'] . "," . $_POST['feature'] . "," . $_POST['rowsFea'] . "," . $_POST['colFea']
-                                    . "," . $_POST['recent'] . "," . $_POST['rowsRec'] . "," . $_POST['colRec'] . "," . $_POST['ffmpeg_path']
+                                    . "," . $_POST['gutterspace'] . "," . $_POST['recent'] . "," . $_POST['rowsRec'] . "," . $_POST['colRec'] . "," . $_POST['ffmpeg_path']
                                     . "," . $_POST['popular'] . "," . $_POST['rowsPop'] . "," . $_POST['colPop'] . "," . $_POST['page'] . "," . $_POST['category_page'] . "," . $_POST['stylesheet'] . "," . $_POST['comment_option'] . "," . $_POST['rowCat'] . "," . $_POST['colCat'] . "," . $_POST['homecategory'] . "," . $_POST['bannercategory'] . "," . $_POST['banner_categorylist'] . "," . $_POST['vbannercategory'] . "," . $_POST['vbanner_categorylist']
                                     . "," . $_POST['bannerw'] . "," . $_POST['playerw'] . "," . $_POST['numvideos'] . ")");
                 }
@@ -440,11 +439,22 @@ function show_Sharemenu() {
                         $( this ).parents( ".portlet:first" ).find( ".portlet-content" ).toggle();
                     });
 
-                    //    $( ".column" ).disableSelection();
                 });
             </script>
 
             <div class="wrap">
+            <?php 
+             $folder   = dirname(plugin_basename(__FILE__));
+            $site_url = get_bloginfo('url');
+            $get_title = $wpdb->get_var("SELECT license FROM ".$wpdb->prefix."hdflvvideoshare_settings WHERE settings_id=1");
+          
+                  $get_key     = app_videogall_encrypt();
+                  if($get_title != $get_key)
+        {
+            ?>
+                <a href="http://www.apptha.com/shop/checkout/cart/add/product/12" target="_blank">
+                <img src="<?php echo $site_url.'/wp-content/plugins/'.$folder.'/images/buynow.png';?>" style="float:right;margin-top:10px" width="125" height="28"  height="43" /></a>
+	          <?php  } ?>             
                 <h2>Wordpress Video Gallery Settings</h2>
                 <form method="post" enctype="multipart/form-data" action="admin.php?page=hdflvvideoshare">
                     <div><p style="float:left">Welcome to the Wordpress Video Gallery Settings plugin options menu! &nbsp;&nbsp;
@@ -806,38 +816,12 @@ function show_Sharemenu() {
                                       <td><input type="text" name="numvideos" id="colRec" size="20" value="<?php echo $fetchSettings->numvideos; ?>"></td>
                                   </tr>
 
-
-
-
-
-
-
                                   <!--videos page banner settings-->
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                                   <!-- Popular Videos-->
+                                   <tr><th>Gutter Space (px)</th>
+                                      <td><input type="text" name="gutterspace" id="gutterspace" size="20" value="<?php echo $fetchSettings->gutterspace; ?>"></td>
+                                  </tr>
                                   <tr>
 
                                       <th>Popular Videos</th>
@@ -1074,19 +1058,8 @@ function show_Sharemenu() {
                           </div>
 
                       </div>
-                      <!--banner settings for pages> -->
-
-
-
-
-
-
-
-
-
-
-
-                      <!-- Language XML -->
+            <!--banner settings for pages> -->
+            <!-- Language XML -->
                       <div class="portlet">
                           <div class="portlet-header">Language Settings</div>
                           <div class="portlet-content">
@@ -1247,7 +1220,7 @@ function show_Sharemenu() {
                                       $insertSettings = $wpdb->query("INSERT INTO " . $wpdb->prefix . " hdflvvideoshare_settings
 		      VALUES (1,0,0,0,1,1,1,'platoon.jpg','http://www.hdflvplayer.net/',50,'LR',1,1,0,20,1,'0x000000',
                       'skin_black',0,'hdflvplayer/videourl.php','playXml',1,1,1,1,1,630,400,1,0,'wp-content/uploads','',
-                      'true','',0,0,'on', '3', '3', 'on', '3', '3', 'on', '3', '3', '3' ,'3','contus')");
+                      'true','',0,0,'on', '3', '3', 'on', '3', '3', 'on', '3', '3', '3' ,'3','contus','10')");
                                       $insertLanguage = $wpdb->query("INSERT INTO " . $wpdb->prefix . "hdflvvideoshare_language
 						VALUES (1,'play','pause','HD is On','HD is Off','Zoom','Share','Fullscreen','Related Videos',
                                                 'Share the Word','Send an Email','To','From','Note (Optional)','Send','Copy Link',
@@ -1324,6 +1297,100 @@ function show_Sharemenu() {
 (22, 17, 6, 0, 0),
 (23, 11, 4, 0, 0)");
                                   }
+                                  
+                                  
+    function app_videogall_encrypt() 
+	{
+
+		$code = genenrateOscdomain(); 
+		$app_videogall_getOffset = substr($code, 0, 25) . "CONTUS";
+		return $app_videogall_getOffset;
+		
+	}
+
+	function app_videogall_getOffset($tkey) {
+
+		$message = "EW-VGMP0EFIL9XEV8YZAL7KCIUQ6NI5OREH4TSEB3TSRIF2SI1ROTAIDALG-JW";
+
+		for ($i = 0; $i < strlen($tkey); $i++) {
+			$key_array[] = $tkey[$i];
+		}
+		$enc_message = "";
+		$kPos = 0;
+		$chars_str = "WJ-GLADIATOR1IS2FIRST3BEST4HERO5IN6QUICK7LAZY8VEX9LIFEMP0";
+		for ($i = 0; $i < strlen($chars_str); $i++) {
+			$chars_array[] = $chars_str[$i];
+		}
+		for ($i = 0; $i < strlen($message); $i++) {
+			$char = substr($message, $i, 1);
+
+			$offset = getOffset($key_array[$kPos], $char);
+			$enc_message .= $chars_array[$offset];
+			$kPos++;
+			if ($kPos >= count($key_array)) {
+				$kPos = 0;
+			}
+		}
+
+		return $enc_message;
+	}
+	 function license()
+	{
+	 return 'license';
+	}
+	 function getOffset($start, $end) {
+
+		$chars_str = "WJ-GLADIATOR1IS2FIRST3BEST4HERO5IN6QUICK7LAZY8VEX9LIFEMP0";
+		for ($i = 0; $i < strlen($chars_str); $i++) {
+			$chars_array[] = $chars_str[$i];
+		}
+
+		for ($i = count($chars_array) - 1; $i >= 0; $i--) {
+			$lookupObj[ord($chars_array[$i])] = $i;
+		}
+
+		$sNum = $lookupObj[ord($start)];
+		$eNum = $lookupObj[ord($end)];
+
+		$offset = $eNum - $sNum;
+
+		if ($offset < 0) {
+			$offset = count($chars_array) + ($offset);
+		}
+
+		return $offset;
+	}
+
+	 function genenrateOscdomain() {
+	
+            $site_url = get_bloginfo('url');
+            $strDomainName = $site_url;
+            preg_match("/^(http:\/\/)?([^\/]+)/i", $strDomainName, $subfolder);
+            preg_match("/(?P<domain>[a-z0-9][a-z0-9\-]{1,63}\.[a-z\.]{2,6})$/i", $subfolder[2], $matches);
+          if (isset($matches['domain'])) {
+			$customerurl = $matches['domain'];
+		} else {
+			$customerurl = "";
+		}
+		$customerurl = str_replace("www.", "", $customerurl);
+		$customerurl = str_replace(".", "D", $customerurl);
+		$customerurl = strtoupper($customerurl);
+		if (isset($matches['domain'])) {
+			$response = app_videogall_getOffset($customerurl);
+		} else {
+			$response = "";
+		}
+		return $response;
+	}                         
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  
 
                                   /* Function to uninstall player plugin */
 
@@ -1366,17 +1433,17 @@ function show_Sharemenu() {
                                       $homeDelete = $wpdb->get_results($homeDel);
                                   }
 
-                                  register_uninstall_hook(__FILE__, 'hdflv_Sharedeactivate');
+                                  //register_uninstall_hook(__FILE__, 'hdflv_Sharedeactivate');
 
 // CONTENT FILTER
 
                                   add_filter('the_content', 'HDFLV_ShareParse');
 
 // OPTIONS MENU
-
                                   add_action('admin_menu', 'HDFLVShareAddPage');
+                                  register_uninstall_hook(__FILE__, 'videopluginUninstalling');
 
-                                  register_deactivation_hook(__FILE__, 'videopluginUninstalling');
+                                 // register_deactivation_hook(__FILE__, 'videopluginUninstalling');
 
 //DeActivate Plugin
 

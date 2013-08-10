@@ -1,12 +1,17 @@
 <?php
-/*
- Description: Wordpress Video Gallery.
- Edited By: Saranya
- Version: 1.0
- Plugin URI: http://www.hdflvplayer.net/wordpress-video-gallery/
- wp-content\plugins\contus-hd-flv-player\themes\default\contusMore.php
- Date : 21/2/1511
- */
+/**
+ * @name          : Wordpress VideoGallery.
+ * @version	  : 1.3
+ * @package       : apptha
+ * @subpackage    : contus-video-galleryversion-10
+ * @author        : Apptha - http://www.apptha.com
+ * @copyright     : Copyright (C) 2011 Powered by Apptha
+ * @license	  : GNU General Public License version 2 or later; see LICENSE.txt
+ * @Purpose       : Increase the hitcounts for the video.
+ * @Creation Date : Feb 21 2011
+ * @Modified Date : December 07 2011
+ * */
+
 
 $site_url = get_bloginfo('url');
 $dir = dirname(plugin_basename(__FILE__));
@@ -56,7 +61,7 @@ if ($styleSheet == 'contus') {
 			$moreName = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content='[videomore]' and post_status='publish' and post_type='page' limit 1");
 			$pageFetch = $wpdb->get_row("SELECT page FROM " . $wpdb->prefix . "hdflvvideoshare_settings");
 			$limit = $pageFetch->page;
-                        	$configXML = $wpdb->get_row("SELECT configXML,width,height FROM " . $wpdb->prefix . "hdflvvideoshare_settings");
+            $configXML = $wpdb->get_row("SELECT configXML,width,height,gutterspace  FROM " . $wpdb->prefix . "hdflvvideoshare_settings");
 			// Featured Videos listing Starts
 			$settingsFetch = $wpdb->get_row("SELECT * FROM " . $wpdb->prefix . "hdflvvideoshare_settings");
 			$feaSet = $settingsFetch->feature;
@@ -71,7 +76,7 @@ if ($styleSheet == 'contus') {
 			$options = get_option('HDFLVSettings');
 			$more = $_REQUEST['more'];
 			if ($more == 'fea') {
-				$div .='<div><h3 class="more_title">Featured Videos</h3>';
+				$div .='<div><h1 class="entry-title">Featured Videos</h1>';
                            
 				/* Find the start depending on $_GET['page'] (declared if it's null) */
 				$start = self::findStart($limit);
@@ -87,7 +92,7 @@ if ($styleSheet == 'contus') {
 				// were there any posts found?
 				$features = $wpdb->get_results("select * from " . $wpdb->prefix . "hdflvvideoshare WHERE featured='ON'  ORDER BY vid DESC LIMIT " . $start . "," . $limit . "");
 				// were there any posts found?
-
+$div .= '<style> .video-block { padding-right:'.$configXML->gutterspace.'px } </style>';
 				if (!empty($features)) {
 					// posts were found, loop through them
 
@@ -268,10 +273,10 @@ if ($styleSheet == 'contus') {
 			$dirPage = $dirExp[0];
 			$vPageID = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content='[video]' and post_status='publish' and post_type='page' limit 1");
 			$moreName = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content='[videomore]' and post_status='publish' and post_type='page' limit 1");
-			$pageFetch = $wpdb->get_row("SELECT page,ffmpeg_path FROM " . $wpdb->prefix . "hdflvvideoshare_settings");
+			$pageFetch = $wpdb->get_row("SELECT page,ffmpeg_path,gutterspace FROM " . $wpdb->prefix . "hdflvvideoshare_settings");
 			$limit = $pageFetch->page;
 
-                        $settingsFetch = $wpdb->get_row("SELECT * FROM " . $wpdb->prefix . "hdflvvideoshare_settings");
+            $settingsFetch = $wpdb->get_row("SELECT * FROM " . $wpdb->prefix . "hdflvvideoshare_settings");
 			$rowR = $settingsFetch->rowsRec;
 			$colR = $settingsFetch->colRec;
 			$more = $_REQUEST['more'];
@@ -300,6 +305,8 @@ if ($styleSheet == 'contus') {
 					} else if (($show == $countR)) {
 						$div .='<div style="float:right"> </div>';
 					}
+					$div .= '<style> .video-block { padding-right:'.$pageFetch->gutterspace.'px } </style>';
+					
 					foreach ($posts as $post) {
 						$imageRec[$l] = $post->image; //video Image
                                                 $duration[$l]= $post->duration;
@@ -313,6 +320,7 @@ if ($styleSheet == 'contus') {
 						$l++;
 					}
 					$div .= '<div>';
+					
 					for ($l = 0; $l < count($posts); $l++) {
 						if (($l % $colR) == 0) {
 							$rowCount++;
@@ -468,7 +476,7 @@ if ($styleSheet == 'contus') {
 			$pageFetch = $wpdb->get_row("SELECT page FROM " . $wpdb->prefix . "hdflvvideoshare_settings");
 			$limit = $pageFetch->page;
 			$more = $_REQUEST['more'];
-                        $configXML = $wpdb->get_row("SELECT configXML,width,height FROM " . $wpdb->prefix . "hdflvvideoshare_settings");
+            $configXML = $wpdb->get_row("SELECT configXML,width,height,gutterspace FROM " . $wpdb->prefix . "hdflvvideoshare_settings");
 			$settingsFetch = $wpdb->get_row("SELECT * FROM " . $wpdb->prefix . "hdflvvideoshare_settings");
 			$rowP = $settingsFetch->rowsPop; //row field of popular videos
 			$colP = $settingsFetch->colPop; //column field of popular videos
@@ -476,7 +484,7 @@ if ($styleSheet == 'contus') {
 
 			if ($more == 'pop') {
 
-				$div = '<div> <h3 class="more_title">Popular Videos</h3>';
+				$div = '<div> <h1 class="entry-title">Popular Videos</h1>';
 
 				/* Find the start depending on $_GET['page'] (declared if it's null) */
 				$start = self::findStart($limit);
@@ -491,7 +499,8 @@ if ($styleSheet == 'contus') {
 				$result = mysql_query("select * from " . $wpdb->prefix . "hdflvvideoshare ORDER BY hitcount DESC  LIMIT " . $start . "," . $limit . "");
 
 				$populars = $wpdb->get_results("select * from " . $wpdb->prefix . "hdflvvideoshare ORDER BY hitcount DESC LIMIT " . $start . "," . $limit . "");
-
+	$div .= '<style> .video-block { padding-right:'.$configXML->gutterspace.'px } </style>';
+					
 				// were there any posts found?
 				if (!empty($populars)) {
 					//$div .='<h3 class="more_title"><a href="' . $site_url . '/?page_id=' . $moreName . '&more=pop">Popular Videos</a>';
@@ -502,6 +511,7 @@ if ($styleSheet == 'contus') {
 					}
 					// posts were found, loop through them
 					$k = 0;
+				
 					foreach ($populars as $popular) {
                                                $duration[$k] = $popular->duration;
 						$imagePop[$k] = $popular->image; //video Image
@@ -663,7 +673,7 @@ if ($styleSheet == 'contus') {
 			$dirPage = $dirExp[0];
 			$vPageID = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content='[video]' and post_status='publish' and post_type='page' limit 1");
 			$moreName = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content='[videomore]' and post_status='publish' and post_type='page' limit 1");
-			$pageFetch = $wpdb->get_row("SELECT page FROM " . $wpdb->prefix . "hdflvvideoshare_settings");
+			$pageFetch = $wpdb->get_row("SELECT page,gutterspace FROM " . $wpdb->prefix . "hdflvvideoshare_settings");
 			$limit = $pageFetch->page;
 			$more = $_REQUEST['more'];
 			//Search Videos listing Starts
@@ -691,7 +701,8 @@ if ($styleSheet == 'contus') {
 
 				$relatedSearch = $wpdb->get_results($fetch_video . " LIMIT " . $start . "," . $limit . "");
 				$playlist = $wpdb->get_var("SELECT playlist_name FROM " . $wpdb->prefix . "hdflvvideoshare_playlist WHERE pid = '$getPlaylist'");
-				$div = '<div> <h3> ' . $playlist . ' Videos</h3>';
+				$div = '<div> <h1> ' . $playlist . ' Videos</h1>';
+				$div .= '<style> .video-block { padding-right:'.$pageFetch->gutterspace.'px } </style>';
 				//print_r($relatedSearch);
 				if (!empty($relatedSearch)) {
 					// posts were found, loop through them
@@ -852,7 +863,7 @@ $div .='</div>';
 			$dirPage = $dirExp[0];
 			$vPageID = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content='[video]' and post_status='publish' and post_type='page' limit 1");
 			$moreName = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content='[videomore]' and post_status='publish' and post_type='page' limit 1");
-			$pageFetch = $wpdb->get_row("SELECT page,category_page FROM " . $wpdb->prefix . "hdflvvideoshare_settings");
+			$pageFetch = $wpdb->get_row("SELECT page,category_page,gutterspace FROM " . $wpdb->prefix . "hdflvvideoshare_settings");
 
 			$more = $_REQUEST['more'];
 			//Search Videos listing Starts
@@ -860,13 +871,15 @@ $div .='</div>';
 				$limit = $pageFetch->category_page;
 				$start = self::findStart($limit);
 				$div .='<div>
-                                  <h3 class="more_title">Video Categories</h3></div>';
+                                  <h1 class="entry-title">Video Categories</h1></div>';
 				$catsql = "SELECT * FROM " . $wpdb->prefix . "hdflvvideoshare_playlist LIMIT " . $start . "," . $limit . "";
 				$catLists = $wpdb->get_results($catsql);
 				$sql = "SELECT * FROM " . $wpdb->prefix . "hdflvvideoshare_playlist";
 				$countLists = $wpdb->get_results($sql);
 				$count = count($countLists);
 				$pages = self::findPages($count, $limit);
+				$div .= '<style> .video-block { padding-right:'.$pageFetch->gutterspace.'px } </style>';
+				
 				foreach ($catLists as $catList) {
 
 					$sql = "SELECT * FROM " . $wpdb->prefix . "hdflvvideoshare as w INNER JOIN " . $wpdb->prefix . "hdflvvideoshare_med2play as m ON m.media_id = w.vid INNER JOIN " . $wpdb->prefix . "hdflvvideoshare_playlist as p on m.playlist_id = p.pid WHERE m.playlist_id=" . $catList->pid . "";
@@ -880,6 +893,7 @@ $div .='</div>';
 						$i = '0';
 						$catL = 4;
 						$inc =1;
+						
 						foreach ($playLists as $playList) {
 
 							$duration = $playList->duration; 
@@ -961,12 +975,12 @@ $div .='</div>';
 
 				$pageFetch = $wpdb->get_row("SELECT page FROM " . $wpdb->prefix . "hdflvvideoshare_settings");
 				$div .='<div>
-         <h3 class="more_title">Video Categories</h3><div>';
+         <h1 class="entry-title">Video Categories</h1><div>';
 				$catsql = "SELECT * FROM " . $wpdb->prefix . "hdflvvideoshare_playlist WHERE pid=" . $_REQUEST['playid'] . "";
 				$catLists = $wpdb->get_results($catsql);				
 				foreach ($catLists as $catList) {
 					$div .='<div>
-                    <h4 class="more_title">' . $catList->playlist_name . '</h4><div>';
+                    <h1 class="entry-title">' . $catList->playlist_name . '</h1><div>';
 					$limit = $pageFetch->page;
 					$start = self::findStart($limit);
 					$sql = "SELECT * FROM " . $wpdb->prefix . "hdflvvideoshare as w INNER JOIN " . $wpdb->prefix . "hdflvvideoshare_med2play as m ON m.media_id = w.vid INNER JOIN " . $wpdb->prefix . "hdflvvideoshare_playlist as p on m.playlist_id = p.pid WHERE m.playlist_id=" . $catList->pid . " group by m.media_id LIMIT " . $start . "," . $limit . "";
