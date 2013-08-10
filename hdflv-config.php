@@ -1,16 +1,13 @@
 <?php
-/**
- * @name          : Wordpress VideoGallery.
- * @version	  : 1.3
- * @package       : apptha
- * @subpackage    : contus-video-galleryversion-10
- * @author        : Apptha - http://www.apptha.com
- * @copyright     : Copyright (C) 2011 Powered by Apptha
- * @license	  : GNU General Public License version 2 or later; see LICENSE.txt
- * @Purpose       : Loads the wodpress configuration to the plugin.
- * @Creation Date : Feb 21 2011
- * @Modified Date : December 07 2011
- * */
+/*
+Name: Wordpress Video Gallery
+Plugin URI: http://www.apptha.com/category/extension/Wordpress/Video-Gallery
+Description: Wordpress Video Gallery plugin config file.
+Version: 2.0
+Author: Apptha
+Author URI: http://www.apptha.com
+License: GPL2
+*/
 
 
 

@@ -1,30 +1,20 @@
 <?php
-
-/**
- * @name          : Wordpress VideoGallery.
- * @version	  : 1.3
- * @package       : apptha
- * @subpackage    : contus-video-galleryversion-10
- * @author        : Apptha - http://www.apptha.com
- * @copyright     : Copyright (C) 2011 Powered by Apptha
- * @license	  : GNU General Public License version 2 or later; see LICENSE.txt
- * @Purpose       : Create ads for player
- * @Creation Date : Fev 21 2011
- * @Modified Date : December 07 2011
- * */
+/*
+Name: Wordpress Video Gallery
+Plugin URI: http://www.apptha.com/category/extension/Wordpress/Video-Gallery
+Description: AdsXML file for player.
+Version: 2.0
+Author: Apptha
+Author URI: http://www.apptha.com
+License: GPL2
+*/
 
 /* Used to import plugin configuration */
 require_once( dirname(__FILE__) . '/hdflv-config.php');
 
 // get the path url from querystring
 $playlist_id = $_GET['pid'];
-
-function get_out_now() {
-    exit;
-}
-
-add_action('shutdown', 'get_out_now', -1);
-
+  
 global $wpdb;
 
 $title = 'hdflv Adslist';

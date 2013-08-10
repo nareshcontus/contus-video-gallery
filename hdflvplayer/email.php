@@ -1,24 +1,19 @@
 <?php
 /*
-* "ContusHDVideoShare Component" - Version 1.3
-* Author: Contus Support - http://www.contussupport.com
-* Copyright (c) 2010 Contus Support - support@hdvideoshare.net
-* License: GNU/GPL http://www.gnu.org/copyleft/gpl.html
-* Project page and Demo at http://www.hdvideoshare.net
-* Creation Date: March 30 2011
+Name: Wordpress Video Gallery
+Plugin URI: http://www.apptha.com/category/extension/Wordpress/Video-Gallery
+Description: email file for player.
+Version: 2.0
+Author: Apptha
+Author URI: http://www.apptha.com
+License: GPL2
 */
 
 $to = $_POST['to'];
 $from = $_POST['from'];
 $url = $_POST['url'];
 $subject = $_POST['Note'];
-
-
-
-
-
-
-
+ 
 
 // variables are sent to this PHP page through
 // the POST method.  POST is a global associative array
@@ -26,7 +21,6 @@ $subject = $_POST['Note'];
 // can get the values sent to this page from Flash and
 // assign them to appropriate variables which can be used
 // in the PHP mail() function.
-
 
 // header information not including sendTo and Subject
 // these all go in one variable.  First, include From:
@@ -44,7 +38,6 @@ $headers .= "Return-path: " . $_POST['from'];
 
 $message = $_POST['Note'] . "\n\n";
 $message .= "Video URL: " . $url;
-
 
 
 // once the variables have been defined, they can be included
