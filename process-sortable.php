@@ -1,7 +1,17 @@
 <?php
-/* This is where you would inject your sql into the database 
-   but we're just going to format it and send it back
-*/
+/**
+ * @name          : Wordpress VideoGallery.
+ * @version	      : 1.5
+ * @package       : apptha
+ * @subpackage    : contus-video-galleryversion-10
+ * @author        : Apptha - http://www.apptha.com
+ * @copyright     : Copyright (C) 2011 Powered by Apptha
+ * @license	      : GNU General Public License version 2 or later; see LICENSE.txt
+ * @Purpose       : For Sortable Process
+ * @Creation Date : Fev 21 2011
+ * @Modified Date : Jul 19, 2012
+ * */
+
 require_once( dirname(__FILE__) . '/hdflv-config.php');
 
 // get the path url from querystring

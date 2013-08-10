@@ -1,7 +1,7 @@
 <?php
 /*
   Plugin Name: Wordpress Video Gallery
-  Version: 1.3
+  Version: 1.5
   Plugin URI: http://www.apptha.com/category/extension/Wordpress/Video-Gallery
   Description: Simplifies the process of adding video to a WordPress blog. Powered by Apptha.
   Author: Apptha

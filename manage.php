@@ -1,14 +1,15 @@
 <?php
 /**
  * @name          : Wordpress VideoGallery.
- * @version	  : 1.3
+ * @version	  	  : 1.5
  * @package       : apptha
  * @subpackage    : contus-video-galleryversion-10
  * @author        : Apptha - http://www.apptha.com
  * @copyright     : Copyright (C) 2011 Powered by Apptha
- * @license	  : GNU General Public License version 2 or later; see LICENSE.txt
- * @Creation Date : Fev 21 2011
- * @Modified Date : December 07 2011
+ * @license	      : GNU General Public License version 2 or later; see LICENSE.txt
+ * @Purpose       : Common function need throughout the plugin.
+ * @Creation Date : Feb 21, 2011
+ * @Modified Date : Jul 19, 2012
  * */
 $contus = dirname(plugin_basename(__FILE__));
 $site_url = get_option('siteurl');
@@ -139,7 +140,7 @@ $site_url = get_option('siteurl');
     function submitUploadForm(form_handle)
     {
         document.forms[form_handle].target = "uploadvideo_target";
-        document.forms[form_handle].action = "../wp-content/plugins/<?php echo $contus; ?>/upload1.php?processing=1";
+        document.forms[form_handle].action = "../wp-content/plugins/<?php echo $contus; ?>/upload1.php?processing=1&token=<?php echo md5(DB_NAME); ?>";
         document.forms[form_handle].submit();
     }
     function setStatus(form_handle,status)
@@ -443,8 +444,60 @@ class HDFLVShareManage {
                $thumurlmyfile= $_FILES["thumurlmyfile"];
                $preimgurlmyfile= $_FILES["preimgurlmyfile"];
                $linkurlmyfile= $_FILES["linkurlmyfile"];
-            hd_update_media($this->act_vid,$videourlmyfile,$hdurlmyfile,$thumurlmyfile,$preimgurlmyfile,$linkurlmyfile);
-            $this->mode = 'main';
+               $allExt = array();
+               
+            if($videourlmyfile['name'] != '' || $hdurlmyfile['name'] != ''){
+            	$allowedExtensions = array("MP4", "M4V", "M4A", "MOV", "Mp4v" ,"F4V","FLV",
+            							   "mp4", "m4v", "m4a", "mov", "Mp4v" ,"f4v","flv");	
+            	if($videourlmyfile['name']){
+                if(in_array(end(explode(".", $videourlmyfile['name'])), $allowedExtensions)){
+            		$allExt[1] = true;
+            	}else{
+            		$allExt[2] = '0';
+            	}
+            	}
+            	if($hdurlmyfile['name']){
+            	if (in_array(end(explode(".", $hdurlmyfile['name'])), $allowedExtensions)){
+            		$allExt[3] = true;
+            	}else{
+            		$allExt[4] = '0';	
+            	}
+            	}
+            }   
+            
+            if($thumurlmyfile['name'] != '' || $preimgurlmyfile['name'] != ''){
+ 			$allowedExtensions = array("jpg", "jpeg", "png", "gif",
+ 									   "JPG", "JPEG", "PNG", "GIF");
+ 			if($thumurlmyfile['name']){
+	 			if(in_array(end(explode(".", $thumurlmyfile['name'])), $allowedExtensions)){
+	 				$allExt[5] = true;
+	 			}else{
+	 				$allExt[6] = '0';
+	 			}
+ 			}
+ 			if($preimgurlmyfile['name']){
+	 			if (in_array(end(explode(".", $preimgurlmyfile['name'])), $allowedExtensions)){
+	 				$allExt[7] = true;
+	 			}else{
+	 				$allExt[8] = '0';
+	 			}
+            }            
+            }
+
+            if(count($allExt)>0){
+            	$result = array_search('0', $allExt);
+
+            	if($result != ''){
+            		echo '<div class="error"><p>Warning - Invalid File Type Uploaded!</p></div>';
+            	}else{
+            		hd_update_media($this->act_vid,$videourlmyfile,$hdurlmyfile,$thumurlmyfile,$preimgurlmyfile,$linkurlmyfile);
+		            $this->mode = 'main';
+            	}
+            }else{
+		            hd_update_media($this->act_vid,$videourlmyfile,$hdurlmyfile,$thumurlmyfile,$preimgurlmyfile,$linkurlmyfile);
+		            $this->mode = 'main';
+            }
+
         }
         if (isset($_POST['cancel']) || isset($_POST['search']))
             $this->mode = 'main';
