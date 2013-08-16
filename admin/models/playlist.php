@@ -3,7 +3,7 @@
 Name: Wordpress Video Gallery
 Plugin URI: http://www.apptha.com/category/extension/Wordpress/Video-Gallery
 Description: playlist model file.
-Version: 2.1
+Version: 2.2
 Author: Apptha
 Author URI: http://www.apptha.com
 License: GPL2
@@ -59,10 +59,6 @@ if (class_exists('PlaylistModel') != true) {//checks the VideoadModel class has 
             return $this->_wpdb->get_results($query);
         }
 
-        public function get_playlistorderdata() {//function for getting search playlist starts
-            $query = "SELECT ordering FROM " . $this->_playlisttable . $where . " ORDER BY pid desc LIMIT 1";
-            return $this->_wpdb->get_var($query);
-        }
 
 //function for getting search playlist ends
 

@@ -2,7 +2,7 @@
 Name: Wordpress Video Gallery
 Plugin URI: http://www.apptha.com/category/extension/Wordpress/Video-Gallery
 Description: Skins css file
-Version: 2.1
+Version: 2.2
 Author: Apptha
 Author URI: http://www.apptha.com
 License: GPL2
@@ -23,7 +23,11 @@ License: GPL2
     height: 17px;
     cursor: pointer;
     float: right;
-    background: transparent url('../images/arrow_right-rel.png') no-repeat 0 0;
+    background: #FFF url('../images/arrow_right-rel.png') no-repeat center;
+padding: 2px;
+-webkit-border-radius: 2px;
+-moz-border-radius: 2px;
+border-radius: 2px;
 }
 .jcarousel-skin-tango .jcarousel-prev-horizontal {
     position: absolute;
@@ -32,7 +36,11 @@ License: GPL2
     width: 6px;
     height: 17px;
     cursor: pointer;
-    background: transparent url('../images/arrow_left-rel.png') no-repeat 0 0;
+    background:  #FFF url('../images/arrow_left-rel.png') no-repeat center;
+padding: 2px;
+-webkit-border-radius: 2px;
+-moz-border-radius: 2px;
+border-radius: 2px;
 }
 .jcarousel-skin-tango .jcarousel-next-disabled-horizontal, 
 .jcarousel-skin-tango .jcarousel-prev-disabled-horizontal{

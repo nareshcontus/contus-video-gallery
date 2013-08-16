@@ -3,7 +3,7 @@
 Name: Wordpress Video Gallery
 Plugin URI: http://www.apptha.com/category/extension/Wordpress/Video-Gallery
 Description: Video detail and short tag page model file.
-Version: 2.1
+Version: 2.2
 Author: Apptha
 Author URI: http://www.apptha.com
 License: GPL2
@@ -36,7 +36,7 @@ if(class_exists('ContusShortcode') != true)
                 . " ON t3.pid = t2.playlist_id"
                 . " LEFT JOIN " . $wpdb->prefix . "hdflvvideoshare_tags AS t4"
                 . " ON t1.vid = t4.media_id"
-                . " WHERE t1.publish='1' and t3.is_publish='1' and t1.vid='" . intval($vid) . "' limit 1");
+                . " WHERE t1.publish='1' AND t3.is_publish='1' AND t1.vid='" . intval($vid) . "' LIMIT 1");
            return $video_count;
         }//function for getting Tag name ends
 
@@ -47,7 +47,7 @@ if(class_exists('ContusShortcode') != true)
                 . " FROM " . $wpdb->prefix . "hdflvvideoshare_playlist AS t3"
                 . " LEFT JOIN  ". $wpdb->prefix . "hdflvvideoshare_med2play AS t2"
                 . " ON t3.pid = t2.playlist_id"
-                . " WHERE t3.is_publish='1' and t2.media_id='" . intval($vid) . "'");
+                . " WHERE t3.is_publish='1' AND t2.media_id='" . intval($vid) . "'");
            return $video_count;
         }//function for getting Tag name ends
         

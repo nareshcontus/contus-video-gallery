@@ -3,7 +3,7 @@
   Name: Wordpress Video Gallery
   Plugin URI: http://www.apptha.com/category/extension/Wordpress/Video-Gallery
   Description: Add video view file.
-  Version: 2.1
+  Version: 2.2
   Author: Apptha
   Author URI: http://www.apptha.com
   License: GPL2
@@ -17,6 +17,13 @@ $contus = dirname(plugin_basename(__FILE__));
 if (isset($_GET['videoId']))
     $act_vid = (int) $_GET['videoId'];
 ?>
+<?php  if ($displayMsg): ?>
+                <div class="updated below-h2">
+                <p>
+                <?php echo $displayMsg; ?>
+                </p>
+                </div>
+                <?php endif; ?>
 <div class="apptha_gallery">
 <div class="wrap">
     <script type="text/javascript" src="../wp-content/plugins/contus-video-gallery/admin/js/jquery-1.3.2.min.js"></script>
@@ -88,7 +95,7 @@ if (isset($_GET['videoId']))
                 <div id="youtube" class="rtmp_inside inside" >
                     <table class="form-table">
                         <tr>
-                            <th scope="row"><?php _e('URL to video file', 'video_gallery') ?></th>
+                            <th scope="row"><?php _e('Video URL', 'video_gallery') ?></th>
                             <td class="rtmp_td"><input type="text" size="50" name="filepath" value="<?php
         if (isset($videoEdit->file_type)
 
@@ -96,8 +103,8 @@ if (isset($_GET['videoId']))
                 echo $videoEdit->link
         ?>" id="filepath1" onkeyup="generate12(this.value);" />&nbsp;&nbsp<input id="generate" type="submit" name="youtube_media" class="button-primary" value="<?php _e('Generate details', 'video_gallery'); ?>" />
                                 <span id="Youtubeurlmessage" style="display: block; "></span>
-                                <p><?php _e('Here you need to enter the URL to the video file', 'video_gallery') ?></p>
-                                <p><?php _e('It accept also a Youtube link: http://www.youtube.com/watch?v=tTGHCRUdlBs', 'video_gallery') ?></p>
+                                <p><?php _e('Here you need to enter the video URL', 'video_gallery') ?></p>
+                                <p><?php _e('It accepts Youtube links like : http://www.youtube.com/watch?v=tTGHCRUdlBs or http://youtu.be/tTGHCRUdlBs', 'video_gallery') ?></p>
                             </td>
                         </tr>
                     </table>
@@ -135,7 +142,7 @@ if (isset($_GET['videoId']))
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th scope="row"><?php _e('URL to video file', 'video_gallery') ?></th>
+                                    <th scope="row"><?php _e('Video URL', 'video_gallery') ?></th>
                                     <td class="rtmp_td"><input type="text" size="50" name="filepath2" id="filepath2" value="<?php
                                                if (isset($videoEdit->file_type)
 
@@ -143,19 +150,19 @@ if (isset($_GET['videoId']))
                                                        echo $videoEdit->file
         ?>"/>
                                                 <span id="videourlmessage" style="display: block;"></span>
-                                                <p><?php _e('Here you need to enter the URL to the video file', 'video_gallery') ?></p>
+                                                <p><?php _e('Here you need to enter the video URL', 'video_gallery') ?></p>
                                         </td></tr>
-                                        <tr id="hdvideourl"><th scope="row"><?php _e('URL to HD video file(optional)', 'video_gallery') ?></th>
+                                        <tr id="hdvideourl"><th scope="row"><?php _e('HD Video URL (Optional)', 'video_gallery') ?></th>
                                             <td class="rtmp_td"><input type="text" size="50" name="filepath3" id="filepath3" value="<?php
                                                        if (isset($videoEdit->file_type)
 
                                                            )if ($videoEdit->file_type == 3 || $videoEdit->file_type == 4)
                                                                echo $videoEdit->hdfile
-        ?>"/>
-                                                        <p><?php _e('Here you need to enter the URL to the HD video file', 'video_gallery') ?></p>
+        ?>"/><span id="videohdurlmessage" style="display: block;"></span>
+                                                        <p><?php _e('Here you need to enter the HD video URL ', 'video_gallery') ?></p>
                                                     </td>
                                                 </tr>
-                                                <tr><th scope="row"><?php _e('URL to Thumb image file', 'video_gallery') ?></th>
+                                                <tr><th scope="row"><?php _e('Thumb Image URL', 'video_gallery') ?></th>
                                                     <td class="rtmp_td"><input type="text" size="50" name="filepath4" id="filepath4" value="<?php
                                                                if (isset($videoEdit->file_type)
 
@@ -163,17 +170,17 @@ if (isset($_GET['videoId']))
                                                                        echo $videoEdit->image
         ?>"/>
                                                                 <span id="thumburlmessage" style="display: block;"></span>
-                                                                <p><?php _e('Here you need to enter the URL to the image file', 'video_gallery') ?></p>
+                                                                <p><?php _e('Here you need to enter the URL of thumb image', 'video_gallery') ?></p>
                                                         </td>
                                                         </tr>
-                                                        <tr><th scope="row"><?php _e('URL to Thumb Preview image file(Optional)', 'video_gallery') ?></th>
+                                                        <tr><th scope="row"><?php _e('Preview Image URL (Optional)', 'video_gallery') ?></th>
                                                             <td class="rtmp_td"><input type="text" size="50" name="filepath5" id="filepath5" value="<?php
                                                                        if (isset($videoEdit->file_type)
 
                                                                            )if ($videoEdit->file_type == 3 || $videoEdit->file_type == 4)
                                                                                echo $videoEdit->opimage
-        ?>"/>
-                                                                       <p><?php _e('Here you need to enter the URL to the Preview image file', 'video_gallery') ?></p>
+        ?>"/><span id="previewurlmessage" style="display: block;"></span>
+                                                                       <p><?php _e('Here you need to enter the URL of preview image', 'video_gallery') ?></p>
                                                                     </td>
                                                                 </tr>
                                                             </table>
@@ -183,7 +190,7 @@ if (isset($_GET['videoId']))
                                                     <div id="upload2" class="inside" style="margin:15px;">
                 <?php _e('<b>Supported video formats:</b>( MP4, M4V, M4A, MOV, Mp4v or F4V)', 'video_gallery') ?>
                                                                                <table class="form-table">
-                                                                                   <tr id="ffmpeg_disable_new1" name="ffmpeg_disable_new1"><td><?php _e('Upload Video', 'video_gallery') ?></td>
+                                                                                   <tr id="ffmpeg_disable_new1" name="ffmpeg_disable_new1"><td style="vertical-align: middle;"><?php _e('Upload Video', 'video_gallery') ?></td>
                                                                                        <td>
                                                                                            <div id="f1-upload-form" >
                                                                                                <form name="normalvideoform" method="post" enctype="multipart/form-data" >
@@ -194,7 +201,7 @@ if (isset($_GET['videoId']))
                                                                                    echo $videoEdit->file; ?></label>
                                                                                                </form>
                                                                                            </div>
-                                                                                           <span id="uploadmessage" style="display: block; margin-top:10px;margin-left:300px;color:red;font-size:12px;font-weight:bold;"></span>
+                                                                                           <span id="uploadmessage" style="display: block; margin-top:10px;color:red;font-size:12px;font-weight:bold;"></span>
                                                                                            <div id="f1-upload-progress" style="display:none">
                                                                                                <div style="float:left"><img id="f1-upload-image" src="<?php echo get_option('siteurl') . '/wp-content/plugins/contus-video-gallery/images/empty.gif' ?>" alt="Uploading"  style="padding-top:2px"/>
                                                                                                    <label style="padding-top:0px;padding-left:4px;font-size:14px;font-weight:bold;vertical-align:top"  id="f1-upload-filename">PostRoll.flv</label></div>
@@ -210,7 +217,7 @@ if (isset($_GET['videoId']))
                                                                                            </div>
                                                                                        </td></tr>
 
-                                                                                   <tr id="ffmpeg_disable_new2" name="ffmpeg_disable_new1"> <td><?php _e('Upload HD Video(optional)', 'video_gallery') ?></td>
+                                                                                   <tr id="ffmpeg_disable_new2" name="ffmpeg_disable_new1"> <td><?php _e('Upload HD Video (Optional)', 'video_gallery') ?></td>
                                                                                        <td>
                                                                                            <div id="f2-upload-form" >
                                                                                                <form name="hdvideoform" method="post" enctype="multipart/form-data" >
@@ -250,7 +257,7 @@ if (isset($_GET['videoId']))
                                                                                    echo $videoEdit->image; ?></label>
                                                                                                </form>
                                                                                            </div>
-                                                                                           <span id="uploadthumbmessage" style="display: block; margin-top:10px;margin-left:300px;color:red;font-size:12px;font-weight:bold;"></span>
+                                                                                           <span id="uploadthumbmessage" style="display: block; margin-top:10px;color:red;font-size:12px;font-weight:bold;"></span>
                                                                                            <div id="f3-upload-progress" style="display:none">
                                                                                                <div style="float:left"><img id="f3-upload-image" src="<?php echo get_option('siteurl') . '/wp-content/plugins/contus-video-gallery/images/empty.gif' ?>" alt="Uploading" style="padding-top:2px" />
                                                                                                    <label style="padding-top:0px;padding-left:4px;font-size:14px;font-weight:bold;vertical-align:top"  id="f3-upload-filename">PostRoll.flv</label></div>
@@ -266,7 +273,7 @@ if (isset($_GET['videoId']))
 
                                                                                        </td></tr>
 
-                                                                                   <tr id="ffmpeg_disable_new4" name="ffmpeg_disable_new1"><td><?php _e('Upload Preview Image(optional)', 'video_gallery') ?></td><td>
+                                                                                   <tr id="ffmpeg_disable_new4" name="ffmpeg_disable_new1"><td><?php _e('Upload Preview Image (Optional)', 'video_gallery') ?></td><td>
                                                                                            <div id="f4-upload-form" >
                                                                                                <form name="previewimageform" method="post" enctype="multipart/form-data" >
                                                                                                    <input type="file" name="myfile" onchange="enableUpload(this.form.name);" />
@@ -309,7 +316,7 @@ if (isset($_GET['videoId']))
                                                                                    echo $videoEdit->opimage; ?>" />
                                                                            <input type="hidden" name="youtube-value" id="youtube-value"  value="" />
                                                                            <input type="hidden" name="streamerpath-value" id="streamerpath-value" value="" />
-                                                                           <input type="hidden" name="islive-value" id="islive-value" value="" />
+                                                                           <input type="hidden" name="islive-value" id="islive-value" value="0" />
                                                                            <input type="hidden" name="customurl" id="customurl1"  value="" />
                                                                            <input type="hidden" name="customhd" id="customhd1"  value="" />
                                                                            <input type="hidden" name="customimage" id="customimage"  value="" />
@@ -317,16 +324,16 @@ if (isset($_GET['videoId']))
                                                                            <!-- Start of sidebar  -->
                                                                            <div class="inner-sidebar" >
                                                                                <div id="submitdiv" class="postbox">
-                                                                                   <h3 class="hndle" style="color:white;background:none;background-color:black"><span><?php _e('Playlist', 'video_gallery') ?></span></h3>
+                                                                                   <h3 class="hndle" style="color:white;background:none;background-color:black"><span><?php _e('Category', 'video_gallery') ?></span></h3>
                                                                                    <div class="inside" style="color:blue" >
                                                                                        <div id="submitpost" class="submitbox">
 
                                                                                            <div class="misc-pub-section">
-                                                                                               <h4><?php _e('Playlist', 'video_gallery'); ?>&nbsp;&nbsp;
+                                                                                               <h4><?php _e('Category', 'video_gallery'); ?>&nbsp;&nbsp;
                                                                                                    <a style="cursor:pointer"  onclick="playlistdisplay()"><?php _e('Create New', 'video_gallery') ?></a></h4>
                                                                                                <div id="playlistcreate1"><?php _e('Name', 'video_gallery'); ?><input type="text" size="20" name="p_name" id="p_name" value="" />
                                                                                                    <input type="button" class="button-primary" name="add_pl1" value="<?php _e('Add'); ?>" onclick="return savePlaylist(document.getElementById('p_name') , <?php echo $act_vid ?>);" class="button button-highlighted" />
-                                                                                                   <a style="cursor:pointer" onclick="playlistclose()"><b>Close</b></a></div>
+                                                                                                   <a style="cursor:pointer;margin: 5px 0 0 175px;display: inline-block;text-decoration: underline;" onclick="playlistclose()"><b>Close</b></a></div>
                                                                                                <div id="jaxcat"></div>
                                                                                                <div id="playlistchecklist"><?php $ajaxplaylistOBJ->get_playlist(); ?></div>
                                                                                            </div>
@@ -348,7 +355,7 @@ if (isset($_GET['videoId']))
                                                                     <td><input value="<?php if (isset($videoEdit->name)
 
                                                                                    )echo $videoEdit->name; ?>" type="text" size="50" maxlength="200" name="name" id="name" />
-                                                                           <span id="titlemessage" style="display: block; margin-top:10px;margin-left:300px;color:red;font-size:12px;font-weight:bold;"></span>
+                                                                           <span id="titlemessage" style="display: block; margin-top:10px;color:red;font-size:12px;font-weight:bold;"></span>
                                                                        </td>
                                                                    </tr>
                                                                    <tr>
@@ -365,7 +372,7 @@ if (isset($_GET['videoId']))
                                                                         </td>
                                                                    </tr>
                                                                        <tr>
-                                                                           <th scope="row"><?php _e('Featured video', 'video_gallery') ?></th>
+                                                                           <th scope="row"><?php _e('Featured Video', 'video_gallery') ?></th>
                                                                            <td>
                                                                                <input type="radio" id="feature_on" name="feature" <?php
                                                                                if (isset($videoEdit->featured) && $videoEdit->featured == '1') {
@@ -393,7 +400,7 @@ if (isset($_GET['videoId']))
                                                                                    echo 'checked="checked"';
                                                                                }
                 ?> value="0"> <label>No</label>
-                                                                               <br/><?php _e('Note:Not supported for YouTube videos', 'video_gallery') ?>
+                                                                               <br/><?php _e('Note : Not supported for YouTube videos', 'video_gallery') ?>
                                                                            </td>
                                                                        </tr>
                                                                        <tr>
@@ -420,10 +427,10 @@ if (isset($_GET['videoId']))
                                                                                //check whether preroll ads are enable
                                                                                // get the ads list
                                                                                global $wpdb;
-                                                                               $tables = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "hdflvvideoshare_vgads");
+                                                                               $tables = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "hdflvvideoshare_vgads WHERE admethod='prepost'");
 
                                                                                $settings = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "hdflvvideoshare_settings");
-                                                                               if ($settings[0]->preroll == 0 || $settings[0]->postroll == 0) {
+                                                                               if ($settings[0]->preroll == 0 || $settings[0]->postroll == 0 || $settings[0]->midroll_ads == 0 || $settings[0]->imaAds == 1) {
                     ?>
 
                                                                            <div class="stuffbox">
@@ -468,6 +475,52 @@ if (isset($_GET['videoId']))
                                                                                        }
 ?>
                                                                                                        </td>
+                                                                                                   </tr>
+                                                                                               </table>
+                    <?php } ?>
+<?php if ($settings[0]->midroll_ads == 0) { ?>
+
+
+                                                                                       <table class="form-table">
+
+                                                                                           <tr>
+                                                                                               <th scope="row"><?php _e('Midroll Ad', 'video_gallery') ?></th>
+                                                                                   <td>
+                                                                               <input type="radio" id="midrollads_on" name="midrollads" <?php
+                                                                               if (isset($videoEdit->midrollads) && $videoEdit->midrollads == '1') {
+                                                                                   echo 'checked="checked"';
+                                                                               }
+                ?> value="1"> <label>Enable</label>
+                                                                        <input type="radio" id="midrollads_off" name="midrollads" <?php
+                                                                               if (isset($videoEdit->midrollads) && $videoEdit->midrollads == '0') {
+                                                                                   echo 'checked="checked"';
+                                                                               }
+                ?> value="0"> <label>Disable</label>
+
+                                                                                               </td>
+                                                                                                   </tr>
+                                                                                               </table>
+                    <?php } ?>
+<?php  if ($settings[0]->imaAds == 0) { ?>
+
+
+                                                                                       <table class="form-table">
+
+                                                                                           <tr>
+                                                                                               <th scope="row"><?php _e('IMA Ad', 'video_gallery') ?></th>
+                                                                                   <td>
+                                                                               <input type="radio" id="imaad_on" name="imaad" <?php
+                                                                               if (isset($videoEdit->imaad) && $videoEdit->imaad == '1') {
+                                                                                   echo 'checked="checked"';
+                                                                               }
+                ?> value="1"> <label>Enable</label>
+                                                                        <input type="radio" id="imaad_off" name="imaad" <?php
+                                                                               if (isset($videoEdit->imaad) && $videoEdit->imaad == '0') {
+                                                                                   echo 'checked="checked"';
+                                                                               }
+                ?> value="0"> <label>Disable</label>
+
+                                                                                               </td>
                                                                                                    </tr>
                                                                                                </table>
                     <?php } ?>
@@ -532,8 +585,12 @@ if (isset($_GET['videoId']))
                                                                      function generate12(str1)
                                                                      {
                                                                          var theurl=str1;
-                                                                         if (theurl.indexOf("youtube.com") != -1 || theurl.indexOf("youtu.be") != -1)
+                                                                        var theurl=document.getElementById("filepath1").value;
+                                                                        var regExp = /^.*(youtu.be\/|v\/|embed\/|watch\?|youtube.com\/user\/[^#]*#([^\/]*?\/)*)\??v?=?([^#\&\?]*).*/;
+                                                                        var match = theurl.match(regExp);
+                                                                        if (match){
                                                                              document.getElementById('generate').style.visibility = "visible";
+                                                                        }
                                                                          else document.getElementById('generate').style.visibility  = "hidden";
                                                                      }
                                                                </script>

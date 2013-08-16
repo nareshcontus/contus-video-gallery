@@ -3,7 +3,7 @@
 Name: Wordpress Video Gallery
 Plugin URI: http://www.apptha.com/category/extension/Wordpress/Video-Gallery
 Description: Video Controller.
-Version: 2.1
+Version: 2.2
 Author: Apptha
 Author URI: http://www.apptha.com
 License: GPL2
@@ -62,7 +62,7 @@ if (class_exists('VideoController') != true) {//checks if the VideoController cl
 
             if (isset($this->_addnewVideo)) {
                 $videoName = filter_input(INPUT_POST, 'name');
-                $slug = $this->generateSlug($videoName);
+                $slug = sanitize_title($videoName);
                 $videoDescription = filter_input(INPUT_POST, 'description');
                 $tags_name = filter_input(INPUT_POST, 'tags_name');
                 $seo_tags_name=stripslashes($tags_name);
@@ -73,12 +73,16 @@ if (class_exists('VideoController') != true) {//checks if the VideoController cl
                 $streamname = filter_input(INPUT_POST, 'streamerpath-value');
                 //$videoTag = filter_input(INPUT_POST, 'videotag');
                 $videoLinkurl = filter_input(INPUT_POST, 'youtube-value');
+                $sorder=$act_playlist='';
+                if(!empty($_POST['playlist']))
                 $act_playlist = $_POST['playlist'];
-
                 $pieces = explode(",", $_POST['hid']);
+                if(!empty($_POST['sorder']))
                 $sorder = $_POST['sorder'];
                 $videoFeatured = filter_input(INPUT_POST, 'feature');
                 $videoDownload = filter_input(INPUT_POST, 'download');
+                $videomidrollads = filter_input(INPUT_POST, 'midrollads');
+                $videoimaad = filter_input(INPUT_POST, 'imaad');
                 $videoPostrollads = filter_input(INPUT_POST, 'postrollads');
                 $videoPrerollads = filter_input(INPUT_POST, 'prerollads');
                 $videoDate = date('Y-m-d H:i:s');
@@ -101,13 +105,13 @@ if (class_exists('VideoController') != true) {//checks if the VideoController cl
                         $imgstr = explode("v=", $act_filepath);
                         $imgval = explode("&", $imgstr[1]);
                         $match = $imgval[0];
-                        $previewurl = "http://img.youtube.com/vi/" . $imgval[0] . "/0.jpg";
-                        $img = "http://img.youtube.com/vi/" . $imgval[0] . "/1.jpg";
+                        $previewurl = "http://img.youtube.com/vi/" . $imgval[0] . "/maxresdefault.jpg";
+                        $img = "http://img.youtube.com/vi/" . $imgval[0] . "/mqdefault.jpg";
                     } else if (strpos($act_filepath, 'youtu.be') > 0) {
                         $imgstr = explode("/", $act_filepath);
                         $match = $imgstr[3];
-                        $previewurl = "http://img.youtube.com/vi/" . $imgstr[3] . "/0.jpg";
-                        $img = "http://img.youtube.com/vi/" . $imgstr[3] . "/1.jpg";
+                        $previewurl = "http://img.youtube.com/vi/" . $imgstr[3] . "/maxresdefault.jpg";
+                        $img = "http://img.youtube.com/vi/" . $imgstr[3] . "/mqdefault.jpg";
                         $act_filepath = "http://www.youtube.com/watch?v=" . $imgstr[3];
                     }
 
@@ -151,7 +155,7 @@ if (class_exists('VideoController') != true) {//checks if the VideoController cl
                             $act_filepath = "http://www.youtube.com/watch?v=" . $imgstr[3];
                         }
                         $act_image = "http://i3.ytimg.com/vi/" . $match . "/mqdefault.jpg";
-                        $act_opimage = "http://i3.ytimg.com/vi/" . $match . "/0.jpg";
+                        $act_opimage = "http://i3.ytimg.com/vi/" . $match . "/maxresdefault.jpg";
                         $youtube_data = $this->hd_GetSingleYoutubeVideo($match);
                         if ($youtube_data) {
                             if ($act_name == '')
@@ -200,6 +204,8 @@ if (class_exists('VideoController') != true) {//checks if the VideoController cl
                     'featured' => $videoFeatured,
                     'download' => $videoDownload,
                     'postrollads' => $videoPostrollads,
+                    'midrollads' => $videomidrollads,
+                    'imaad' => $videoimaad,
                     'prerollads' => $videoPrerollads,
                     'publish' => $videoPublish
                 );
@@ -273,14 +279,14 @@ if (class_exists('VideoController') != true) {//checks if the VideoController cl
                             if ($add_list) {
                                 foreach ($add_list as $new_list) {
                                     $new_list1 = $new_list - 1;
-                                    if ($sorder[$new_list1] == '')
+//                                    if ($sorder[$new_list1] == '')
                                         $sorder[$new_list1] = '0';
-                                    $wpdb->query(" INSERT INTO " . $wpdb->prefix . "hdflvvideoshare_med2play (media_id,playlist_id,sorder) VALUES ($video_aid, $new_list, $sorder[$new_list1])");
+                                    $wpdb->query(" INSERT INTO " . $wpdb->prefix . "hdflvvideoshare_med2play (media_id,playlist_id,sorder) VALUES ($video_aid, $new_list, '0')");
                                 }
                             }
                             $i = 0;
                             foreach ($pieces as $new_list) {
-                                $wpdb->query(" UPDATE " . $wpdb->prefix . "hdflvvideoshare_med2play SET sorder= '$sorder[$i]' WHERE media_id = '$video_aid' and playlist_id = '$new_list'");
+                                $wpdb->query(" UPDATE " . $wpdb->prefix . "hdflvvideoshare_med2play SET sorder= '0' WHERE media_id = '$video_aid' and playlist_id = '$new_list'");
                                 $i++;
                             }
                         }
@@ -467,9 +473,8 @@ if (class_exists('VideoController') != true) {//checks if the VideoController cl
 //admin redirection url function ends
 
         public function video_data() {//getting video data function starts
-            $orderBy = array('id', 'title', 'desc', 'fea', 'publish', 'date');
-            $order = 'ordering';
-
+            $orderBy = array('id', 'title', 'desc', 'fea', 'publish', 'date','ordering');
+            $order='';
             if (isset($this->_orderBy) && in_array($this->_orderBy, $orderBy)) {
                 $order = $this->_orderBy;
             }
@@ -499,9 +504,13 @@ if (class_exists('VideoController') != true) {//checks if the VideoController cl
                     $order = 'publish';
                     break;
 
+               case 'ordering':
+                    $order = 'ordering';
+                    break;
+
                 default:
                     $order = 'ordering';
-                    $this->_orderDirection = "asc";
+                    $this->_orderDirection = 'asc';
             }
             return $this->get_videodata($this->_videosearchQuery, $this->_searchBtn, $order, $this->_orderDirection);
         }

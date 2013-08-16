@@ -3,7 +3,7 @@
 Name: Wordpress Video Gallery
 Plugin URI: http://www.apptha.com/category/extension/Wordpress/Video-Gallery
 Description: video model file.
-Version: 2.1
+Version: 2.2
 Author: Apptha
 Author URI: http://www.apptha.com
 License: GPL2
@@ -44,7 +44,7 @@ if(class_exists('VideoModel') != true)
                     'post_title' => $videoData['name'],
                     'post_excerpt' => '',
                     'post_status' => 'publish',
-                    'comment_status' => 'closed',
+                    'comment_status' => 'open',
                     'ping_status' => 'closed',
                     'post_password' => '',
                     'post_name' => $slug,
@@ -53,7 +53,7 @@ if(class_exists('VideoModel') != true)
                     'post_modified' => date('Y-m-d H:i:s'),
                     'post_modified_gmt' => date('Y-m-d H:i:s'),
                     'post_content_filtered' => '',
-                    'post_parent' => '0',
+                    'post_parent' => 0,
                     'guid' => '',
                     'menu_order' => '0',
                     'post_type' => 'videogallery',
@@ -99,7 +99,7 @@ if(class_exists('VideoModel') != true)
                     'post_title' => $videoData['name'],
                     'post_excerpt' => '',
                     'post_status' => 'publish',
-                    'comment_status' => 'closed',
+                    'comment_status' => 'open',
                     'ping_status' => 'closed',
                     'post_password' => '',
                     'post_name' => $slug,
@@ -108,7 +108,7 @@ if(class_exists('VideoModel') != true)
                     'post_modified' => date('Y-m-d H:i:s'),
                     'post_modified_gmt' => date('Y-m-d H:i:s'),
                     'post_content_filtered' => '',
-                    'post_parent' => '0',
+                    'post_parent' => 0,
                     'guid' => '',
                     'menu_order' => '0',
                     'post_type' => 'videogallery',
@@ -120,7 +120,7 @@ if(class_exists('VideoModel') != true)
                 $this->_wpdb->update($this->_posttable, array('guid' =>$guid), array( 'ID' => $this->_wpdb->insert_id ));
                $this->_wpdb->update($this->_videotable, array('slug' =>$this->_wpdb->insert_id), array( 'vid' => $videoId ));
             }else{
-                $this->_wpdb->update($this->_posttable, array('post_title' =>$videoData['name'],'post_name' => $slug,'post_modified' => date('Y-m-d H:i:s'),'post_modified_gmt' => date('Y-m-d H:i:s')), array( 'ID' => $slug_id ));
+                $this->_wpdb->update($this->_posttable, array('comment_status' => 'open','post_title' =>$videoData['name'],'post_name' => $slug,'post_modified' => date('Y-m-d H:i:s'),'post_modified_gmt' => date('Y-m-d H:i:s')), array( 'ID' => $slug_id ));
             }
 
 

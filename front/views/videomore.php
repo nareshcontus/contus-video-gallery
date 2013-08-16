@@ -3,7 +3,7 @@
 Name: Wordpress Video Gallery
 Plugin URI: http://www.apptha.com/category/extension/Wordpress/Video-Gallery
 Description: Video more page view file.
-Version: 2.1
+Version: 2.2
 Author: Apptha
 Author URI: http://www.apptha.com
 License: GPL2
@@ -26,6 +26,8 @@ if (class_exists('ContusMoreView') != true) {
             $this->_vId             = filter_input(INPUT_GET, 'vid');
             $this->_pagenum         = filter_input(INPUT_GET, 'pagenum');
             $this->_playid          = filter_input(INPUT_GET, 'playid');
+            $this->_viewslang = __('Views', 'video_gallery');
+            $this->_viewlang = __('View', 'video_gallery');
             $video_search    = filter_var(filter_input(INPUT_POST, 'video_search'), FILTER_SANITIZE_STRING);
             $video_search1    = filter_var(filter_input(INPUT_GET, 'video_search'), FILTER_SANITIZE_STRING);
             if(empty($video_search))
@@ -43,7 +45,7 @@ if (class_exists('ContusMoreView') != true) {
 
         function video_more_pages($type) {// More PAGE FEATURED VIDEOS STARTS
             if (function_exists('homeVideo') != true) {
-
+$type_name='';
                 switch ($type) {
                     case 'pop'://GETTING POPULAR VIDEOS STARTS
                         $rowF           = $this->_settingsData->rowMore; //row field of popular videos
@@ -118,25 +120,25 @@ if (class_exists('ContusMoreView') != true) {
 ?>
 
 <?php
-$pagenum    = isset($this->_pagenum) ? absint($this->_pagenum) : 1;
-                $div = '<div class="video_wrapper" id="'.$type_name.'_video">';
-                $div .= '<style type="text/css"> .video-block {  padding-left:' . $this->_settingsData->gutterspace . 'px} </style>';
+                $pagenum            = isset($this->_pagenum) ? absint($this->_pagenum) : 1;
+                $div                = '<div class="video_wrapper" id="'. $type_name.'_video">';
+                $div                .= '<style type="text/css"> .video-block {  margin-left:' . $this->_settingsData->gutterspace . 'px !important; } </style>';
                 $playlist_name = $this->_wpdb->get_var("SELECT playlist_name FROM " . $this->_wpdb->prefix . "hdflvvideoshare_playlist WHERE pid='".intval($this->_playid)."'");
                     if($typename=='Category'){
-                    $div .='<h2 >'.$playlist_name.' </h2>';
+                    $div            .='<h2 >'.$playlist_name.' </h2>';
                     } else {
-                    $div .='<h2 >' . $typename . ' '.__('Videos', 'video_gallery').' </h2>';
+                    $div            .='<h2 >' . $typename . ' '.__('Videos', 'video_gallery').' </h2>';
                     }
                 if (!empty($TypeOFvideos)) {
-                    $j          = 0;
-                    $clearwidth = 0;
-                    $clear      = $fetched[$j] = '';
-                    $image_path = str_replace('plugins/contus-video-gallery/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
+                    $j                  = 0;
+                    $clearwidth         = 0;
+                    $clear              = $fetched[$j] = '';
+                    $image_path         = str_replace('plugins/contus-video-gallery/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
                     foreach ($TypeOFvideos as $video) {
-                        $duration[$j] = $video->duration; //VIDEO DURATION
-                        $imageFea[$j] = $video->image; //VIDEO IMAGE
-                        $file_type    = $video->file_type; // Video Type
-                       $guid[$j] = $video->guid; //guid
+                        $duration[$j]   = $video->duration; //VIDEO DURATION
+                        $imageFea[$j]   = $video->image; //VIDEO IMAGE
+                        $file_type      = $video->file_type; // Video Type
+                       $guid[$j]        = $video->guid; //guid
                         if ($imageFea[$j] == '') {  //If there is no thumb image for video
                             $imageFea[$j] = $this->_imagePath . 'nothumbimage.jpg';
                         } else {
@@ -170,38 +172,47 @@ $pagenum    = isset($this->_pagenum) ? absint($this->_pagenum) : 1;
                                 $videoname = $nameF[$j];
                             }
                         if (($j % $colF) == 0 && $j!=0) {//COLUMN COUNT
-                                $div .= '</ul><div class="clear"></div><ul class="video-block-container">';
+                                $div        .= '</ul><ul class="video-block-container">';
                             }
-                            $div .= '<li class="video-block">';
-                            $div .='<div  class="video-thumbimg"><a href="' . $guid[$j] . '"> <img src="' . $imageFea[$j] . '" alt="' . $nameF[$j] . '" class="imgHome" title="' . $nameF[$j] . '" /></a>';
+                            $div            .= '<li class="video-block">';
+                            $div            .= '<div  class="video-thumbimg"><a href="' . $guid[$j] . '"><img src="' . $imageFea[$j] . '" alt="' . $nameF[$j] . '" class="imgHome" title="' . $nameF[$j] . '" /></a>';
                             if ($duration[$j] != 0.00) {
-                                $div .= '<span class="video_duration">'.$duration[$j] . '</span>';
+                                $div        .= '<span class="video_duration">'.$duration[$j] . '</span>';
                             }
-                            $div .='</div>';
-                            $div .='<h5><a href="' . $guid[$j] . '" class="videoHname">';
-                            $div .=$videoname;
-                            $div .='</a></h5>';
-                            $div .='<div class="vid_info">
+                            $div            .= '</div>';
+                            $div            .= '<div class="vid_info"><h5><a href="' . $guid[$j] . '" class="videoHname">';
+                            $div            .= $videoname;
+                            $div            .= '</a></h5>';
+                            $div            .= '
                                     <span class="video_views">';
-                            $div .= $hitcount[$j] . ' '.__('Views', 'video_gallery');
-                            $div .= '</span>';
+                            if($hitcount[$j]>1)
+                                $viewlang   = $this->_viewslang;
+                                else
+                                   $viewlang = $this->_viewlang;
+                            $div            .= $hitcount[$j] . ' '.$viewlang;
+                            $div            .= '</span>';
 
 
 
                             if (!empty($fetched[$j])) {
-                                $div .='<span class="playlistName"><a href="' . $this->_site_url . '/?page_id=' . $this->_mPageid . '&playid=' . $playlist_id . '">' . $fetched[$j] . '</a></span>';
+                                $div        .= '<span class="playlistName"><a href="' . $this->_site_url . '/?page_id=' . $this->_mPageid . '&amp;playid=' . $playlist_id . '">' . $fetched[$j] . '</a></span>';
                             }
-                            $div .= '</div>';
-                            $div .='</li>';
+                            $div            .= '</div>';
+                            $div            .= '</li>';
                         //ELSE ENDS
                     }//FOR EACH ENDS
-                    $div .='</ul>';
-                    $div .='</div>';
-                    $div .='<div class="clear"></div>';
+                    $div                    .= '</ul>';
+                    $div                    .= '</div>';
+                    $div                    .= '<div class="clear"></div>';
                 }
-                else
-                    $div .=__('No', 'video_gallery').' ' . $typename . ' '.__('Videos', 'video_gallery');
-                $div     .='</div>';
+                else{
+                 if($typename=='Category'){
+                    $div                    .= __('No', 'video_gallery').' ' .__('Videos', 'video_gallery'). ' '.__('Under this Category', 'video_gallery');
+                    } else {
+                    $div                    .= __('No', 'video_gallery').' ' . $typename . ' '.__('Videos', 'video_gallery');
+                    }
+                }
+                $div                        .= '</div>';
 
                 //PAGINATION STARTS
                 $total          = $CountOFVideos;
@@ -233,14 +244,14 @@ $pagenum    = isset($this->_pagenum) ? absint($this->_pagenum) : 1;
 
 <?php
             $div .='<div><h1 class="entry-title">'.__('Video Categories', 'video_gallery').'</h1></div>';
-            $div .= '<style> .video-block { padding-left:' . $this->_settingsData->gutterspace . 'px } </style>';
+            $div .= '<style> .video-block { margin-left:' . $this->_settingsData->gutterspace . 'px !important; } </style>';
             foreach ($TypeOFvideos as $catList) {
 // Fetch videos for every category
-               $sql            = "SELECT s.guid,w.* FROM " . $wpdb->prefix . "hdflvvideoshare as w
-                    INNER JOIN " . $wpdb->prefix . "hdflvvideoshare_med2play as m ON m.media_id = w.vid
-                    INNER JOIN " . $wpdb->prefix . "hdflvvideoshare_playlist as p on m.playlist_id = p.pid
-                     INNER JOIN " . $this->_wpdb->prefix . "posts s ON s.ID=w.slug
-WHERE w.publish='1' and p.is_publish='1' and m.playlist_id=" . intval($catList->pid) . " GROUP BY w.vid";
+               $sql            = "SELECT s.guid,w.* FROM " . $wpdb->prefix . "hdflvvideoshare AS w
+                                INNER JOIN " . $wpdb->prefix . "hdflvvideoshare_med2play AS m ON m.media_id = w.vid
+                                INNER JOIN " . $wpdb->prefix . "hdflvvideoshare_playlist AS p on m.playlist_id = p.pid
+                                INNER JOIN " . $this->_wpdb->prefix . "posts s ON s.ID=w.slug
+                                WHERE w.publish='1' AND p.is_publish='1' AND m.playlist_id=" . intval($catList->pid) . " GROUP BY w.vid";
                 $playLists      = $wpdb->get_results($sql);
                 $playlistCount  = count($playLists);
 
@@ -249,13 +260,13 @@ WHERE w.publish='1' and p.is_publish='1' and m.playlist_id=" . intval($catList->
                     $i          = 0;
                     $inc        = 1;
                     $image_path = str_replace('plugins/contus-video-gallery/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
-                    $div .= '<ul class="video-block-container">';
+                    $div        .= '<ul class="video-block-container">';
                     foreach ($playLists as $playList) {
 
                         $duration   = $playList->duration;
                         $imageFea   = $playList->image; //VIDEO IMAGE
                         $file_type  = $playList->file_type; // Video Type
-                        $guid = $playList->guid; //guid
+                        $guid       = $playList->guid; //guid
                         if ($imageFea == '') {  //If there is no thumb image for video
                             $imageFea = $this->_imagePath . 'nothumbimage.jpg';
                         } else {
@@ -269,39 +280,44 @@ WHERE w.publish='1' and p.is_publish='1' and m.playlist_id=" . intval($catList->
                             $playListName = $playList->name;
                         }
 
-                        $div .='<li class="video-block"><div class="video-thumbimg"><a href="' . $guid . '"><img src="' . $imageFea . '" alt="" class="imgHome" title=""></a>';
+                        $div        .= '<li class="video-block"><div class="video-thumbimg"><a href="' . $guid . '"><img src="' . $imageFea . '" alt="" class="imgHome" title="" /></a>';
                         if ($duration != 0.00) {
-                            $div .='<span class="video_duration">' . $duration . '</span>';
+                            $div    .= '<span class="video_duration">' . $duration . '</span>';
                         }
-                        $div .='</div><h5><a href="' . $guid . '" class="videoHname">' . $playListName . '</a></h5><div class="vid_info">';
+                        $div        .= '</div><div class="vid_info"><h5><a href="' . $guid . '" class="videoHname">' . $playListName . '</a></h5>';
 
-                            $div .='<span class="video_views">' . $playList->hitcount . ' '.__('Views', 'video_gallery') . '</span>';
+                        if($playList->hitcount>1)
+                                $viewlang = $this->_viewslang;
+                                else
+                                   $viewlang = $this->_viewlang;
 
-                        $div .='</div></li>';
+                            $div    .= '<span class="video_views">' . $playList->hitcount . ' '.$viewlang . '</span>';
+
+                        $div        .= '</div></li>';
 
                         if ($i > ($this->_perCat-2)) {
                             break;
                         } else {
                             $i = $i + 1;
                         }
-if (($inc % $this->_colCat ) == 0 && $inc!=0) {//COLUMN COUNT
-                                $div .= '</ul><div class="clear"></div><ul class="video-block-container">';
+                    if (($inc % $this->_colCat ) == 0 && $inc!=0) {//COLUMN COUNT
+                                $div .= '</ul><ul class="video-block-container">';
                             }
                         $inc++;
                     }
-                    $div .='</ul>';
+                    $div            .= '</ul>';
                     if (($playlistCount > 8)) {
 
-                        $div .='<a class="video-more" href="' . $this->_site_url . '/?page_id=' .  $this->_mPageid . '&playid=' . $catList->pid . '">'.__('More Videos', 'video_gallery').'</a>';
+                        $div        .= '<a class="video-more" href="' . $this->_site_url . '/?page_id=' .  $this->_mPageid . '&playid=' . $catList->pid . '">'.__('More Videos', 'video_gallery').'</a>';
                     } else {
-                        $div .='<div align="right"> </div>';
+                        $div        .= '<div align="right"> </div>';
                     }
                 } else { // If there is no video for category
-                    $div .='<div>'.__('No Videos For this Category', 'video_gallery').'</div>';
+                    $div            .= '<div>'.__('No Videos For this Category', 'video_gallery').'</div>';
                 }
             }
 
-            $div .='<div class="clear"></div>';
+            $div                    .= '<div class="clear"></div>';
 
             //PAGINATION STARTS
             $total          = $CountOFVideos;
@@ -316,7 +332,7 @@ if (($inc % $this->_colCat ) == 0 && $inc!=0) {//COLUMN COUNT
                     ));
 
             if ($page_links) {
-                $div .='<div class="tablenav"><div class="tablenav-pages" >' . $page_links . '</div></div>';
+                $div        .= '<div class="tablenav"><div class="tablenav-pages" >' . $page_links . '</div></div>';
             }
 
             //PAGINATION ENDS
@@ -335,21 +351,21 @@ if (($inc % $this->_colCat ) == 0 && $inc!=0) {//COLUMN COUNT
 
 <?php
             $div .='<div class="video_wrapper" id="video_search_result"><h3 class="entry-title">'.__('Search Results', 'video_gallery').' - '.$video_search.'</h3>';
-            $div .= '<style> .video-block { padding-left:' . $this->_settingsData->gutterspace . 'px } </style>';
+            $div .= '<style> .video-block { margin-left:' . $this->_settingsData->gutterspace . 'px !important; } </style>';
 
 // Fetch videos for every category
                 if (!empty($TypeOFvideos)) {
                     $i          = 0;
                     $inc        = 0;
                     $image_path = str_replace('plugins/contus-video-gallery/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
-                    $div .= '<ul class="video-block-container">';
+                    $div        .= '<ul class="video-block-container">';
 
                     foreach ($TypeOFvideos as $playList) {
 
                         $duration   = $playList->duration;
                         $imageFea   = $playList->image; //VIDEO IMAGE
                         $file_type  = $playList->file_type; // Video Type
-                        $guid = $playList->guid; //guid
+                        $guid       = $playList->guid; //guid
                         if ($imageFea == '') {  //If there is no thumb image for video
                             $imageFea = $this->_imagePath . 'nothumbimage.jpg';
                         } else {
@@ -362,37 +378,41 @@ if (($inc % $this->_colCat ) == 0 && $inc!=0) {//COLUMN COUNT
                         } else {
                             $playListName = $playList->name;
                         }
-if (($inc % $this->_colF ) == 0 && $inc!=0) {//COLUMN COUNT
-                                $div .= '</ul><div class="clear"></div><ul class="video-block-container">';
+                    if (($inc % $this->_colF ) == 0 && $inc!=0) {//COLUMN COUNT
+                                $div .= '</ul><ul class="video-block-container">';
                             }
-                        $div .='<li class="video-block"><div class="video-thumbimg"><a href="' . $guid . '"><img src="' . $imageFea . '" alt="" class="imgHome" title=""></a>';
+                        $div        .= '<li class="video-block"><div class="video-thumbimg"><a href="' . $guid . '"><img src="' . $imageFea . '" alt="" class="imgHome" title="" /></a>';
                         if ($duration != 0.00) {
-                            $div .='<span class="video_duration">' . $duration. '</span>';
+                            $div    .= '<span class="video_duration">' . $duration. '</span>';
                         }
-                        $div .='</div><h5><a href="' . $guid . '" class="videoHname">' . $playListName . '</a></h5><div class="vid_info">';
-                        $div .='<span class="video_views">' . $playList->hitcount . ' '.__('Views', 'video_gallery') . '</span>';
+                        $div        .= '</div><h5><a href="' . $guid . '" class="videoHname">' . $playListName . '</a></h5><div class="vid_info">';
+                        if($playList->hitcount>1)
+                                $viewlang = $this->_viewslang;
+                                else
+                                   $viewlang = $this->_viewlang;
+                        $div        .= '<span class="video_views">' . $playList->hitcount . ' '.$viewlang . '</span>';
 
                         if (!empty($playList->playlist_name)) {
-                                $div .='<span class="playlistName"><a href="' . $this->_site_url . '/?page_id=' . $this->_mPageid . '&playid=' . $playList->pid . '">' . $playList->playlist_name . '</a></span>';
+                                $div .= '<span class="playlistName"><a href="' . $this->_site_url . '/?page_id=' . $this->_mPageid . '&amp;playid=' . $playList->pid . '">' . $playList->playlist_name . '</a></span>';
                             }
 
-                        $div .='</div></li>';
+                        $div        .= '</div></li>';
 
                         $inc++;
                     }
-                    $div .='</ul>';
+                    $div            .= '</ul>';
 
                 } else { // If there is no video for category
-                    $div .='<div>'.__('No Videos For this Category', 'video_gallery').'</div>';
+                    $div            .= '<div>'.__('No Videos Found', 'video_gallery').'</div>';
                 }
 
 
-            $div .='<div class="clear"></div>';
+            $div                    .= '<div class="clear"></div>';
 
             //PAGINATION STARTS
             $total          = $CountOFVideos;
             $num_of_pages   = ceil($total / $dataLimit);
-            $arr_params = array ( 'pagenum' => '%#%', 'video_search' => $video_search );
+            $arr_params     = array ( 'pagenum' => '%#%', 'video_search' => $video_search );
             $page_links     = paginate_links(array(
                         'base'      => add_query_arg($arr_params),
                         'format'    => '',
@@ -403,7 +423,7 @@ if (($inc % $this->_colF ) == 0 && $inc!=0) {//COLUMN COUNT
                     ));
 
             if ($page_links) {
-                $div .='<div class="tablenav"><div class="tablenav-pages" >' . $page_links . '</div></div></div>';
+                $div    .= '<div class="tablenav"><div class="tablenav-pages" >' . $page_links . '</div></div></div>';
             }
 
             //PAGINATION ENDS

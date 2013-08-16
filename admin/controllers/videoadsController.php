@@ -3,7 +3,7 @@
 Name: Wordpress Video Gallery
 Plugin URI: http://www.apptha.com/category/extension/Wordpress/Video-Gallery
 Description: Video Ad Controller.
-Version: 2.1
+Version: 2.2
 Author: Apptha
 Author URI: http://www.apptha.com
 License: GPL2
@@ -51,7 +51,22 @@ if(class_exists('VideoadController') != true)
                 
                 if(isset($this->_addnewVideoad))
                 {
+                    $videoadName=$videoadwidth=$videoadheight=$videoimaadpath=$publisherId=$contentId=$imaadType=
+                    $channels=$description=$targeturl=$clickurl=$impressionurl=$admethod=$adtype=$videoadFilepath=$videoadPublish='';
                     $videoadName = filter_input(INPUT_POST, 'videoadname');
+                    $videoadwidth = filter_input(INPUT_POST, 'videoimaadwidth');
+                    $videoadheight = filter_input(INPUT_POST, 'videoimaadheight');
+                    $videoimaadpath = filter_input(INPUT_POST, 'imaadpath');
+                    $publisherId = filter_input(INPUT_POST, 'publisherId');
+                    $contentId = filter_input(INPUT_POST, 'contentId');
+                    $imaadType = filter_input(INPUT_POST, 'imaadType');
+                    $channels = filter_input(INPUT_POST, 'channels');
+                    $description = filter_input(INPUT_POST, 'description');
+                    $targeturl = filter_input(INPUT_POST, 'targeturl');
+                    $clickurl = filter_input(INPUT_POST, 'clickurl');
+                    $impressionurl = filter_input(INPUT_POST, 'impressionurl');
+                    $admethod = filter_input(INPUT_POST, 'admethod');
+                    $adtype = filter_input(INPUT_POST, 'adtype');
                     $videoadFilepath = filter_input(INPUT_POST, 'normalvideoform-value');
                     if(empty($videoadFilepath))
                     $videoadFilepath = filter_input(INPUT_POST, 'videoadfilepath');
@@ -63,11 +78,24 @@ if(class_exists('VideoadController') != true)
 
                     $videoadData = array(
                     'title' => $videoadName,
+                    'description' => $description,
+                    'targeturl' => $targeturl,
+                    'clickurl' => $clickurl,
+                    'impressionurl' => $impressionurl,
                     'file_path' => $videoadFilepath,
+                    'adtype' => $adtype,
+                    'admethod' => $admethod,
+                    'imaadwidth' => $videoadwidth,
+                    'imaadheight' => $videoadheight,
+                    'imaadpath' => $videoimaadpath,
+                    'publisherId' => $publisherId,
+                    'contentId' => $contentId,
+                    'imaadType' => $imaadType,
+                    'channels' => $channels,
                     'publish' => $videoadPublish,
                     );
-                    
-                    $videoadDataformat = array('%s', '%s' , '%d');
+
+                    $videoadDataformat = array('%s', '%s' , '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s', '%s', '%d', '%s', '%d');
 
                     if(isset($this->_videoadId))
                     {//update for video ad if starts
@@ -138,29 +166,29 @@ if(class_exists('VideoadController') != true)
             {//displaying database message function starts
                 if (isset($this->_update) && $this->_update == '1') 
                 {
-                    $this->_msg = 'Videoad Updated Successfully ...';
+                    $this->_msg = 'Video Ad Updated Successfully ...';
                 }
                 else if($this->_update == '0') 
                 {
-                    $this->_msg = 'Videoad Not Updated  Successfully ...';
+                    $this->_msg = 'Video Ad Not Updated  Successfully ...';
                 }
                
                 if (isset($this->_add) && $this->_add == '1')
                 {
-                    $this->_msg ='Videoad Added Successfully ...';
+                    $this->_msg ='Video Ad Added Successfully ...';
                 }
 
                   if (isset($this->_del) && $this->_del == '1')
                 {
-                    $this->_msg ='Videoad Deleted Successfully ...';
+                    $this->_msg ='Video Ad Deleted Successfully ...';
                 }
                    if (isset($this->_status) && $this->_status == '1')
                 {
-                    $this->_msg ='Videoad Published Successfully ...';
+                    $this->_msg ='Video Ad Published Successfully ...';
                 }
                 else if($this->_status == '0')
                 {
-                    $this->_msg = 'Videoad UnPublished Successfully ...';
+                    $this->_msg = 'Video Ad UnPublished Successfully ...';
                 }
 
                 return $this->_msg;

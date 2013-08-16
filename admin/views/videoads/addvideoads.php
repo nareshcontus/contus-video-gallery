@@ -3,7 +3,7 @@
   Name: Wordpress Video Gallery
   Plugin URI: http://www.apptha.com/category/extension/Wordpress/Video-Gallery
   Description: Add video ads view file.
-  Version: 2.1
+  Version: 2.2
   Author: Apptha
   Author URI: http://www.apptha.com
   License: GPL2
@@ -12,8 +12,8 @@
 <div class="apptha_gallery">
     <?php if (isset($videoadId)) {
  ?>
-        <h2 class="option_title"><?php _e('Update Video Ad', 'digi'); ?></h2> <?php } else {
- ?> <h2  class="option_title"><?php echo "<img src='" . APPTHA_VGALLERY_BASEURL . "images/vid_ad.png' alt='move' width='30'/>"; ?><?php _e('Add a New Video Ad', 'digi'); ?></h2> <?php } ?>
+        <h2 class="option_title"><?php _e('Update Video Ad', 'video_gallery'); ?></h2> <?php } else {
+ ?> <h2  class="option_title"><?php echo "<img src='" . APPTHA_VGALLERY_BASEURL . "images/vid_ad.png' alt='move' width='30'/>"; ?><?php _e('Add a New Video Ad', 'video_gallery'); ?></h2> <?php } ?>
 <?php if (isset($msg)): ?>
         <div class="updated below-h2">
             <p>
@@ -26,7 +26,7 @@
             </div>
 <?php endif; ?>
  <?php
- if (!strstr($videoadEdit->file_path, 'wp-content/uploads')) {
+ if (isset($videoadEdit->file_path) && !strstr($videoadEdit->file_path, 'wp-content/uploads')) {
                         $uploaded_video = 0;
                     }else{
                      $uploaded_video=1;
@@ -41,15 +41,48 @@
 
                         <h3 class="hndle videoform_title">
                             <span>
-                                <input type="radio" name="videoad" id="filebtn" value="1" checked="checked" onClick="Videoadtype()" /> File
+                                <input type="radio" name="videoadtype" id="prepostroll" value="1" <?php
+                                               if (isset($videoadEdit) && $videoadEdit->admethod == 'prepost') {
+                                                   echo 'checked="checked" ';
+                                               }
+                                               ?> onClick="Videoadtype()"/> Preroll/Postroll Ad
                             </span>
                             <span>
-                                <input type="radio" name="videoad" id="urlbtn" value="2" onClick="Videoadtype()" />  URL
+                                <input type="radio" name="videoadtype" id="midroll" value="2" <?php
+                                               if (isset($videoadEdit) && $videoadEdit->admethod == 'midroll') {
+                                                   echo 'checked="checked" ';
+                                               }
+                                               ?> onClick="Videoadtype()" />  Midroll Ad
+                            </span>
+                            <span>
+                                <input type="radio" name="videoadtype" id="imaad" value="3" <?php
+                                               if (isset($videoadEdit) && $videoadEdit->admethod == 'imaad') {
+                                                   echo 'checked="checked" ';
+                                               }
+                                               ?> onClick="Videoadtype()" />  IMA Ad
                             </span>
                         </h3>
+                        <table class="form-table">
+                        <tr id="videoadmethod" name="videoadmethod">
+                                <td  width="150"><?php _e('Select File Path', 'video_gallery') ?></td>
+                                <td>
+                                <input type="radio" name="videoad" id="filebtn" value="1" <?php
+                                               if (isset($videoadEdit) && $videoadEdit->adtype == 'file') {
+                                                   echo 'checked="checked" ';
+                                               }
+                                               ?>  onClick="Videoadmethod()" /> File
+                                <input type="radio" name="videoad" id="urlbtn" value="2" <?php
+                                               if (isset($videoadEdit) && $videoadEdit->adtype == 'url') {
+                                                   echo 'checked="checked" ';
+                                               }
+                                               ?>  onClick="Videoadmethod()" />  URL
+                                </td>
+                        </tr>
+                            </table>
                         <div id="upload2" class="form-table">
 
                     <table class="form-table">
+                        
                         <tr id="ffmpeg_disable_new1" name="ffmpeg_disable_new1">
                             <td  width="150"><?php _e('Upload Video', 'video_gallery') ?></td>
                             <td>
@@ -77,26 +110,110 @@
 
                                 </div>
                                 <div id="nor"><iframe id="uploadvideo_target" name="uploadvideo_target" src="#" style="width:0;height:0;border:0px solid #fff;"></iframe></div>
+                            <span id="filepathuploaderrormessage" style="display: block;color:red; "></span>
                             </td></tr>
                     </table>
                 </div>
                 <form action="" name="videoadsform" class="videoform" method="post" enctype="multipart/form-data"  >
-                    <table class="form-table">
+                    <table id="videoaddetails" style="display: none;" class="form-table">
                         <tr>
-                            <td scope="row"  width="150"><?php _e('Title / Name', 'ads') ?></td>
+                            <td scope="row"  width="150"><?php _e('Title / Name', 'video_gallery') ?></td>
                             <td>
                                 <input type="text" size="50" maxlength="200" name="videoadname" id="name" value="<?php echo (isset($videoadEdit->title)) ? $videoadEdit->title : ""; ?>"  />
+                            <span id="nameerrormessage" style="display: block;color:red; "></span>
                             </td>
                         </tr>
+                        <tr>
+                            <td scope="row"  width="150"><?php _e('Description', 'video_gallery') ?></td>
+                            <td>
+                                <input type="text" size="50" name="description" id="description" value="<?php echo (isset($videoadEdit->description)) ? $videoadEdit->description : ""; ?>"  />
+                            </td>
+                        </tr>
+                        <tr>
+				<td scope="row"  width="150"><?php _e('Target URL', 'video_gallery') ?></td>
+				<td>
+				<input type="text" size="50" name="targeturl" id="targeturl" value="<?php echo (isset($videoadEdit->targeturl)) ? $videoadEdit->targeturl : ''; ?>" />
+				<span id="targeterrormessage" style="display: block;color:red; "></span>
+                                </td>
+			</tr>
+			<tr>
+				<td scope="row"  width="150"><?php _e('Click Hits URL', 'video_gallery') ?></td>
+				<td><input type="text" size="50" name="clickurl" id="clickurl" value="<?php echo (isset($videoadEdit->clickurl)) ? $videoadEdit->clickurl : ''; ?>" />
+                                <span id="clickerrormessage" style="display: block;color:red; "></span>
+                                </td>
+			</tr>
+			<tr>
+				<td scope="row"  width="150"><?php _e('Impression Hits URL', 'video_gallery') ?></td>
+				<td><input type="text" size="50" name="impressionurl" id="impressionurl" value="<?php echo (isset($videoadEdit->impressionurl)) ? $videoadEdit->impressionurl : ''; ?>" />
+                                <span id="impressionerrormessage" style="display: block;color:red; "></span>
+                                </td>
+			</tr>
+                    </table>
+                    <table id="videoimaaddetails" style="display: none;" class="form-table">
+                        <tr>
+				<td scope="row"  width="150"><?php _e('IMA Ad Type', 'video_gallery') ?></td>
+				<td>
+                                    <input type="radio" name="imaadType" id="imaadTypetext" onclick="changeimaadtype();" value="1" <?php
+                                if (isset($videoadEdit->imaadType) && $videoadEdit->imaadType == 1) {
+                                    echo "checked";
+                                }
+                                ?>><label>Text/Overlay</label>
+
+
+                                <input type="radio" name="imaadType" id="imaadTypevideo" onclick="changeimaadtype();" value="0"  <?php
+                                if (isset($videoadEdit->imaadType) && $videoadEdit->imaadType == 0) {
+                                    echo "checked";
+                                }
+                                ?>><label>Video</label>
+			</tr>
+                        <tr id="adimapath" style="display: none;">
+				<td scope="row"  width="150"><?php _e('IMA Ad Path', 'video_gallery') ?></td>
+				<td>
+				<input type="text" size="50" name="imaadpath" id="imaadpath" value="<?php echo (isset($videoadEdit->imaadpath)) ? $videoadEdit->imaadpath : ''; ?>" />
+                                <span id="imaadpatherrormessage" style="display: block;color:red; "></span>
+				</td>
+			</tr>
+                        <tr id="adimawidth" style="display: none;">
+                            <td scope="row"  width="150"><?php _e('Ad Slot Width', 'video_gallery') ?></td>
+                            <td>
+                                <input type="text" size="50" name="videoimaadwidth" id="adwidth" value="<?php echo (isset($videoadEdit->adwidth)) ? $videoadEdit->adwidth : ""; ?>"  />
+                            </td>
+                        </tr>
+                        <tr id="adimaheight" style="display: none;">
+                            <td scope="row"  width="150"><?php _e('Ad Slot Height', 'video_gallery') ?></td>
+                            <td>
+                                <input type="text" size="50" name="videoimaadheight" id="adheight" value="<?php echo (isset($videoadEdit->adheight)) ? $videoadEdit->adheight : ""; ?>"  />
+                            </td>
+                        </tr>
+			<tr id="adimapublisher" style="display: none;">
+				<td scope="row"  width="150"><?php _e('Publisher ID', 'video_gallery') ?></td>
+				<td><input type="text" size="50" name="publisherId" id="publisherId" value="<?php echo (isset($videoadEdit->publisherId)) ? $videoadEdit->publisherId : ''; ?>" />
+                                <span id="imapublisherIderrormessage" style="display: block;color:red; "></span>
+                                </td>
+			</tr>
+			<tr id="adimacontentid" style="display: none;">
+				<td scope="row"  width="150"><?php _e('Content ID', 'video_gallery') ?></td>
+				<td><input type="text" size="50" name="contentId" id="contentId" value="<?php echo (isset($videoadEdit->contentId)) ? $videoadEdit->contentId : ''; ?>" />
+                                <span id="imacontentIderrormessage" style="display: block;color:red; "></span>
+                                </td>
+			</tr>
+			
+			<tr id="adimachannels" style="display: none;">
+				<td scope="row"  width="150"><?php _e('Channels', 'video_gallery') ?></td>
+				<td><input type="text" size="50" name="channels" id="channels" value="<?php echo (isset($videoadEdit->channels)) ? $videoadEdit->channels : ''; ?>" />
+                                <span id="imachannelserrormessage" style="display: block;color:red; "></span>
+                                </td>
+			</tr>
                     </table>
                     <div id="videoadurl" style="display: none;" >
                         <table class="form-table">
                             <tr>
-                                <td scope="row"  width="150"><?php _e('URL to video file', 'hdflv') ?></td>
+                                <td scope="row"  width="150"><?php _e('Video Ad URL', 'video_gallery') ?></td>
                                 <td>
                                     <input type="text" size="50" onchange="clear_upload();" name="videoadfilepath" id="videoadfilepath"  value="<?php echo (isset($videoadEdit->file_path)) ? $videoadEdit->file_path : ""; ?>"  />&nbsp;&nbsp
-                                    <br /><?php _e('Here you need to enter the URL to the ads video file', 'hdflv') ?>
-                                    <br /><?php _e('It accept also a Youtube link: http://www.youtube.com/watch?v=tTGHCRUdlBs', 'ads') ?>
+                                    <br /><?php _e('Here you need to enter the video ad URL', 'video_gallery') ?>
+                                    <br /><?php _e('It accept also a Youtube link : http://www.youtube.com/watch?v=tTGHCRUdlBs', 'video_gallery') ?>
+                                <span id="filepatherrormessage" style="display: block;color:red; "></span>
                                 </td>
                             </tr>
                         </table>
@@ -105,7 +222,7 @@
 
                     <table class="form-table add_video_publish">
                         <tr>
-                            <td scope="row" width="150"><?php _e('Publish', 'hdflvvideoshare') ?></td>
+                            <td scope="row" width="150"><?php _e('Publish', 'video_gallery') ?></td>
                             <td class="checkbox">
 
                                 <?php //echo $act_feature;   ?>
@@ -127,8 +244,10 @@
                     </table>
 
 <?php if (isset($videoadId)) { ?>
-                                    <input type="submit" name="videoadsadd" class="button-primary"  value="<?php _e('Update Video Ad', 'ads'); ?>" class="button" /> <?php } else { ?> <input type="submit" name="videoadsadd" class="button-primary"  value="<?php _e('Add Video Ad', 'ads'); ?>" class="button" /> <?php } ?>
+                                    <input type="submit" name="videoadsadd" class="button-primary" onclick="return validateadInput();"  value="<?php _e('Update Video Ad', 'video_gallery'); ?>" class="button" /> <?php } else { ?> <input type="submit" name="videoadsadd" class="button-primary" onclick="return validateadInput();" value="<?php _e('Add Video Ad', 'video_gallery'); ?>" class="button" /> <?php } ?>
                     <input type="hidden" name="normalvideoform-value" id="normalvideoform-value" value="<?php echo (isset($videoadEdit->file_path) && $uploaded_video == 1) ? $videoadEdit->file_path : ""; ?>"  />
+                    <input type="hidden" name="admethod" id="admethod" value="<?php echo (isset($videoadEdit->admethod)) ? $videoadEdit->admethod : ""; ?>"  />
+                    <input type="hidden" name="adtype" id="adtype" value="<?php echo (isset($videoadEdit->adtype)) ? $videoadEdit->adtype : ""; ?>"  />
                 </form>
 
             </div>
@@ -140,14 +259,31 @@
 if (isset($videoadEdit->file_path) && $uploaded_video == 1) {
 ?>
 document.getElementById("filebtn").checked = true;
-Videoadtype();
+Videoadmethod();
 <?php
 } else {
 ?>
 document.getElementById("urlbtn").checked = true;
+Videoadmethod();
+<?php
+}
+if (isset($videoadEdit->admethod) && $videoadEdit->admethod == 'midroll') {
+?>
+document.getElementById("midroll").checked = true;
 Videoadtype();
 <?php
-                                                                                       }
+}else if (isset($videoadEdit->admethod) && $videoadEdit->admethod == 'imaad') {
+?>
+document.getElementById("imaad").checked = true;
+document.getElementById('imaadTypevideo').checked=true;
+Videoadtype();
+<?php
+}else {
+?>
+document.getElementById("prepostroll").checked = true;
+Videoadtype();
+<?php
+}
 ?>
 </script>
 </div>

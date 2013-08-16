@@ -3,7 +3,7 @@
 Name: Wordpress Video Gallery
 Plugin URI: http://www.apptha.com/category/extension/Wordpress/Video-Gallery
 Description: Playlist Controller.
-Version: 2.1
+Version: 2.2
 Author: Apptha
 Author URI: http://www.apptha.com
 License: GPL2
@@ -52,14 +52,14 @@ if(class_exists('PlaylistController') != true)
              if(isset($this->_addnewPlaylist))
             {   
                 $playlistName = filter_input(INPUT_POST, 'playlistname');
-                $playlistDescription = filter_input(INPUT_POST, 'playlistdescription');
+//                $playlistDescription = filter_input(INPUT_POST, 'playlistdescription');
                 $playlistPublish = filter_input(INPUT_POST, 'ispublish');
                 $playlistOrder = filter_input(INPUT_POST, 'playlist_order');
                 $playlistordering = filter_input(INPUT_POST, 'ordering');
                 
                 $playlsitData = array(
                 'playlist_name' => $playlistName,
-                'playlist_desc' => $playlistDescription,
+//                'playlist_desc' => $playlistDescription,
                 'is_publish' => $playlistPublish,
                 'playlist_order' => $playlistordering,
                 );
@@ -100,11 +100,6 @@ if(class_exists('PlaylistController') != true)
             echo "<script>window.open('".$url."','_top',false)</script>";
         }//admin redirection url function ends
 
-        public function playlist_orderdata()
-        {//admin redirection url function starts
-            return $this->get_playlistorderdata();
-        }//admin redirection url function ends
-
         public function playlist_data() 
         {//getting playlist data function starts
             $orderBy = array('id', 'title', 'desc', 'publish','sorder');
@@ -124,11 +119,6 @@ if(class_exists('PlaylistController') != true)
                 case 'title':
                     $order ='playlist_name';
                 break;
-
-                case 'desc':
-                    $order ='playlist_desc';
-                break;
-
                 case 'publish':
                     $order ='is_publish';
                 break;
@@ -147,29 +137,29 @@ if(class_exists('PlaylistController') != true)
          {//displaying database message function starts
             if (isset($this->_update) && $this->_update == '1')
             {
-                $this->_msg = 'Playlist Updated Successfully ...';
+                $this->_msg = 'Category Updated Successfully ...';
             }
             else if($this->_update == '0')
             {
-                $this->_msg = 'Playlist Not Updated  Successfully ...';
+                $this->_msg = 'Category Not Updated  Successfully ...';
             }
 
             if (isset($this->_add) && $this->_add == '1')
             {
-                $this->_msg ='Playlist Added Successfully ...';
+                $this->_msg ='Category Added Successfully ...';
             }
 
               if (isset($this->_del) && $this->_del == '1')
             {
-                $this->_msg ='Playlist Deleted Successfully ...';
+                $this->_msg ='Category Deleted Successfully ...';
             }
                if (isset($this->_status) && $this->_status == '1')
             {
-                $this->_msg ='Playlist Published Successfully ...';
+                $this->_msg ='Category Published Successfully ...';
             }
             else if($this->_status == '0')
             {
-                $this->_msg = 'Playlist UnPublished Successfully ...';
+                $this->_msg = 'Category UnPublished Successfully ...';
             }
 
             return $this->_msg;
@@ -213,7 +203,6 @@ $playListId = $playlistOBJ->_playListId;
 $searchMsg =  $playlistOBJ->_playlistsearchQuery;
 $searchBtn =  $playlistOBJ->_searchBtn;
 $gridPlaylist = $playlistOBJ->playlist_data();
-$Playlistorder = $playlistOBJ->playlist_orderdata();
 $Playlist_count = $playlistOBJ->Playlist_count($searchMsg,$searchBtn);
 $playlistEdit = $playlistOBJ->playlist_edit($playListId);
 $displayMsg = $playlistOBJ->get_message();

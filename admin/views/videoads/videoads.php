@@ -3,7 +3,7 @@
 Name: Wordpress Video Gallery
 Plugin URI: http://www.apptha.com/category/extension/Wordpress/Video-Gallery
 Description: Video ad view file.
-Version: 2.1
+Version: 2.2
 Author: Apptha
 Author URI: http://www.apptha.com
 License: GPL2
@@ -12,10 +12,10 @@ License: GPL2
 <!--   MENU OPTIONS STARTS  --->
 <div class="apptha_gallery">
 <h2 class="nav-tab-wrapper">
-    <a href="?page=video" class="nav-tab">All Videos</a>
-    <a href="?page=playlist" class="nav-tab">Play List</a>
-    <a href="?page=videoads" class="nav-tab nav-tab-active">Video Ads</a>
-    <a href="?page=hdflvvideosharesettings" class="nav-tab">Settings</a>
+    <a href="?page=video" class="nav-tab"><?php _e('All Videos', 'video_gallery'); ?></a>
+    <a href="?page=playlist" class="nav-tab"><?php _e('Categories', 'video_gallery'); ?></a>
+    <a href="?page=videoads" class="nav-tab nav-tab-active"><?php _e('Video Ads', 'video_gallery'); ?></a>
+    <a href="?page=hdflvvideosharesettings" class="nav-tab"><?php _e('Settings', 'video_gallery'); ?></a>
 </h2>
 
 <!--  MENU OPTIONS ENDS --->
@@ -23,7 +23,7 @@ License: GPL2
 <div class="wrap">
     <h2 class="option_title">
        <?php echo "<img src='" . APPTHA_VGALLERY_BASEURL . "/images/vid_ad.png' alt='move' width='30'/>"; ?>
-       <?php _e('Manage Video Ads','digi'); ?>
+       <?php _e('Manage Video Ads','video_gallery'); ?>
        <a class="button-primary" href="<?php echo get_bloginfo('url')?>/wp-admin/admin.php?page=newvideoad" >Add Video Ad</a>
     </h2>
 
@@ -83,7 +83,7 @@ License: GPL2
                         echo '<div class="tablenav"><div class="tablenav-pages" style="margin: 1em 0">' . $page_links . '</div></div>';
                     }
             ?>
-
+            <div style="clear: both;"></div>
             <table class="wp-list-table widefat fixed tags" cellspacing="0">
                 <thead>
                     <tr>
@@ -92,7 +92,7 @@ License: GPL2
                         </th>
                         <th scope="col"  class="manage-column column-name sortable desc" style="">
                             <a  href="<?php echo get_bloginfo('url')?>/wp-admin/admin.php?page=videoads&orderby=id&order=<?php echo $reverse_direction; ?>">
-                                <span>ID</span>
+                                <span>Ad ID</span>
                                 <span class="sorting-indicator"></span>
                             </a>
                         </th>
@@ -108,6 +108,12 @@ License: GPL2
                             </a>
                         </th>
                         
+                        <th scope="col" class="manage-column column-description sortable desc" style="">
+                            <span>Ad Type</span>
+                        </th>
+                        <th scope="col" class="manage-column column-description sortable desc" style="">
+                            <span>Ad Method</span>
+                        </th>
                         <th scope="col" class="manage-column column-description sortable desc" style="">
                             <a  href="<?php echo get_bloginfo('url')?>/wp-admin/admin.php?page=videoads&orderby=publish&order=<?php echo $reverse_direction; ?>" ><span>Publish</span>
                                 <span class="sorting-indicator"></span>
@@ -131,7 +137,8 @@ License: GPL2
                         <a title="Edit <?php echo $videoAdview->title; ?>" class="row-title" href="<?php echo get_bloginfo('url')?>/wp-admin/admin.php?page=newvideoad&videoadId=<?php echo $videoAdview->ads_id;  ?>" ><?php echo  $videoAdview->title; ?></a>
                     </td>
                     <td class="description column-description">
-                        <?php echo $videoAdview->file_path ?>
+                        <?php if($videoAdview->admethod != "midroll") echo $videoAdview->file_path; ?>
+                        <?php if($videoAdview->admethod == "imaad") echo $videoAdview->imaadpath; ?>
                     </td>
                         <?php $status = 1;
                         $image = "deactivate.jpg";
@@ -143,6 +150,12 @@ License: GPL2
                                 $publish = "Click here to Deactivate";
                             }
                         ?>
+                    <td>
+                        <?php echo  $videoAdview->admethod; ?>
+                    </td>
+                    <td>
+                        <?php if($videoAdview->admethod != "midroll") echo  $videoAdview->adtype; ?>
+                    </td>
                     <td class="description column-description">
                         <a href="<?php echo get_bloginfo('url')?>/wp-admin/admin.php?page=videoads&videoadId=<?php echo $videoAdview->ads_id;?>&status=<?php echo $status;?>">   <img  src="<?php  echo APPTHA_VGALLERY_BASEURL.'images/'.$image ?>" title="<?php echo $publish;?>" title="<?php echo $publish;?>"  /></a>
                     </td>
@@ -162,7 +175,7 @@ License: GPL2
                 </th>
                 <th scope="col"  class="manage-column column-name sortable desc" style="">
                     <a  href="<?php echo get_bloginfo('url')?>/wp-admin/admin.php?page=videoads&orderby=id&order=<?php echo $reverse_direction; ?>">
-                        <span>ID</span>
+                        <span>Ad ID</span>
                         <span class="sorting-indicator"></span>
                     </a>
                 </th>
@@ -178,6 +191,12 @@ License: GPL2
                     </a>
                 </th>
                 <th scope="col" class="manage-column column-description sortable desc" style="">
+                            <span>Ad Type</span>
+                        </th>
+                <th scope="col" class="manage-column column-description sortable desc" style="">
+                            <span>Ad Method</span>
+                        </th>
+                <th scope="col" class="manage-column column-description sortable desc" style="">
                     <a  href="<?php echo get_bloginfo('url')?>/wp-admin/admin.php?page=videoads&orderby=publish&order=<?php echo $reverse_direction; ?>" ><span>Publish</span>
                         <span class="sorting-indicator"></span>
                     </a>
@@ -185,6 +204,7 @@ License: GPL2
             </tr>
         </tfoot>
       </table>
+            <div style="clear: both;"></div>
         <div class="alignleft actions" style="margin-top:10px;">
             <select name="videoadactiondown" id="videoadactiondown">
                 <option value="-1" selected="selected">

@@ -3,7 +3,7 @@
   Name: Wordpress Video Gallery
   Plugin URI: http://www.apptha.com/category/extension/Wordpress/Video-Gallery
   Description: Video view file.
-  Version: 2.1
+  Version: 2.2
   Author: Apptha
   Author URI: http://www.apptha.com
   License: GPL2
@@ -46,7 +46,7 @@ $dirPage = $dirExp[0];
     <!--   MENU OPTIONS STARTS  --->
     <h2 class="nav-tab-wrapper">
         <a href="?page=video" class="nav-tab nav-tab-active"><?php _e('All Videos', 'video_gallery'); ?></a>
-        <a href="?page=playlist" class="nav-tab"><?php _e('Play List', 'video_gallery'); ?></a>
+        <a href="?page=playlist" class="nav-tab"><?php _e('Categories', 'video_gallery'); ?></a>
         <a href="?page=videoads" class="nav-tab"><?php _e('Video Ads', 'video_gallery'); ?></a>
         <a href="?page=hdflvvideosharesettings" class="nav-tab"><?php _e('Settings', 'video_gallery'); ?></a>
     </h2>
@@ -61,7 +61,7 @@ $dirPage = $dirExp[0];
             <?php echo "<img src='" . APPTHA_VGALLERY_BASEURL . "/images/manage_video.png' alt='move' width='30'/>"; ?>
             <?php _e('Manage Videos', 'video_gallery'); ?><a class="button-primary" href="<?php echo get_bloginfo('url') ?>/wp-admin/admin.php?page=newvideo" style="margin-left: 10px;"><?php _e('Add Video', 'video_gallery'); ?></a></h2>
         <div class="admin_short_video_info"><span class="hint_heading"><?php _e('How To Use?', 'video_gallery'); ?></span>
-            <?php _e("Once you install 'Wordpress video gallery' plugin, the page 'Videos' will be created automatically. If you would like to display the video gallery on any other page or post, you can use the following plugin code.-", "video_gallery"); ?>
+            <?php _e("Once you install 'Wordpress Video Gallery' plugin, the page 'Videos' will be created automatically. If you would like to display the video gallery on any other page or post, you can use the following plugin code.-", "video_gallery"); ?>
 
 
             <strong><?php _e('[videohome]', 'video_gallery'); ?><br><br></strong>
@@ -69,16 +69,16 @@ $dirPage = $dirExp[0];
             <?php _e('To display single video player on any page or post use the plugin code in any of the formats specified below.', 'video_gallery'); ?>
             <br><br>
 
-            <strong><?php _e('[hdvideo id=3 playlistid=2 width=400 height=400 ] or [hdvideo playlistid=2 ] or [hdvideo id=3 ]', 'video_gallery'); ?></strong>
+            <strong><?php _e('[hdvideo id=3 playlistid=2 width=400 height=400] or [hdvideo playlistid=2] or [hdvideo id=3]', 'video_gallery'); ?></strong>
 
-            <?php _e("id - The video ID, you can find the video id on 'All Videos' admin page.", "video_gallery"); ?><br><br>
-            <?php _e('Play list id - You can find the playlist ID on manage playlist page.', 'video_gallery'); ?><br><br>
+            <?php _e("id - The Video ID, you can find the video id on 'All Videos' admin page.", "video_gallery"); ?><br><br>
+            <?php _e('Playlist id - You can find the Category ID on manage Category page.', 'video_gallery'); ?><br><br>
 
-            <?php _e("Both the video id and playlist id will generated automatically once you add new video or playlist to 'Wordpress Video Gallery'.", "video_gallery"); ?><br><br>
+            <?php _e("Both the Video ID and Category ID will be generated automatically once you add new Video or Category to 'Wordpress Video Gallery'.", "video_gallery"); ?><br><br>
 
             <?php _e('You can use the plugin code with flashvars when you would like to display a player on any page/post with some specific settings.', 'video_gallery'); ?><br><br>
 
-            <strong><?php _e("[hdvideo id=3 flashvars='autoplay=true & zoom=false']", "video_gallery"); ?></strong>
+            <strong><?php _e("[hdvideo id=3 flashvars=autoplay=true&zoomIcon=false]", "video_gallery"); ?></strong>
         </div>
 
 
@@ -147,6 +147,7 @@ $dirPage = $dirExp[0];
 
                        <div style="float:right ; font-weight: bold;" ><?php if (isset($pagelist))
                            echo $pagelist; ?></div>
+                       <div style="clear: both;"></div>
                    <table class="wp-list-table widefat fixed tags" cellspacing="0" width="100%">
                        <thead>
                            <tr>
@@ -154,11 +155,11 @@ $dirPage = $dirExp[0];
                                    <input type="checkbox" name="" ></th>
                                <th width="5%" scope="col"  style="">
                                    <span>
-                                    <?php _e('', 'digi'); ?> </span><span class="sorting-indicator"></span></th>
-                            <th width="5%" scope="col"  style="">
+                                    <?php _e('', 'video_gallery'); ?> </span><span class="sorting-indicator"></span></th>
+                            <th width="7%" scope="col"  style="">
                                 <a href="<?php echo get_bloginfo('url') ?>/wp-admin/admin.php?page=video&orderby=id&order=<?php echo $reverse_direction; ?>"><span>
-                                        <?php _e('ID', 'video_gallery'); ?> </span><span class="sorting-indicator"></span></a></th>
-                            <th width="32%" scope="col"  class="manage-column column-name sortable desc" style="">
+                                        <?php _e('Video ID', 'video_gallery'); ?> </span><span class="sorting-indicator"></span></a></th>
+                            <th width="30%" scope="col"  class="manage-column column-name sortable desc" style="">
                                 <a href="<?php echo get_bloginfo('url') ?>/wp-admin/admin.php?page=video&orderby=title&order=<?php echo $reverse_direction; ?>"><span>
                                         <?php _e('Title', 'video_gallery'); ?> </span><span class="sorting-indicator"></span></a></th>
                             <th width="28%" scope="col"  class="manage-column column-description sortable desc" style="">
@@ -173,7 +174,7 @@ $dirPage = $dirExp[0];
                                 <a href="<?php echo get_bloginfo('url') ?>/wp-admin/admin.php?page=video&orderby=publish&order=<?php echo $reverse_direction; ?>"><span>
                                         <?php _e('Publish', 'video_gallery'); ?></span><span class="sorting-indicator"></span></a></th>
                             <th width="8%" scope="col" class="manage-column column-description sortable desc" style="">
-                                <a>
+                                <a href="<?php echo get_bloginfo('url') ?>/wp-admin/admin.php?page=video&orderby=ordering&order=<?php echo $reverse_direction; ?>">
                                     <span><?php _e('Sort Order', 'video_gallery'); ?></span>                                    
                                 </a>
                             </th>
@@ -196,7 +197,7 @@ $dirPage = $dirExp[0];
                                                              width="16" height="16" class="handle" />
                                                     </span>
                                                 </td>
-                                                <td class="image column-image">
+                                                <td class="image column-image" style='text-align:center;'>
                                                     <a title="Edit <?php echo $videoView->name; ?>"  href="<?php echo $_SERVER["PHP_SELF"]; ?>?page=newvideo&videoId=<?php echo $videoView->vid; ?>" ><?php echo $videoView->vid; ?></a>
                                                 </td>
                                                 <td>
@@ -251,10 +252,10 @@ $dirPage = $dirExp[0];
                                                 <input type="checkbox" name="" ></th>
                                             <th width="5%" scope="col"  style="">
                                                 <span>
-                                    <?php _e('', 'digi'); ?> </span><span class="sorting-indicator"></span></th>
+                                    <?php _e('', 'video_gallery'); ?> </span><span class="sorting-indicator"></span></th>
                                 <th scope="col"  class="manage-column column-name sortable desc" style="">
                                     <a href="<?php echo get_bloginfo('url') ?>/wp-admin/admin.php?page=video&orderby=id&order=<?php echo $reverse_direction; ?>"><span>
-                                        <?php _e('ID', 'video_gallery'); ?> </span><span class="sorting-indicator"></span></a></th>
+                                        <?php _e('Video ID', 'video_gallery'); ?> </span><span class="sorting-indicator"></span></a></th>
                             <th scope="col"  class="manage-column column-name sortable desc" style="">
                                 <a href="<?php echo get_bloginfo('url') ?>/wp-admin/admin.php?page=video&orderby=title&order=<?php echo $reverse_direction; ?>"><span>
                                         <?php _e('Title', 'video_gallery'); ?> </span><span class="sorting-indicator"></span></a></th>
@@ -270,8 +271,8 @@ $dirPage = $dirExp[0];
                                 <a href="<?php echo get_bloginfo('url') ?>/wp-admin/admin.php?page=video&orderby=publish&order=<?php echo $reverse_direction; ?>"><span>
                                         <?php _e('Publish', 'video_gallery'); ?></span><span class="sorting-indicator"></span></a></th>
 
-                            <th  scope="col" class="manage-column column-description sortable desc" style="">
-                                <a>
+                            <th scope="col" class="manage-column column-description sortable desc" style="">
+                                <a href="<?php echo get_bloginfo('url') ?>/wp-admin/admin.php?page=video&orderby=ordering&order=<?php echo $reverse_direction; ?>">
                                     <span><?php _e('Sort Order', 'video_gallery'); ?></span>
                                 </a>
                             </th>

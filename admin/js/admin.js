@@ -2,7 +2,7 @@
 Name: Wordpress Video Gallery
 Plugin URI: http://www.apptha.com/category/extension/Wordpress/Video-Gallery
 Description: Admin action javacript file.
-Version: 2.1
+Version: 2.2
 Author: Apptha
 Author URI: http://www.apptha.com
 License: GPL2
@@ -40,12 +40,12 @@ function PlaylistdeleteIds()
     {
         if(playlistID)
         {
-            alert("You want to delete Playlist? ");
+            alert("You want to delete Category? ");
             return true;
         }
         else
         {
-            alert("Please select a Playlist to delete");
+            alert("Please select a Category to delete");
             return false;
         }
     }
@@ -62,20 +62,178 @@ function clear_upload(){
 
 function Videoadtype()
 {
+    if(document.getElementById('prepostroll').checked==true)
+    {
+       document.getElementById('upload2').style.display = "none";
+       document.getElementById('videoadurl').style.display = "block";
+       document.getElementById('admethod').value = "prepost";
+       document.getElementById('videoadmethod').style.display = "block";
+       document.getElementById('videoaddetails').style.display = "block";
+       document.getElementById('videoimaaddetails').style.display = "none";
+    }
+
+    if(document.getElementById('midroll').checked==true)
+    {
+        document.getElementById('upload2').style.display = "none";
+        document.getElementById('videoadmethod').style.display = "none";
+        document.getElementById('admethod').value = "midroll";
+        document.getElementById('videoadurl').style.display = "none";
+        document.getElementById('videoaddetails').style.display = "block";
+        document.getElementById('videoimaaddetails').style.display = "none";
+    }
+    if(document.getElementById('imaad').checked==true)
+    {
+        document.getElementById('upload2').style.display = "none";
+        document.getElementById('videoadmethod').style.display = "none";
+        document.getElementById('admethod').value = "imaad";
+        document.getElementById('videoadurl').style.display = "none";
+        document.getElementById('videoaddetails').style.display = "none";
+        document.getElementById('videoimaaddetails').style.display = "block";
+        document.getElementById('imaadTypevideo').checked=true;
+        changeimaadtype();
+    }
+
+
+}
+function Videoadmethod()
+{
     if(document.getElementById('filebtn').checked==true)
     {
         document.getElementById('upload2').style.display = "block";
         document.getElementById('videoadurl').style.display = "none";
+        document.getElementById('adtype').style.display = "file";
     }
 
     if(document.getElementById('urlbtn').checked==true)
     {
         document.getElementById('upload2').style.display = "none";
         document.getElementById('videoadurl').style.display = "block";
+        document.getElementById('adtype').value  = "url";
     }
 
 
 }
+function changeimaadtype()
+{
+    if(document.getElementById('imaadTypetext').checked==true)
+    {
+        document.getElementById('adimapath').style.display = "none";
+        document.getElementById('adimawidth').style.display = "";
+        document.getElementById('adimaheight').style.display = "";
+        document.getElementById('adimapublisher').style.display = "";
+        document.getElementById('adimacontentid').style.display = "";
+        document.getElementById('adimachannels').style.display = "";
+
+    }
+
+    if(document.getElementById('imaadTypevideo').checked==true)
+    {
+        document.getElementById('adimapath').style.display = "";
+        document.getElementById('adimawidth').style.display = "none";
+        document.getElementById('adimaheight').style.display = "none";
+        document.getElementById('adimapublisher').style.display = "none";
+        document.getElementById('adimacontentid').style.display = "none";
+        document.getElementById('adimachannels').style.display = "none";
+
+    }
+}
+
+function validateadInput (){
+    var tomatch= /(http:\/\/|https:\/\/)[A-Za-z0-9\.-]{3,}\.[A-Za-z]{3}|(http:\/\/|https:\/\/)/
+        if(document.getElementById('targeturl').value != ''){
+                var thevideoadurl=document.getElementById("targeturl").value;
+                if (!tomatch.test(thevideoadurl))
+                {
+                    document.getElementById('targeterrormessage').innerHTML = 'Enter Valid Target URL';
+                    document.getElementById("targeturl").focus();
+                    return false;
+                }
+        }
+        if(document.getElementById('clickurl').value != ''){
+                var thevideoadurl=document.getElementById("clickurl").value;
+                if (!tomatch.test(thevideoadurl))
+                {
+                    document.getElementById('clickerrormessage').innerHTML = 'Enter Valid Target URL';
+                    document.getElementById("clickurl").focus();
+                    return false;
+                }
+        }
+        if(document.getElementById('impressionurl').value != ''){
+                var thevideoadurl=document.getElementById("impressionurl").value;
+                if (!tomatch.test(thevideoadurl))
+                {
+                    document.getElementById('impressionerrormessage').innerHTML = 'Enter Valid Target URL';
+                    document.getElementById("impressionurl").focus();
+                    return false;
+                }
+        }
+    
+    if(document.getElementById('prepostroll').checked==true)
+    {
+        if(document.getElementById('filebtn').checked==true && document.getElementById('normalvideoform-value').value == '')
+    {
+        document.getElementById('filepathuploaderrormessage').innerHTML = 'Upload file for Ad';
+        return false;
+        }else if(document.getElementById('urlbtn').checked==true )
+    {
+            if(document.getElementById('videoadfilepath').value == ''){
+        document.getElementById('filepatherrormessage').innerHTML = 'Enter Ad URL';
+        document.getElementById('videoadfilepath').focus();
+        return false;
+            }else{
+                var thevideoadurl=document.getElementById("videoadfilepath").value;
+                var tomatch= /(http:\/\/|https:\/\/)[A-Za-z0-9\.-]{3,}\.[A-Za-z]{3}|(http:\/\/|https:\/\/)/
+                if (!tomatch.test(thevideoadurl))
+                {
+                    document.getElementById('filepatherrormessage').innerHTML = 'Enter Valid Ad URL';
+                    document.getElementById("videoadfilepath").focus();
+                    return false;
+    }
+            }
+        }
+    if(document.getElementById('name').value == ''){
+        document.getElementById('nameerrormessage').innerHTML = 'Enter Ad Name';
+        document.getElementById('name').focus();
+        return false;
+    }
+    } else if(document.getElementById('midroll').checked==true && document.getElementById('name').value == ''){
+        document.getElementById('nameerrormessage').innerHTML = 'Enter Ad Name';
+        document.getElementById('name').focus();
+        return false;
+
+    } else if(document.getElementById('imaad').checked==true){
+    if(document.getElementById('imaadTypetext').checked==true && document.getElementById('publisherId').value == '')
+    {
+        document.getElementById('imapublisherIderrormessage').innerHTML = 'Enter IMA Ad Publisher ID';
+        document.getElementById('publisherId').focus();
+        return false;
+
+    } else if(document.getElementById('imaadTypetext').checked==true && document.getElementById('contentId').value == '')
+    {
+        document.getElementById('imacontentIderrormessage').innerHTML = 'Enter IMA Ad Content ID';
+        document.getElementById('contentId').focus();
+        return false;
+
+    }else if(document.getElementById('imaadTypetext').checked==true && document.getElementById('channels').value == '')
+    {
+        document.getElementById('imachannelserrormessage').innerHTML = 'Enter IMA Ad Channel';
+        document.getElementById('channels').focus();
+        return false;
+
+    }else if(document.getElementById('imaadTypevideo').checked==true && document.getElementById('imaadpath').value == '')
+    {
+        document.getElementById('imaadpatherrormessage').innerHTML = 'Enter IMA Ad Path';
+        document.getElementById('imaadpath').focus();
+        return false;
+
+    }
+    
+}
+}
+
+
+
+
 
 function VideoaddeleteIds()
  
@@ -387,44 +545,106 @@ function generate12(str1)
 function validateInput(){
 
     document.getElementById('Youtubeurlmessage').innerHTML = '';
-    if(document.getElementById('btn2').checked == true && document.getElementById('filepath1').value == ''){
+    if(document.getElementById('btn2').checked == true){
+        if(document.getElementById('filepath1').value == ''){
         document.getElementById('Youtubeurlmessage').innerHTML = 'Enter Youtube URL';
         document.getElementById('filepath1').focus();
         return false;
+        } else {
+            var theurl=document.getElementById("filepath1").value;
+            var regExp = /^.*(youtu.be\/|v\/|embed\/|watch\?|youtube.com\/user\/[^#]*#([^\/]*?\/)*)\??v?=?([^#\&\?]*).*/;
+            var match = theurl.match(regExp);
+            if (!match){
+                document.getElementById('Youtubeurlmessage').innerHTML = 'Enter Valid Youtube URL';
+                document.getElementById('filepath1').focus();
+                return false;
+            }
+//            if (theurl.indexOf("youtube.com") == -1 || theurl.indexOf("youtu.be") == -1 ) {
+//                document.getElementById('Youtubeurlmessage').innerHTML = 'Enter Valid Youtube URL';
+//                document.getElementById('filepath1').focus();
+//                return false;
+//            }
+            }
     } else if(document.getElementById('btn1').checked == true && document.getElementById('f1-upload-form').style.display != 'none' && document.getElementById('lbl_normal').innerHTML==''){
         document.getElementById('uploadmessage').innerHTML = 'Upload Video';
         return false;
     } else if(document.getElementById('btn1').checked == true && document.getElementById('f3-upload-form').style.display != 'none' && document.getElementById('thumbimageform-value').value==''){
         document.getElementById('uploadthumbmessage').innerHTML = 'Upload Thumb Image';
         return false;
-    } else if(document.getElementById('btn3').checked == true && document.getElementById('filepath2').value == ''){
+    } else if(document.getElementById('btn3').checked == true){
+        if(document.getElementById('filepath2').value == ''){
         document.getElementById('videourlmessage').innerHTML = 'Enter Video URL';
         document.getElementById('filepath2').focus();
         return false;
-    } else if(document.getElementById('btn3').checked == true && document.getElementById('filepath4').value == ''){
-        document.getElementById('thumburlmessage').innerHTML = 'Enter Image URL';
+        } else {
+        var thevideourl=document.getElementById("filepath2").value;
+        var tomatch= /(http:\/\/|https:\/\/)[A-Za-z0-9\.-]{3,}\.[A-Za-z]{3}|(http:\/\/|https:\/\/)/
+        if (!tomatch.test(thevideourl))
+        {
+            document.getElementById('videourlmessage').innerHTML = 'Enter Valid Video URL';
+            document.getElementById("filepath2").focus();
+            return false;
+        }
+        }
+        var thehdvideourl=document.getElementById("filepath3").value;
+        if(thehdvideourl!=''){
+        var tohdmatch= /(http:\/\/|https:\/\/)[A-Za-z0-9\.-]{3,}\.[A-Za-z]{3}|(http:\/\/|https:\/\/)/
+        if (!tohdmatch.test(thehdvideourl))
+        {
+            document.getElementById('videohdurlmessage').innerHTML = 'Enter Valid HD Video URL';
+            document.getElementById("filepath3").focus();
+            return false;
+        }
+    }
+        if(document.getElementById('filepath4').value == ''){
+        document.getElementById('thumburlmessage').innerHTML = 'Enter Thumb Image URL';
         document.getElementById('filepath4').focus();
         return false;
+    }else{
+        var thethumburl=document.getElementById("filepath4").value;
+        var tothumbmatch= /(http:\/\/|https:\/\/)[A-Za-z0-9\.-]{3,}\.[A-Za-z]{3}|(http:\/\/|https:\/\/)/
+        if (!tothumbmatch.test(thethumburl))
+        {
+            document.getElementById('thumburlmessage').innerHTML = 'Enter Valid Thmub Image URL';
+            document.getElementById("filepath4").focus();
+            return false;
+        }
+    }
+        if(document.getElementById('filepath5').value != ''){
+        var thepreviewurl=document.getElementById("filepath5").value;
+        var topreviewmatch= /(http:\/\/|https:\/\/)[A-Za-z0-9\.-]{3,}\.[A-Za-z]{3}|(http:\/\/|https:\/\/)/
+        if (!topreviewmatch.test(thepreviewurl))
+        {
+            document.getElementById('previewurlmessage').innerHTML = 'Enter Valid Preview Image URL';
+            document.getElementById("filepath5").focus();
+            return false;
+        }
+    }
     } else if(document.getElementById('btn4').checked == true)
     {
         var streamer_name = document.getElementById('streamname').value;
         document.getElementById('streamerpath-value').value=streamer_name;
         var islivevalue2=(document.getElementById('islive2').checked);
-        var tomatch= /(rtmp:\/\/|rtmpe:\/\/)[A-Za-z0-9\.-]{3,}\.[A-Za-z]{3}|(rtmp:\/\/|rtmpe:\/\/)/
+        var tomatch1= /(rtmp:\/\/|rtmpe:\/\/)[A-Za-z0-9\.-]{3,}\.[A-Za-z]{3}|(rtmp:\/\/|rtmpe:\/\/)/
         if(streamer_name == ''){
-            alert( "You must provide a streamer path!" )
+            document.getElementById('streamermessage').innerHTML = 'You must provide a streamer path!';
             return false;
-        } else if (!tomatch.test(streamer_name))
+        } else if (!tomatch1.test(streamer_name))
         {
-            alert( "Please enter a valid streamer path" )
+            document.getElementById('streamermessage').innerHTML = 'Please enter a valid streamer path';
             document.getElementById('streamname').focus();
             return false;
-        } else if(islivevalue2==true) {
+        } else if(document.getElementById('filepath2').value == ''){
+        document.getElementById('videourlmessage').innerHTML = 'Enter Video URL';
+        document.getElementById('filepath2').focus();
+        return false;
+        }else if(islivevalue2==true) {
             document.getElementById('islive-value').value=1;
         } else {
             document.getElementById('islive-value').value=0;
         }
-    } else if(document.getElementById('name').value == ''){
+    }
+    if(document.getElementById('name').value == ''){
         document.getElementById('titlemessage').innerHTML = 'Enter Title';
         return false;
     }
@@ -438,7 +658,15 @@ function validateInput(){
             }
         }
     }
-    alert("Select any playlist for your Video")
+    document.getElementById('jaxcat').innerHTML = 'Select any category for your Video';
     return false;
        
+}
+
+function validateplyalistInput(){
+   if(document.getElementById('playlistname').value == ''){
+        document.getElementById('playlistnameerrormessage').innerHTML = 'Enter Category Name';
+        document.getElementById('playlistname').focus();
+        return false;
+    }
 }
