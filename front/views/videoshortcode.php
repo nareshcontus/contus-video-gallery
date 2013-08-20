@@ -597,7 +597,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                                                <img src="' . $imageFea . '" alt="' . $relFet->name . '" class="related" /></a></div>';
                         $output             .='<div class="vid_info"><h5><a href="' . $guid . '" class="videoHname">';
                         $output             .= substr($relFet->name, 0, 30);
-                        $output             .='</a></h5>';
+                        $output             .='</a></h5></div>';
                         $output             .='</li>';
                     }
 
