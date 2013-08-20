@@ -57,7 +57,6 @@ $playerDebug            = ($settingsData->debug == 1) ? 'true' : 'false';
 $prerollAds             = ($settingsData->preroll == 0) ? 'true' : 'false';
 $postrollAds            = ($settingsData->postroll == 0) ? 'true' : 'false';
 $midroll_ads            = ($settingsData->midroll_ads == 0) ? 'true' : 'false';
-$youtube_hide_logo      = ($settingsData->hideLogo == 1) ? 'true' : 'false';
 $trackCode              = ($settingsData->trackCode == 0) ? '' : $settingsData->trackCode;
 
 /* Configuration Start */

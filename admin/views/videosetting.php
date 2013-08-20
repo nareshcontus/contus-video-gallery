@@ -208,6 +208,10 @@ License: GPL2
                                 <th scope='row'><?php _e("Embed Visible", "video_gallery"); ?></th>
                                 <td><input type='checkbox' class='check' <?php if ($settingsGrid->embed_visible == 1) { ?> checked <?php } ?> name="embed_visible" value="1" size=45  /></td>
                                     </tr>
+                            <tr>
+                                <th scope='row'><?php _e("Enable Ratings", "video_gallery"); ?></th>
+                                <td><input type='checkbox' class='check' <?php if ($settingsGrid->ratingscontrol == 1) { ?> checked <?php } ?> name="ratingscontrol" value="1" size=45  /></td>
+                                    </tr>
                                 </table>
                             </div>
                         </div>

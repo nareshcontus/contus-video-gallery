@@ -136,7 +136,7 @@ if(class_exists('ContusVideo') != true)
             $playlist   = $wpdb->get_row("SELECT * FROM " . $wpdb->prefix . "hdflvvideoshare_playlist WHERE pid = '".intval($playlist_id)."'");
     if ($playlist)
     {
-        $select         = " SELECT *,s.guid FROM " . $wpdb->prefix . "hdflvvideoshare w";
+        $select         = " SELECT w.*,s.guid FROM " . $wpdb->prefix . "hdflvvideoshare w";
         $select        .= " INNER JOIN " . $wpdb->prefix . "hdflvvideoshare_med2play m";
         $select        .= " INNER JOIN " . $wpdb->prefix . "posts s ON s.ID=w.slug";
         $select        .= " WHERE (m.playlist_id = '".intval($playlist_id)."'";

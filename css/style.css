@@ -16,7 +16,7 @@ h1 .videoHname a, h2 .videoHname a, h3 .videoHname a, h4 .videoHname a, h5 .vide
 .video-block h1 a, .video-block h2 a, .video-block h3 a, .video-block h4 a, .video-block h5 a, .video-block h6 a{text-decoration: none !important; font-size: 12px !important; line-height: 13px !important; margin-bottom: 3px !important; height: 25px; float: left;}
 .video-block h5 a{width: 100%;}
 .video-block h5 { line-height: 12px !important; margin-top: 5px !important;}
-.video-block .vid_info .video_views { font-size: 12px !important; float: left;}
+.video-block .vid_info .video_views { font-size: 12px !important; float: right;}
 
 .home-category h1 a, .home-category h2 a, .home-category h3 a, .home-category h4 a, .home-category h5 a, .home-category h6 a{margin: 0 !important; padding: 0 !important; text-decoration: none !important;}
 .video-cat-thumb h5 a, .video-cat-thumb h6 a{margin: 0 !important; padding: 0 !important; text-decoration: none !important;}
@@ -104,7 +104,7 @@ h4.playlistName {float:left; }
                     height: 90px !important; border:none}
 .views, .videoHname, .videoName, .playlistName {  font-size: 12px !important; }
 .playlistName {display: block;}
-.vid_info .playlistName{ float: right; }
+/*.vid_info .playlistName{ float: right; }*/
 .ulwidget .imgBorder img{width:100%;max-height: 100px;}
 .jcarousel-skin-tango{}
 
@@ -116,9 +116,13 @@ h3.related-videos{margin: 0 !important; padding: 0 !important; text-align: left;
 .video-page-container strong{width: auto; display: inline-block;}
 .video-page-container .video-page-date{width: auto; float: left;width: 50%; }
 .video-page-container .video-page-views{ float: right; text-align: right;width: 50%;}
-.video-page-container .video-page-tag{ padding-bottom: 20px; border-bottom: 1px solid #ccc; margin-bottom: 5px; }
-.video-page-container .video-page-category {padding-bottom: 10px;}
-.video-page-info{clear: both; overflow: hidden; padding-bottom: 20px; }
+.video-page-container .video-page-tag{ padding-bottom: 10px; border-bottom: 1px solid #ccc; margin-bottom: 5px; }
+.video-page-container .video-page-category {}
+.video-page-info{clear: both; overflow: hidden; padding-bottom: 5px; }
+.video-page-info .video-page-rating{float: right; }
+.video-page-info .video-page-rating .rateimgleft{float: right; }
+.video-page-info .video-page-rating .rateright-views{margin-right: 5px;}
+.video-page-info .video-page-category{float: left;width: 49%;}
 .embed{ padding: 0 10px; border: 1px solid #ccc; text-decoration: none; float: left;  }
 .embed .embed_text{ float: left;  }
 .embed .embed_arrow{ width: 0px; height: 0px; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 5px solid #666;  margin-top: 7px; display: block; float: left; margin-left: 5px;}
@@ -239,3 +243,39 @@ width: 99px;
     .sidebar-wrap .imgBorder {width: 120px;}
 }
 
+/*Rating css*/
+.ratethis{ background: url(../images/stars831-thump.png) no-repeat 0 0; width:100px;height:20px;margin:5px 5px 5px 5px;clear:both;position:relative;list-style:none;}
+#rateid ul.ratethis{list-style:none;}
+.nopos {background-position:0 0}
+.onepos {background-position:0 -20px}
+.twopos {background-position:0 -40px}
+.threepos {background-position:0 -60px}
+.fourpos {background-position:0 -80px}
+.fivepos {background-position:0 -100px}
+#rateimg ul.ratethis li { text-indent:-999em;cursor: pointer;float:left;list-style:none;}
+#rateimg .ratethis{margin: 0px;padding: 0px;margin-right: 10px;}
+.callout-header-home h2{margin-bottom:5px;font-size:15px;}
+h2.hoverable a{font-size:18px;}
+h2.hoverable a:hover{background:none;}
+/*.gr h2 {border-bottom:1px solid #C3C3C3;padding-bottom:5px;}*/
+ul.ratethis li a { position:absolute;left:0;top:0;width:20px;height:20px;text-decoration:none;z-index: 200;}
+ul.ratethis li.one a {left:0}
+ul.ratethis li.two a {left:20px;}
+ul.ratethis li.three a {left:40px;}
+ul.ratethis li.four a {left:60px;}
+ul.ratethis li.five a {left:80px;}
+ul.ratethis li a:hover { background: url(../images/stars831-thump.png) no-repeat 0 0;z-index:2;width:100px;height:20px;overflow:hidden;left:0;}
+ul.ratethis li.one a:hover {background-position:0 -120px;}
+ul.ratethis li.two a:hover {background-position:0 -140px;}
+ul.ratethis li.three a:hover {background-position:0 -160px;}
+ul.ratethis li.four a:hover {background-position:0 -180px;}
+ul.ratethis li.five a:hover {background-position:0 -200px;}
+
+.ratethis1{ background: url(../images/stars831.png) no-repeat !important;width:60px;height:12px;clear:both;position:relative;list-style:none;float:left;margin: 4px 0;}
+ul.ratethis1 li {cursor: pointer;float:left;}
+.nopos1 {background-position:0 0 !important;}
+.onepos1 {background-position:0 -12px !important;}
+.twopos1 {background-position:0 -24px !important;}
+.threepos1 {background-position:0 -36px !important;}
+.fourpos1 {background-position:0 -48px !important;}
+.fivepos1 {background-position:0 -60px !important;}

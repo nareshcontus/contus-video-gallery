@@ -66,8 +66,7 @@ class widget_ContusRecentVideos_init extends WP_Widget {
 <!-- For Getting The Page Id More and Video-->
 <?php
         $moreName               = $wpdb->get_var("SELECT ID FROM " . $wpdb->prefix . "posts WHERE post_content='[videomore]' AND post_status='publish' AND post_type='page' LIMIT 1");
-        $styleSheet             = $wpdb->get_var("SELECT stylesheet FROM " . $wpdb->prefix . "hdflvvideoshare_settings WHERE settings_id='1'");
-        $site_url               = get_bloginfo('url');
+        $ratingscontrol         = $wpdb->get_var("SELECT ratingscontrol FROM " . $wpdb->prefix . "hdflvvideoshare_settings WHERE settings_id='1'");
 ?>
 
         <!-- Recent videos -->
@@ -75,6 +74,7 @@ class widget_ContusRecentVideos_init extends WP_Widget {
 <?php
         echo $before_widget;
         $fetched                = '';
+        $ratearray = array("nopos1", "onepos1", "twopos1", "threepos1", "fourpos1", "fivepos1");
         $viewslang              = __('Views', 'video_gallery');
         $viewlang               = __('View', 'video_gallery');
         $div                    = '<div id="recent-videos" class="sidebar-wrap ">
@@ -133,6 +133,16 @@ class widget_ContusRecentVideos_init extends WP_Widget {
                     $viewlanguage = $viewlang;
                 $div             .= '<span class="views">' . $post->hitcount . ' ' . $viewlanguage;
                 $div             .= '</span>';
+                ## Rating starts here
+                if ($ratingscontrol == 1) {
+                        if (isset($post->ratecount) && $post->ratecount != 0) {
+                            $ratestar    = round($post->rate / $post->ratecount);
+                        } else {
+                            $ratestar    = 0;
+                        }
+                        $div             .= '<span class="ratethis1 '.$ratearray[$ratestar].'"></span>';
+                    }
+                ## Rating ends here
                 $div             .= '<div class="clear"></div>';
                 $div             .= '</div>';
                 $div             .= '</li>';

@@ -141,10 +141,10 @@ if (class_exists('ContusVideoShortcodeView') != true) {
         function HDFLV_shareRender($arguments= array()) {
             global $wpdb;
             global $videoid, $site_url;
-            $output = $videourl = $imgurl = $vid = $playlistid = $homeplayerData = '';
+            $output = $videourl = $imgurl = $vid = $playlistid = $homeplayerData = $ratecount = $rate = '';
             $image_path             = str_replace('plugins/contus-video-gallery/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
             $_imagePath             = APPTHA_VGALLERY_BASEURL . 'images' . DS;
-            $configXML              = $wpdb->get_row("SELECT embed_visible,keydisqusApps,comment_option,keyApps,configXML,width,height FROM " . $wpdb->prefix . "hdflvvideoshare_settings");
+            $configXML              = $wpdb->get_row("SELECT ratingscontrol,embed_visible,keydisqusApps,comment_option,keyApps,configXML,width,height FROM " . $wpdb->prefix . "hdflvvideoshare_settings");
             $flashvars              = "baserefW=" . get_option('siteurl');      ## generate flashvars detail for player starts here
 
             if (isset($arguments['width'])) {
@@ -159,8 +159,12 @@ if (class_exists('ContusVideoShortcodeView') != true) {
             }
             if (isset($arguments['id'])) {
                 $vid = $videodivId = $arguments['id'];              ## get video id from short code
-                if ($this->_post_type == 'videogallery' || $this->_page_post_type == 'videogallery')
-                    $homeplayerData = $this->video_detail($vid);
+//                if ($this->_post_type == 'videogallery' || $this->_page_post_type == 'videogallery')
+                    
+            }
+            if (!empty($vid)) {
+                $homeplayerData      = $this->video_detail($vid);
+                $fetched[]           = $homeplayerData;
             }
             ## store video details in variables
             if (!empty($homeplayerData)) {
@@ -173,6 +177,8 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                 $description        = $homeplayerData->description;
                 $tag_name           = $homeplayerData->tags_name;
                 $hitcount           = $homeplayerData->hitcount;
+                $ratecount          = $homeplayerData->ratecount;
+                $rate               = $homeplayerData->rate;
                 $post_date          = $homeplayerData->post_date;
             }
 
@@ -192,6 +198,8 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                 $flashvars          .="&amp;vid=" . $vid;
             } elseif (!empty($playlistid)) {
                 $flashvars          .="&amp;pid=" . $playlistid . "&showPlaylist=true";
+                $playlist_videos     = $this->_contOBJ->video_Pid_detail($playlistid);
+                $fetched[]           = $playlist_videos[0];
             } else if ($this->_post_type != 'videogallery' && $this->_page_post_type != 'videogallery') {
                 $flashvars          .="&amp;vid=" . $vid . "&showPlaylist=false";
             } else {
@@ -208,12 +216,18 @@ if (class_exists('ContusVideoShortcodeView') != true) {
             $player_not_supprot      = __('Player doesnot support this video.', 'video_gallery');
             $htmlplayer_not_support  = __('Html5 Not support This video Format.', 'video_gallery');
 
-            ## Flash player starts here
             $output                 .= '<div id="mediaspace' . $videodivId . '" class="player" >';
-            $output                 .= '<embed src="' . $this->_swfPath . '" flashvars="' . $flashvars . '" width="' . $width . '" height="' . $height . '" allowfullscreen="true" allowscriptaccess="always" type="application/x-shockwave-flash" wmode="transparent">';
-            $output                 .= '</div>';
-            ## Flash player ends here
 
+            ## Embed player code
+            if($fetched[0]->file_type == 5 && !empty($fetched[0]->embedcode)){
+            $output                 .= stripslashes($fetched[0]->embedcode);
+            } else{            
+            ## Flash player code
+            $output                 .= '<embed src="' . $this->_swfPath . '" flashvars="' . $flashvars . '" width="' . $width . '" height="' . $height . '" allowfullscreen="true" allowscriptaccess="always" type="application/x-shockwave-flash" wmode="transparent">';
+            }
+            
+            $output                 .= '</div>';
+            
             $useragent               = $_SERVER['HTTP_USER_AGENT'];
             if (strpos($useragent, 'Windows Phone') > 0)            ## check for windows phone
             $windo                   = 'Windows Phone';
@@ -221,13 +235,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
             ## html5 player starts here
             $output                  .='<div id="htmlplayer' . $videodivId . '" class="player" >';
             ## GEt video detail for HTML5 player
-            if (!empty($vid)) {
-                $videoid_videos      = $this->_contOBJ->video_detail($vid);
-                $fetched[]           = $videoid_videos[0];
-            } else if (!empty($playlistid)) {
-                $playlist_videos     = $this->_contOBJ->video_Pid_detail($playlistid);
-                $fetched[]           = $playlist_videos[0];
-            }
+
             foreach ($fetched as $media) {          ## Load video details
                 $videourl            = $media->file;
                 $imgurl              = $media->image;
@@ -263,6 +271,10 @@ if (class_exists('ContusVideoShortcodeView') != true) {
             $output                 .='</div>';
             ## Check platform
             $output                 .=' <script>
+                                    var baseurl,folder,videoPage;
+                                    baseurl = "' . $this->_site_url . '";
+                                    folder  = "' . $this->_plugin_name . '";
+                                    videoPage = "' . $this->_mPageid . '";
                                     var txt =  navigator.platform ;
                                     var windo = "' . $windo . '";
                                     if(txt =="iPod"|| txt =="iPad" || txt == "iPhone" || windo=="Windows Phone" || txt == "Linux armv7l" || txt == "Linux armv6l")
@@ -285,8 +297,162 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                 $output             .='<div class="video-page-container">
                                     <div class="vido_info_container"><div class="video-page-info">
                                     <div class="video-page-date"><strong>' . __("Posted on", "video_gallery") . '    </strong>: ' . date("m-d-Y", strtotime($post_date)) . '</div>
-                                    <div class="video-page-views"><strong>' . __("Views", "video_gallery") . '       </strong>: ' . $hitcount . '</div></div>
-                                    <div class="video-page-category"><strong>' . __("Category", "video_gallery") . ' </strong>: ';
+                                    <div class="video-page-views"><strong>' . __("Views", "video_gallery") . '       </strong>: ' . $hitcount . '</div></div>';
+                if ($configXML->ratingscontrol == 1) {
+                    if (isset($ratecount) && $ratecount != 0) {
+                        $ratestar = round($rate / $ratecount);
+                    } else {
+                        $ratestar = 0;
+                    } 
+                $output             .= '<div class="video-page-info"><div class="video-page-rating">
+                                            <div class="centermargin floatleft" >
+                                                <div class="rateimgleft" id="rateimg" onmouseover="displayrating(0);" onmouseout="resetvalue();" >
+                                                    <div id="a" class="floatleft"></div>
+                                                        <ul class="ratethis " id="rate" >
+                                                            <li class="one" >
+                                                                <a title="1 Star Rating"  onclick="getrate(1);"  onmousemove="displayrating(1);" onmouseout="resetvalue();">1</a>
+                                                            </li>
+                                                            <li class="two" >
+                                                                <a title="2 Star Rating"  onclick="getrate(2);"  onmousemove="displayrating(2);" onmouseout="resetvalue();">2</a>
+                                                            </li>
+                                                            <li class="three" >
+                                                                <a title="3 Star Rating"  onclick="getrate(3);"   onmousemove="displayrating(3);" onmouseout="resetvalue();">3</a>
+                                                            </li>
+                                                            <li class="four" >
+                                                                <a  title="4 Star Rating"  onclick="getrate(4);"  onmousemove="displayrating(4);" onmouseout="resetvalue();"  >4</a>
+                                                            </li>
+                                                            <li class="five" >
+                                                                <a title="5 Star Rating"  onclick="getrate(5);"  onmousemove="displayrating(5);" onmouseout="resetvalue();" >5</a>
+                                                            </li>
+                                                        </ul>
+                                                    <input type="hidden" name="videoid" id="videoid" value="'.$videoId.'" />
+                                                    <input type="hidden" value="" id="storeratemsg" />
+                                                    </div>
+                                                    <div class="rateright-views floatleft" >
+                                                        <span  class="clsrateviews"  id="ratemsg" onmouseover="displayrating(0);" onmouseout="resetvalue();"> </span>
+                                                        <span  class="rightrateimg" id="ratemsg1" onmouseover="displayrating(0);" onmouseout="resetvalue();">  </span>
+                                                    </div>
+                                                </div>
+                                        </div> ';
+                $output             .= '<script type="text/javascript">
+                        function ratecal(rating,ratecount)
+                        {
+                            if(rating==1)
+                                document.getElementById("rate").className="ratethis onepos";
+                            else if(rating==2)
+                                document.getElementById("rate").className="ratethis twopos";
+                            else if(rating==3)
+                                document.getElementById("rate").className="ratethis threepos";
+                            else if(rating==4)
+                                document.getElementById("rate").className="ratethis fourpos";
+                            else if(rating==5)
+                                document.getElementById("rate").className="ratethis fivepos";
+                            else
+                                document.getElementById("rate").className="ratethis nopos";
+                            document.getElementById("ratemsg").innerHTML="Ratings : "+ratecount;
+                        } 
+                       ';
+                if (isset($ratestar) && isset($ratecount)) {
+                $output                 .=  'ratecal('.$ratestar.','.$ratecount.'); ';
+                }
+                $output                 .='
+                        function createObject()
+                        {
+                            var request_type;
+                            var browser = navigator.appName;
+                            if(browser == "Microsoft Internet Explorer"){
+                                request_type = new ActiveXObject("Microsoft.XMLHTTP");
+                            }else{
+                                request_type = new XMLHttpRequest();
+                            }
+                            return request_type;
+                        }
+                        var http = createObject();
+                        var nocache = 0;
+                        function getrate(t)
+                        {
+                            if(t==1)
+                            {
+                                document.getElementById("rate").className="ratethis onepos";
+                                document.getElementById("a").className="ratethis onepos";
+                            }
+                            if(t==2)
+                            {
+                                document.getElementById("rate").className="ratethis twopos";
+                                document.getElementById("a").className="ratethis twopos";
+                            }
+                            if(t==3)
+                            {
+                                document.getElementById("rate").className="ratethis threepos";
+                                document.getElementById("a").className="ratethis threepos";
+                            }
+                            if(t==4)
+                            {
+                                document.getElementById("rate").className="ratethis fourpos";
+                                document.getElementById("a").className="ratethis fourpos";
+                            }
+                            if(t==5)
+                            {
+                                document.getElementById("rate").className="ratethis fivepos";
+                                document.getElementById("a").className="ratethis fivepos";
+                            }
+                            document.getElementById("rate").style.display="none";
+                            document.getElementById("ratemsg").innerHTML="Thanks for rating!";
+                            var vid= document.getElementById("videoid").value;
+                            nocache = Math.random();
+                            http.open("get", baseurl+"/wp-content/plugins/"+folder+"/rateCount.php?vid="+vid+"&rate="+t,true);
+                            http.onreadystatechange = insertReply;
+                            http.send(null);
+                            document.getElementById("rate").style.visibility="disable";
+                        }
+                        function insertReply()
+                        {
+                            if(http.readyState == 4)
+                            {
+                                document.getElementById("ratemsg").innerHTML="Ratings : "+http.responseText;
+                                document.getElementById("rate").className="";
+                                document.getElementById("storeratemsg").value=http.responseText;
+                            }
+                        }
+
+                        function resetvalue()
+                        {
+                            document.getElementById("ratemsg1").style.display="none";
+                            document.getElementById("ratemsg").style.display="block";
+                            if(document.getElementById("storeratemsg").value == "") {
+                                document.getElementById("ratemsg").innerHTML="Ratings : '.$ratecount.'";
+                            }else {
+                                document.getElementById("ratemsg").innerHTML="Ratings :  "+document.getElementById("storeratemsg").value;
+                            }
+                        }
+                        function displayrating(t)
+                        {
+                            if(t==1)
+                            {
+                                document.getElementById("ratemsg").innerHTML="Poor";
+                            }
+                            if(t==2)
+                            {
+                                document.getElementById("ratemsg").innerHTML="Nothing Special";
+                            }
+                            if(t==3)
+                            {
+                                document.getElementById("ratemsg").innerHTML="Worth Watching";
+                            }
+                            if(t==4)
+                            {
+                                document.getElementById("ratemsg").innerHTML="Pretty Cool";
+                            }
+                            if(t==5)
+                            {
+                                document.getElementById("ratemsg").innerHTML="Awesome";
+                            }
+                            document.getElementById("ratemsg1").style.display="none";
+                            document.getElementById("ratemsg").style.display="block";
+                        }
+                    </script>';
+                }
+                  $output             .= '<div class="video-page-category"><strong>' . __("Category", "video_gallery") . ' </strong>: ';
 
                 foreach ($playlistData as $playlist) {
 
@@ -298,7 +464,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                     $incre++;
                 }
 
-                $output                .=$playlistname . '</div>
+                $output                .=$playlistname . '</div></div>
                                         <div class="video-page-tag"><strong>' . __("Tags", "video_gallery") . '          </strong>: ' . $tag_name . ' ' . '</div>
                                         ';
                 $dir                    = dirname(plugin_basename(__FILE__));
@@ -339,12 +505,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                 $output                 .= '<script type="text/javascript" src="' . APPTHA_VGALLERY_BASEURL . 'js/script.js"></script>';
 
                 $output                 .= '<script type="text/javascript">
-                                            var baseurl,folder;
-                                            baseurl = "' . $this->_site_url . '";
-                                            folder  = "' . $this->_plugin_name . '";
-                                            videoPage = "' . $this->_mPageid . '";
-
-                                            function mycarousel_initCallback(carousel){
+                                             function mycarousel_initCallback(carousel){
                                             // Disable autoscrolling if the user clicks the prev or next button.
                                             carousel.buttonNext.bind("click", function() {
                                             carousel.startAuto(0);

@@ -36,13 +36,16 @@ if (isset($_GET['videoId']))
             {
                 document.getElementById('upload2').style.display = "block"
                 document.getElementById('youtube').style.display = "none";
+                document.getElementById('embedvideo').style.display = "none";
                 document.getElementById('customurl').style.display = "none";
             } else if(t2.value == "c" || t2 == "c"){
                 document.getElementById('youtube').style.display = "block";
                 document.getElementById('upload2').style.display = "none";
+                document.getElementById('embedvideo').style.display = "none";
                 document.getElementById('customurl').style.display = "none";
             } else if(t2.value == "url" || t2 == "url"){
                 document.getElementById('customurl').style.display = "block";
+                document.getElementById('embedvideo').style.display = "none";
                 document.getElementById('islive_visible').style.display = "none";
                 document.getElementById('stream1').style.display = "none";
                 document.getElementById('hdvideourl').style.display = "";
@@ -52,6 +55,15 @@ if (isset($_GET['videoId']))
                 document.getElementById('customurl').style.display = "block";
                 document.getElementById('islive_visible').style.display = "";
                 document.getElementById('stream1').style.display = "";
+                document.getElementById('embedvideo').style.display = "none";
+                document.getElementById('hdvideourl').style.display = "none";
+                document.getElementById('youtube').style.display = "none";
+                document.getElementById('upload2').style.display = "none";
+            } else if(t2.value == "embed" || t2 == "embed"){
+                document.getElementById('embedvideo').style.display = "block";
+                document.getElementById('islive_visible').style.display = "";
+                document.getElementById('stream1').style.display = "";
+                document.getElementById('customurl').style.display = "none";
                 document.getElementById('hdvideourl').style.display = "none";
                 document.getElementById('youtube').style.display = "none";
                 document.getElementById('upload2').style.display = "none";
@@ -88,6 +100,9 @@ if (isset($_GET['videoId']))
                 <span><input type="radio" name="agree" id="btn1" value="y" onClick="t1(this)" /> <?php _e('Upload file', 'video_gallery'); ?></span>
                 <span><input type="radio" name="agree" id="btn3" value="url" onClick="t1(this)" /> <?php _e('Custom URL', 'video_gallery'); ?></span>
                 <span><input type="radio" name="agree" id="btn4" value="rtmp" onClick="t1(this)" /> <?php _e('RTMP', 'video_gallery'); ?></span>
+                <?php if(isset($settingsGrid->license) && strlen($settingsGrid->license) == 31){ ?>
+                <span><input type="radio" name="agree" id="btn5" value="embed" onClick="t1(this)" /> <?php _e('Embed Video', 'video_gallery'); ?></span>
+            <?php } ?>
             </h3>
                     
 
@@ -105,6 +120,18 @@ if (isset($_GET['videoId']))
                                 <span id="Youtubeurlmessage" style="display: block; "></span>
                                 <p><?php _e('Here you need to enter the video URL', 'video_gallery') ?></p>
                                 <p><?php _e('It accepts Youtube links like : http://www.youtube.com/watch?v=tTGHCRUdlBs or http://youtu.be/tTGHCRUdlBs', 'video_gallery') ?></p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <div id="embedvideo" class="rtmp_inside inside" >
+                    <table class="form-table">
+                        <tr>
+                            <th scope="row"><?php _e('Embed Code', 'video_gallery') ?></th>
+                            <td class="rtmp_td">
+                                <textarea id="embedcode" name="embedcode" rows="5" cols="60"><?php if (isset($videoEdit->embedcode))echo $videoEdit->embedcode; ?></textarea>
+                             <span id="embedmessage" style="display: block; margin-top:10px;color:red;font-size:12px;font-weight:bold;"></span>
                             </td>
                         </tr>
                     </table>
@@ -316,6 +343,7 @@ if (isset($_GET['videoId']))
                                                                                    echo $videoEdit->opimage; ?>" />
                                                                            <input type="hidden" name="youtube-value" id="youtube-value"  value="" />
                                                                            <input type="hidden" name="streamerpath-value" id="streamerpath-value" value="" />
+                                                                           <input type="hidden" name="embed_code" id="embed_code" value="" />
                                                                            <input type="hidden" name="islive-value" id="islive-value" value="0" />
                                                                            <input type="hidden" name="customurl" id="customurl1"  value="" />
                                                                            <input type="hidden" name="customhd" id="customhd1"  value="" />
@@ -637,6 +665,11 @@ if (isset($_GET['videoId']))
 ?>
                                                                                            t1("rtmp");
                                                                                            document.getElementById("btn4").checked = true;
+<?php
+                                                                                       } elseif (isset($videoEdit->file_type) && $videoEdit->file_type == 5) {
+?>
+                                                                                           t1("embed");
+                                                                                           document.getElementById("btn5").checked = true;
 <?php
                                                                                        }else{
                                                                                            ?>

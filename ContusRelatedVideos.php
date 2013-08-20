@@ -79,8 +79,9 @@ class widget_ContusRelatedVideos_init extends WP_Widget {
             if (!empty($videoID)) {
             $video_playlist_id  = $wpdb->get_var("SELECT playlist_id FROM " . $wpdb->prefix . "hdflvvideoshare_med2play WHERE media_id='$videoID'");
             $moreName           = $wpdb->get_var("SELECT ID FROM " . $wpdb->prefix . "posts WHERE post_content='[videomore]' AND post_status='publish' AND post_type='page' LIMIT 1");
-            $styleSheet         = $wpdb->get_var("SELECT stylesheet FROM " . $wpdb->prefix . "hdflvvideoshare_settings WHERE settings_id='1'");
+            $ratingscontrol     = $wpdb->get_var("SELECT ratingscontrol FROM " . $wpdb->prefix . "hdflvvideoshare_settings WHERE settings_id='1'");
             $site_url           = get_bloginfo('url');
+            $ratearray = array("nopos1", "onepos1", "twopos1", "threepos1", "fourpos1", "fivepos1");
 
             $viewslang          = __('Views', 'video_gallery');
             $viewlang           = __('View', 'video_gallery');
@@ -139,6 +140,16 @@ class widget_ContusRelatedVideos_init extends WP_Widget {
                         $viewlanguage = $viewlang;
                     $div        .= '<span class="views">' . $feature->hitcount . ' ' . $viewlanguage;
                     $div        .= '</span>';
+                    ## Rating starts here
+                    if ($ratingscontrol == 1) {
+                            if (isset($feature->ratecount) && $feature->ratecount != 0) {
+                                $ratestar    = round($feature->rate / $feature->ratecount);
+                            } else {
+                                $ratestar    = 0;
+                            }
+                            $div             .= '<span class="ratethis1 '.$ratearray[$ratestar].'"></span>';
+                        }
+                    ## Rating ends here
                     $div        .= '</span>';
                     $div        .= '<div class="clear"></div>';
                     $div        .= '</div>';

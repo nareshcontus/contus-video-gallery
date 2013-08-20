@@ -85,11 +85,16 @@ if (class_exists('ContusVideoView') != true) {
                 $swf                        = $this->_swfPath;
                 $showplaylist               = '';
             }
-            ##IF VIDEO IS Vimeo
+            ## IF VIDEO IS Vimeo
             if ((preg_match('/vimeo/', $videoUrl)) && ($videoUrl != '')) {
                 $vresult                    = explode("/", $videoUrl);
                 $div                        .='<iframe  type="text/html" width="' . $settingsData->width . '" height="' . $settingsData->height . '"  src="http://player.vimeo.com/video/' . $vresult[3] . '" frameborder="0"></iframe>';
-            } else {
+            } 
+            ## Embed player code
+            else if($homeplayerData->file_type == 5 && !empty($homeplayerData->embedcode)){
+            $div                 .= stripslashes($homeplayerData->embedcode);
+            } else{            
+            ## Flash player code
                 $div                        .= '<embed id="player" src="' . $swf . '"  flashvars="baserefW=' . APPTHA_VGALLERY_BASEURL . $baseref . $showplaylist . '&amp;mid=' . $moduleName . '" width="' . $settingsData->width . '" height="' . $settingsData->height . '"   allowFullScreen="true" allowScriptAccess="always" type="application/x-shockwave-flash" wmode="transparent" />';
             }
             $div                            .='</div>';
@@ -209,7 +214,7 @@ if (class_exists('ContusVideoView') != true) {
                 }
 
                 $class = $div = '';
-
+                $ratearray = array("nopos1", "onepos1", "twopos1", "threepos1", "fourpos1", "fivepos1");
                 $image_path             = str_replace('plugins/contus-video-gallery/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
                 if ($TypeSet) {                                             ## CHECKING FAETURED VIDEOS ENABLE STARTS
                     $div                = '<div class="video_wrapper" id="' . $type_name . '_video">';
@@ -237,6 +242,8 @@ if (class_exists('ContusVideoView') != true) {
                             $vidF[$j]           = $video->vid;              ## VIDEO ID
                             $nameF[$j]          = $video->name;             ## VIDEI NAME
                             $hitcount[$j]       = $video->hitcount;         ## VIDEO HITCOUNT
+                            $ratecount[$j]      = $video->ratecount;        ## VIDEO RATECOUNT
+                            $rate[$j]           = $video->rate;             ## VIDEO RATE
                             $j++;
                         }
 
@@ -262,6 +269,17 @@ if (class_exists('ContusVideoView') != true) {
                             }
                             $div                .= '</a></h5>';
                             $div                .= '';
+                            if ($fetched[$j] != '') {
+                                $div            .= ' <a class="playlistName" href="' . $this->_site_url . '/?page_id=' . $this->_mPageid . '&amp;playid=' . $playlist_id[$j] . '">' . $fetched[$j] . '</a>';
+                            }
+                            if ($this->_settingsData->ratingscontrol == 1) {
+                                if (isset($ratecount[$j]) && $ratecount[$j] != 0) {
+                                    $ratestar    = round($rate[$j] / $ratecount[$j]);
+                                } else {
+                                    $ratestar    = 0;
+                                }
+                                $div             .= '<span class="ratethis1 '.$ratearray[$ratestar].'"></span>';
+                            }
                             if ($hitcount[$j] > 1)
                                 $viewlang       = $this->_viewslang;
                             else
@@ -269,9 +287,9 @@ if (class_exists('ContusVideoView') != true) {
                             $div                .= '<span class="video_views">' . $hitcount[$j] . ' ' . $viewlang;
                             $div                .= '</span>';
 
-                            if ($fetched[$j] != '') {
-                                $div            .= ' <a class="playlistName" href="' . $this->_site_url . '/?page_id=' . $this->_mPageid . '&amp;playid=' . $playlist_id[$j] . '">' . $fetched[$j] . '</a>';
-                            }
+                             
+                    
+                            
                             $div                .= '</div>';
                             $div                .= '</li>';
                         }       ##FOR EACH ENDS
@@ -297,11 +315,12 @@ if (class_exists('ContusVideoView') != true) {
         function categoryList($CountOFVideos, $TypeOFvideos, $pagenum, $dataLimit, $category_page) {
             global $wpdb;
             $div                = '';
+            $ratearray = array("nopos1", "onepos1", "twopos1", "threepos1", "fourpos1", "fivepos1");
             $pagenum            = isset($pagenum) ? absint($pagenum) : 1; ## Calculating page number
             $start              = ( $pagenum - 1 ) * $dataLimit;     ## Video starting from
             $div                .= '<style scoped> .video-block { margin-left:' . $this->_settingsData->gutterspace . 'px !important;} </style>';
             foreach ($TypeOFvideos as $catList) {
-## Fetch videos for every category
+            ## Fetch videos for every category
                 $sql            = "SELECT s.guid,w.* FROM " . $wpdb->prefix . "hdflvvideoshare as w
                                 INNER JOIN " . $wpdb->prefix . "hdflvvideoshare_med2play as m ON m.media_id = w.vid
                                 INNER JOIN " . $wpdb->prefix . "hdflvvideoshare_playlist as p on m.playlist_id = p.pid
@@ -339,13 +358,24 @@ if (class_exists('ContusVideoView') != true) {
                             $div    .= '<span class="video_duration">' . $duration . '</span>';
                         }
                         $div        .= '</div><div class="vid_info"><h5><a href="' . $guid . '" class="videoHname">' . $playListName . '</a></h5>';
+                        ## Rating starts here
+                        if ($this->_settingsData->ratingscontrol == 1) {
+                                if (isset($playList->ratecount) && $playList->ratecount != 0) {
+                                    $ratestar    = round($playList->rate / $playList->ratecount);
+                                } else {
+                                    $ratestar    = 0;
+                                }
+                                $div             .= '<span class="ratethis1 '.$ratearray[$ratestar].'"></span>';
+                            }
+                        ## Rating ends here
                         if ($playList->hitcount > 1)
                             $viewlang = $this->_viewslang;
                         else
                             $viewlang = $this->_viewlang;
 
                         $div         .= '<span class="video_views">' . $playList->hitcount . ' ' . $viewlang . '</span>';
-
+                        
+                            
                         $div         .= '</div></li>';
 
                         if (($inc % $this->_colCat ) == 0 && $inc != 0) {##COLUMN COUNT

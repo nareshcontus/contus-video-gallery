@@ -136,11 +136,11 @@ if (isset($_GET['action']) && $_GET['action'] == "activate-plugin" && $_GET['plu
     }
 
     ## declare variables
-    $updateSlug = $updatestreamer_path = $updateislive = $updateordering = $updatekeyApps = $updatekeydisqusApps =
+    $updateSlug = $updatestreamer_path = $updateislive = $updateratecount = $updaterate = $updateordering = $updatekeyApps = $updatekeydisqusApps =
     $sharepanel_up_BgColor = $sharepanel_down_BgColor = $sharepaneltextColor = $sendButtonColor = $sendButtonTextColor =
     $textColor = $skinBgColor = $seek_barColor = $buffer_barColor = $skinIconColor = $pro_BgColor = $playButtonColor = $playButtonBgColor =
     $playerButtonColor = $playerButtonBgColor = $relatedVideoBgColor = $scroll_barColor = $scroll_BgColor = $playlist_open =
-    $showPlaylist = $updatecontentId = $updateimaadpath = $updatepublisherId = $updateimaadwidth = $updateimaadheight = $midroll_ads = $adsSkip = $adsSkipDuration = $relatedVideoView = $imaAds = $trackCode = $showTag =
+    $showPlaylist = $updatecontentId = $updateimaadpath = $updatepublisherId = $updateimaadwidth = $updateimaadheight = $midroll_ads = $adsSkip = $adsSkipDuration = $relatedVideoView = $imaAds = $trackCode = $showTag = $ratingscontrol =
     $updateaddescription = $updateimaadType = $updateadtargeturl = $updateadclickurl = $updateadimpressionurl = $updateadmethod = $updateadtype = $updateispublish =
     $shareIcon = $updateimaad = $updatechannels = $updatemidrollads = $volumecontrol = $playlist_auto = $progressControl = $imageDefault = $updatepublish = $updateadpublish = '';
 
@@ -152,6 +152,9 @@ if (isset($_GET['action']) && $_GET['action'] == "activate-plugin" && $_GET['plu
     $updatepublish          = AddColumnIfNotExists($errorMsg, "$table_name", "publish", "INT( 11 ) NOT NULL DEFAULT 1");
     $updateislive           = AddColumnIfNotExists($errorMsg, "$table_name", "islive", "INT( 11 ) NOT NULL");
     $updateordering         = AddColumnIfNotExists($errorMsg, "$table_name", "ordering", "INT( 11 ) NOT NULL");
+    $updateratecount        = AddColumnIfNotExists($errorMsg, "$table_name", "ratecount", "INT( 25 ) NOT NULL DEFAULT 0");
+    $updaterate             = AddColumnIfNotExists($errorMsg, "$table_name", "rate", "INT( 25 ) NOT NULL DEFAULT 0");
+    $updateembedcode        = AddColumnIfNotExists($errorMsg, "$table_name", "embedcode", "LONGTEXT NOT NULL");
 
     ## AD table update
     $updateadpublish        = AddColumnIfNotExists($errorMsg, "$table_ad", "publish", "INT( 11 ) NOT NULL DEFAULT 1");
@@ -205,6 +208,7 @@ if (isset($_GET['action']) && $_GET['action'] == "activate-plugin" && $_GET['plu
     $imaAds                 = AddColumnIfNotExists($errorMsg, "$table_settings", "imaAds", "INT( 3 ) NOT NULL");
     $trackCode              = AddColumnIfNotExists($errorMsg, "$table_settings", "trackCode", "TEXT $charset_collate NOT NULL");
     $showTag                = AddColumnIfNotExists($errorMsg, "$table_settings", "showTag", "INT( 3 ) NOT NULL");
+    $ratingscontrol         = AddColumnIfNotExists($errorMsg, "$table_settings", "ratingscontrol", "INT( 3 ) NOT NULL");
     $shareIcon              = AddColumnIfNotExists($errorMsg, "$table_settings", "shareIcon", "INT( 3 ) NOT NULL");
     $volumecontrol          = AddColumnIfNotExists($errorMsg, "$table_settings", "volumecontrol", "INT( 3 ) NOT NULL");
     $playlist_auto          = AddColumnIfNotExists($errorMsg, "$table_settings", "playlist_auto", "INT( 3 ) NOT NULL");

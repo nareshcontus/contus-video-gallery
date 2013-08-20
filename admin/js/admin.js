@@ -644,14 +644,29 @@ function validateInput(){
             document.getElementById('islive-value').value=0;
         }
     }
-    if(document.getElementById('name').value == ''){
+    else if(document.getElementById('btn5').checked === true)
+    {
+        var embed_code = document.getElementById('embedcode').value;
+        embed_code = (embed_code + '').replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0');
+        document.getElementById('embed_code').value=embed_code;
+        if(embed_code===''){
+        document.getElementById('embedmessage').innerHTML = 'Enter Embed Code';
+        return false;
+        } else if(embed_code.indexOf('<iframe')!=0 && embed_code.indexOf('<embed')!=0 && embed_code.indexOf('<object')!=0){
+        document.getElementById('embedmessage').innerHTML = 'Enter Valid Embed Code';
+        return false;
+        } else{
+           document.getElementById('embedmessage').innerHTML = ''; 
+        }
+    }
+    if(document.getElementById('name').value === ''){
         document.getElementById('titlemessage').innerHTML = 'Enter Title';
         return false;
     }
     var check_box = document.getElementsByTagName('input');
     for (var i = 0; i < check_box.length; i++)
     {
-        if (check_box[i].type == 'checkbox')
+        if (check_box[i].type === 'checkbox')
         {
             if (check_box[i].checked) {
                 return true

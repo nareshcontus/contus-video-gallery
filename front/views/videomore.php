@@ -45,7 +45,7 @@ if (class_exists('ContusMoreView') != true) {
 
         function video_more_pages($type) {// More PAGE FEATURED VIDEOS STARTS
             if (function_exists('homeVideo') != true) {
-$type_name='';
+            $type_name='';
                 switch ($type) {
                     case 'pop'://GETTING POPULAR VIDEOS STARTS
                         $rowF           = $this->_settingsData->rowMore; //row field of popular videos
@@ -95,15 +95,6 @@ $type_name='';
                         $typename       = __('Category', 'video_gallery');
                         $morePage       = '&playid=' . $thumImageorder;
                         break;
-                    case 'categories':
-                        $rowF           = $this->_settingsData->rowCat;
-                        $colF           = $this->_settingsData->colCat;
-                        $dataLimit      = $rowF * $colF;
-                        $TypeOFvideos   = $this->home_categoriesthumbdata($this->_pagenum, $dataLimit);
-                        $CountOFVideos  = $this->Countof_Videocategories();
-                        $typename       = __('Video Categories', 'video_gallery');
-                        return $this->categoryList($CountOFVideos, $TypeOFvideos, $this->_pagenum, $dataLimit);
-                        break;
                     case 'search':
                         $thumImageorder = "( t4.tags_name LIKE '%" . $this->_video_search . "%' || t1.description LIKE '%" . $this->_video_search . "%' || t1.name LIKE '%" . $this->_video_search . "%')";
                         $TypeSet = $this->_settingsData->feature;
@@ -114,9 +105,21 @@ $type_name='';
                         $CountOFVideos  = $this->Countof_Videosearch($thumImageorder);
                         return $this->searchList($this->_video_search,$CountOFVideos, $TypeOFvideos, $this->_pagenum, $dataLimit);
                         break;
+                    case 'categories':
+                    default:
+                        $rowF           = $this->_settingsData->rowCat;
+                        $colF           = $this->_settingsData->colCat;
+                        $dataLimit      = $rowF * $colF;
+                        $TypeOFvideos   = $this->home_categoriesthumbdata($this->_pagenum, $dataLimit);
+                        $CountOFVideos  = $this->Countof_Videocategories();
+                        $typename       = __('Video Categories', 'video_gallery');
+                        return $this->categoryList($CountOFVideos, $TypeOFvideos, $this->_pagenum, $dataLimit);
+                        break;
+                    
                 }
 
                 $class = $div = '';
+                $ratearray = array("nopos1", "onepos1", "twopos1", "threepos1", "fourpos1", "fivepos1");
 ?>
 
 <?php
@@ -135,29 +138,31 @@ $type_name='';
                     $clear              = $fetched[$j] = '';
                     $image_path         = str_replace('plugins/contus-video-gallery/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
                     foreach ($TypeOFvideos as $video) {
-                        $duration[$j]   = $video->duration; //VIDEO DURATION
-                        $imageFea[$j]   = $video->image; //VIDEO IMAGE
-                        $file_type      = $video->file_type; // Video Type
-                       $guid[$j]        = $video->guid; //guid
-                        if ($imageFea[$j] == '') {  //If there is no thumb image for video
+                        $duration[$j]   = $video->duration;         ## VIDEO DURATION
+                        $imageFea[$j]   = $video->image;            ## VIDEO IMAGE
+                        $file_type      = $video->file_type;        ## Video Type
+                       $guid[$j]        = $video->guid;             ## guid
+                        if ($imageFea[$j] == '') {                  ## If there is no thumb image for video
                             $imageFea[$j] = $this->_imagePath . 'nothumbimage.jpg';
                         } else {
                             if ($file_type == 2) {          //For uploaded image
                                 $imageFea[$j] = $image_path . $imageFea[$j];
                             }
                         }
-                        $vidF[$j]        = $video->vid; //VIDEO ID
-                        $nameF[$j]       = $video->name; //VIDEI NAME
-                        $hitcount[$j]    = $video->hitcount; //VIDEO HITCOUNT
+                        $vidF[$j]        = $video->vid;              ## VIDEO ID
+                        $nameF[$j]       = $video->name;             ## VIDEI NAME
+                        $hitcount[$j]    = $video->hitcount;         ## VIDEO HITCOUNT
+                        $ratecount[$j]   = $video->ratecount;        ## VIDEO RATECOUNT
+                        $rate[$j]        = $video->rate;             ## VIDEO RATE
                         if (!empty($this->_playid)) {
                             $fetched[$j] = $video->playlist_name;
                             $playlist_id = $this->_playid;
                         } else {
                             $getPlaylist     = $this->_wpdb->get_row("SELECT playlist_id FROM " . $this->_wpdb->prefix . "hdflvvideoshare_med2play WHERE media_id='".intval($vidF[$j])."'");
                             if (isset($getPlaylist->playlist_id)) {
-                                $playlist_id = $getPlaylist->playlist_id; //VIDEO CATEGORY ID
+                                $playlist_id = $getPlaylist->playlist_id;       ## VIDEO CATEGORY ID
                                 $fetPlay[$j] = $this->_wpdb->get_row("SELECT playlist_name FROM " . $this->_wpdb->prefix . "hdflvvideoshare_playlist WHERE pid='".intval($playlist_id)."'");
-                                $fetched[$j] = $fetPlay[$j]->playlist_name; //CATEOGORY NAME
+                                $fetched[$j] = $fetPlay[$j]->playlist_name;     ## CATEOGORY NAME
                             }
                         }
                         $j++;
@@ -172,7 +177,7 @@ $type_name='';
                                 $videoname = $nameF[$j];
                             }
                         if (($j % $colF) == 0 && $j!=0) {//COLUMN COUNT
-                                $div        .= '</ul><ul class="video-block-container">';
+                                $div        .= '</ul><div class="clear"></div><ul class="video-block-container">';
                             }
                             $div            .= '<li class="video-block">';
                             $div            .= '<div  class="video-thumbimg"><a href="' . $guid[$j] . '"><img src="' . $imageFea[$j] . '" alt="' . $nameF[$j] . '" class="imgHome" title="' . $nameF[$j] . '" /></a>';
@@ -183,6 +188,19 @@ $type_name='';
                             $div            .= '<div class="vid_info"><h5><a href="' . $guid[$j] . '" class="videoHname">';
                             $div            .= $videoname;
                             $div            .= '</a></h5>';
+                            if (!empty($fetched[$j])) {
+                                $div        .= '<span class="playlistName"><a href="' . $this->_site_url . '/?page_id=' . $this->_mPageid . '&amp;playid=' . $playlist_id . '">' . $fetched[$j] . '</a></span>';
+                            }
+                            ## Rating starts here
+                            if ($this->_settingsData->ratingscontrol == 1) {
+                                if (isset($ratecount[$j]) && $ratecount[$j] != 0) {
+                                    $ratestar    = round($rate[$j] / $ratecount[$j]);
+                                } else {
+                                    $ratestar    = 0;
+                                }
+                                $div             .= '<span class="ratethis1 '.$ratearray[$ratestar].'"></span>';
+                            } 
+                            ## Rating ends here
                             $div            .= '
                                     <span class="video_views">';
                             if($hitcount[$j]>1)
@@ -191,12 +209,6 @@ $type_name='';
                                    $viewlang = $this->_viewlang;
                             $div            .= $hitcount[$j] . ' '.$viewlang;
                             $div            .= '</span>';
-
-
-
-                            if (!empty($fetched[$j])) {
-                                $div        .= '<span class="playlistName"><a href="' . $this->_site_url . '/?page_id=' . $this->_mPageid . '&amp;playid=' . $playlist_id . '">' . $fetched[$j] . '</a></span>';
-                            }
                             $div            .= '</div>';
                             $div            .= '</li>';
                         //ELSE ENDS
@@ -238,15 +250,16 @@ $type_name='';
 
             global $wpdb;
             $div        = '';
-            $pagenum    = isset($pagenum) ? absint($pagenum) : 1; // Calculating page number
-            $start      = ( $pagenum - 1 ) * $dataLimit;     // Video starting from
+            $pagenum    = isset($pagenum) ? absint($pagenum) : 1;       ## Calculating page number
+            $start      = ( $pagenum - 1 ) * $dataLimit;                ## Video starting from
+            $ratearray = array("nopos1", "onepos1", "twopos1", "threepos1", "fourpos1", "fivepos1");
 ?>
 
 <?php
-            $div .='<div><h1 class="entry-title">'.__('Video Categories', 'video_gallery').'</h1></div>';
+//            $div .='<div><h1 class="entry-title">'.__('Video Categories', 'video_gallery').'</h1></div>';
             $div .= '<style> .video-block { margin-left:' . $this->_settingsData->gutterspace . 'px !important; } </style>';
             foreach ($TypeOFvideos as $catList) {
-// Fetch videos for every category
+            ## Fetch videos for every category
                $sql            = "SELECT s.guid,w.* FROM " . $wpdb->prefix . "hdflvvideoshare AS w
                                 INNER JOIN " . $wpdb->prefix . "hdflvvideoshare_med2play AS m ON m.media_id = w.vid
                                 INNER JOIN " . $wpdb->prefix . "hdflvvideoshare_playlist AS p on m.playlist_id = p.pid
@@ -264,13 +277,13 @@ $type_name='';
                     foreach ($playLists as $playList) {
 
                         $duration   = $playList->duration;
-                        $imageFea   = $playList->image; //VIDEO IMAGE
-                        $file_type  = $playList->file_type; // Video Type
-                        $guid       = $playList->guid; //guid
-                        if ($imageFea == '') {  //If there is no thumb image for video
+                        $imageFea   = $playList->image;             ## VIDEO IMAGE
+                        $file_type  = $playList->file_type;         ## Video Type
+                        $guid       = $playList->guid;              ## guid
+                        if ($imageFea == '') {                      ## If there is no thumb image for video
                             $imageFea = $this->_imagePath . 'nothumbimage.jpg';
                         } else {
-                            if ($file_type == 2) {          //For uploaded image
+                            if ($file_type == 2) {                  ## For uploaded image
                                 $imageFea = $image_path . $imageFea;
                             }
                         }
@@ -285,14 +298,23 @@ $type_name='';
                             $div    .= '<span class="video_duration">' . $duration . '</span>';
                         }
                         $div        .= '</div><div class="vid_info"><h5><a href="' . $guid . '" class="videoHname">' . $playListName . '</a></h5>';
-
+                        ## Rating starts here
+                        if ($this->_settingsData->ratingscontrol == 1) {
+                                if (isset($playList->ratecount) && $playList->ratecount != 0) {
+                                    $ratestar    = round($playList->rate / $playList->ratecount);
+                                } else {
+                                    $ratestar    = 0;
+                                }
+                                $div             .= '<span class="ratethis1 '.$ratearray[$ratestar].'"></span>';
+                            }
+                        ## Rating ends here
                         if($playList->hitcount>1)
                                 $viewlang = $this->_viewslang;
                                 else
                                    $viewlang = $this->_viewlang;
 
                             $div    .= '<span class="video_views">' . $playList->hitcount . ' '.$viewlang . '</span>';
-
+                        
                         $div        .= '</div></li>';
 
                         if ($i > ($this->_perCat-2)) {
@@ -300,8 +322,8 @@ $type_name='';
                         } else {
                             $i = $i + 1;
                         }
-                    if (($inc % $this->_colCat ) == 0 && $inc!=0) {//COLUMN COUNT
-                                $div .= '</ul><ul class="video-block-container">';
+                    if (($inc % $this->_colCat ) == 0 && $inc!=0) {             ## COLUMN COUNT
+                                $div .= '</ul><div class="clear"></div><ul class="video-block-container">';
                             }
                         $inc++;
                     }
@@ -312,14 +334,14 @@ $type_name='';
                     } else {
                         $div        .= '<div align="right"> </div>';
                     }
-                } else { // If there is no video for category
+                } else {                                                        ## If there is no video for category
                     $div            .= '<div>'.__('No Videos For this Category', 'video_gallery').'</div>';
                 }
             }
 
             $div                    .= '<div class="clear"></div>';
 
-            //PAGINATION STARTS
+            ## PAGINATION STARTS
             $total          = $CountOFVideos;
             $num_of_pages   = ceil($total / $dataLimit);
             $page_links     = paginate_links(array(
@@ -335,7 +357,7 @@ $type_name='';
                 $div        .= '<div class="tablenav"><div class="tablenav-pages" >' . $page_links . '</div></div>';
             }
 
-            //PAGINATION ENDS
+            ## PAGINATION ENDS
             return $div;
         }
 
@@ -343,9 +365,10 @@ $type_name='';
 
             global $wpdb;
             $div        = '';
-            $pagenum    = isset($pagenum) ? absint($pagenum) : 1; // Calculating page number
-            $start      = ( $pagenum - 1 ) * $dataLimit;     // Video starting from
-            $limit      = $dataLimit;                        // Video Limit
+            $pagenum    = isset($pagenum) ? absint($pagenum) : 1;   ## Calculating page number
+            $start      = ( $pagenum - 1 ) * $dataLimit;            ## Video starting from
+            $limit      = $dataLimit;                               ## Video Limit
+            $ratearray = array("nopos1", "onepos1", "twopos1", "threepos1", "fourpos1", "fivepos1");
 ?>
 
 
@@ -353,7 +376,7 @@ $type_name='';
             $div .='<div class="video_wrapper" id="video_search_result"><h3 class="entry-title">'.__('Search Results', 'video_gallery').' - '.$video_search.'</h3>';
             $div .= '<style> .video-block { margin-left:' . $this->_settingsData->gutterspace . 'px !important; } </style>';
 
-// Fetch videos for every category
+                ## Fetch videos for every category
                 if (!empty($TypeOFvideos)) {
                     $i          = 0;
                     $inc        = 0;
@@ -363,13 +386,13 @@ $type_name='';
                     foreach ($TypeOFvideos as $playList) {
 
                         $duration   = $playList->duration;
-                        $imageFea   = $playList->image; //VIDEO IMAGE
-                        $file_type  = $playList->file_type; // Video Type
-                        $guid       = $playList->guid; //guid
-                        if ($imageFea == '') {  //If there is no thumb image for video
+                        $imageFea   = $playList->image;         ## VIDEO IMAGE
+                        $file_type  = $playList->file_type;     ## Video Type
+                        $guid       = $playList->guid;          ## guid
+                        if ($imageFea == '') {                  ## If there is no thumb image for video
                             $imageFea = $this->_imagePath . 'nothumbimage.jpg';
                         } else {
-                            if ($file_type == 2) {          //For uploaded image
+                            if ($file_type == 2) {              ## For uploaded image
                                 $imageFea = $image_path . $imageFea;
                             }
                         }
@@ -378,24 +401,33 @@ $type_name='';
                         } else {
                             $playListName = $playList->name;
                         }
-                    if (($inc % $this->_colF ) == 0 && $inc!=0) {//COLUMN COUNT
-                                $div .= '</ul><ul class="video-block-container">';
+                    if (($inc % $this->_colF ) == 0 && $inc!=0) { ## COLUMN COUNT
+                                $div .= '</ul><div class="clear"></div><ul class="video-block-container">';
                             }
                         $div        .= '<li class="video-block"><div class="video-thumbimg"><a href="' . $guid . '"><img src="' . $imageFea . '" alt="" class="imgHome" title="" /></a>';
                         if ($duration != 0.00) {
                             $div    .= '<span class="video_duration">' . $duration. '</span>';
                         }
                         $div        .= '</div><h5><a href="' . $guid . '" class="videoHname">' . $playListName . '</a></h5><div class="vid_info">';
+                        if (!empty($playList->playlist_name)) {
+                                $div .= '<span class="playlistName"><a href="' . $this->_site_url . '/?page_id=' . $this->_mPageid . '&amp;playid=' . $playList->pid . '">' . $playList->playlist_name . '</a></span>';
+                            }
+                        ## Rating starts here
+                        if ($this->_settingsData->ratingscontrol == 1) {
+                                if (isset($playList->ratecount) && $playList->ratecount != 0) {
+                                    $ratestar    = round($playList->rate / $playList->ratecount);
+                                } else {
+                                    $ratestar    = 0;
+                                }
+                                $div             .= '<span class="ratethis1 '.$ratearray[$ratestar].'"></span>';
+                            }
+                        ## Rating ends here
                         if($playList->hitcount>1)
                                 $viewlang = $this->_viewslang;
                                 else
                                    $viewlang = $this->_viewlang;
                         $div        .= '<span class="video_views">' . $playList->hitcount . ' '.$viewlang . '</span>';
-
-                        if (!empty($playList->playlist_name)) {
-                                $div .= '<span class="playlistName"><a href="' . $this->_site_url . '/?page_id=' . $this->_mPageid . '&amp;playid=' . $playList->pid . '">' . $playList->playlist_name . '</a></span>';
-                            }
-
+ 
                         $div        .= '</div></li>';
 
                         $inc++;

@@ -18,6 +18,7 @@ if (class_exists('VideoController') != true) {//checks if the VideoController cl
         public $_msg;
         public $_search;
         public $_videosearchQuery;
+        public $_settingsData;
         public $_addnewVideo;
         public $_searchBtn;
         public $_update;
@@ -64,6 +65,7 @@ if (class_exists('VideoController') != true) {//checks if the VideoController cl
                 $videoName = filter_input(INPUT_POST, 'name');
                 $slug = sanitize_title($videoName);
                 $videoDescription = filter_input(INPUT_POST, 'description');
+                $embedcode = filter_input(INPUT_POST, 'embed_code');
                 $tags_name = filter_input(INPUT_POST, 'tags_name');
                 $seo_tags_name=stripslashes($tags_name);
                 $seo_tags_name=strtolower($seo_tags_name);
@@ -188,10 +190,14 @@ if (class_exists('VideoController') != true) {//checks if the VideoController cl
                     $file_type = '4';
                     $act_opimage = $pre_image;
                     }
+                if(!empty($embedcode)){
+                    $file_type = '5';
+                    }
 
                 $videoData = array(
                     'name' => $videoName,
                     'description' => $videoDescription,
+                    'embedcode' => $embedcode,
                     'file' => $act_filepath,
                     'file_type' => $file_type,
                     'duration' => $duration,
@@ -602,7 +608,7 @@ $Video_count = $videoOBJ->video_count($videosearchQuery, $searchBtn);
 $videoEdit = $videoOBJ->video_edit($videoId);
 $displayMsg = $videoOBJ->get_message();
 $searchMsg = $videoOBJ->_videosearchQuery;
-
+$settingsGrid = $videoOBJ->_settingsData;
 $adminPage = filter_input(INPUT_GET, 'page');
 if ($adminPage == 'video') {//including video form if starts
     require_once(APPTHA_VGALLERY_BASEDIR . DS . 'admin/views/video/video.php');
