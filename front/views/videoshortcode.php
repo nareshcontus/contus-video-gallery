@@ -450,7 +450,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                             document.getElementById("ratemsg1").style.display="none";
                             document.getElementById("ratemsg").style.display="block";
                         }
-                    </script>';
+                    </script></div>';
                 }
                   $output             .= '<div class="video-page-category"><strong>' . __("Category", "video_gallery") . ' </strong>: ';
 
@@ -464,7 +464,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                     $incre++;
                 }
 
-                $output                .=$playlistname . '</div></div>
+                $output                .=$playlistname . '</div>
                                         <div class="video-page-tag"><strong>' . __("Tags", "video_gallery") . '          </strong>: ' . $tag_name . ' ' . '</div>
                                         ';
                 $dir                    = dirname(plugin_basename(__FILE__));

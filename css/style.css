@@ -103,7 +103,7 @@ h4.playlistName {float:left; }
 .video-block img {padding: 0 !important; margin: 0 !important; width: 140px !important; max-width: none;
                     height: 90px !important; border:none}
 .views, .videoHname, .videoName, .playlistName {  font-size: 12px !important; }
-.playlistName {display: block;}
+.playlistName {display: block; float: left;}
 /*.vid_info .playlistName{ float: right; }*/
 .ulwidget .imgBorder img{width:100%;max-height: 100px;}
 .jcarousel-skin-tango{}
