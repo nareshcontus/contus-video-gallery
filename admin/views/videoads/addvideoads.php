@@ -99,13 +99,13 @@ $dirPage                = $dirExp[0];
                                         <input type="file" name="myfile" onchange="enableUpload(this.form.name);" />
                                         <input type="button" class="button" name="uploadBtn" value="<?php _e('Upload Video', 'video_gallery') ?>" disabled="disabled" onclick="return addQueue(this.form.name,this.form.myfile.value);" />
                                         <input type="hidden" name="mode" value="video" />
-                                        <label id="lbl_normal"><?php     $image_path = str_replace('plugins/contus-video-gallery/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL); echo (isset($videoadEdit->file_path)  && $uploaded_video == 1) ? str_replace($image_path, '', $videoadEdit->file_path) : ""; ?></label>
+                                        <label id="lbl_normal"><?php     $image_path = str_replace('plugins/'.$dirPage.'/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL); echo (isset($videoadEdit->file_path)  && $uploaded_video == 1) ? str_replace($image_path, '', $videoadEdit->file_path) : ""; ?></label>
                                     </form>
                                     <?php _e('<b>Supported video formats:</b>( MP4, M4V, M4A, MOV, Mp4v or F4V)', 'video_gallery') ?>
                                 </div>
                                 <span id="uploadmessage" style="display: block; margin-top:10px;margin-left:300px;color:red;font-size:12px;font-weight:bold;"></span>
                                 <div id="f1-upload-progress" style="display:none">
-                                    <div style="float:left"><img id="f1-upload-image" src="<?php echo get_option('siteurl') . '/wp-content/plugins/contus-video-gallery/images/empty.gif' ?>" alt="Uploading"  style="padding-top:2px"/>
+                                    <div style="float:left"><img id="f1-upload-image" src="<?php echo get_option('siteurl') . '/wp-content/plugins/'.$dirPage.'/images/empty.gif' ?>" alt="Uploading"  style="padding-top:2px"/>
                                         <label style="padding-top:0px;padding-left:4px;font-size:14px;font-weight:bold;vertical-align:top"  id="f1-upload-filename">PostRoll.flv</label></div>
                                     <div style="float:right"> <span id="f1-upload-cancel">
                                             <a style="float:right;padding-right:10px;" href="javascript:cancelUpload('normalvideoform');" name="submitcancel">Cancel</a>

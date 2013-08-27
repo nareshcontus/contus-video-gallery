@@ -48,7 +48,10 @@ if ($settingsContent->playlistauto == 1) {
     $ap                 = 'false';
 }
 
-$image_path             = str_replace('plugins/contus-video-gallery/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
+$dir                    = dirname(plugin_basename(__FILE__));
+$dirExp                 = explode('/', $dir);
+$dirPage                = $dirExp[0];
+$image_path             = str_replace('plugins/'.$dirPage.'/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
 ## playlist XML starts here
 header("content-type:text/xml;charset = utf-8");
 echo '<?xml version = "1.0" encoding = "utf-8"?>';

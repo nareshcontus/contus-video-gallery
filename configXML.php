@@ -19,10 +19,14 @@ require_once( dirname(__FILE__) . '/hdflv-config.php');
 global $wpdb;
 global $site_url;
 
+$dir                    = dirname(plugin_basename(__FILE__));
+$dirExp                 = explode('/', $dir);
+$dirPage                = $dirExp[0];
+
 $contusOBJ              = new ContusVideoView();
 $settingsData           = $contusOBJ->_settingsData;
 $mId                    = filter_input(INPUT_GET, 'mid');
-$logoPath               = str_replace('plugins/contus-video-gallery/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
+$logoPath               = str_replace('plugins/'.$dirPage.'/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
 
 $playXml                = APPTHA_VGALLERY_BASEURL . 'myextractXML.php';
 $midrollXml             = APPTHA_VGALLERY_BASEURL . 'mymidrollXML.php';

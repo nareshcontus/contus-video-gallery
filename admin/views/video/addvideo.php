@@ -33,8 +33,8 @@ if (isset($_GET['videoId']))
                 <?php endif; ?>
 <div class="apptha_gallery">
 <div class="wrap">
-    <script type="text/javascript" src="../wp-content/plugins/contus-video-gallery/admin/js/jquery-1.3.2.min.js"></script>
-    <script type="text/javascript" src="../wp-content/plugins/contus-video-gallery/admin/js/jquery-ui-1.7.1.custom.min.js"></script>
+    <script type="text/javascript" src="../wp-content/plugins/<?php echo $dirPage; ?>/admin/js/jquery-1.3.2.min.js"></script>
+    <script type="text/javascript" src="../wp-content/plugins/<?php echo $dirPage; ?>/admin/js/jquery-ui-1.7.1.custom.min.js"></script>
 
     <script type="text/javascript">
         function t1(t2)
@@ -244,7 +244,7 @@ if (isset($_GET['videoId']))
                                                                                            </div>
                                                                                            <span id="uploadmessage" style="display: block; margin-top:10px;color:red;font-size:12px;font-weight:bold;"></span>
                                                                                            <div id="f1-upload-progress" style="display:none">
-                                                                                               <div style="float:left"><img id="f1-upload-image" src="<?php echo get_option('siteurl') . '/wp-content/plugins/contus-video-gallery/images/empty.gif' ?>" alt="Uploading"  style="padding-top:2px"/>
+                                                                                               <div style="float:left"><img id="f1-upload-image" src="<?php echo get_option('siteurl') . '/wp-content/plugins/'.$dirPage.'/images/empty.gif' ?>" alt="Uploading"  style="padding-top:2px"/>
                                                                                                    <label style="padding-top:0px;padding-left:4px;font-size:14px;font-weight:bold;vertical-align:top"  id="f1-upload-filename">PostRoll.flv</label></div>
                                                                                                <div style="float:right"> <span id="f1-upload-cancel">
                                                                                                        <a style="float:right;padding-right:10px;" href="javascript:cancelUpload('normalvideoform');" name="submitcancel">Cancel</a>
@@ -271,7 +271,7 @@ if (isset($_GET['videoId']))
                                                                                            </div>
 
                                                                                            <div id="f2-upload-progress" style="display:none">
-                                                                                               <div style="float:left"><img id="f2-upload-image" src="<?php echo get_option('siteurl') . '/wp-content/plugins/contus-video-gallery/images/empty.gif' ?>" alt="Uploading"  style="padding-top:2px" />
+                                                                                               <div style="float:left"><img id="f2-upload-image" src="<?php echo get_option('siteurl') . '/wp-content/plugins/'.$dirPage.'/images/empty.gif' ?>" alt="Uploading"  style="padding-top:2px" />
                                                                                                    <label style="padding-top:0px;padding-left:4px;font-size:14px;font-weight:bold;vertical-align:top"  id="f2-upload-filename">PostRoll.flv</label></div>
                                                                                                <div style="float:right"><span id="f2-upload-cancel">
                                                                                                        <a style="float:right;padding-right:10px;" href="javascript:cancelUpload('hdvideoform');" name="submitcancel">Cancel</a>
@@ -300,7 +300,7 @@ if (isset($_GET['videoId']))
                                                                                            </div>
                                                                                            <span id="uploadthumbmessage" style="display: block; margin-top:10px;color:red;font-size:12px;font-weight:bold;"></span>
                                                                                            <div id="f3-upload-progress" style="display:none">
-                                                                                               <div style="float:left"><img id="f3-upload-image" src="<?php echo get_option('siteurl') . '/wp-content/plugins/contus-video-gallery/images/empty.gif' ?>" alt="Uploading" style="padding-top:2px" />
+                                                                                               <div style="float:left"><img id="f3-upload-image" src="<?php echo get_option('siteurl') . '/wp-content/plugins/'.$dirPage.'/images/empty.gif' ?>" alt="Uploading" style="padding-top:2px" />
                                                                                                    <label style="padding-top:0px;padding-left:4px;font-size:14px;font-weight:bold;vertical-align:top"  id="f3-upload-filename">PostRoll.flv</label></div>
                                                                                                <div style="float:right"> <span id="f3-upload-cancel">
                                                                                                        <a style="float:right;padding-right:10px;" href="javascript:cancelUpload('thumbimageform');" name="submitcancel">Cancel</a>
@@ -325,7 +325,7 @@ if (isset($_GET['videoId']))
                                                                                                </form>
                                                                                            </div>
                                                                                            <div id="f4-upload-progress" style="display:none">
-                                                                                               <div style="float:left"><img id="f4-upload-image" src="<?php echo get_option('siteurl') . '/wp-content/plugins/contus-video-gallery/images/empty.gif' ?>" alt="Uploading" style="padding-top:2px" />
+                                                                                               <div style="float:left"><img id="f4-upload-image" src="<?php echo get_option('siteurl') . '/wp-content/plugins/'.$dirPage.'/images/empty.gif' ?>" alt="Uploading" style="padding-top:2px" />
                                                                                                    <label style="padding-top:0px;padding-left:4px;font-size:14px;font-weight:bold;vertical-align:top"  id="f4-upload-filename">PostRoll.flv</label></div>
                                                                                                <div style="float:right"><span id="f4-upload-cancel">
                                                                                                        <a style="float:right;padding-right:10px;" href="javascript:cancelUpload('previewimageform');" name="submitcancel">Cancel</a>

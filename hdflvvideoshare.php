@@ -22,6 +22,11 @@ $frontControllerPath    = APPTHA_VGALLERY_BASEDIR . '/front/controllers/';
 $frontViewPath          = APPTHA_VGALLERY_BASEDIR . '/front/views/';
 $widgetPath             = get_template_directory() . '/html/widgets';
 
+global $dirPage;
+$dir                    = dirname(plugin_basename(__FILE__));
+$dirExp                 = explode('/', $dir);
+$dirPage                = $dirExp[0];
+
 ## Load widgets
 if (file_exists($widgetPath . '/ContusFeatureVideos.php')) {
     include_once($widgetPath . '/ContusFeatureVideos.php');
@@ -117,7 +122,8 @@ add_action('admin_menu', 'videogallery_addpages');
 require_once(APPTHA_VGALLERY_BASEDIR . '/install.php');
 register_activation_hook(__FILE__, 'videogallery_install');
 
-if (isset($_GET['action']) && $_GET['action'] == "activate-plugin" && $_GET['plugin'] == "contus-video-gallery/hdflvvideoshare.php") {
+$plugin_main_file = $dirPage."/hdflvvideoshare.php";
+if (isset($_GET['action']) && $_GET['action'] == "activate-plugin" && $_GET['plugin'] == $plugin_main_file) {
 
     ## declare table names and global variable to access WP query
     global $wpdb;
@@ -283,6 +289,7 @@ function add_video_title() {
 ## Function definition to add og detail for facebook
 function add_meta_details() {
     global $wpdb;
+    global $dirPage;
     ## Get current video id from url, if permalink on
     $videoID            = url_to_custompostid(get_permalink());
     ## Get current video id from url, if permalink off
@@ -301,7 +308,7 @@ function add_meta_details() {
                         . " ON t1.vid = t4.media_id"
                         . " WHERE t1.publish='1' AND t3.is_publish='1' AND t1.vid='" . intval($videoID) . "' LIMIT 1");
         ## Get image path for thumb image
-        $image_path     = str_replace('plugins/contus-video-gallery/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
+        $image_path     = str_replace('plugins/'.$dirPage.'/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
         $_imagePath     = APPTHA_VGALLERY_BASEURL . 'images' . DS;
         if(!empty($video_count)){
         $imageFea       = $video_count->image;          ## Get image name

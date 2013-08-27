@@ -215,7 +215,7 @@ $image_path = str_replace('plugins/'.$dirPage.'/admin/controllers', 'uploads/vid
                     '%d', '%d', '%d','%s', '%d', '%d', '%d', '%d', '%d', '%d',
                     '%d', '%d', '%d','%d', '%d', '%d', '%s', '%d', '%d', '%d',
                     '%s', '%s', '%s', '%s', '%d','%d', '%d', '%d', '%d', '%d',
-                    '%s');
+                    '%s', '%s');
                 $updateflag = $this->update_settings($settingsData, $settingsDataformat);
                 if ($updateflag) {
                     $this->admin_redirect("admin.php?page=hdflvvideosharesettings&update=1");

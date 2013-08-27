@@ -39,6 +39,9 @@ if (class_exists('ContusMoreView') != true) {
             $this->_colCat          = $this->_settingsData->colCat;
             $this->_rowCat          = $this->_settingsData->rowCat;
             $this->_perCat          = $this->_colCat * $this->_rowCat;
+            $dir                    = dirname(plugin_basename(__FILE__));
+            $dirExp                 = explode('/', $dir);
+            $this->_folder          = $dirExp[0];
             $this->_site_url        = get_bloginfo('url');
             $this->_imagePath       = APPTHA_VGALLERY_BASEURL . 'images' . DS;
         } //contructor ends
@@ -136,7 +139,7 @@ if (class_exists('ContusMoreView') != true) {
                     $j                  = 0;
                     $clearwidth         = 0;
                     $clear              = $fetched[$j] = '';
-                    $image_path         = str_replace('plugins/contus-video-gallery/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
+                    $image_path         = str_replace('plugins/'.$this->_folder.'/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
                     foreach ($TypeOFvideos as $video) {
                         $duration[$j]   = $video->duration;         ## VIDEO DURATION
                         $imageFea[$j]   = $video->image;            ## VIDEO IMAGE
@@ -272,7 +275,7 @@ if (class_exists('ContusMoreView') != true) {
                 if (!empty($playlistCount)) {
                     $i          = 0;
                     $inc        = 1;
-                    $image_path = str_replace('plugins/contus-video-gallery/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
+                    $image_path = str_replace('plugins/'.$this->_folder.'/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
                     $div        .= '<ul class="video-block-container">';
                     foreach ($playLists as $playList) {
 
@@ -380,7 +383,7 @@ if (class_exists('ContusMoreView') != true) {
                 if (!empty($TypeOFvideos)) {
                     $i          = 0;
                     $inc        = 0;
-                    $image_path = str_replace('plugins/contus-video-gallery/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
+                    $image_path = str_replace('plugins/'.$this->_folder.'/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
                     $div        .= '<ul class="video-block-container">';
 
                     foreach ($TypeOFvideos as $playList) {
