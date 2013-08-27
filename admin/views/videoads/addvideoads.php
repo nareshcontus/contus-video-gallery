@@ -9,6 +9,14 @@
   License: GPL2
  */
 ?>
+<?php 
+$dir                    = dirname(plugin_basename(__FILE__));
+$dirExp                 = explode('/', $dir);
+$dirPage                = $dirExp[0];
+?>
+<script type="text/javascript">
+    folder  = '<?php echo $dirPage; ?>'
+</script>
 <div class="apptha_gallery">
     <?php if (isset($videoadId)) {
  ?>

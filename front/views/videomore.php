@@ -145,7 +145,7 @@ if (class_exists('ContusMoreView') != true) {
                         if ($imageFea[$j] == '') {                  ## If there is no thumb image for video
                             $imageFea[$j] = $this->_imagePath . 'nothumbimage.jpg';
                         } else {
-                            if ($file_type == 2) {          //For uploaded image
+                            if ($file_type == 2 || $file_type == 5 ) {          //For uploaded image
                                 $imageFea[$j] = $image_path . $imageFea[$j];
                             }
                         }
@@ -283,7 +283,7 @@ if (class_exists('ContusMoreView') != true) {
                         if ($imageFea == '') {                      ## If there is no thumb image for video
                             $imageFea = $this->_imagePath . 'nothumbimage.jpg';
                         } else {
-                            if ($file_type == 2) {                  ## For uploaded image
+                            if ($file_type == 2 || $file_type == 5 ) {                  ## For uploaded image
                                 $imageFea = $image_path . $imageFea;
                             }
                         }
@@ -392,7 +392,7 @@ if (class_exists('ContusMoreView') != true) {
                         if ($imageFea == '') {                  ## If there is no thumb image for video
                             $imageFea = $this->_imagePath . 'nothumbimage.jpg';
                         } else {
-                            if ($file_type == 2) {              ## For uploaded image
+                            if ($file_type == 2 || $file_type == 5 ) {              ## For uploaded image
                                 $imageFea = $image_path . $imageFea;
                             }
                         }

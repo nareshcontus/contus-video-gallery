@@ -123,7 +123,10 @@ if (class_exists('VideoController') != true) {//checks if the VideoController cl
                     $duration = $this->convertTime($sec);
                 } else {
                     $act_filepath1 = $_REQUEST['normalvideoform-value'];
-                    $video_path=str_replace('plugins/contus-video-gallery/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
+                    $dir                    = dirname(plugin_basename(__FILE__));
+                    $dirExp                 = explode('/', $dir);
+                    $dirPage                = $dirExp[0];
+                    $video_path=str_replace('plugins/'.$dirPage.'/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
                     $act_filepath1=$video_path.$act_filepath1;
                     $act_filepath = addslashes(trim($_POST['customurl']));
                     $ffmpeg_path = $this->_settingsData->ffmpeg_path;
@@ -248,12 +251,12 @@ if (class_exists('VideoController') != true) {//checks if the VideoController cl
                                     $new_list1 = $new_list - 1;
                                     if ($sorder[$new_list1] == '')
                                         $sorder[$new_list1] = '0';
-                                    $wpdb->query(" INSERT INTO " . $wpdb->prefix . "hdflvvideoshare_med2play (media_id,playlist_id,sorder) VALUES ($this->_videoId, $new_list, $sorder[$new_list1])");
+                                    $wpdb->query(" INSERT INTO " . $wpdb->prefix . "hdflvvideoshare_med2play (media_id,playlist_id,sorder) VALUES ($this->_videoId, $new_list, '0')");
                                 }
                             }
                             $i = 0;
                             foreach ($pieces as $new_list) {
-                                $wpdb->query(" UPDATE " . $wpdb->prefix . "hdflvvideoshare_med2play SET sorder= '$sorder[$i]' WHERE media_id = '$this->_videoId' and playlist_id = '$new_list'");
+                                $wpdb->query(" UPDATE " . $wpdb->prefix . "hdflvvideoshare_med2play SET sorder= '0' WHERE media_id = '$this->_videoId' and playlist_id = '$new_list'");
                                 $i++;
                             }
                         }

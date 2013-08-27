@@ -9,6 +9,14 @@ Author URI: http://www.apptha.com
 License: GPL2
 */
 ?>
+<?php 
+$dir                    = dirname(plugin_basename(__FILE__));
+$dirExp                 = explode('/', $dir);
+$dirPage                = $dirExp[0];
+?>
+<script type="text/javascript">
+    folder  = '<?php echo $dirPage; ?>'
+</script>
 <div class="apptha_gallery">
 <?php       if(isset($playListId)){ ?>
 <h2><?php _e('Update Category','video_gallery'); ?></h2> <?php } else { ?> <h2  class="option_title"><?php echo "<img src='" . APPTHA_VGALLERY_BASEURL . "images/vid_ad.png' alt='move' width='30'/>"; ?><?php _e('Add a New Category','video_gallery'); ?></h2> <?php } ?>

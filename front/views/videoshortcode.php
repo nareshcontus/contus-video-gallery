@@ -142,7 +142,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
             global $wpdb;
             global $videoid, $site_url;
             $output = $videourl = $imgurl = $vid = $playlistid = $homeplayerData = $ratecount = $rate = '';
-            $image_path             = str_replace('plugins/contus-video-gallery/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
+            $image_path             = str_replace('plugins/'.$this->_plugin_name.'/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
             $_imagePath             = APPTHA_VGALLERY_BASEURL . 'images' . DS;
             $configXML              = $wpdb->get_row("SELECT ratingscontrol,embed_visible,keydisqusApps,comment_option,keyApps,configXML,width,height FROM " . $wpdb->prefix . "hdflvvideoshare_settings");
             $flashvars              = "baserefW=" . get_option('siteurl');      ## generate flashvars detail for player starts here
@@ -171,8 +171,10 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                 $videoUrl           = $homeplayerData->file;
                 $videoId            = $homeplayerData->vid;
                 $video_title        = $homeplayerData->name;
-                $video_thumb        = $homeplayerData->image;
-                $video_playlistname = $homeplayerData->playlist_name;
+                $video_file_type    = $homeplayerData->file_type;
+                if($video_file_type == 2 || $video_file_type == 5 ){
+                $video_thumb        = $image_path . $homeplayerData->image;
+                }
                 $video_playlist_id  = $homeplayerData->playlist_id;
                 $description        = $homeplayerData->description;
                 $tag_name           = $homeplayerData->tags_name;
@@ -215,12 +217,30 @@ if (class_exists('ContusVideoShortcodeView') != true) {
 
             $player_not_supprot      = __('Player doesnot support this video.', 'video_gallery');
             $htmlplayer_not_support  = __('Html5 Not support This video Format.', 'video_gallery');
+            
+            ## Display Related videos starts here                        
+            $output                 .= '<script type="text/javascript" src="' . APPTHA_VGALLERY_BASEURL . 'js/jquery-1.2.3.pack.js"></script>';
+            ##jCarousel library
+            $output                 .= '<script type="text/javascript" src="' . APPTHA_VGALLERY_BASEURL . 'js/jquery.jcarousel.pack.js"></script>';
+            ##jCarousel core stylesheet
+            $output                 .= '<link rel="stylesheet" type="text/css" href="' . APPTHA_VGALLERY_BASEURL . 'css/jquery.jcarousel.css" />';
+            ##jCarousel skin stylesheet
+            $output                 .= '<link rel="stylesheet" type="text/css" href="' . APPTHA_VGALLERY_BASEURL . 'css/skins.css" />';
+            ## To increase hit count of a video
+            $output                 .= '<script type="text/javascript" src="' . APPTHA_VGALLERY_BASEURL . 'js/script.js"></script>';
 
+            $output                 .=' <script>
+                                    var baseurl,folder,videoPage;
+                                    baseurl = "' . $this->_site_url . '";
+                                    folder  = "' . $this->_plugin_name . '";
+                                    videoPage = "' . $this->_mPageid . '"; </script>';
+            
             $output                 .= '<div id="mediaspace' . $videodivId . '" class="player" >';
 
             ## Embed player code
             if($fetched[0]->file_type == 5 && !empty($fetched[0]->embedcode)){
             $output                 .= stripslashes($fetched[0]->embedcode);
+            $output                 .= '<script> currentvideo("'.$fetched[0]->name.'",'.$fetched[0]->vid.'); </script>';
             } else{            
             ## Flash player code
             $output                 .= '<embed src="' . $this->_swfPath . '" flashvars="' . $flashvars . '" width="' . $width . '" height="' . $height . '" allowfullscreen="true" allowscriptaccess="always" type="application/x-shockwave-flash" wmode="transparent">';
@@ -243,7 +263,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                 if ($imgurl == '') {                ## If there is no thumb image for video
                 $imgurl              = $_imagePath . 'nothumbimage.jpg';
                 } else {
-                    if ($file_type == 2) {          ## For uploaded image
+                    if ($file_type == 2 || $file_type == 5 ) {          ## For uploaded image
                         $imgurl      = $image_path . $imgurl;
                     }
                 }
@@ -258,6 +278,8 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                 $videourl           = "http://www.youtube.com/embed/$video_id";
                 ## Generate youtube embed code for html5 player
                 $htmlvideo          ="<iframe  type='text/html' src='" . $videourl . "' frameborder='0'></iframe>";
+            } else if($fetched[0]->file_type == 5 && !empty($fetched[0]->embedcode)){
+                $htmlvideo          = stripslashes($fetched[0]->embedcode);
             } else {        ## Check for upload, URL and RTMP videos
                 if ($file_type == 2) {                  ## For uploaded image
                     $videourl       = $image_path . $videourl;
@@ -271,10 +293,6 @@ if (class_exists('ContusVideoShortcodeView') != true) {
             $output                 .='</div>';
             ## Check platform
             $output                 .=' <script>
-                                    var baseurl,folder,videoPage;
-                                    baseurl = "' . $this->_site_url . '";
-                                    folder  = "' . $this->_plugin_name . '";
-                                    videoPage = "' . $this->_mPageid . '";
                                     var txt =  navigator.platform ;
                                     var windo = "' . $windo . '";
                                     if(txt =="iPod"|| txt =="iPad" || txt == "iPhone" || windo=="Windows Phone" || txt == "Linux armv7l" || txt == "Linux armv6l")
@@ -481,8 +499,12 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                 $videodescription       = str_replace(" ", "%20", $description);
                 $blog_title             = get_bloginfo('name');
                 $current_url            = "http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . '?random=' . rand(0, 100);
-                $sd                     = "medium%5D=103&amp;p%5Bvideo%5D%5Bwidth%5D=640&amp;p%5Bvideo%5D%5Bheight%5D=360&amp;p%5Bvideo%5D%5Bsrc%5D=" . urlencode($this->_swfPath) . "%3Ffile%3D" . urlencode($videoUrl) . "%26baserefW%3D" . urlencode(APPTHA_VGALLERY_BASEURL) . "%2F%26vid%3D" . $vid . "%26embedplayer%3Dtrue%26HD_default%3Dtrue%26share%3Dfalse%26skin_autohide%3Dtrue%26showPlaylist%3Dfalse&amp;p%5B";
-                $url_fb                 = "http://www.facebook.com/sharer/sharer.php?s=100&amp;p%5Btitle%5D=" . $video_title . "&amp;p%5Bsummary%5D=" . strip_tags($videodescription) . "&amp;p%5B" . $sd . "url%5D=" . $current_url . "&amp;p%5Bimages%5D%5B0%5D=" . urlencode($video_thumb);
+                if($video_file_type == 5 ){
+                $sd                     = '';
+                } else{
+                $sd                     = "%5Bvideo%5D%5Bheight%5D=360&amp;p%5Bvideo%5D%5Bsrc%5D=" . urlencode($this->_swfPath) . "%3Ffile%3D" . urlencode($videoUrl) . "%26baserefW%3D" . urlencode(APPTHA_VGALLERY_BASEURL) . "%2F%26vid%3D" . $vid . "%26embedplayer%3Dtrue%26HD_default%3Dtrue%26share%3Dfalse%26skin_autohide%3Dtrue%26showPlaylist%3Dfalse&amp;p";
+                }
+                $url_fb                 = "http://www.facebook.com/sharer/sharer.php?s=100&amp;p%5Btitle%5D=" . $video_title . "&amp;p%5Bsummary%5D=" . strip_tags($videodescription) . "&amp;p%5Bmedium%5D=103&amp;p%5Bvideo%5D%5Bwidth%5D=640&amp;p" . $sd . "%5Burl%5D=" . urlencode($current_url) . "&amp;p%5Bimages%5D%5B0%5D=" . urlencode($video_thumb);
                 $output                 .= '
                                         <!-- Facebook share Start -->
                                         <div class="video-socialshare">
@@ -493,17 +515,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                                         <div class="floatleft gplusshare" ><script type="text/javascript" src="http://apis.google.com/js/plusone.js"></script><div class="g-plusone" data-size="medium" data-count="false"></div></div>
                                         <!-- Google plus one End -->
                                         </div></div>';
-                ## Display Related videos starts here                        
-                $output                 .= '<script type="text/javascript" src="' . APPTHA_VGALLERY_BASEURL . 'js/jquery-1.2.3.pack.js"></script>';
-                ##jCarousel library
-                $output                 .= '<script type="text/javascript" src="' . APPTHA_VGALLERY_BASEURL . 'js/jquery.jcarousel.pack.js"></script>';
-                ##jCarousel core stylesheet
-                $output                 .= '<link rel="stylesheet" type="text/css" href="' . APPTHA_VGALLERY_BASEURL . 'css/jquery.jcarousel.css" />';
-                ##jCarousel skin stylesheet
-                $output                 .= '<link rel="stylesheet" type="text/css" href="' . APPTHA_VGALLERY_BASEURL . 'css/skins.css" />';
-                ## To increase hit count of a video
-                $output                 .= '<script type="text/javascript" src="' . APPTHA_VGALLERY_BASEURL . 'js/script.js"></script>';
-
+                
                 $output                 .= '<script type="text/javascript">
                                              function mycarousel_initCallback(carousel){
                                             // Disable autoscrolling if the user clicks the prev or next button.
@@ -550,6 +562,8 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                     $split                  = explode("/", $videourl);
                     if (!empty($videourl) && (preg_match('/vimeo/', $videourl)) && ($videourl != '')) {
                         $embed_code         = '<iframe src="http://player.vimeo.com/video/' . $split[3] . '?title=0&amp;byline=0&amp;portrait=0&amp;color=6fde9f" width="400" height="225" class="iframe_frameborder" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
+                    } else if($fetched[0]->file_type == 5 && !empty($fetched[0]->embedcode)){
+                    $embed_code             = stripslashes($fetched[0]->embedcode);
                     } else {
                         $embed_code         = '<embed src="' . $this->_swfPath . '" flashvars="' . $flashvars . '&amp;shareIcon=false&amp;email=false&amp;showPlaylist=false&amp;zoomIcon=false&amp;copylink=' . get_permalink() . '&amp;embedplayer=true" width="' . $width . '" height="' . $height . '" allowfullscreen="true" allowscriptaccess="always" type="application/x-shockwave-flash" wmode="transparent">';
                     }
@@ -580,7 +594,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                 if ($result != '') {
                 ##Slide Display Here
                 $output                     .= '<ul id="mycarousel" class="jcarousel-skin-tango" style="margin:0 !important;">';
-                    $image_path              = str_replace('plugins/contus-video-gallery/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
+                    $image_path              = str_replace('plugins/'.$this->_plugin_name.'/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
                     while ($relFet = mysql_fetch_object($related)) {
                         $file_type           = $relFet->file_type; ## Video Type
                         $imageFea            = $relFet->image; ##VIDEO IMAGE
@@ -588,7 +602,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                         if ($imageFea == '') {  ##If there is no thumb image for video
                             $imageFea        = $this->_imagePath . 'nothumbimage.jpg';
                         } else {
-                            if ($file_type == 2) {          ##For uploaded image
+                            if ($file_type == 2 || $file_type == 5 ) {          ##For uploaded image
                                 $imageFea    = $image_path . $imageFea;
                             }
                         }

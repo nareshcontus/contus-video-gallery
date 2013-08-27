@@ -10,10 +10,17 @@
  */
 ?>
 <!-- Add A Video -->
+<?php 
+$dir                    = dirname(plugin_basename(__FILE__));
+$dirExp                 = explode('/', $dir);
+$dirPage                = $dirExp[0];
+?>
+<script type="text/javascript">
+    folder  = '<?php echo $dirPage; ?>'
+</script>
 <?php
 $act_vid = 0;
 $site_url = get_option('siteurl');
-$contus = dirname(plugin_basename(__FILE__));
 if (isset($_GET['videoId']))
     $act_vid = (int) $_GET['videoId'];
 ?>
@@ -34,7 +41,10 @@ if (isset($_GET['videoId']))
         { 
             if(t2.value == "y" || t2 == "y")
             {
-                document.getElementById('upload2').style.display = "block"
+                document.getElementById('upload2').style.display = "block";
+                document.getElementById('ffmpeg_disable_new4').style.display = "";
+                document.getElementById('ffmpeg_disable_new2').style.display = "";
+                document.getElementById('ffmpeg_disable_new1').style.display = "";
                 document.getElementById('youtube').style.display = "none";
                 document.getElementById('embedvideo').style.display = "none";
                 document.getElementById('customurl').style.display = "none";
@@ -66,7 +76,11 @@ if (isset($_GET['videoId']))
                 document.getElementById('customurl').style.display = "none";
                 document.getElementById('hdvideourl').style.display = "none";
                 document.getElementById('youtube').style.display = "none";
-                document.getElementById('upload2').style.display = "none";
+                document.getElementById('adstypebox').style.display = "none";
+                document.getElementById('upload2').style.display = "block"
+                document.getElementById('ffmpeg_disable_new4').style.display = "none";
+                document.getElementById('ffmpeg_disable_new2').style.display = "none";
+                document.getElementById('ffmpeg_disable_new1').style.display = "none";
             }
         }
 
@@ -130,7 +144,7 @@ if (isset($_GET['videoId']))
                         <tr>
                             <th scope="row"><?php _e('Embed Code', 'video_gallery') ?></th>
                             <td class="rtmp_td">
-                                <textarea id="embedcode" name="embedcode" rows="5" cols="60"><?php if (isset($videoEdit->embedcode))echo $videoEdit->embedcode; ?></textarea>
+                                <textarea id="embedcode" name="embedcode" rows="5" cols="60"><?php if (isset($videoEdit->embedcode))echo stripslashes($videoEdit->embedcode); ?></textarea>
                              <span id="embedmessage" style="display: block; margin-top:10px;color:red;font-size:12px;font-weight:bold;"></span>
                             </td>
                         </tr>
@@ -280,7 +294,7 @@ if (isset($_GET['videoId']))
                                                                                                    <input type="file" name="myfile"  onchange="enableUpload(this.form.name);" />
                                                                                                    <input type="button" class="button" name="uploadBtn" value="Upload Image"  disabled="disabled" onclick="return addQueue(this.form.name,this.form.myfile.value);" />
                                                                                                    <input type="hidden" name="mode" value="image" />
-                                                                                                   <label id="lbl_normal"><?php if (isset($videoEdit->file_type) && $videoEdit->file_type == 2)
+                                                                                                   <label id="lbl_normal"><?php if (isset($videoEdit->file_type) && ($videoEdit->file_type == 2 || $videoEdit->file_type == 5))
                                                                                    echo $videoEdit->image; ?></label>
                                                                                                </form>
                                                                                            </div>
@@ -337,7 +351,7 @@ if (isset($_GET['videoId']))
                                                                                    echo $videoEdit->file; ?>"  />
                                                                            <input type="hidden" name="hdvideoform-value" id="hdvideoform-value" value="<?php if (isset($videoEdit->file_type) && $videoEdit->file_type == 2)
                                                                                    echo $videoEdit->hdfile; ?>" />
-                                                                           <input type="hidden" name="thumbimageform-value" id="thumbimageform-value"  value="<?php if (isset($videoEdit->file_type) && $videoEdit->file_type == 2)
+                                                                           <input type="hidden" name="thumbimageform-value" id="thumbimageform-value"  value="<?php if (isset($videoEdit->file_type) && ($videoEdit->file_type == 2 || $videoEdit->file_type == 5))
                                                                                    echo $videoEdit->image; ?>" />
                                                                            <input type="hidden" name="previewimageform-value" id="previewimageform-value"  value="<?php if (isset($videoEdit->file_type) && $videoEdit->file_type == 2)
                                                                                    echo $videoEdit->opimage; ?>" />
@@ -428,7 +442,7 @@ if (isset($_GET['videoId']))
                                                                                    echo 'checked="checked"';
                                                                                }
                 ?> value="0"> <label>No</label>
-                                                                               <br/><?php _e('Note : Not supported for YouTube videos', 'video_gallery') ?>
+                                                                               <br/><?php _e('Note : Not supported for YouTube and Embed videos', 'video_gallery') ?>
                                                                            </td>
                                                                        </tr>
                                                                        <tr>
@@ -461,7 +475,7 @@ if (isset($_GET['videoId']))
                                                                                if ($settings[0]->preroll == 0 || $settings[0]->postroll == 0 || $settings[0]->midroll_ads == 0 || $settings[0]->imaAds == 1) {
                     ?>
 
-                                                                           <div class="stuffbox">
+                                                                           <div class="stuffbox" id="adstypebox">
                                                                                <h3 class="hndle"><span><?php _e('Select Ads', 'video_gallery'); ?></span></h3>
                                                                                <div class="inside" style="margin:15px;">
 <?php if ($settings[0]->preroll == 0) { ?>

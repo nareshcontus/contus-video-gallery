@@ -137,9 +137,7 @@ if (isset($_GET['action']) && $_GET['action'] == "activate-plugin" && $_GET['plu
 
     ## declare variables
     $updateSlug = $updatestreamer_path = $updateislive = $updateratecount = $updaterate = $updateordering = $updatekeyApps = $updatekeydisqusApps =
-    $sharepanel_up_BgColor = $sharepanel_down_BgColor = $sharepaneltextColor = $sendButtonColor = $sendButtonTextColor =
-    $textColor = $skinBgColor = $seek_barColor = $buffer_barColor = $skinIconColor = $pro_BgColor = $playButtonColor = $playButtonBgColor =
-    $playerButtonColor = $playerButtonBgColor = $relatedVideoBgColor = $scroll_barColor = $scroll_BgColor = $playlist_open =
+    $player_colors = $playlist_open = $updatecolMore = $updateembedcode = $updatedefault_player = $updaterowMore =
     $showPlaylist = $updatecontentId = $updateimaadpath = $updatepublisherId = $updateimaadwidth = $updateimaadheight = $midroll_ads = $adsSkip = $adsSkipDuration = $relatedVideoView = $imaAds = $trackCode = $showTag = $ratingscontrol =
     $updateaddescription = $updateimaadType = $updateadtargeturl = $updateadclickurl = $updateadimpressionurl = $updateadmethod = $updateadtype = $updateispublish =
     $shareIcon = $updateimaad = $updatechannels = $updatemidrollads = $volumecontrol = $playlist_auto = $progressControl = $imageDefault = $updatepublish = $updateadpublish = '';
@@ -181,24 +179,7 @@ if (isset($_GET['action']) && $_GET['action'] == "activate-plugin" && $_GET['plu
     $updaterowMore          = AddColumnIfNotExists($errorMsg, "$table_settings", "rowMore", "varchar(25) $charset_collate NOT NULL DEFAULT 2");
     $updatecolMore          = AddColumnIfNotExists($errorMsg, "$table_settings", "colMore", "varchar(25) $charset_collate NOT NULL DEFAULT 4");
     $updatekeydisqusApps    = AddColumnIfNotExists($errorMsg, "$table_settings", "keydisqusApps", "varchar(50) $charset_collate NOT NULL");
-    $sharepanel_up_BgColor  = AddColumnIfNotExists($errorMsg, "$table_settings", "sharepanel_up_BgColor", "varchar(50) $charset_collate NOT NULL");
-    $sharepanel_down_BgColor= AddColumnIfNotExists($errorMsg, "$table_settings", "sharepanel_down_BgColor", "varchar(50) $charset_collate NOT NULL");
-    $sharepaneltextColor    = AddColumnIfNotExists($errorMsg, "$table_settings", "sharepaneltextColor", "varchar(50) $charset_collate NOT NULL");
-    $sendButtonColor        = AddColumnIfNotExists($errorMsg, "$table_settings", "sendButtonColor", "varchar(50) $charset_collate NOT NULL");
-    $sendButtonTextColor    = AddColumnIfNotExists($errorMsg, "$table_settings", "sendButtonTextColor", "varchar(50) $charset_collate NOT NULL");
-    $textColor              = AddColumnIfNotExists($errorMsg, "$table_settings", "textColor", "varchar(50) $charset_collate NOT NULL");
-    $skinBgColor            = AddColumnIfNotExists($errorMsg, "$table_settings", "skinBgColor", "varchar(50) $charset_collate NOT NULL");
-    $seek_barColor          = AddColumnIfNotExists($errorMsg, "$table_settings", "seek_barColor", "varchar(50) $charset_collate NOT NULL");
-    $buffer_barColor        = AddColumnIfNotExists($errorMsg, "$table_settings", "buffer_barColor", "varchar(50) $charset_collate NOT NULL");
-    $skinIconColor          = AddColumnIfNotExists($errorMsg, "$table_settings", "skinIconColor", "varchar(50) $charset_collate NOT NULL");
-    $pro_BgColor            = AddColumnIfNotExists($errorMsg, "$table_settings", "pro_BgColor", "varchar(50) $charset_collate NOT NULL");
-    $playButtonColor        = AddColumnIfNotExists($errorMsg, "$table_settings", "playButtonColor", "varchar(50) $charset_collate NOT NULL");
-    $playButtonBgColor      = AddColumnIfNotExists($errorMsg, "$table_settings", "playButtonBgColor", "varchar(50) $charset_collate NOT NULL");
-    $playerButtonColor      = AddColumnIfNotExists($errorMsg, "$table_settings", "playerButtonColor", "varchar(50) $charset_collate NOT NULL");
-    $playerButtonBgColor    = AddColumnIfNotExists($errorMsg, "$table_settings", "playerButtonBgColor", "varchar(50) $charset_collate NOT NULL");
-    $relatedVideoBgColor    = AddColumnIfNotExists($errorMsg, "$table_settings", "relatedVideoBgColor", "varchar(50) $charset_collate NOT NULL");
-    $scroll_barColor        = AddColumnIfNotExists($errorMsg, "$table_settings", "scroll_barColor", "varchar(50) $charset_collate NOT NULL");
-    $scroll_BgColor         = AddColumnIfNotExists($errorMsg, "$table_settings", "scroll_BgColor", "varchar(50) $charset_collate NOT NULL");
+    $player_colors          = AddColumnIfNotExists($errorMsg, "$table_settings", "player_colors", "longtext $charset_collate NOT NULL");
     $playlist_open          = AddColumnIfNotExists($errorMsg, "$table_settings", "playlist_open", "INT( 3 ) NOT NULL");
     $showPlaylist           = AddColumnIfNotExists($errorMsg, "$table_settings", "showPlaylist", "INT( 3 ) NOT NULL");
     $midroll_ads            = AddColumnIfNotExists($errorMsg, "$table_settings", "midroll_ads", "INT( 3 ) NOT NULL");
@@ -480,7 +461,6 @@ function video_morereplace() {
     global $frontControllerPath, $frontModelPath, $frontViewPath;
     include_once ($frontControllerPath . 'videomoreController.php');
     $more               = filter_input(INPUT_GET, 'more');
-    $playid             = '';
     $playid             = filter_input(INPUT_GET, 'playid');
     if (!empty($playid))
         $more           = 'cat';

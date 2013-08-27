@@ -97,7 +97,7 @@ class widget_ContusRecentVideos_init extends WP_Widget {
         ## were there any posts found?
         if (!empty($posts)) {
         ## posts were found, loop through them
-            $image_path         = str_replace('plugins/contus-video-gallery/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
+            $image_path         = str_replace('plugins/'.$dirPage.'/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
             $_imagePath         = APPTHA_VGALLERY_BASEURL . 'images' . DS;
             foreach ($posts as $post) {
                 $file_type      = $post->file_type; ## Video Type
@@ -106,7 +106,7 @@ class widget_ContusRecentVideos_init extends WP_Widget {
                 if ($image == '') {  ##If there is no thumb image for video
                     $image      = $_imagePath . 'nothumbimage.jpg';
                 } else {
-                    if ($file_type == 2) {          ##For uploaded image
+                    if ($file_type == 2 || $file_type == 5 ) {          ##For uploaded image
                         $image  = $image_path . $image;
                     }
                 }

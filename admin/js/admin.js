@@ -391,7 +391,7 @@ function updateQueue(statuscode,statusmessage,outfile)
 function submitUploadForm(form_handle)
 {
     document.forms[form_handle].target = "uploadvideo_target";
-    document.forms[form_handle].action = "../wp-content/plugins/contus-video-gallery/admin/ajax/videoupload.php?processing=1";
+    document.forms[form_handle].action = "../wp-content/plugins/"+folder+"/admin/ajax/videoupload.php?processing=1";
     document.forms[form_handle].submit();
 }
 function setStatus(form_handle,status)
@@ -419,7 +419,7 @@ function setStatus(form_handle,status)
             document.getElementById(divprefix + "-upload-status").innerHTML = "Queued";
             document.getElementById(divprefix + "-upload-message").style.display = "none";
             document.getElementById(divprefix + "-upload-filename").innerHTML = document.forms[form_handle].myfile.value;
-            document.getElementById(divprefix + "-upload-image").src = '../wp-content/plugins/contus-video-gallery/images/empty.gif';
+            document.getElementById(divprefix + "-upload-image").src = '../wp-content/plugins/'+folder+'/images/empty.gif';
             document.getElementById(divprefix + "-upload-cancel").innerHTML = '<a style="float:right;padding-right:10px;" href=javascript:cancelUpload("'+form_handle+'") name="submitcancel">Cancel</a>';
             break;
 
@@ -429,7 +429,7 @@ function setStatus(form_handle,status)
             document.getElementById(divprefix + "-upload-status").innerHTML = "Uploading";
             document.getElementById(divprefix + "-upload-message").style.display = "none";
             document.getElementById(divprefix + "-upload-filename").innerHTML = document.forms[form_handle].myfile.value;
-            document.getElementById(divprefix + "-upload-image").src = '../wp-content/plugins/contus-video-gallery/images/loader.gif';
+            document.getElementById(divprefix + "-upload-image").src = '../wp-content/plugins/'+folder+'/images/loader.gif';
             document.getElementById(divprefix + "-upload-cancel").innerHTML = '<a style="float:right;padding-right:10px;" href=javascript:cancelUpload("'+form_handle+'") name="submitcancel">Cancel</a>';
             break;
         case "Retry":
@@ -441,7 +441,7 @@ function setStatus(form_handle,status)
             enableUpload(form_handle);
             break;
         case 0:
-            document.getElementById(divprefix + "-upload-image").src = '../wp-content/plugins/contus-video-gallery/images/success.gif';
+            document.getElementById(divprefix + "-upload-image").src = '../wp-content/plugins/'+folder+'/images/success.gif';
             document.getElementById(divprefix + "-upload-status").innerHTML = "";
             document.getElementById(divprefix + "-upload-message").style.display = "";
             document.getElementById(divprefix + "-upload-message").style.backgroundColor = "#CEEEB2";
@@ -451,7 +451,7 @@ function setStatus(form_handle,status)
 
 
         default:
-            document.getElementById(divprefix + "-upload-image").src = '../wp-content/plugins/contus-video-gallery/images/error.gif';
+            document.getElementById(divprefix + "-upload-image").src = '../wp-content/plugins/'+folder+'/images/error.gif';
             document.getElementById(divprefix + "-upload-status").innerHTML = " ";
             document.getElementById(divprefix + "-upload-message").style.display = "";
             document.getElementById(divprefix + "-upload-message").innerHTML = uploadmessage + " <a href=javascript:setStatus('" + form_handle + "','Retry')>Retry</a>";

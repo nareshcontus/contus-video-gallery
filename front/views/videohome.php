@@ -37,6 +37,9 @@ if (class_exists('ContusVideoView') != true) {
             $this->_featuredvideodata       = $this->home_featuredvideodata();
             $this->_viewslang               = __('Views', 'video_gallery');
             $this->_viewlang                = __('View', 'video_gallery');
+            $dir                            = dirname(plugin_basename(__FILE__));
+            $dirExp                         = explode('/', $dir);
+            $this->_plugin_name             = $dirExp[0];
             $this->_bannerswfPath           = APPTHA_VGALLERY_BASEURL . 'hdflvplayer' . DS . 'hdplayer_banner.swf';
             $this->_swfPath                 = APPTHA_VGALLERY_BASEURL . 'hdflvplayer' . DS . 'hdplayer.swf';
             $this->_imagePath               = APPTHA_VGALLERY_BASEURL . 'images' . DS;
@@ -50,7 +53,7 @@ if (class_exists('ContusVideoView') != true) {
             $videoUrl = $videoId = $thumb_image = $homeplayerData = $file_type = '';
             if (!empty($this->_featuredvideodata[0]))
                 $homeplayerData             = $this->_featuredvideodata[0];
-            $image_path                     = str_replace('plugins/contus-video-gallery/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
+            $image_path                     = str_replace('plugins/'.$this->_plugin_name.'/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
             $_imagePath                     = APPTHA_VGALLERY_BASEURL . 'images' . DS;
             if (!empty($homeplayerData)) {
                 $videoUrl                   = $homeplayerData->file;
@@ -68,7 +71,14 @@ if (class_exists('ContusVideoView') != true) {
 
             $moduleName                     = "playerModule";
             $div                            = '<div>'; ##video player starts
+            ## To increase hit count of a video
+            $div                            .= '<script type="text/javascript" src="' . APPTHA_VGALLERY_BASEURL . 'js/script.js"></script>';
             $div                            .= '<style type="text/css" scoped> .video-block {margin-left:' . $settingsData->gutterspace . 'px !important; } </style>';
+            $div                            .=' <script>
+                                            var baseurl,folder,videoPage;
+                                            baseurl = "' . $this->_site_url . '";
+                                            folder  = "' . $this->_plugin_name . '";
+                                            videoPage = "' . $this->_mPageid . '"; </script>';
             if (!empty($this->_vId)) {
                 $baseref                    = '&amp;vid=' . $this->_vId;
             } else {
@@ -93,6 +103,7 @@ if (class_exists('ContusVideoView') != true) {
             ## Embed player code
             else if($homeplayerData->file_type == 5 && !empty($homeplayerData->embedcode)){
             $div                 .= stripslashes($homeplayerData->embedcode);
+            $div                 .= '<script> currentvideo("'.$homeplayerData->name.'",'.$homeplayerData->vid.'); </script>';
             } else{            
             ## Flash player code
                 $div                        .= '<embed id="player" src="' . $swf . '"  flashvars="baserefW=' . APPTHA_VGALLERY_BASEURL . $baseref . $showplaylist . '&amp;mid=' . $moduleName . '" width="' . $settingsData->width . '" height="' . $settingsData->height . '"   allowFullScreen="true" allowScriptAccess="always" type="application/x-shockwave-flash" wmode="transparent" />';
@@ -109,6 +120,8 @@ if (class_exists('ContusVideoView') != true) {
                 $imgval                     = explode("&", $imgstr[1]);
                 $videoId1                   = $imgval[0];
                 $htmlvideo                  ="<iframe  type='text/html' src='http://www.youtube.com/embed/" . $videoId1 . "' frameborder='0'></iframe>";
+            } else if($homeplayerData->file_type == 5 && !empty($homeplayerData->embedcode)){
+                $htmlvideo                 = stripslashes($homeplayerData->embedcode);
             } else {    ##IF VIDEO IS UPLOAD OR DIRECT PATH
                 if ($file_type == 2) {          ##For uploaded image
                     $videoUrl               = $image_path . $videoUrl;
@@ -215,7 +228,7 @@ if (class_exists('ContusVideoView') != true) {
 
                 $class = $div = '';
                 $ratearray = array("nopos1", "onepos1", "twopos1", "threepos1", "fourpos1", "fivepos1");
-                $image_path             = str_replace('plugins/contus-video-gallery/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
+                $image_path             = str_replace('plugins/'.$this->_plugin_name.'/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
                 if ($TypeSet) {                                             ## CHECKING FAETURED VIDEOS ENABLE STARTS
                     $div                = '<div class="video_wrapper" id="' . $type_name . '_video">';
                     $div               .= '<style type="text/css" scoped> .video-block {margin-left:' . $this->_settingsData->gutterspace . 'px !important;}  </style>';
@@ -235,7 +248,7 @@ if (class_exists('ContusVideoView') != true) {
                             if ($imageFea[$j] == '') {                      ## If there is no thumb image for video
                                 $imageFea[$j] = $this->_imagePath . 'nothumbimage.jpg';
                             } else {
-                                if ($file_type == 2) {          ##For uploaded image
+                                if ($file_type == 2 || $file_type == 5) {          ##For uploaded image
                                     $imageFea[$j] = $image_path . $imageFea[$j];
                                 }
                             }
@@ -332,7 +345,7 @@ if (class_exists('ContusVideoView') != true) {
                 $div            .='<div> <h4 class="clear more_title">' . $catList->playlist_name . '</h4></div>';
                 if (!empty($playlistCount)) {
                     $inc        = 1;
-                    $image_path = str_replace('plugins/contus-video-gallery/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
+                    $image_path = str_replace('plugins/'.$this->_plugin_name.'/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
                     $div        .= '<ul class="video-block-container">';
                     foreach ($playLists as $playList) {
 
@@ -343,7 +356,7 @@ if (class_exists('ContusVideoView') != true) {
                         if ($imageFea == '') {                  ##If there is no thumb image for video
                             $imageFea = $this->_imagePath . 'nothumbimage.jpg';
                         } else {
-                            if ($file_type == 2) {              ##For uploaded image
+                            if ($file_type == 2 || $file_type == 5) {              ##For uploaded image
                                 $imageFea = $image_path . $imageFea;
                             }
                         }
