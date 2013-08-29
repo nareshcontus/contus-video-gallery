@@ -42,6 +42,7 @@ if (isset($_GET['videoId']))
             if(t2.value == "y" || t2 == "y")
             {
                 document.getElementById('upload2').style.display = "block";
+                document.getElementById('supportformats').style.display = "";
                 document.getElementById('ffmpeg_disable_new4').style.display = "";
                 document.getElementById('ffmpeg_disable_new2').style.display = "";
                 document.getElementById('ffmpeg_disable_new1').style.display = "";
@@ -78,6 +79,7 @@ if (isset($_GET['videoId']))
                 document.getElementById('youtube').style.display = "none";
                 document.getElementById('adstypebox').style.display = "none";
                 document.getElementById('upload2').style.display = "block"
+                document.getElementById('supportformats').style.display = "none";
                 document.getElementById('ffmpeg_disable_new4').style.display = "none";
                 document.getElementById('ffmpeg_disable_new2').style.display = "none";
                 document.getElementById('ffmpeg_disable_new1').style.display = "none";
@@ -229,7 +231,7 @@ if (isset($_GET['videoId']))
 
                                                     </form>
                                                     <div id="upload2" class="inside" style="margin:15px;">
-                <?php _e('<b>Supported video formats:</b>( MP4, M4V, M4A, MOV, Mp4v or F4V)', 'video_gallery') ?>
+                <div id="supportformats"><?php _e('<b>Supported video formats:</b>( MP4, M4V, M4A, MOV, Mp4v or F4V)', 'video_gallery') ?></div>
                                                                                <table class="form-table">
                                                                                    <tr id="ffmpeg_disable_new1" name="ffmpeg_disable_new1"><td style="vertical-align: middle;"><?php _e('Upload Video', 'video_gallery') ?></td>
                                                                                        <td>
