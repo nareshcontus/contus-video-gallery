@@ -495,7 +495,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                     $videoId1           = $imgval[0];
                     $video_thumb        = "http://img.youtube.com/vi/" . $videoId1 . "/mqdefault.jpg";
                 }
-                $video_title            = str_replace(" ", "%20", $video_title);
+                $video_title_share      = str_replace(" ", "%20", $video_title);
                 $videodescription       = str_replace(" ", "%20", $description);
                 $blog_title             = get_bloginfo('name');
                 $current_url            = "http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . '?random=' . rand(0, 100);
@@ -504,13 +504,13 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                 } else{
                 $sd                     = "%5Bvideo%5D%5Bheight%5D=360&amp;p%5Bvideo%5D%5Bsrc%5D=" . urlencode($this->_swfPath) . "%3Ffile%3D" . urlencode($videoUrl) . "%26baserefW%3D" . urlencode(APPTHA_VGALLERY_BASEURL) . "%2F%26vid%3D" . $vid . "%26embedplayer%3Dtrue%26HD_default%3Dtrue%26share%3Dfalse%26skin_autohide%3Dtrue%26showPlaylist%3Dfalse&amp;p";
                 }
-                $url_fb                 = "http://www.facebook.com/sharer/sharer.php?s=100&amp;p%5Btitle%5D=" . $video_title . "&amp;p%5Bsummary%5D=" . strip_tags($videodescription) . "&amp;p%5Bmedium%5D=103&amp;p%5Bvideo%5D%5Bwidth%5D=640&amp;p" . $sd . "%5Burl%5D=" . urlencode($current_url) . "&amp;p%5Bimages%5D%5B0%5D=" . urlencode($video_thumb);
+                $url_fb                 = "http://www.facebook.com/sharer/sharer.php?s=100&amp;p%5Btitle%5D=" . $video_title_share . "&amp;p%5Bsummary%5D=" . strip_tags($videodescription) . "&amp;p%5Bmedium%5D=103&amp;p%5Bvideo%5D%5Bwidth%5D=640&amp;p" . $sd . "%5Burl%5D=" . urlencode($current_url) . "&amp;p%5Bimages%5D%5B0%5D=" . urlencode($video_thumb);
                 $output                 .= '
                                         <!-- Facebook share Start -->
                                         <div class="video-socialshare">
                                         <div class="floatleft" style=" margin-right: 5px; "><a href="' . $url_fb . '" class="fbshare" id="fbshare" target="_blank" ></a></div>
                                         <!-- Facebook share End and Twitter like Start -->
-                                        <div class="floatleft ttweet" ><a href="https://twitter.com/share" class="twitter-share-button" data-url="' . $current_url . '" data-via="' . $blog_title . '" data-text="' . $description . '">' . __('Tweet', 'video_gallery') . '</a><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script></div>
+                                        <div class="floatleft ttweet" ><a href="https://twitter.com/share" class="twitter-share-button" data-url="' . $current_url . '" data-via="' . $blog_title . '" data-text="' . $video_title . '">' . __('Tweet', 'video_gallery') . '</a><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script></div>
                                         <!-- Twitter like End and Google plus one Start -->
                                         <div class="floatleft gplusshare" ><script type="text/javascript" src="http://apis.google.com/js/plusone.js"></script><div class="g-plusone" data-size="medium" data-count="false"></div></div>
                                         <!-- Google plus one End -->
