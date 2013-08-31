@@ -69,7 +69,7 @@ $dirPage = $dirExp[0];
             <?php _e('To display single video player on any page or post use the plugin code in any of the formats specified below.', 'video_gallery'); ?>
             <br><br>
 
-            <strong><?php _e('[hdvideo id=3 playlistid=2 width=400 height=400] or [hdvideo playlistid=2] or [hdvideo id=3] or [hdvideo playlistid=2 relatedvideos=on]', 'video_gallery'); ?></strong>
+            <strong><?php _e('[hdvideo id=3 playlistid=2 width=400 height=400] or [hdvideo playlistid=2] or [hdvideo id=3] or [hdvideo playlistid=2 relatedvideos=on]', 'video_gallery'); ?></strong><br><br>
 
             <?php _e("id - The Video ID, you can find the video id on 'All Videos' admin page.", "video_gallery"); ?><br><br>
             <?php _e('Playlist id - You can find the Category ID on manage Category page.', 'video_gallery'); ?><br><br>
