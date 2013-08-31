@@ -1,2 +1,2 @@
-Contus Video Gallery for Wordpress
+Documentation of Contus Video Gallery for Wordpress
 ===============
