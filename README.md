@@ -1,2 +1,2 @@
-pt_videogallery
+Contus Video Gallery for Wordpress
 ===============
