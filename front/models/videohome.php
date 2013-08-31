@@ -136,7 +136,7 @@ if(class_exists('ContusVideo') != true)
             $playlist   = $wpdb->get_row("SELECT * FROM " . $wpdb->prefix . "hdflvvideoshare_playlist WHERE pid = '".intval($playlist_id)."'");
     if ($playlist)
     {
-        $select         = " SELECT w.*,s.guid FROM " . $wpdb->prefix . "hdflvvideoshare w";
+        $select         = " SELECT w.*,s.guid,m.playlist_id FROM " . $wpdb->prefix . "hdflvvideoshare w";
         $select        .= " INNER JOIN " . $wpdb->prefix . "hdflvvideoshare_med2play m";
         $select        .= " INNER JOIN " . $wpdb->prefix . "hdflvvideoshare_playlist p";
         $select        .= " INNER JOIN " . $wpdb->prefix . "posts s ON s.ID=w.slug";
@@ -160,7 +160,7 @@ if(class_exists('ContusVideo') != true)
                           INNER JOIN " . $this->_wpdb->prefix . "hdflvvideoshare_med2play m ON m.media_id = w.vid
                           INNER JOIN " . $this->_wpdb->prefix . "hdflvvideoshare_playlist p ON p.pid=m.playlist_id
                           INNER JOIN " . $this->_wpdb->prefix . "posts s ON s.ID=w.slug
-                          WHERE featured='1' and publish='1' AND p.is_publish='1' GROUP BY w.vid ORDER BY ordering ASC";
+                          WHERE featured='1' AND w.file_type!=5 AND publish='1' AND p.is_publish='1' GROUP BY w.vid ORDER BY ordering ASC";
           return  $this->_wpdb->get_results($query);
         }   ##function for getting settings data ends
 

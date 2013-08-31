@@ -137,6 +137,62 @@ if (class_exists('ContusVideoShortcodeView') != true) {
             }
             return 0;
         }
+        
+        ## Detect mobile device
+       
+        function detect_mobile()
+        {
+            $_SERVER['ALL_HTTP'] = isset($_SERVER['ALL_HTTP']) ? $_SERVER['ALL_HTTP'] : '';
+
+            $mobile_browser = '0';
+
+            $agent = strtolower($_SERVER['HTTP_USER_AGENT']);
+
+            if(preg_match('/(up.browser|up.link|mmp|symbian|smartphone|midp|wap|phone|iphone|ipad|ipod|android|xoom)/i', $agent))
+                $mobile_browser++;
+
+            if((isset($_SERVER['HTTP_ACCEPT'])) and (strpos(strtolower($_SERVER['HTTP_ACCEPT']),'application/vnd.wap.xhtml+xml') !== false))
+                $mobile_browser++;
+
+            if(isset($_SERVER['HTTP_X_WAP_PROFILE']))
+                $mobile_browser++;
+
+            if(isset($_SERVER['HTTP_PROFILE']))
+                $mobile_browser++;
+
+            $mobile_ua = substr($agent,0,4);
+            $mobile_agents = array(
+                                'w3c ','acs-','alav','alca','amoi','audi','avan','benq','bird','blac',
+                                'blaz','brew','cell','cldc','cmd-','dang','doco','eric','hipt','inno',
+                                'ipaq','java','jigs','kddi','keji','leno','lg-c','lg-d','lg-g','lge-',
+                                'maui','maxo','midp','mits','mmef','mobi','mot-','moto','mwbp','nec-',
+                                'newt','noki','oper','palm','pana','pant','phil','play','port','prox',
+                                'qwap','sage','sams','sany','sch-','sec-','send','seri','sgh-','shar',
+                                'sie-','siem','smal','smar','sony','sph-','symb','t-mo','teli','tim-',
+                                'tosh','tsm-','upg1','upsi','vk-v','voda','wap-','wapa','wapi','wapp',
+                                'wapr','webc','winw','xda','xda-'
+                                );
+
+            if(in_array($mobile_ua, $mobile_agents))
+                $mobile_browser++;
+
+            if(strpos(strtolower($_SERVER['ALL_HTTP']), 'operamini') !== false)
+                $mobile_browser++;
+
+            // Pre-final check to reset everything if the user is on Windows
+            if(strpos($agent, 'windows') !== false)
+                $mobile_browser=0;
+
+            // But WP7 is also Windows, with a slightly different characteristic
+            if(strpos($agent, 'windows phone') !== false)
+                $mobile_browser++;
+
+            if($mobile_browser>0)
+                return true;
+            else
+                return false;
+        }
+
         ## to display player
         function HDFLV_shareRender($arguments= array()) {
             global $wpdb;
@@ -145,7 +201,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
             $image_path             = str_replace('plugins/'.$this->_plugin_name.'/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
             $_imagePath             = APPTHA_VGALLERY_BASEURL . 'images' . DS;
             $configXML              = $wpdb->get_row("SELECT ratingscontrol,embed_visible,keydisqusApps,comment_option,keyApps,configXML,width,height FROM " . $wpdb->prefix . "hdflvvideoshare_settings");
-            $flashvars              = "baserefW=" . get_option('siteurl');      ## generate flashvars detail for player starts here
+            $flashvars = $pluginflashvars = "baserefW=" . get_option('siteurl');      ## generate flashvars detail for player starts here
 
             if (isset($arguments['width'])) {
                 $width              = $arguments['width'];          ## get width from short code
@@ -201,6 +257,8 @@ if (class_exists('ContusVideoShortcodeView') != true) {
             } elseif (!empty($playlistid)) {
                 $flashvars          .="&amp;pid=" . $playlistid . "&showPlaylist=true";
                 $playlist_videos     = $this->_contOBJ->video_Pid_detail($playlistid);
+                $videoId             = $playlist_videos[0]->vid;
+                $video_playlist_id   = $playlist_videos[0]->playlist_id;
                 $fetched[]           = $playlist_videos[0];
             } else if ($this->_post_type != 'videogallery' && $this->_page_post_type != 'videogallery') {
                 $flashvars          .="&amp;vid=" . $vid . "&showPlaylist=false";
@@ -215,19 +273,19 @@ if (class_exists('ContusVideoShortcodeView') != true) {
             }
             ## generate flashvars detail for player ends here
 
-            $player_not_supprot      = __('Player doesnot support this video.', 'video_gallery');
+            $player_not_support      = __('Player doesnot support this video.', 'video_gallery');
             $htmlplayer_not_support  = __('Html5 Not support This video Format.', 'video_gallery');
             
             ## Display Related videos starts here                        
-            $output                 .= '<script type="text/javascript" src="' . APPTHA_VGALLERY_BASEURL . 'js/jquery-1.2.3.pack.js"></script>';
-            ##jCarousel library
-            $output                 .= '<script type="text/javascript" src="' . APPTHA_VGALLERY_BASEURL . 'js/jquery.jcarousel.pack.js"></script>';
-            ##jCarousel core stylesheet
-            $output                 .= '<link rel="stylesheet" type="text/css" href="' . APPTHA_VGALLERY_BASEURL . 'css/jquery.jcarousel.css" />';
-            ##jCarousel skin stylesheet
-            $output                 .= '<link rel="stylesheet" type="text/css" href="' . APPTHA_VGALLERY_BASEURL . 'css/skins.css" />';
-            ## To increase hit count of a video
-            $output                 .= '<script type="text/javascript" src="' . APPTHA_VGALLERY_BASEURL . 'js/script.js"></script>';
+//            $output                 .= '<script type="text/javascript" src="' . APPTHA_VGALLERY_BASEURL . 'js/jquery-1.2.3.pack.js"></script>';
+//            ##jCarousel library
+//            $output                 .= '<script type="text/javascript" src="' . APPTHA_VGALLERY_BASEURL . 'js/jquery.jcarousel.pack.js"></script>';
+//            ##jCarousel core stylesheet
+//            $output                 .= '<link rel="stylesheet" type="text/css" href="' . APPTHA_VGALLERY_BASEURL . 'css/jquery.jcarousel.css" />';
+//            ##jCarousel skin stylesheet
+//            $output                 .= '<link rel="stylesheet" type="text/css" href="' . APPTHA_VGALLERY_BASEURL . 'css/skins.css" />';
+//            ## To increase hit count of a video
+//            $output                 .= '<script type="text/javascript" src="' . APPTHA_VGALLERY_BASEURL . 'js/script.js"></script>';
 
             $output                 .=' <script>
                                     var baseurl,folder,videoPage;
@@ -269,10 +327,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                 }
             }
             ## Check for youtube video
-            if ((preg_match('/vimeo/', $videourl)) && ($videourl != '')) { ##IF VIDEO IS YOUTUBE
-                $vresult            = explode("/", $videourl);
-                $htmlvideo          ="<iframe  type='text/html' src='http://player.vimeo.com/video/" . $vresult[3] . "' frameborder='0'></iframe>";
-            } else if (preg_match("/www\.youtube\.com\/watch\?v=[^&]+/", $videourl, $vresult)) {
+            if (preg_match("/www\.youtube\.com\/watch\?v=[^&]+/", $videourl, $vresult)) {
                 $urlArray           = explode("=", $vresult[0]);
                 $video_id           = trim($urlArray[1]);
                 $videourl           = "http://www.youtube.com/embed/$video_id";
@@ -306,7 +361,12 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                                     function failed(e) {
                                     if(txt =="iPod"|| txt =="iPad" || txt == "iPhone" || windo=="Windows Phone" || txt == "Linux armv7l" || txt == "Linux armv6l")
                                     {
-                                    alert("' . $player_not_supprot . '"); } }
+                                    alert("' . $player_not_support . '"); } }
+                                    function videogallery_change_player(embedcode,id,player_div){
+                                    document.getElementById("mediaspace"+id).innerHTML = "";
+                                    document.getElementById("htmlplayer"+id).innerHTML = "";
+                                    document.getElementById(player_div+id).innerHTML = embedcode;
+                                    }    
                                     </script>';
             ## HTML5 player ends here
 
@@ -516,58 +576,18 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                                         <!-- Google plus one End -->
                                         </div></div>';
                 
-                $output                 .= '<script type="text/javascript">
-                                             function mycarousel_initCallback(carousel){
-                                            // Disable autoscrolling if the user clicks the prev or next button.
-                                            carousel.buttonNext.bind("click", function() {
-                                            carousel.startAuto(0);
-                                            });
-
-                                            carousel.buttonPrev.bind("click", function() {
-                                            carousel.startAuto(0);
-                                            });
-
-                                            // Pause autoscrolling if the user moves with the cursor over the clip.
-                                            carousel.clip.hover(function() {
-                                            carousel.stopAuto();
-                                            }, function() {
-                                            carousel.startAuto();
-                                            });carousel.buttonPrev.bind("click", function() {
-                                            carousel.startAuto(0);
-                                            });
-                                            };
-                                            jQuery(document).ready(function() {
-                                            jQuery("#mycarousel").jcarousel({
-                                            auto: 0,
-                                            wrap: "last",
-                                            scroll:1,
-                                            initCallback: mycarousel_initCallback
-                                            });
-                                            });
-                                            </script>';
-
-                $output                     .= '<div class="clearfix">';
-                $output                     .= '<div id="wrap" class="video-cat-thumb">';
-                $select                      = "SELECT distinct(a.vid),name,guid,description,file,hdfile,file_type,duration,image,opimage,download,link,featured,hitcount,
-                                                a.post_date,postrollads,prerollads FROM " . $wpdb->prefix . "hdflvvideoshare a
-                                                INNER JOIN " . $wpdb->prefix . "hdflvvideoshare_med2play b ON a.vid=b.media_id
-                                                INNER JOIN " . $wpdb->prefix . "hdflvvideoshare_playlist p ON p.pid=b.playlist_id
-                                                INNER JOIN " . $wpdb->prefix . "posts s ON s.ID=a.slug
-                                                WHERE b.playlist_id=" . intval($video_playlist_id) . " AND a.vid != " . intval($videoId) . " and a.publish='1' AND p.is_publish='1'
-                                                ORDER BY a.vid DESC";
+                $output                 .= '<div class="clearfix">';
+                $output                 .= '<div id="wrap" class="video-cat-thumb">';
 
                 if ($configXML->embed_visible == 1) {
                     ## embed code
 
-                    $split                  = explode("/", $videourl);
-                    if (!empty($videourl) && (preg_match('/vimeo/', $videourl)) && ($videourl != '')) {
-                        $embed_code         = '<iframe src="http://player.vimeo.com/video/' . $split[3] . '?title=0&amp;byline=0&amp;portrait=0&amp;color=6fde9f" width="400" height="225" class="iframe_frameborder" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>';
-                    } else if($fetched[0]->file_type == 5 && !empty($fetched[0]->embedcode)){
-                    $embed_code             = stripslashes($fetched[0]->embedcode);
+                    if($fetched[0]->file_type == 5 && !empty($fetched[0]->embedcode)){
+                    $embed_code          = stripslashes($fetched[0]->embedcode);
                     } else {
-                        $embed_code         = '<embed src="' . $this->_swfPath . '" flashvars="' . $flashvars . '&amp;shareIcon=false&amp;email=false&amp;showPlaylist=false&amp;zoomIcon=false&amp;copylink=' . get_permalink() . '&amp;embedplayer=true" width="' . $width . '" height="' . $height . '" allowfullscreen="true" allowscriptaccess="always" type="application/x-shockwave-flash" wmode="transparent">';
+                        $embed_code      = '<embed src="' . $this->_swfPath . '" flashvars="' . $flashvars . '&amp;shareIcon=false&amp;email=false&amp;showPlaylist=false&amp;zoomIcon=false&amp;copylink=' . get_permalink() . '&amp;embedplayer=true" width="' . $width . '" height="' . $height . '" allowfullscreen="true" allowscriptaccess="always" type="application/x-shockwave-flash" wmode="transparent">';
                     }
-                    $output                 .='<a href="javascript:void(0)" onclick="enableEmbed();" class="embed" id="allowEmbed"><span class="embed_text">' . __("Embed Code", "video_gallery") . '</span><span class="embed_arrow"></span></a>
+                    $output             .='<a href="javascript:void(0)" onclick="enableEmbed();" class="embed" id="allowEmbed"><span class="embed_text">' . __("Embed Code", "video_gallery") . '</span><span class="embed_arrow"></span></a>
                                                 <textarea onclick="this.select()" id="embedcode" name="embedcode" style="display:none;" rows="7" >' . $embed_code . '</textarea>
                                                 <input type="hidden" name="flagembed" id="flagembed" />
                                                 <script type="text/javascript">
@@ -585,74 +605,124 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                                                 </script>';
                 }
 
-                $output                     .= '<div class="video-page-desc"><strong>' . __("Description", "video_gallery") . '     </strong>: ' . $description . '</div></div>';
+                $output                 .= '<div class="video-page-desc"><strong>' . __("Description", "video_gallery") . '     </strong>: ' . $description . '</div></div>';
 
-                $output                     .= '<div ><h2 class="related-videos">' . __("Related Videos", "video_gallery") . '</h2>';
-                $related                     = mysql_query($select);
-                if (!empty($related))
-                    $result                  = mysql_num_rows($related);
-                if ($result != '') {
-                ##Slide Display Here
-                $output                     .= '<ul id="mycarousel" class="jcarousel-skin-tango" style="margin:0 !important;">';
-                    $image_path              = str_replace('plugins/'.$this->_plugin_name.'/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
-                    while ($relFet = mysql_fetch_object($related)) {
-                        $file_type           = $relFet->file_type; ## Video Type
-                        $imageFea            = $relFet->image; ##VIDEO IMAGE
-                        $guid                = $relFet->guid; ##guid
-                        if ($imageFea == '') {  ##If there is no thumb image for video
-                            $imageFea        = $this->_imagePath . 'nothumbimage.jpg';
-                        } else {
-                            if ($file_type == 2 || $file_type == 5 ) {          ##For uploaded image
-                                $imageFea    = $image_path . $imageFea;
-                            }
+                    $output             .='</div></div>';
+            } 
+            if (($this->_post_type == 'videogallery' || $this->_page_post_type == 'videogallery') || (((isset($arguments['playlistid']) && isset($arguments['id'])) || (isset($arguments['playlistid']))) && ($arguments['relatedvideos']=='on')) ){
+                ## Display Related videos starts here
+                $select                 = "SELECT distinct(a.vid),b.playlist_id,name,guid,description,file,hdfile,file_type,duration,embedcode,image,opimage,download,link,featured,hitcount,
+                                        a.post_date,postrollads,prerollads FROM " . $wpdb->prefix . "hdflvvideoshare a
+                                        INNER JOIN " . $wpdb->prefix . "hdflvvideoshare_med2play b ON a.vid=b.media_id
+                                        INNER JOIN " . $wpdb->prefix . "hdflvvideoshare_playlist p ON p.pid=b.playlist_id
+                                        INNER JOIN " . $wpdb->prefix . "posts s ON s.ID=a.slug
+                                        WHERE b.playlist_id=" . intval($video_playlist_id) . " AND a.vid != " . intval($videoId) . " and a.publish='1' AND p.is_publish='1'
+                                        ORDER BY a.vid DESC";
+            $output                     .= '<div ><h2 class="related-videos">' . __("Related Videos", "video_gallery") . '</h2>';
+            $related                     = mysql_query($select);
+            if (!empty($related))
+                $result                  = mysql_num_rows($related);
+            if ($result != '') {
+            ##Slide Display Here
+            $output                     .= '<ul id="mycarousel" class="jcarousel-skin-tango" style="margin:0 !important;">';
+                $image_path              = str_replace('plugins/'.$this->_plugin_name.'/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
+                while ($relFet = mysql_fetch_object($related)) {
+                    $file_type           = $relFet->file_type; ## Video Type
+                    $imageFea            = $relFet->image; ##VIDEO IMAGE
+                    $reafile             = $relFet->file; ##VIDEO IMAGE
+                    $guid                = $relFet->guid; ##guid
+                    if ($imageFea == '') {  ##If there is no thumb image for video
+                        $imageFea        = $this->_imagePath . 'nothumbimage.jpg';
+                    } else {
+                        if ($file_type == 2 || $file_type == 5 ) {          ##For uploaded image
+                            $imageFea    = $image_path . $imageFea;
                         }
-
-                        $output             .='<li><div  class="imgSidethumb"><a href="' . $guid . '">
-                                               <img src="' . $imageFea . '" alt="' . $relFet->name . '" class="related" /></a></div>';
-                        $output             .='<div class="vid_info"><h5><a href="' . $guid . '" class="videoHname">';
-                        $output             .= substr($relFet->name, 0, 30);
-                        $output             .='</a></h5></div>';
-                        $output             .='</li>';
                     }
+                    ## Embed player code
+                    if($file_type == 5 && !empty($relFet->embedcode)){
+                    $player_values                 = htmlentities(stripslashes($relFet->embedcode));
+                     } else{            
+                    ## Flash player code
+                    $player_values                 = htmlentities('<embed src="' . $this->_swfPath . '" flashvars="' . $pluginflashvars . '&amp;mtype=playerModule&amp;vid='.$relFet->vid.'" width="' . $width . '" height="' . $height . '" allowfullscreen="true" allowscriptaccess="always" type="application/x-shockwave-flash" wmode="transparent">');
+                    }
+                    if ($this->_post_type == 'videogallery' || $this->_page_post_type == 'videogallery') {
+                        $thumb_href     = 'href='. $guid;
+                    } else{
+                        $mobile = $this->detect_mobile();
+                        if($mobile === true){
+                            ## Check for youtube video
+                            if (preg_match("/www\.youtube\.com\/watch\?v=[^&]+/", $reafile, $vresult)) {
+                                $urlArray           = explode("=", $vresult[0]);
+                                $video_id           = trim($urlArray[1]);
+                                $reavideourl           = "http://www.youtube.com/embed/$video_id";
+                                ## Generate youtube embed code for html5 player
+                                $player_values          =htmlentities('<iframe  type="text/html" src="' . $reavideourl . '" frameborder="0"></iframe>');
+                            } else if ($file_type != 5) {        ## Check for upload, URL and RTMP videos
+                                if ($file_type == 2) {                  ## For uploaded image
+                                    $reavideourl       = $image_path . $reafile;
+                                } else if ($file_type == 4) {           ## For RTMP videos
+                                    $streamer       = str_replace("rtmp://", "http://", $media->streamer_path);
+                                    $reavideourl       = $streamer . '_definst_/mp4:' . $reafile . '/playlist.m3u8';
+                                }
+                                ## Generate video code for html5 player
+                                $player_values         =htmlentities('<video id="video" poster="' . $imageFea . '"   src="' . $reavideourl .'" autobuffer controls onerror="failed(event)">' . $htmlplayer_not_support . '</video>');
+                            }
+                            $player_div             = 'htmlplayer';
+                        }else{
+                            $player_div             = 'mediaspace';
+                        }
+                        $embedplayer    = "videogallery_change_player('".$player_values."',".$videodivId.",'".$player_div."')";
+                        $thumb_href     = 'href="#" onclick="'.$embedplayer.'"';
+                    }
+                    $output             .='<li><div  class="imgSidethumb"><a ' . $thumb_href . '>
+                                           <img src="' . $imageFea . '" alt="' . $relFet->name . '" class="related" /></a></div>';
+                    $output             .='<div class="vid_info"><h5><a ' . $thumb_href . ' class="videoHname">';
+                    $output             .= substr($relFet->name, 0, 30);
+                    $output             .='</a></h5></div>';
+                    $output             .='</li>';
+                }
 
-                    $output                 .= '</ul></div></div></div>';
-                } else {
-                    $output                 .='</div></div></div>';
-                }
-                ## Display Related videos ends here
-                ## Default Comments
-                 if ($configXML->comment_option == 0) {
-                    $output                 .='<style type="text/css">#comments.comments-area, #disqus_thread{ display: none!important; } </style>';
-                 }
-                ## Facebook Comments
-                if ($configXML->comment_option == 2) {
-                    $output                 .='<style type="text/css">#comments.comments-area, #disqus_thread{ display: none!important; } </style>';
-                    $output                 .='<div class="clear"></div>
-                                            <h2 class="related-videos">' . __("Post Your Comments", "video_gallery") . '</h2>
-                                            <div id="fb-root"></div>
-                                            <script>(function(d, s, id) {
-                                            var js, fjs = d.getElementsByTagName(s)[0];
-                                            if (d.getElementById(id)) return;
-                                            js = d.createElement(s); js.id = id;
-                                            js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=' . $configXML->keyApps . '";
-                                            fjs.parentNode.insertBefore(js, fjs);
-                                            }(document, "script", "facebook-jssdk"));</script>';
-                    $output                 .='<div class="fb-comments" data-href="' . get_permalink() . '" data-num-posts="5"></div>';
-                }
-            ## Disqus Comment
-                else if ($configXML->comment_option == 3) {
-                    $output                 .='<style type="text/css">#comments.comments-area{ display: none!important; } </style>';
-                    $output                 .='<div id="disqus_thread"></div>
-                                            <script type="text/javascript">
-                                            var disqus_shortname = "' . $configXML->keydisqusApps . '";
-                                            (function() {
-                                            var dsq = document.createElement("script"); dsq.type = "text/javascript"; dsq.async = true;
-                                            dsq.src = "http://"+ disqus_shortname + ".disqus.com/embed.js";
-                                            (document.getElementsByTagName("head")[0] || document.getElementsByTagName("body")[0]).appendChild(dsq);
-                                            })();
-                                            </script>
-                                            <noscript>' . __("Please enable JavaScript to view the", "video_gallery") . ' <a href="http://disqus.com/?ref_noscript">' . __("comments powered by Disqus.", "video_gallery") . '</a></noscript>
-                                            <a href="http://disqus.com" class="dsq-brlink">' . __("comments powered by", "video_gallery") . ' <span class="logo-disqus">' . __("Disqus", "video_gallery") . '</span></a>';
+                $output                 .= '</ul></div>';
+            }  else {
+                $output                 .= '</div>';
+            }
+
+            ## Display Related videos ends here
+            }
+            if ($this->_post_type == 'videogallery' || $this->_page_post_type == 'videogallery') {
+            ## Default Comments
+             if ($configXML->comment_option == 0) {
+                $output                 .='<style type="text/css">#comments.comments-area, #disqus_thread{ display: none!important; } </style>';
+             }
+            ## Facebook Comments
+            if ($configXML->comment_option == 2) {
+                $output                 .='<style type="text/css">#comments.comments-area, #disqus_thread{ display: none!important; } </style>';
+                $output                 .='<div class="clear"></div>
+                                        <h2 class="related-videos">' . __("Post Your Comments", "video_gallery") . '</h2>
+                                        <div id="fb-root"></div>
+                                        <script>(function(d, s, id) {
+                                        var js, fjs = d.getElementsByTagName(s)[0];
+                                        if (d.getElementById(id)) return;
+                                        js = d.createElement(s); js.id = id;
+                                        js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=' . $configXML->keyApps . '";
+                                        fjs.parentNode.insertBefore(js, fjs);
+                                        }(document, "script", "facebook-jssdk"));</script>';
+                $output                 .='<div class="fb-comments" data-href="' . get_permalink() . '" data-num-posts="5"></div>';
+            }
+        ## Disqus Comment
+            else if ($configXML->comment_option == 3) {
+                $output                 .='<style type="text/css">#comments.comments-area{ display: none!important; } </style>';
+                $output                 .='<div id="disqus_thread"></div>
+                                        <script type="text/javascript">
+                                        var disqus_shortname = "' . $configXML->keydisqusApps . '";
+                                        (function() {
+                                        var dsq = document.createElement("script"); dsq.type = "text/javascript"; dsq.async = true;
+                                        dsq.src = "http://"+ disqus_shortname + ".disqus.com/embed.js";
+                                        (document.getElementsByTagName("head")[0] || document.getElementsByTagName("body")[0]).appendChild(dsq);
+                                        })();
+                                        </script>
+                                        <noscript>' . __("Please enable JavaScript to view the", "video_gallery") . ' <a href="http://disqus.com/?ref_noscript">' . __("comments powered by Disqus.", "video_gallery") . '</a></noscript>
+                                        <a href="http://disqus.com" class="dsq-brlink">' . __("comments powered by", "video_gallery") . ' <span class="logo-disqus">' . __("Disqus", "video_gallery") . '</span></a>';
                 }
             }
             return $output;

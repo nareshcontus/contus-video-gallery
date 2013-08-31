@@ -256,8 +256,22 @@ function videogallery_admin_init() {
     wp_register_style('videogallery_css1', plugins_url('admin/css/adminsettings.css', __FILE__));
     wp_enqueue_style('videogallery_css1');
 }
+## function to add css and javascript files for admin
+function videogallery_jcar_js_css() {
+    wp_register_script('videogallery_jcar_lib_js', APPTHA_VGALLERY_BASEURL . 'js/jquery-1.2.3.pack.js');
+    wp_enqueue_script('videogallery_jcar_lib_js');
+    wp_register_script('videogallery_jcar_js', APPTHA_VGALLERY_BASEURL . 'js/jquery.jcarousel.pack.js');
+    wp_enqueue_script('videogallery_jcar_js');
+    wp_register_script('videogallery_hit_js', APPTHA_VGALLERY_BASEURL . 'js/script.js');
+    wp_enqueue_script('videogallery_hit_js');
+    wp_register_style('videogallery_jcar_css', APPTHA_VGALLERY_BASEURL . 'css/jquery.jcarousel.css');
+    wp_enqueue_style('videogallery_jcar_css');
+    wp_register_style('videogallery_jcar_skin_css', APPTHA_VGALLERY_BASEURL . 'css/skins.css');
+    wp_enqueue_style('videogallery_jcar_skin_css');
+    wp_register_script('videogallery_jcar_init_js', APPTHA_VGALLERY_BASEURL . 'js/mycarousel.js');
+    wp_enqueue_script('videogallery_jcar_init_js');   
+}
 add_action('wp_enqueue_scripts', 'videogallery_cssJs');
-
 ## Function to add og detail for facebook
 add_action('wp_head', 'add_meta_details');
 ## Function to add meta tag
@@ -455,6 +469,7 @@ function video_homereplace() {
 ## Function to display Plugin video page
 function video_shortcodeplace($arguments= array()) {
     global $frontControllerPath, $frontModelPath, $frontViewPath;
+    videogallery_jcar_js_css();
     include_once ($frontControllerPath . 'videoshortcodeController.php');
     $pageOBJ            = new ContusVideoShortcodeView();
     $contentPlayer      = $pageOBJ->HDFLV_shareRender($arguments);
@@ -503,7 +518,6 @@ function videogallerypluginUninstalling() {
     $wpdb->query(" DROP TABLE " . $wpdb->prefix . "hdflvvideoshare_settings");
     $wpdb->query(" DROP TABLE " . $wpdb->prefix . "hdflvvideoshare_playlist");
     $wpdb->query(" DROP TABLE " . $wpdb->prefix . "hdflvvideoshare_med2play");
-    $langfound          = false;
     $table_language     = $wpdb->prefix . 'hdflvvideoshare_language';
     foreach ($wpdb->get_results("SHOW TABLES;", ARRAY_N) as $row) {
         if ($row[0] == $table_language)
