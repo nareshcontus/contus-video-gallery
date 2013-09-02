@@ -253,7 +253,9 @@ width: 99px;
 .fourpos {background-position:0 -80px}
 .fivepos {background-position:0 -100px}
 #rateimg ul.ratethis li { text-indent:-999em;cursor: pointer;float:left;list-style:none;}
-#rateimg .ratethis{margin: 0px;padding: 0px;margin-right: 10px;}
+#rateimg .ratethis{margin: 0px;padding: 0px;
+         /*margin-right: 10px;*/
+}
 .callout-header-home h2{margin-bottom:5px;font-size:15px;}
 h2.hoverable a{font-size:18px;}
 h2.hoverable a:hover{background:none;}
