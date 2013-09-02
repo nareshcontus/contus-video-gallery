@@ -73,7 +73,7 @@ $dirPage = $dirExp[0];
 
             <?php _e("id - The Video ID, you can find the video id on 'All Videos' admin page.", "video_gallery"); ?><br><br>
             <?php _e('Playlist id - You can find the Category ID on manage Category page.', 'video_gallery'); ?><br><br>
-            <?php _e('relatedvideos - You can enable or disable related videos under the player in your page or post. By defult it is in off status.', 'video_gallery'); ?><br><br>
+            <?php _e('relatedvideos - You can enable/disable Related Videos on the page or post under the player. By default, it will be in "off" status.', 'video_gallery'); ?><br><br>
 
             <?php _e("Both the Video ID and Category ID will be generated automatically once you add new Video or Category to 'Wordpress Video Gallery'.", "video_gallery"); ?><br><br>
 
