@@ -277,15 +277,8 @@ if (class_exists('ContusVideoShortcodeView') != true) {
             $htmlplayer_not_support  = __('Html5 Not support This video Format.', 'video_gallery');
             
             ## Display Related videos starts here                        
-//            $output                 .= '<script type="text/javascript" src="' . APPTHA_VGALLERY_BASEURL . 'js/jquery-1.2.3.pack.js"></script>';
-//            ##jCarousel library
-//            $output                 .= '<script type="text/javascript" src="' . APPTHA_VGALLERY_BASEURL . 'js/jquery.jcarousel.pack.js"></script>';
-//            ##jCarousel core stylesheet
-//            $output                 .= '<link rel="stylesheet" type="text/css" href="' . APPTHA_VGALLERY_BASEURL . 'css/jquery.jcarousel.css" />';
-//            ##jCarousel skin stylesheet
-//            $output                 .= '<link rel="stylesheet" type="text/css" href="' . APPTHA_VGALLERY_BASEURL . 'css/skins.css" />';
-//            ## To increase hit count of a video
-//            $output                 .= '<script type="text/javascript" src="' . APPTHA_VGALLERY_BASEURL . 'js/script.js"></script>';
+            ## To increase hit count of a video
+            $output                 .= '<script type="text/javascript" src="' . APPTHA_VGALLERY_BASEURL . 'js/script.js"></script>';
 
             $output                 .=' <script>
                                     var baseurl,folder,videoPage;

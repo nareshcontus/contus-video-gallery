@@ -262,8 +262,6 @@ function videogallery_jcar_js_css() {
     wp_enqueue_script('videogallery_jcar_lib_js');
     wp_register_script('videogallery_jcar_js', APPTHA_VGALLERY_BASEURL . 'js/jquery.jcarousel.pack.js');
     wp_enqueue_script('videogallery_jcar_js');
-    wp_register_script('videogallery_hit_js', APPTHA_VGALLERY_BASEURL . 'js/script.js');
-    wp_enqueue_script('videogallery_hit_js');
     wp_register_style('videogallery_jcar_css', APPTHA_VGALLERY_BASEURL . 'css/jquery.jcarousel.css');
     wp_enqueue_style('videogallery_jcar_css');
     wp_register_style('videogallery_jcar_skin_css', APPTHA_VGALLERY_BASEURL . 'css/skins.css');
