@@ -602,7 +602,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
 
                     $output             .='</div></div>';
             } 
-            if (($this->_post_type == 'videogallery' || $this->_page_post_type == 'videogallery') || (((isset($arguments['playlistid']) && isset($arguments['id'])) || (isset($arguments['playlistid']))) && ($arguments['relatedvideos']=='on')) ){
+            if (($this->_post_type == 'videogallery' || $this->_page_post_type == 'videogallery') || (((isset($arguments['playlistid']) && isset($arguments['id'])) || (isset($arguments['playlistid']))) && (isset($arguments['relatedvideos']) && $arguments['relatedvideos']=='on')) ){
                 ## Display Related videos starts here
                 $select                 = "SELECT distinct(a.vid),b.playlist_id,name,guid,description,file,hdfile,file_type,duration,embedcode,image,opimage,download,link,featured,hitcount,
                                         a.post_date,postrollads,prerollads FROM " . $wpdb->prefix . "hdflvvideoshare a
