@@ -639,7 +639,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                     $player_values                 = htmlentities('<embed src="' . $this->_swfPath . '" flashvars="' . $pluginflashvars . '&amp;mtype=playerModule&amp;vid='.$relFet->vid.'" width="' . $width . '" height="' . $height . '" allowfullscreen="true" allowscriptaccess="always" type="application/x-shockwave-flash" wmode="transparent">');
                     }
                     if ($this->_post_type == 'videogallery' || $this->_page_post_type == 'videogallery') {
-                        $thumb_href     = 'href='. $guid;
+                        $thumb_href     = 'href="'. $guid.'"';
                     } else{
                         $mobile = $this->detect_mobile();
                         if($mobile === true){
