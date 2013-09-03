@@ -669,7 +669,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                             $player_div             = 'mediaspace';
                         }
                         $embedplayer    = "videogallery_change_player('".$player_values."',".$videodivId.",'".$player_div."',$file_type,$relFet->vid)";
-                        $thumb_href     = 'onclick="'.$embedplayer.'"';
+                        $thumb_href     = 'href="javascript:void(0);" onclick="'.$embedplayer.'"';
                     }
                     $output             .='<li><div  class="imgSidethumb"><a ' . $thumb_href . '>
                                            <img src="' . $imageFea . '" alt="' . $relFet->name . '" class="related" /></a></div>';
