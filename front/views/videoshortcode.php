@@ -379,7 +379,18 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                     } else {
                         $ratestar = 0;
                     } 
-                $output             .= '<div class="video-page-info"><div class="video-page-rating">
+                $output             .= '<div class="video-page-info">';                    
+                $output             .= '<div class="video-page-category"><strong>' . __("Category", "video_gallery") . ' </strong>: ';
+                foreach ($playlistData as $playlist) {
+                    if ($incre > 0) {
+                        $playlistname.=', ' . '<a href="' . $this->_site_url . '/?page_id=' . $this->_mPageid . '&amp;playid=' . $playlist->pid . '">' . $playlist->playlist_name . '</a>';
+                    } else {
+                        $playlistname .= '<a href="' . $this->_site_url . '/?page_id=' . $this->_mPageid . '&amp;playid=' . $playlist->pid . '">' . $playlist->playlist_name . '</a>';
+                    }
+                    $incre++;
+                }
+                $output                .=$playlistname . '</div>
+                                            <div class="video-page-rating">
                                             <div class="centermargin floatleft" >
                                                 <div class="rateimgleft" id="rateimg" onmouseover="displayrating(0);" onmouseout="resetvalue();" >
                                                     <div id="a" class="floatleft"></div>
@@ -527,21 +538,8 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                         }
                     </script></div>';
                 }
-                  $output             .= '<div class="video-page-category"><strong>' . __("Category", "video_gallery") . ' </strong>: ';
-
-                foreach ($playlistData as $playlist) {
-
-                    if ($incre > 0) {
-                        $playlistname.=', ' . '<a href="' . $this->_site_url . '/?page_id=' . $this->_mPageid . '&amp;playid=' . $playlist->pid . '">' . $playlist->playlist_name . '</a>';
-                    } else {
-                        $playlistname .= '<a href="' . $this->_site_url . '/?page_id=' . $this->_mPageid . '&amp;playid=' . $playlist->pid . '">' . $playlist->playlist_name . '</a>';
-                    }
-                    $incre++;
-                }
-
-                $output                .=$playlistname . '</div>
-                                        <div class="video-page-tag"><strong>' . __("Tags", "video_gallery") . '          </strong>: ' . $tag_name . ' ' . '</div>
-                                        ';
+                  
+                $output                .='<div class="video-page-tag"><strong>' . __("Tags", "video_gallery") . '          </strong>: ' . $tag_name . ' ' . '</div>';
                 $dir                    = dirname(plugin_basename(__FILE__));
                 $dirExp                 = explode('/', $dir);
                 $dirPage                = $dirExp[0];
@@ -615,7 +613,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                                         INNER JOIN " . $wpdb->prefix . "posts s ON s.ID=a.slug
                                         WHERE b.playlist_id=" . intval($video_playlist_id) . " AND a.vid != " . intval($videoId) . " and a.publish='1' AND p.is_publish='1'
                                         ORDER BY a.vid DESC";
-            $output                     .= '<div ><h2 class="related-videos">' . __("Related Videos", "video_gallery") . '</h2>';
+            $output                     .= '<div class="player_related_video"><h2 class="related-videos">' . __("Related Videos", "video_gallery") . '</h2>';
             $related                     = mysql_query($select);
             if (!empty($related))
                 $result                  = mysql_num_rows($related);

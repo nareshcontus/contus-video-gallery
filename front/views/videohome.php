@@ -283,7 +283,7 @@ if (class_exists('ContusVideoView') != true) {
                             $div                .= '</a></h5>';
                             $div                .= '';
                             if ($fetched[$j] != '') {
-                                $div            .= ' <a class="playlistName" href="' . $this->_site_url . '/?page_id=' . $this->_mPageid . '&amp;playid=' . $playlist_id[$j] . '">' . $fetched[$j] . '</a>';
+                                $div            .= '<h6><a class="playlistName" href="' . $this->_site_url . '/?page_id=' . $this->_mPageid . '&amp;playid=' . $playlist_id[$j] . '">' . $fetched[$j] . '</a></h6>';
                             }
                             if ($this->_settingsData->ratingscontrol == 1) {
                                 if (isset($ratecount[$j]) && $ratecount[$j] != 0) {

@@ -13,7 +13,8 @@ h1 .videoHname a, h2 .videoHname a, h3 .videoHname a, h4 .videoHname a, h5 .vide
 .paddBotm h5, .paddBotm h1, .paddBotm h2, .paddBotm h3, .paddBotm h5, .paddBotm h6{margin: 0 !important; padding: 0 !important;  text-decoration: none !important;}
 .video-cat-thumb h1 a, .video-cat-thumb h2 a, .video-cat-thumb h3 a, .video-cat-thumb h4 a, .video-cat-thumb h5 a, .video-cat-thumb h6 a{text-decoration: none !important;}
 .paddBotm h1 a, .paddBotm h2 a, .paddBotm h3 a, .paddBotm h4 a, .paddBotm h5 a, .paddBotm h6 a{text-decoration: none !important;}
-.video-block h1 a, .video-block h2 a, .video-block h3 a, .video-block h4 a, .video-block h5 a, .video-block h6 a{text-decoration: none !important; font-size: 12px !important; line-height: 13px !important; margin-bottom: 3px !important; height: 25px; float: left;}
+.video-block h1 a, .video-block h2 a, .video-block h3 a, .video-block h4 a, .video-block h5 a, .video-block h6 a{text-decoration: none !important;  margin-bottom: 3px !important; height: 25px; float: left;}
+.vid_info h6{ overflow: hidden;}
 .video-block h5 a{width: 100%;}
 .video-block h5 { line-height: 12px !important; margin-top: 5px !important;}
 .video-block .vid_info .video_views { font-size: 12px !important; float: right;}
@@ -102,7 +103,7 @@ h4.playlistName {float:left; }
 .video-block a img,
 .video-block img {padding: 0 !important; margin: 0 !important; width: 140px !important; max-width: none;
                     height: 90px !important; border:none}
-.views, .videoHname, .videoName, .playlistName {  font-size: 12px !important; }
+.views, .videoHname, .videoName, .playlistName {  }
 .playlistName {display: block; float: left;}
 /*.vid_info .playlistName{ float: right; }*/
 .ulwidget .imgBorder img{width:100%;max-height: 100px;}
@@ -121,7 +122,7 @@ h3.related-videos{margin: 0 !important; padding: 0 !important; text-align: left;
 .video-page-info{clear: both; overflow: hidden; padding-bottom: 5px; }
 .video-page-info .video-page-rating{float: right; }
 .video-page-info .video-page-rating .rateimgleft{float: right; }
-.video-page-info .video-page-rating .rateright-views{margin-right: 5px;}
+.video-page-info .video-page-rating .rateright-views{margin-right: 5px;padding-top: 2px;}
 .video-page-info .video-page-category{float: left;width: 49%;}
 .embed{ padding: 0 10px; border: 1px solid #ccc; text-decoration: none; float: left;  }
 .embed .embed_text{ float: left;  }
