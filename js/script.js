@@ -23,12 +23,10 @@ else
   {
     if (xmlhttp.readyState==4)
     {
-        //alert('i am ready');
     }
   }
 
 xmlhttp.open("GET",baseurl+"/wp-content/plugins/"+folder+"/hitCount.php?vid="+vid,true);
 xmlhttp.send();
-document.getElementById('video_title').innerHTML=title;
- }
+}
  

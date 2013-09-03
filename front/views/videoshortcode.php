@@ -355,7 +355,10 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                                     if(txt =="iPod"|| txt =="iPad" || txt == "iPhone" || windo=="Windows Phone" || txt == "Linux armv7l" || txt == "Linux armv6l")
                                     {
                                     alert("' . $player_not_support . '"); } }
-                                    function videogallery_change_player(embedcode,id,player_div){
+                                    function videogallery_change_player(embedcode,id,player_div,file_type,vid){ 
+                                    if(file_type==5){
+                                    currentvideo("",vid); 
+                                    }
                                     document.getElementById("mediaspace"+id).innerHTML = "";
                                     document.getElementById("htmlplayer"+id).innerHTML = "";
                                     document.getElementById(player_div+id).innerHTML = embedcode;
@@ -634,7 +637,6 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                     ## Embed player code
                     if($file_type == 5 && !empty($relFet->embedcode)){
                     $player_values                 = htmlentities(stripslashes($relFet->embedcode));
-                    $output                        .= '<script> currentvideo("'.$relFet->name.'",'.$relFet->vid.'); </script>';
                      } else{            
                     ## Flash player code
                     $player_values                 = htmlentities('<embed src="' . $this->_swfPath . '" flashvars="' . $pluginflashvars . '&amp;mtype=playerModule&amp;vid='.$relFet->vid.'" width="' . $width . '" height="' . $height . '" allowfullscreen="true" allowscriptaccess="always" type="application/x-shockwave-flash" wmode="transparent">');
@@ -665,7 +667,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                         }else{
                             $player_div             = 'mediaspace';
                         }
-                        $embedplayer    = "videogallery_change_player('".$player_values."',".$videodivId.",'".$player_div."')";
+                        $embedplayer    = "videogallery_change_player('".$player_values."',".$videodivId.",'".$player_div."',$file_type,$relFet->vid)";
                         $thumb_href     = 'href="#'.$player_div.$videodivId.'" onclick="'.$embedplayer.'"';
                     }
                     $output             .='<li><div  class="imgSidethumb"><a ' . $thumb_href . '>
