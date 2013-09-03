@@ -600,7 +600,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                                                 </script>';
                 }
 
-                $output                 .= '<div class="video-page-desc"><strong>' . __("Description", "video_gallery") . '     </strong>: ' . $description . '</div></div>';
+                $output                 .= '<div style="clear: both;"></div><div class="video-page-desc"><strong>' . __("Description", "video_gallery") . '     </strong>: ' . $description . '</div></div>';
 
                     $output             .='</div></div>';
             } 

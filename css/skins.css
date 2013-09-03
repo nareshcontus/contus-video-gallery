@@ -8,16 +8,26 @@ Author URI: http://www.apptha.com
 License: GPL2
 */
 
-.jcarousel-skin-tango .jcarousel-container {-moz-border-radius: 3px;border: 1px solid #dfdfdf;-webkit-border-radius: 3px;-moz-border-radius: 3px;border-radius: 3px;padding: 10px;}
+.jcarousel-skin-tango .jcarousel-container {}
 .jcarousel-skin-tango .jcarousel-clip-horizontal {    height: auto;    margin-top: 15px;}
 .jcarousel-skin-tango .jcarousel-clip-vertical {    width:  80px;    height: auto;    margin-top:15px;}
-.jcarousel-skin-tango .jcarousel-item {    width: 140px;    height: auto;}
-.jcarousel-skin-tango .jcarousel-item-horizontal {    margin: 0 6px;}
+.jcarousel-skin-tango .jcarousel-item {width: 130px;
+height: auto;
+-webkit-border-radius: 2px;
+-moz-border-radius: 2px;
+border-radius: 2px;
+padding: 5px;
+text-align: center;
+-moz-box-shadow: 0px 0px 3px #999;
+-webkit-box-shadow: 0px 0px 3px #999;
+box-shadow: 0px 0px 3px #999;
+margin: 2px 0;}
+.jcarousel-skin-tango .jcarousel-item-horizontal {    margin: 0 11px 0 6px;}
 .jcarousel-skin-tango .jcarousel-item-vertical {    margin-bottom: 10px;}
 .jcarousel-skin-tango .jcarousel-item-placeholder {    background: #fff;    color: #000;}
 .jcarousel-skin-tango .jcarousel-next-horizontal {
     position: absolute;
-    top: 5px;
+    top: -20px;
     right: 5px;
     width: 6px;
     height: 17px;
@@ -31,7 +41,7 @@ border-radius: 2px;
 }
 .jcarousel-skin-tango .jcarousel-prev-horizontal {
     position: absolute;
-    top: 5px;
+    top: -20px;
     right: 15px;
     width: 6px;
     height: 17px;

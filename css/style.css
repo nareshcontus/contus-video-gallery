@@ -117,7 +117,7 @@ h3.related-videos{margin: 0 !important; padding: 0 !important; text-align: left;
 .video-page-container strong{width: auto; display: inline-block;}
 .video-page-container .video-page-date{width: auto; float: left;width: 50%; }
 .video-page-container .video-page-views{ float: right; text-align: right;width: 50%;}
-.video-page-container .video-page-tag{ padding-bottom: 10px; border-bottom: 1px solid #ccc; margin-bottom: 5px; }
+.video-page-container .video-page-tag{ padding-bottom: 10px; margin-bottom: 5px; }
 .video-page-container .video-page-category {}
 .video-page-info{clear: both; overflow: hidden; padding-bottom: 5px; }
 .video-page-info .video-page-rating{float: right; }
@@ -127,7 +127,7 @@ h3.related-videos{margin: 0 !important; padding: 0 !important; text-align: left;
 .embed{ padding: 0 10px; border: 1px solid #ccc; text-decoration: none; float: left;  }
 .embed .embed_text{ float: left;  }
 .embed .embed_arrow{ width: 0px; height: 0px; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 5px solid #666;  margin-top: 7px; display: block; float: left; margin-left: 5px;}
-.video-page-desc{ width: 100%; overflow: hidden; text-align: justify; padding-top: 20px; clear: both;}
+.video-page-desc{ width: 100%; overflow: hidden; text-align: justify; padding-top: 10px; clear: both;border-top: 1px solid #CCC;margin-top: 10px;}
 #embedcode{ padding: 2%; width: 95.5%; font-size: 13px; float: left; height: 90px; margin-top: 5px; }
 .video_wrapper h3,
 .video_wrapper h5{overflow: hidden;clear: both;}
