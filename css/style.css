@@ -136,6 +136,7 @@ h3.related-videos{margin: 0 !important; padding: 0 !important; text-align: left;
 .video-block-container{ margin: 0 !important; padding: 0 !important;}
 .video-block:first-child{ padding-left: 0px !important; margin-left: 0px !important; width: 140px; }
 .video-block i{display: none !important}
+.video-block .vid_info{float: left;}
 .video-block
 {   line-height: 17px;
     float:left;
@@ -158,12 +159,18 @@ h2.related-videos{ text-align: left !important; margin: 20px 0 0 !important;  }
 right: 0px;
 bottom: 10px;}
 .widget .side_video_info h6{ padding-bottom: 5px; margin: 0;}
-.widget .side_video_info h6 a{ font-size: 12px !important; text-decoration: none; }
+.widget .side_video_info h6 a{ text-decoration: none; }
 .widget .side_video_info .views{ float: left;  }
 
+.widget #featured-videos ul, 
+.widget #recent-videos ul,
+.widget #related-videos ul,
+.widget #videos-category ul,
+.widget #popular-videos ul {list-style: none !important; padding: 0 !important; margin: !important;}
 .widget #featured-videos ul li, 
 .widget #recent-videos ul li,
 .widget #related-videos ul li,
+.widget #videos-category ul,
 .widget #popular-videos ul li {background: transparent;padding: 0;}
 
 .flike{width: 85px;}
