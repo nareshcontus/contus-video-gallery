@@ -362,6 +362,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                                     document.getElementById("mediaspace"+id).innerHTML = "";
                                     document.getElementById("htmlplayer"+id).innerHTML = "";
                                     document.getElementById(player_div+id).innerHTML = embedcode;
+                                    document.getElementById(player_div+id).focus();
                                     }    
                                     </script>';
             ## HTML5 player ends here
@@ -668,7 +669,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                             $player_div             = 'mediaspace';
                         }
                         $embedplayer    = "videogallery_change_player('".$player_values."',".$videodivId.",'".$player_div."',$file_type,$relFet->vid)";
-                        $thumb_href     = 'href="#'.$player_div.$videodivId.'" onclick="'.$embedplayer.'"';
+                        $thumb_href     = 'onclick="'.$embedplayer.'"';
                     }
                     $output             .='<li><div  class="imgSidethumb"><a ' . $thumb_href . '>
                                            <img src="' . $imageFea . '" alt="' . $relFet->name . '" class="related" /></a></div>';

@@ -177,7 +177,7 @@ height: 20px;
 }
 
 
-.jcarousel-skin-tango #mycarousel li .imgSidethumb img{width: 120px; height: 90px;}
+.jcarousel-skin-tango #mycarousel li .imgSidethumb img{width: 120px; height: 90px;cursor: pointer;}
 
 /***************************** Banner   **/
 
