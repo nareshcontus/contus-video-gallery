@@ -135,19 +135,19 @@ class widget_ContusRelatedVideos_init extends WP_Widget {
                         $div    .= '<span class="video_duration">' . $feature->duration . '</span>';
                     }
                     $div        .= '</div>';
-                    $div        .= '<div class="side_video_info"><h6><a href="' . $guid . '">';
+                    $div        .= '<div class="side_video_info"><h5><a href="' . $guid . '">';
                     if ($name > 25) {
                         $div    .= substr($feature->name, 0, 25) . '';
                     } else {
                         $div    .= $feature->name;
                     }
-                    $div        .= '</a></h6><div class="clear"></div>';
+                    $div        .= '</a></h5><div class="clear"></div>';
                     if ($feature->hitcount > 1)
                         $viewlanguage = $viewslang;
                     else
                         $viewlanguage = $viewlang;
-                    $div        .= '<span class="views">' . $feature->hitcount . ' ' . $viewlanguage;
-                    $div        .= '</span>';
+                    $div        .= '<h6 class="views">' . $feature->hitcount . ' ' . $viewlanguage;
+                    $div        .= '</h6>';
                     ## Rating starts here
                     if ($ratingscontrol == 1) {
                             if (isset($feature->ratecount) && $feature->ratecount != 0) {

@@ -16,7 +16,7 @@ h1 .videoHname a, h2 .videoHname a, h3 .videoHname a, h4 .videoHname a, h5 .vide
 .video-block h1 a, .video-block h2 a, .video-block h3 a, .video-block h4 a, .video-block h5 a, .video-block h6 a{text-decoration: none !important;  margin-bottom: 3px !important; height: 25px; float: left;}
 .vid_info h6{ overflow: hidden;}
 .video-block h5 a{width: 100%;}
-.video-block h5 { line-height: 12px !important; margin-top: 5px !important;}
+.video-block h5 { margin-top: 5px !important;}
 .video-block .vid_info .video_views { font-size: 12px !important; float: right;}
 
 .home-category h1 a, .home-category h2 a, .home-category h3 a, .home-category h4 a, .home-category h5 a, .home-category h6 a{margin: 0 !important; padding: 0 !important; text-decoration: none !important;}
@@ -166,7 +166,7 @@ bottom: 10px;}
 .widget #recent-videos ul,
 .widget #related-videos ul,
 .widget #videos-category ul,
-.widget #popular-videos ul {list-style: none !important; padding: 0 !important; margin: !important;}
+.widget #popular-videos ul {list-style: none !important; padding: 0 !important; margin: 0 !important; background: transparent;}
 .widget #featured-videos ul li, 
 .widget #recent-videos ul li,
 .widget #related-videos ul li,

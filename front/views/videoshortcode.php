@@ -613,7 +613,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                                         INNER JOIN " . $wpdb->prefix . "posts s ON s.ID=a.slug
                                         WHERE b.playlist_id=" . intval($video_playlist_id) . " AND a.vid != " . intval($videoId) . " and a.publish='1' AND p.is_publish='1'
                                         ORDER BY a.vid DESC";
-            $output                     .= '<div class="player_related_video"><h2 class="related-videos">' . __("Related Videos", "video_gallery") . '</h2>';
+            $output                     .= '<div class="player_related_video"><h2 class="related-videos">' . __("Related Videos", "video_gallery") . '</h2><div style="clear: both;"></div>';
             $related                     = mysql_query($select);
             if (!empty($related))
                 $result                  = mysql_num_rows($related);
