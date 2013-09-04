@@ -192,7 +192,7 @@ if (class_exists('ContusMoreView') != true) {
                             $div            .= $videoname;
                             $div            .= '</a></h5>';
                             if (!empty($fetched[$j])) {
-                                $div        .= '<span class="playlistName"><a href="' . $this->_site_url . '/?page_id=' . $this->_mPageid . '&amp;playid=' . $playlist_id . '">' . $fetched[$j] . '</a></span>';
+                                $div        .= '<h6 class="playlistName"><a href="' . $this->_site_url . '/?page_id=' . $this->_mPageid . '&amp;playid=' . $playlist_id . '">' . $fetched[$j] . '</a></h6>';
                             }
                             ## Rating starts here
                             if ($this->_settingsData->ratingscontrol == 1) {
@@ -413,7 +413,7 @@ if (class_exists('ContusMoreView') != true) {
                         }
                         $div        .= '</div><h5><a href="' . $guid . '" class="videoHname">' . $playListName . '</a></h5><div class="vid_info">';
                         if (!empty($playList->playlist_name)) {
-                                $div .= '<span class="playlistName"><a href="' . $this->_site_url . '/?page_id=' . $this->_mPageid . '&amp;playid=' . $playList->pid . '">' . $playList->playlist_name . '</a></span>';
+                                $div .= '<h6 class="playlistName"><a href="' . $this->_site_url . '/?page_id=' . $this->_mPageid . '&amp;playid=' . $playList->pid . '">' . $playList->playlist_name . '</a></h6>';
                             }
                         ## Rating starts here
                         if ($this->_settingsData->ratingscontrol == 1) {
