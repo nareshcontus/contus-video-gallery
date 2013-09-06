@@ -13,7 +13,7 @@ h1 .videoHname a, h2 .videoHname a, h3 .videoHname a, h4 .videoHname a, h5 .vide
 .paddBotm h5, .paddBotm h1, .paddBotm h2, .paddBotm h3, .paddBotm h5, .paddBotm h6{margin: 0 !important; padding: 0 !important;  text-decoration: none !important;}
 .video-cat-thumb h1 a, .video-cat-thumb h2 a, .video-cat-thumb h3 a, .video-cat-thumb h4 a, .video-cat-thumb h5 a, .video-cat-thumb h6 a{text-decoration: none !important;}
 .paddBotm h1 a, .paddBotm h2 a, .paddBotm h3 a, .paddBotm h4 a, .paddBotm h5 a, .paddBotm h6 a{text-decoration: none !important;}
-.video-block h1 a, .video-block h2 a, .video-block h3 a, .video-block h4 a, .video-block h5 a, .video-block h6 a{text-decoration: none !important;  margin-bottom: 3px !important; height: 25px; float: left;}
+.video-block h1 a, .video-block h2 a, .video-block h3 a, .video-block h4 a, .video-block h5 a, .video-block h6 a{text-decoration: none !important;  margin-bottom: 3px !important; float: left;}
 .vid_info h6{ overflow: hidden;}
 .video-block h5 a{width: 100%;}
 .video-block h5 { margin-top: 5px !important;}
