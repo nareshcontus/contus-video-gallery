@@ -188,11 +188,11 @@ if (class_exists('ContusMoreView') != true) {
                                 $div        .= '<span class="video_duration">'.$duration[$j] . '</span>';
                             }
                             $div            .= '</div>';
-                            $div            .= '<div class="vid_info"><h5><a href="' . $guid[$j] . '" class="videoHname">';
+                            $div            .= '<div class="vid_info"><a href="' . $guid[$j] . '" class="videoHname"><span>';
                             $div            .= $videoname;
-                            $div            .= '</a></h5>';
+                            $div            .= '</span></a>';
                             if (!empty($fetched[$j])) {
-                                $div        .= '<h6 class="playlistName"><a href="' . $this->_site_url . '/?page_id=' . $this->_mPageid . '&amp;playid=' . $playlist_id . '">' . $fetched[$j] . '</a></h6>';
+                                $div        .= '<a  class="playlistName" href="' . $this->_site_url . '/?page_id=' . $this->_mPageid . '&amp;playid=' . $playlist_id . '"><span>' . $fetched[$j] . '</span></a>';
                             }
                             ## Rating starts here
                             if ($this->_settingsData->ratingscontrol == 1) {

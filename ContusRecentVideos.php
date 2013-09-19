@@ -120,19 +120,19 @@ class widget_ContusRecentVideos_init extends WP_Widget {
                 }
                 $div            .= '</div>';
 
-                $div            .= '<div class="side_video_info"><h5><a href="' . $guid . '">';
+                $div            .= '<div class="side_video_info"><a class="videoHname" href="' . $guid . '">';
                 if ($name > 25) {
                     $div        .= substr($post->name, 0, 25) . '';
                 } else {
                     $div        .= $post->name;
                 }
-                $div            .= '</a></h5><div class="clear"></div>';
+                $div            .= '</a><div class="clear"></div>';
                 if ($post->hitcount > 1)
                     $viewlanguage = $viewslang;
                 else
                     $viewlanguage = $viewlang;
-                $div             .= '<h6 class="views">' . $post->hitcount . ' ' . $viewlanguage;
-                $div             .= '</h6>';
+                $div             .= '<span class="views">' . $post->hitcount . ' ' . $viewlanguage;
+                $div             .= '</span>';
                 ## Rating starts here
                 if ($ratingscontrol == 1) {
                         if (isset($post->ratecount) && $post->ratecount != 0) {

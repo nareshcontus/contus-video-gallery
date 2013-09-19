@@ -197,9 +197,9 @@ if (isset($_GET['action']) && $_GET['action'] == "activate-plugin" && $_GET['plu
     $showTag                = AddColumnIfNotExists($errorMsg, "$table_settings", "showTag", "INT( 3 ) NOT NULL");
     $ratingscontrol         = AddColumnIfNotExists($errorMsg, "$table_settings", "ratingscontrol", "INT( 3 ) NOT NULL");
     $shareIcon              = AddColumnIfNotExists($errorMsg, "$table_settings", "shareIcon", "INT( 3 ) NOT NULL");
-    $volumecontrol          = AddColumnIfNotExists($errorMsg, "$table_settings", "volumecontrol", "INT( 3 ) NOT NULL");
+    $volumecontrol          = AddColumnIfNotExists($errorMsg, "$table_settings", "volumecontrol", "INT( 3 ) NOT NULL DEFAULT 1");
     $playlist_auto          = AddColumnIfNotExists($errorMsg, "$table_settings", "playlist_auto", "INT( 3 ) NOT NULL");
-    $progressControl        = AddColumnIfNotExists($errorMsg, "$table_settings", "progressControl", "INT( 3 ) NOT NULL");
+    $progressControl        = AddColumnIfNotExists($errorMsg, "$table_settings", "progressControl", "INT( 3 ) NOT NULL DEFAULT 1");
     $imageDefault           = AddColumnIfNotExists($errorMsg, "$table_settings", "imageDefault", "INT( 3 ) NOT NULL");
 
     ## Update Post table

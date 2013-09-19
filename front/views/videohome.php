@@ -274,16 +274,16 @@ if (class_exists('ContusVideoView') != true) {
                                 $div            .= '<span class="video_duration">' . $duration[$j] . '</span>';
                             }
                             $div                .= '</div>';
-                            $div                .= '<div class="vid_info"><h5><a href="' . $guid[$j] . '" class="videoHname">';
+                            $div                .= '<div class="vid_info"><a href="' . $guid[$j] . '" class="videoHname"><span>';
                             if (strlen($nameF[$j]) > 30) {
                                 $div            .= substr($nameF[$j], 0, 30) . '';
                             } else {
                                 $div            .= $nameF[$j];
                             }
-                            $div                .= '</a></h5>';
+                            $div                .= '</span></a>';
                             $div                .= '';
                             if ($fetched[$j] != '') {
-                                $div            .= '<h6><a class="playlistName" href="' . $this->_site_url . '/?page_id=' . $this->_mPageid . '&amp;playid=' . $playlist_id[$j] . '">' . $fetched[$j] . '</a></h6>';
+                                $div            .= '<a class="playlistName" href="' . $this->_site_url . '/?page_id=' . $this->_mPageid . '&amp;playid=' . $playlist_id[$j] . '"><span>' . $fetched[$j] . '</span></a>';
                             }
                             if ($this->_settingsData->ratingscontrol == 1) {
                                 if (isset($ratecount[$j]) && $ratecount[$j] != 0) {
@@ -312,9 +312,9 @@ if (class_exists('ContusVideoView') != true) {
 
 
                         if (($this->_showF < $this->_feaMore)) {        ##PAGINATION STARTS
-                            $div                .= '<h5 class="more_title" ><a class="video-more" href="' . $this->_site_url . '/?page_id=' . $this->_mPageid . '&amp;more=' . $morePage . '">' . __('More Videos', 'video_gallery') . ' &#187;</a></h5>';
+                            $div                .= '<span class="more_title" ><a class="video-more" href="' . $this->_site_url . '/?page_id=' . $this->_mPageid . '&amp;more=' . $morePage . '">' . __('More Videos', 'video_gallery') . ' &#187;</a></span>';
                         } else if (($this->_showF == $this->_feaMore)) {
-                            $div                .= '<div style="float:right"> </div>';
+                            $div                .= '<div style="float:right"></div>';
                         }       ##PAGINATION ENDS
                     }
                     else
@@ -370,7 +370,7 @@ if (class_exists('ContusVideoView') != true) {
                         if ($duration != 0.00) {
                             $div    .= '<span class="video_duration">' . $duration . '</span>';
                         }
-                        $div        .= '</div><div class="vid_info"><h5><a href="' . $guid . '" class="videoHname">' . $playListName . '</a></h5>';
+                        $div        .= '</div><div class="vid_info"><a href="' . $guid . '" class="videoHname"><span>' . $playListName . '</span></a>';
                         ## Rating starts here
                         if ($this->_settingsData->ratingscontrol == 1) {
                                 if (isset($playList->ratecount) && $playList->ratecount != 0) {
@@ -410,6 +410,7 @@ if (class_exists('ContusVideoView') != true) {
 
             $div                     .='<div class="clear"></div>';
 
+            if($category_page!=0){
             ##PAGINATION STARTS
             $total          = $CountOFVideos;
             $num_of_pages   = ceil($total / $category_page);
@@ -425,7 +426,8 @@ if (class_exists('ContusVideoView') != true) {
             if ($page_links) {
                 $div        .='<div class="tablenav"><div class="tablenav-pages" >' . $page_links . '</div></div>';
             }
-##PAGINATION ENDS
+            ##PAGINATION ENDS
+        }
             return $div;
         }
 ##CATEGORY FUNCTION ENDS

@@ -73,7 +73,9 @@ function delete_video_column($table, $column) {
 function upgrade_videos() {
     global $wpdb;
     $posttable              = $wpdb->prefix . 'posts';
-    $videoID                = $wpdb->get_results("select vid,name from " . $wpdb->prefix . "hdflvvideoshare");
+    $slugID                 = $wpdb->get_results("SELECT slug FROM " . $wpdb->prefix . "hdflvvideoshare ORDER BY vid DESC LIMIT 1");
+    if(empty($slugID)){
+    $videoID                = $wpdb->get_results("SELECT vid,name FROM " . $wpdb->prefix . "hdflvvideoshare");
     for ($i = 0; $i < count($videoID); $i++) {
         $slug               = sanitize_title($videoID[$i]->name);
         $name               = $videoID[$i]->name;
@@ -92,6 +94,7 @@ function upgrade_videos() {
     for ($i = 0; $i < count($featuredID); $i++) {
         $vid                = $featuredID[$i]->vid;
         $wpdb->query("UPDATE " . $wpdb->prefix . "hdflvvideoshare SET featured = 1 WHERE vid = $vid");
+    }
     }
 }
 
@@ -495,5 +498,6 @@ function videogallery_install() {
                             (22, 17, 2, 0, 0),
                             (23, 11, 4, 0, 0)");
     }
+    flush_rewrite_rules();
 }
 ?>

@@ -62,6 +62,7 @@ $prerollAds             = ($settingsData->preroll == 0) ? 'true' : 'false';
 $postrollAds            = ($settingsData->postroll == 0) ? 'true' : 'false';
 $midroll_ads            = ($settingsData->midroll_ads == 0) ? 'true' : 'false';
 $trackCode              = ($settingsData->trackCode == 0) ? '' : $settingsData->trackCode;
+$player_colors          = unserialize($settingsData->player_colors);
 
 /* Configuration Start */
 echo '<?xml version="1.0" encoding="utf-8"?>';
@@ -77,24 +78,24 @@ echo '<config>
         <logoalpha>' . $settingsData->logoalpha . '</logoalpha>
         <logoalign>' . $settingsData->logoalign . '</logoalign>
         <logo_target>' . $settingsData->logo_target . '</logo_target>
-        <sharepanel_up_BgColor>' . $settingsData->sharepanel_up_BgColor . '</sharepanel_up_BgColor>
-        <sharepanel_down_BgColor>' . $settingsData->sharepanel_down_BgColor . '</sharepanel_down_BgColor>
-        <sharepaneltextColor>' . $settingsData->sharepaneltextColor . '</sharepaneltextColor>
-        <sendButtonColor>' . $settingsData->sendButtonColor . '</sendButtonColor>
-        <sendButtonTextColor>' . $settingsData->sendButtonTextColor . '</sendButtonTextColor>
-        <textColor>' . $settingsData->textColor . '</textColor>
-        <skinBgColor>' . $settingsData->skinBgColor . '</skinBgColor>
-        <seek_barColor>' . $settingsData->seek_barColor . '</seek_barColor>
-        <buffer_barColor>' . $settingsData->buffer_barColor . '</buffer_barColor>
-        <skinIconColor>' . $settingsData->skinIconColor . '</skinIconColor>
-        <pro_BgColor>' . $settingsData->pro_BgColor . '</pro_BgColor>
-        <playButtonColor>' . $settingsData->playButtonColor . '</playButtonColor>
-        <playButtonBgColor>' . $settingsData->playButtonBgColor . '</playButtonBgColor>
-        <playerButtonColor>' . $settingsData->playerButtonColor . '</playerButtonColor>
-        <playerButtonBgColor>' . $settingsData->playerButtonBgColor . '</playerButtonBgColor>
-        <relatedVideoBgColor>' . $settingsData->relatedVideoBgColor . '</relatedVideoBgColor>
-        <scroll_barColor>' . $settingsData->scroll_barColor . '</scroll_barColor>
-        <scroll_BgColor>' . $settingsData->scroll_BgColor . '</scroll_BgColor>
+        <sharepanel_up_BgColor>' . $player_colors['sharepanel_up_BgColor'] . '</sharepanel_up_BgColor>
+        <sharepanel_down_BgColor>' . $player_colors['sharepanel_down_BgColor'] . '</sharepanel_down_BgColor>
+        <sharepaneltextColor>' . $player_colors['sharepaneltextColor'] . '</sharepaneltextColor>
+        <sendButtonColor>' . $player_colors['sendButtonColor'] . '</sendButtonColor>
+        <sendButtonTextColor>' . $player_colors['sendButtonTextColor'] . '</sendButtonTextColor>
+        <textColor>' . $player_colors['textColor'] . '</textColor>
+        <skinBgColor>' . $player_colors['skinBgColor'] . '</skinBgColor>
+        <seek_barColor>' . $player_colors['seek_barColor'] . '</seek_barColor>
+        <buffer_barColor>' . $player_colors['buffer_barColor'] . '</buffer_barColor>
+        <skinIconColor>' . $player_colors['skinIconColor'] . '</skinIconColor>
+        <pro_BgColor>' . $player_colors['pro_BgColor'] . '</pro_BgColor>
+        <playButtonColor>' . $player_colors['playButtonColor'] . '</playButtonColor>
+        <playButtonBgColor>' . $player_colors['playButtonBgColor'] . '</playButtonBgColor>
+        <playerButtonColor>' . $player_colors['playerButtonColor'] . '</playerButtonColor>
+        <playerButtonBgColor>' . $player_colors['playerButtonBgColor'] . '</playerButtonBgColor>
+        <relatedVideoBgColor>' . $player_colors['relatedVideoBgColor'] . '</relatedVideoBgColor>
+        <scroll_barColor>' . $player_colors['scroll_barColor'] . '</scroll_barColor>
+        <scroll_BgColor>' . $player_colors['scroll_BgColor'] . '</scroll_BgColor>
         <skin>' . $skinPath . '</skin>
         <skin_autohide>' . $skinAutohide . '</skin_autohide>
         <languageXML>' . $langXML . '</languageXML>

@@ -79,7 +79,11 @@ $dirPage = $dirExp[0];
 
             <?php _e('You can use the plugin code with flashvars when you would like to display a player on any page/post with some specific settings.', 'video_gallery'); ?><br><br>
 
-            <strong><?php _e("[hdvideo id=3 flashvars=autoplay=true&zoomIcon=false]", "video_gallery"); ?></strong>
+            <strong><?php _e("[hdvideo id=4 flashvars=autoplay=true&zoomIcon=false]", "video_gallery"); ?></strong><br><br>
+            <?php _e('You can also enable ratings and view count for the video using the below short code.', 'video_gallery'); ?><br><br>
+            <strong><?php _e("[hdvideo id=1 ratingscontrol=on views=on]", "video_gallery"); ?></strong><br><br>
+            <?php _e('ratingscontrol - You can enable/disable Ratings on the page or post under the player. By default, it will be in "off" status.', 'video_gallery'); ?><br><br>
+            <?php _e('views - You can enable/disable View count of the video on the page or post under the player. By default, it will be in "off" status.', 'video_gallery'); ?>
         </div>
 
 

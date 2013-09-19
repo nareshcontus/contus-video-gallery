@@ -119,19 +119,19 @@ class widget_ContusPopularVideos_init extends WP_Widget {
                             $div .='<span class="video_duration">'.$popular->duration. '</span>';
                         }
                         $div .='</div>';
-                    $div     .='<div class="side_video_info"><h5><a href="' . $guid . '">';
+                    $div     .='<div class="side_video_info"><a class="videoHname" href="' . $guid . '">';
                     if ($name > 25) {
                         $div .= substr($popular->name, 0, 25) . '';
                     } else {
                         $div .= $popular->name;
                     }
-                    $div .='</a></h5><div class="clear"></div>';
+                    $div .='</a><div class="clear"></div>';
                     if($popular->hitcount>1)
                                 $viewlanguage = $viewslang;
                                 else
                                    $viewlanguage = $viewlang;
-                        $div .='<h6 class="views">'.$popular->hitcount . ' '. $viewlanguage;
-                        $div .= '</h6>';
+                        $div .='<span class="views">'.$popular->hitcount . ' '. $viewlanguage;
+                        $div .= '</span>';
                     ## Rating starts here
                     if ($ratingscontrol == 1) {
                             if (isset($popular->ratecount) && $popular->ratecount != 0) {
