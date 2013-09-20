@@ -129,9 +129,11 @@ h3.related-videos{margin: 0 !important; padding: 0 !important; text-align: left;
 .video-page-container .video-page-date{width: auto; float: left;width: 50%; }
 .video-page-container .video-page-views{ float: right; text-align: right;width: 50%;}
 .video-page-container.shortcode .video-page-info{float: left;text-align: left;width: 50%;}
+.video-page-container.shortcode .video-page-info.noviews{width: 100%;}
 .video-page-container.shortcode .video-page-views {float: left;text-align: left;}
 .video-page-container.shortcode .video-page-rating{width: 50%;float: left;}
-.video-page-container.shortcode .video-page-rating.noviews{width: auto;}
+.video-page-container.shortcode .noviews .video-page-rating{width: 100%;}
+
 .video-page-container.shortcode .video-page-rating .floatleft {float: right;}
 .video-page-container.shortcode .video-page-rating .floatleft .rateimgleft{ float: right;}
 
@@ -142,7 +144,7 @@ h3.related-videos{margin: 0 !important; padding: 0 !important; text-align: left;
 .video-page-info .video-page-rating .rateimgleft{float: right; }
 .video-page-info .video-page-rating .rateright-views{margin-right: 5px;padding-top: 2px;width: 120px;text-align: right;}
 .video-page-info .video-page-category{float: left;width: 49%;}
-.player embed{margin: 0 !important;  }
+.player embed{margin: 0 0 10px 0 !important; }
 .embed{ padding: 0 10px; border: 1px solid #ccc; text-decoration: none; float: left; }
 .embed .embed_text{ float: left;  }
 .embed .embed_arrow{ width: 0px; height: 0px; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 5px solid #666;  margin-top: 7px; display: block; float: left; margin-left: 5px;}
@@ -197,15 +199,14 @@ bottom: 10px;}
 
 .flike{width: 85px;}
 .ttweet{width: 66px}
-.gplusshare{}
-
+.video-socialshare .gplusshare{margin-left: 3px;}
 .fbshare {
 background: url(../images/fb_share_button.png) no-repeat;
 display: block;
 width: 57px;
 height: 20px;
 }
-
+.videoplayer_title{clear:both;}
 
 .jcarousel-skin-tango #mycarousel li .imgSidethumb img{width: 120px; height: 90px;cursor: pointer;}
 
@@ -283,7 +284,8 @@ width: 99px;
 .fourpos {background-position:0 -80px}
 .fivepos {background-position:0 -100px}
 #rateimg ul.ratethis li { text-indent:-999em;cursor: pointer;float:left;list-style:none;}
-#rateimg .ratethis{margin: 0px;padding: 0px;
+#rateimg .ratethis{margin: 0px;
+padding: 0px !important;
          /*margin-right: 10px;*/
 }
 .callout-header-home h2{margin-bottom:5px;font-size:15px;}
@@ -302,6 +304,11 @@ ul.ratethis li.two a:hover {background-position:0 -140px;}
 ul.ratethis li.three a:hover {background-position:0 -160px;}
 ul.ratethis li.four a:hover {background-position:0 -180px;}
 ul.ratethis li.five a:hover {background-position:0 -200px;}
+
+.player_related_video {
+clear: both;
+}
+.video-socialshare iframe{margin: 0 !important;}
 
 .ratethis1{ background: url(../images/stars831.png) no-repeat !important;width:60px;height:12px;clear:both;position:relative;list-style:none;float:left;margin: 4px 0;}
 ul.ratethis1 li {cursor: pointer;float:left;}
