@@ -121,7 +121,7 @@ class widget_ContusFeaturedVideos_init extends WP_Widget {
                 $div        .='</div>';
                 $div        .='<div class="side_video_info"><a class="videoHname" href="' . $guid . '">';
                 if ($name > 25) {
-                    $div    .= substr($feature->name, 0, 25) . '';
+                    $div    .= substr($feature->name, 0, 25) . '..';
                 } else {
                     $div    .= $feature->name;
                 }

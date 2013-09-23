@@ -121,7 +121,7 @@ class widget_ContusPopularVideos_init extends WP_Widget {
                         $div .='</div>';
                     $div     .='<div class="side_video_info"><a class="videoHname" href="' . $guid . '">';
                     if ($name > 25) {
-                        $div .= substr($popular->name, 0, 25) . '';
+                        $div .= substr($popular->name, 0, 25) . '..';
                     } else {
                         $div .= $popular->name;
                     }

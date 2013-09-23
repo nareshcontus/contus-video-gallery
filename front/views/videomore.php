@@ -174,7 +174,7 @@ if (class_exists('ContusMoreView') != true) {
                     $div .= '<ul class="video-block-container">';
                     for ($j = 0; $j < count($TypeOFvideos); $j++) {
                         if (strlen($nameF[$j]) > 30) { // Displaying Video Title
-                                $videoname = substr($nameF[$j], 0, 30) . '';
+                                $videoname = substr($nameF[$j], 0, 30) . '..';
                             }
                             else {
                                 $videoname = $nameF[$j];
@@ -291,7 +291,7 @@ if (class_exists('ContusMoreView') != true) {
                             }
                         }
                         if (strlen($playList->name) > 30) {
-                            $playListName = substr($playList->name, 0, 30) . "";
+                            $playListName = substr($playList->name, 0, 30) . "..";
                         } else {
                             $playListName = $playList->name;
                         }
@@ -400,7 +400,7 @@ if (class_exists('ContusMoreView') != true) {
                             }
                         }
                         if (strlen($playList->name) > 30) {
-                            $playListName = substr($playList->name, 0, 30) . "";
+                            $playListName = substr($playList->name, 0, 30) . "..";
                         } else {
                             $playListName = $playList->name;
                         }

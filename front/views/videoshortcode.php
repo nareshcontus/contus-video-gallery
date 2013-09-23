@@ -715,7 +715,13 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                     $output             .='<li><div  class="imgSidethumb"><a ' . $thumb_href . '>
                                            <img src="' . $imageFea . '" alt="' . $relFet->name . '" class="related" /></a></div>';
                     $output             .='<div class="vid_info"><span><a ' . $thumb_href . ' class="videoHname">';
-                    $output             .= substr($relFet->name, 0, 30);
+                     if (strlen($relFet->name) > 30) { ## Displaying Video Title
+                                $videoname = substr($relFet->name, 0, 30) . '..';
+                            }
+                            else {
+                                $videoname = $relFet->name;
+                            }
+                    $output             .= $videoname;
                     $output             .='</a></span></div>';
                     $output             .='</li>';
                 }

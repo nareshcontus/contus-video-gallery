@@ -276,7 +276,7 @@ if (class_exists('ContusVideoView') != true) {
                             $div                .= '</div>';
                             $div                .= '<div class="vid_info"><a href="' . $guid[$j] . '" class="videoHname"><span>';
                             if (strlen($nameF[$j]) > 30) {
-                                $div            .= substr($nameF[$j], 0, 30) . '';
+                                $div            .= substr($nameF[$j], 0, 30) . '..';
                             } else {
                                 $div            .= $nameF[$j];
                             }
@@ -361,7 +361,7 @@ if (class_exists('ContusVideoView') != true) {
                             }
                         }
                         if (strlen($playList->name) > 30) {
-                            $playListName = substr($playList->name, 0, 30) . "";
+                            $playListName = substr($playList->name, 0, 30) . "..";
                         } else {
                             $playListName = $playList->name;
                         }
