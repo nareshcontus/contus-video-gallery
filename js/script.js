@@ -8,7 +8,7 @@ Author URI: http://www.apptha.com
 License: GPL2
 */
 
-function currentvideo(title,vid){
+function current_video(vid,title){
 
 if (window.XMLHttpRequest)
   {// code for IE7+, Firefox, Chrome, Opera, Safari
