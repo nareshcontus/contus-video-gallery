@@ -106,7 +106,7 @@ if (class_exists('ContusVideoView') != true) {
             $div                 .= '<script> currentvideo("'.$homeplayerData->name.'",'.$homeplayerData->vid.'); </script>';
             } else{            
             ## Flash player code
-                $div                        .= '<embed id="player" src="' . $swf . '"  flashvars="baserefW=' . APPTHA_VGALLERY_BASEURL . $baseref . $showplaylist . '&amp;mid=' . $moduleName . '" width="' . $settingsData->width . '" height="' . $settingsData->height . '"   allowFullScreen="true" allowScriptAccess="always" type="application/x-shockwave-flash" wmode="transparent" />';
+                $div                        .= '<embed id="player" src="' . $swf . '"  flashvars="baserefW=' . APPTHA_VGALLERY_BASEURL . $baseref . $showplaylist . '&amp;mtype=' . $moduleName . '" width="' . $settingsData->width . '" height="' . $settingsData->height . '"   allowFullScreen="true" allowScriptAccess="always" type="application/x-shockwave-flash" wmode="transparent" />';
             }
             $div                            .='</div>';
             ##FLASH PLAYER ENDS AND HTML5 PLAYER STARTS HERE
