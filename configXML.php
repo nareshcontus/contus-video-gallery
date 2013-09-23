@@ -64,6 +64,11 @@ $midroll_ads            = ($settingsData->midroll_ads == 0) ? 'true' : 'false';
 $trackCode              = ($settingsData->trackCode == 0) ? '' : $settingsData->trackCode;
 $player_colors          = unserialize($settingsData->player_colors);
 
+$logotarget             = $settingsData->logo_target;
+if (!preg_match("~^(?:f|ht)tps?://~i", $logotarget)) {
+        $logotarget = "http://" . $logotarget;
+    }
+    
 /* Configuration Start */
 echo '<?xml version="1.0" encoding="utf-8"?>';
 echo '<config>
@@ -77,7 +82,7 @@ echo '<config>
         <logopath>' . $logoPath . $settingsData->logopath . '</logopath>
         <logoalpha>' . $settingsData->logoalpha . '</logoalpha>
         <logoalign>' . $settingsData->logoalign . '</logoalign>
-        <logo_target>' . $settingsData->logo_target . '</logo_target>
+        <logo_target>' . $logotarget . '</logo_target>
         <sharepanel_up_BgColor>' . $player_colors['sharepanel_up_BgColor'] . '</sharepanel_up_BgColor>
         <sharepanel_down_BgColor>' . $player_colors['sharepanel_down_BgColor'] . '</sharepanel_down_BgColor>
         <sharepaneltextColor>' . $player_colors['sharepaneltextColor'] . '</sharepaneltextColor>
