@@ -83,7 +83,7 @@ $dirPage = $dirExp[0];
             <?php _e('You can also enable ratings and view count for the video using the below short code.', 'video_gallery'); ?><br><br>
             <strong><?php _e("[hdvideo id=1 ratingscontrol=on views=on title=on]", "video_gallery"); ?></strong><br><br>
             <?php _e('ratingscontrol - You can enable/disable Ratings on the page or post under the player. By default, it will be in "off" status.', 'video_gallery'); ?><br><br>
-            <?php _e('title - You can enable/disable Title on the page or post under the player. By default, it will be in "off" status.', 'video_gallery'); ?><br><br>
+            <?php _e('title - You can enable/disable Title on the page or post above the player. By default, it will be in "off" status.', 'video_gallery'); ?><br><br>
             <?php _e('views - You can enable/disable View count of the video on the page or post under the player. By default, it will be in "off" status.', 'video_gallery'); ?>
         </div>
 
