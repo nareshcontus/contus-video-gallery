@@ -28,10 +28,11 @@ if (count($themediafiles) > 0) {
             $clickurl       = $rows->clickurl;
             $impressionurl  = $rows->impressionurl;
             $description    = $rows->description;
+            $title          = $rows->title;
 
             echo '
                 <midroll targeturl="' . $targeturl . '" clickurl="' . $clickurl . '" impressionurl="' . $impressionurl . '">
-                <![CDATA[' . $description . ']]>
+                <![CDATA[' . $title . '<br>'.$description.']]>
                 </midroll>
                 ';
         }
