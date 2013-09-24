@@ -297,7 +297,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
             ## Embed player code
             if($fetched[0]->file_type == 5 && !empty($fetched[0]->embedcode)){
             $output                 .= stripslashes($fetched[0]->embedcode);
-            $output                 .= '<script> currentvideo("'.$fetched[0]->name.'",'.$fetched[0]->vid.'); </script>';
+            $output                 .= '<script> current_video('.$fetched[0]->vid.',"'.$fetched[0]->name.'"); </script>';
             } else{            
             ## Flash player code
             $output                 .= '<embed src="' . $this->_swfPath . '" flashvars="' . $flashvars . '" width="' . $width . '" height="' . $height . '" allowfullscreen="true" allowscriptaccess="always" type="application/x-shockwave-flash" wmode="transparent">';

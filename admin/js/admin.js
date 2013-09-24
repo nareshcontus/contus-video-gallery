@@ -60,52 +60,65 @@ function clear_upload(){
        document.getElementById("normalvideoform-value").value = '';
     }
 
-function Videoadtype()
+function Videoadtype(adtype)
 {
-    if(document.getElementById('prepostroll').checked==true)
+    if(adtype=="prepostroll")
     {
-       document.getElementById('upload2').style.display = "none";
-       document.getElementById('videoadurl').style.display = "block";
        document.getElementById('admethod').value = "prepost";
        document.getElementById('videoadmethod').style.display = "block";
        document.getElementById('videoaddetails').style.display = "block";
+       document.getElementById('adimpresurl').style.display = "block";
+        document.getElementById('adclickurl').style.display = "block";
+        document.getElementById('adtargeturl').style.display = "block";
+        document.getElementById('addescription').style.display = "block";
+        document.getElementById('adtitle').style.display = "block";
        document.getElementById('videoimaaddetails').style.display = "none";
     }
 
-    if(document.getElementById('midroll').checked==true)
+    if(adtype=="midroll")
     {
         document.getElementById('upload2').style.display = "none";
         document.getElementById('videoadmethod').style.display = "none";
         document.getElementById('admethod').value = "midroll";
         document.getElementById('videoadurl').style.display = "none";
         document.getElementById('videoaddetails').style.display = "block";
+        document.getElementById('adimpresurl').style.display = "block";
+        document.getElementById('adclickurl').style.display = "block";
+        document.getElementById('adtargeturl').style.display = "block";
+        document.getElementById('addescription').style.display = "block";
+        document.getElementById('adtitle').style.display = "block";
         document.getElementById('videoimaaddetails').style.display = "none";
     }
-    if(document.getElementById('imaad').checked==true)
+   else if(adtype=="imaad")
     {
         document.getElementById('upload2').style.display = "none";
         document.getElementById('videoadmethod').style.display = "none";
         document.getElementById('admethod').value = "imaad";
         document.getElementById('videoadurl').style.display = "none";
-        document.getElementById('videoaddetails').style.display = "none";
+        document.getElementById('videoaddetails').style.display = "block";
         document.getElementById('videoimaaddetails').style.display = "block";
+        document.getElementById('adimpresurl').style.display = "none";
+        document.getElementById('adclickurl').style.display = "none";
+        document.getElementById('adtargeturl').style.display = "none";
+        document.getElementById('addescription').style.display = "none";
+        document.getElementById('adtitle').style.display = "";
         document.getElementById('imaadTypevideo').checked=true;
-        changeimaadtype();
+        changeimaadtype('videoad');
     }
 
 
 }
-function Videoadmethod()
-{
-    if(document.getElementById('filebtn').checked==true)
-    {
+function Videoadtypemethod(adtype)
+{ 
+     if(adtype=="fileuplo")
+    { 
         document.getElementById('upload2').style.display = "block";
         document.getElementById('videoadurl').style.display = "none";
         document.getElementById('adtype').style.display = "file";
     }
 
-    if(document.getElementById('urlbtn').checked==true)
-    {
+    else if(adtype=="urlad")
+    { 
         document.getElementById('upload2').style.display = "none";
         document.getElementById('videoadurl').style.display = "block";
         document.getElementById('adtype').value  = "url";
@@ -113,9 +126,9 @@ function Videoadmethod()
 
 
 }
-function changeimaadtype()
+function changeimaadtype(adtype)
 {
-    if(document.getElementById('imaadTypetext').checked==true)
+     if(adtype=="textad")
     {
         document.getElementById('adimapath').style.display = "none";
         document.getElementById('adimawidth').style.display = "";
@@ -123,10 +136,10 @@ function changeimaadtype()
         document.getElementById('adimapublisher').style.display = "";
         document.getElementById('adimacontentid').style.display = "";
         document.getElementById('adimachannels').style.display = "";
-
+         document.getElementById('imaadTypetext').checked=true;
     }
 
-    if(document.getElementById('imaadTypevideo').checked==true)
+    else if(adtype=="videoad")
     {
         document.getElementById('adimapath').style.display = "";
         document.getElementById('adimawidth').style.display = "none";
@@ -134,7 +147,7 @@ function changeimaadtype()
         document.getElementById('adimapublisher').style.display = "none";
         document.getElementById('adimacontentid').style.display = "none";
         document.getElementById('adimachannels').style.display = "none";
-
+         document.getElementById('imaadTypevideo').checked=true;
     }
 }
 
@@ -196,7 +209,7 @@ function validateadInput (){
         document.getElementById('name').focus();
         return false;
     }
-    } else if(document.getElementById('midroll').checked==true && document.getElementById('name').value == ''){
+    } else if(document.getElementById('name').value == ''){
         document.getElementById('nameerrormessage').innerHTML = 'Enter Ad Name';
         document.getElementById('name').focus();
         return false;
@@ -220,12 +233,23 @@ function validateadInput (){
         document.getElementById('channels').focus();
         return false;
 
-    }else if(document.getElementById('imaadTypevideo').checked==true && document.getElementById('imaadpath').value == '')
+    }else {
+        if(document.getElementById('imaadTypevideo').checked==true && document.getElementById('imaadpath').value == '')
     {
         document.getElementById('imaadpatherrormessage').innerHTML = 'Enter IMA Ad Path';
         document.getElementById('imaadpath').focus();
         return false;
 
+    }else{
+                var thevideoadurl=document.getElementById("imaadpath").value;
+                var tomatch= /(http:\/\/|https:\/\/)[A-Za-z0-9\.-]{3,}\.[A-Za-z]{3}|(http:\/\/|https:\/\/)/
+                if (!tomatch.test(thevideoadurl))
+                {
+                    document.getElementById('imaadpatherrormessage').innerHTML = 'Enter Valid IMA Ad URL';
+                    document.getElementById("imaadpath").focus();
+                    return false;
+    }
+            }
     }
     
 }
