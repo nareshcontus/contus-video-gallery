@@ -214,7 +214,8 @@ function validateadInput (){
         document.getElementById('name').focus();
         return false;
 
-    } else if(document.getElementById('imaad').checked==true){
+    } 
+    if(document.getElementById('imaad').checked==true){
     if(document.getElementById('imaadTypetext').checked==true && document.getElementById('publisherId').value == '')
     {
         document.getElementById('imapublisherIderrormessage').innerHTML = 'Enter IMA Ad Publisher ID';
@@ -234,13 +235,13 @@ function validateadInput (){
         return false;
 
     }else {
-        if(document.getElementById('imaadTypevideo').checked==true && document.getElementById('imaadpath').value == '')
+        if(document.getElementById('imaadTypevideo').checked==true)
     {
+        if(document.getElementById('imaadpath').value == ''){
         document.getElementById('imaadpatherrormessage').innerHTML = 'Enter IMA Ad Path';
         document.getElementById('imaadpath').focus();
         return false;
-
-    }else{
+        } else{
                 var thevideoadurl=document.getElementById("imaadpath").value;
                 var tomatch= /(http:\/\/|https:\/\/)[A-Za-z0-9\.-]{3,}\.[A-Za-z]{3}|(http:\/\/|https:\/\/)/
                 if (!tomatch.test(thevideoadurl))
@@ -250,6 +251,8 @@ function validateadInput (){
                     return false;
     }
             }
+
+    }
     }
     
 }
