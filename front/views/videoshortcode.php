@@ -20,21 +20,21 @@ if (class_exists('ContusVideoShortcodeView') != true) {
         public $_videoDetail;
         public $_vId;
 
-        public function __construct() { ##contructor starts
+        public function __construct() {                                                     ##contructor starts
             parent::__construct();
 
-            $this->_vId             = filter_input(INPUT_GET, 'vid');
-            $this->_post_type       = filter_input(INPUT_GET, 'post_type');
+            $this->_vId             = filter_input(INPUT_GET, 'vid');                       ## Get vid from URL
+            $this->_post_type       = filter_input(INPUT_GET, 'post_type');                 ## Get post type from URL
             $this->_page_post_type  = $this->url_to_custompostid(get_permalink());
             $this->_showF           = 5;
             $this->_contOBJ         = new ContusVideoController();
-            $this->_mPageid         = $this->More_pageid();
+            $this->_mPageid         = $this->More_pageid();                                 ## Get more page id
             $dir                    = dirname(plugin_basename(__FILE__));
             $dirExp                 = explode('/', $dir);
-            $this->_plugin_name     = $dirExp[0];
-            $this->_site_url        = get_bloginfo('url');
-            $this->_swfPath         = APPTHA_VGALLERY_BASEURL . 'hdflvplayer' . DS . 'hdplayer.swf';
-            $this->_imagePath       = APPTHA_VGALLERY_BASEURL . 'images' . DS;
+            $this->_plugin_name     = $dirExp[0];                                           ## Get plugin folder name
+            $this->_site_url        = get_bloginfo('url');                                  ## Get base url
+            $this->_swfPath         = APPTHA_VGALLERY_BASEURL . 'hdflvplayer' . DS . 'hdplayer.swf';    ## Declare swf path
+            $this->_imagePath       = APPTHA_VGALLERY_BASEURL . 'images' . DS;                          ## Declare image path
         }
         ## contructor ends
         ## Get video id from url if permalink on
@@ -179,11 +179,11 @@ if (class_exists('ContusVideoShortcodeView') != true) {
             if(strpos(strtolower($_SERVER['ALL_HTTP']), 'operamini') !== false)
                 $mobile_browser++;
 
-            // Pre-final check to reset everything if the user is on Windows
+            ## Pre-final check to reset everything if the user is on Windows
             if(strpos($agent, 'windows') !== false)
                 $mobile_browser=0;
 
-            // But WP7 is also Windows, with a slightly different characteristic
+            ## But WP7 is also Windows, with a slightly different characteristic
             if(strpos($agent, 'windows phone') !== false)
                 $mobile_browser++;
 
@@ -196,7 +196,6 @@ if (class_exists('ContusVideoShortcodeView') != true) {
         ## to display player
         function HDFLV_shareRender($arguments= array()) {
             global $wpdb;
-            global $videoid, $site_url;
             $output = $videourl = $imgurl = $vid = $playlistid = $homeplayerData = $ratecount = $rate = $plugin_css = '';
             $image_path             = str_replace('plugins/'.$this->_plugin_name.'/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
             $_imagePath             = APPTHA_VGALLERY_BASEURL . 'images' . DS;
@@ -215,8 +214,6 @@ if (class_exists('ContusVideoShortcodeView') != true) {
             }
             if (isset($arguments['id'])) {
                 $vid = $videodivId = $arguments['id'];              ## get video id from short code
-//                if ($this->_post_type == 'videogallery' || $this->_page_post_type == 'videogallery')
-                    
             }
             if (!empty($vid)) {
                 $homeplayerData      = $this->video_detail($vid);
@@ -278,8 +275,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
 
             $player_not_support      = __('Player doesnot support this video.', 'video_gallery');
             $htmlplayer_not_support  = __('Html5 Not support This video Format.', 'video_gallery');
-            
-            ## Display Related videos starts here                        
+                              
             ## To increase hit count of a video
             $output                 .= '<script type="text/javascript" src="' . APPTHA_VGALLERY_BASEURL . 'js/script.js"></script>';
 
@@ -416,6 +412,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                 }
                 $output                .=$playlistname . '</div>';
                 }
+                ## Rating starts here
                 if ($this->_post_type == 'videogallery' || $this->_page_post_type == 'videogallery') {
                     $ratingscontrol = true;
                 } else if (isset($arguments['ratingscontrol']) && $arguments['ratingscontrol']=='on'){
@@ -580,13 +577,14 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                         }
                     </script>';
                 }
+                ## Rating ends here
                 $output                .='</div>';
                 if ($this->_post_type == 'videogallery' || $this->_page_post_type == 'videogallery') {  
-                    if(!empty($tag_name)){
+                    if(!empty($tag_name)){                  ## Tag display
                 $output                .='<div class="video-page-tag"><strong>' . __("Tags", "video_gallery") . '          </strong>: ' . $tag_name . ' ' . '</div>';
                     }
                 ## Display Social icons start here
-                if (strpos($videoUrl, 'youtube') > 0) { ##IF VIDEO IS YOUTUBE
+                if (strpos($videoUrl, 'youtube') > 0) { ## IF VIDEO IS YOUTUBE
                     $imgstr             = explode("v=", $videoUrl);
                     $imgval             = explode("&", $imgstr[1]);
                     $videoId1           = $imgval[0];
@@ -661,7 +659,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
             if (!empty($related))
                 $result                  = mysql_num_rows($related);
             if ($result != '') {
-            ##Slide Display Here
+            ## Slide Display Here
             $output                     .= '<ul id="mycarousel" class="jcarousel-skin-tango" style="margin:0 !important;">';
                 $image_path              = str_replace('plugins/'.$this->_plugin_name.'/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
                 while ($relFet = mysql_fetch_object($related)) {

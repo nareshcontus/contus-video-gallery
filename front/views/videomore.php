@@ -18,41 +18,43 @@ if (class_exists('ContusMoreView') != true) {
         public $_playid;
         public $_pagenum;
 
-        public function __construct() {//contructor starts
+        public function __construct() {                                             ## contructor starts
             parent::__construct();
-            $this->_settingsData    = $this->settings_data();
-            $this->_mPageid         = $this->More_pageid();
-            $this->_feaMore         = $this->Video_count();
-            $this->_vId             = filter_input(INPUT_GET, 'vid');
-            $this->_pagenum         = filter_input(INPUT_GET, 'pagenum');
-            $this->_playid          = filter_input(INPUT_GET, 'playid');
+            $this->_settingsData    = $this->settings_data();                       ## Get player settings
+            $this->_mPageid         = $this->More_pageid();                         ## Get more page id
+            $this->_feaMore         = $this->Video_count();                         ## Get featured videos count
+            $this->_vId             = filter_input(INPUT_GET, 'vid');               ## Get vid from URL
+            $this->_pagenum         = filter_input(INPUT_GET, 'pagenum');           ## Get current page number
+            $this->_playid          = filter_input(INPUT_GET, 'playid');            ## Get pid from URL
             $this->_viewslang = __('Views', 'video_gallery');
             $this->_viewlang = __('View', 'video_gallery');
+            ## Get search keyword
             $video_search    = filter_var(filter_input(INPUT_POST, 'video_search'), FILTER_SANITIZE_STRING);
             $video_search1    = filter_var(filter_input(INPUT_GET, 'video_search'), FILTER_SANITIZE_STRING);
-            if(empty($video_search))
+            if(empty($video_search)){
                $this->_video_search= $video_search1;
-            else
+            } else {
                 $this->_video_search= $video_search;
+            }
             $this->_showF           = 5;
-            $this->_colF            = $this->_settingsData->colMore;
-            $this->_colCat          = $this->_settingsData->colCat;
-            $this->_rowCat          = $this->_settingsData->rowCat;
-            $this->_perCat          = $this->_colCat * $this->_rowCat;
+            $this->_colF            = $this->_settingsData->colMore;                ## get row of more page
+            $this->_colCat          = $this->_settingsData->colCat;                 ## get column of more page
+            $this->_rowCat          = $this->_settingsData->rowCat;                 ## get row of category videos
+            $this->_perCat          = $this->_colCat * $this->_rowCat;              ## get column of category videos
             $dir                    = dirname(plugin_basename(__FILE__));
             $dirExp                 = explode('/', $dir);
-            $this->_folder          = $dirExp[0];
-            $this->_site_url        = get_bloginfo('url');
-            $this->_imagePath       = APPTHA_VGALLERY_BASEURL . 'images' . DS;
+            $this->_folder          = $dirExp[0];                                   ## Get plugin folder name
+            $this->_site_url        = get_bloginfo('url');                          ## Get base url
+            $this->_imagePath       = APPTHA_VGALLERY_BASEURL . 'images' . DS;      ## Declare image path
         } //contructor ends
 
-        function video_more_pages($type) {// More PAGE FEATURED VIDEOS STARTS
+        function video_more_pages($type) {                                          ## More PAGE FEATURED VIDEOS STARTS
             if (function_exists('homeVideo') != true) {
             $type_name='';
                 switch ($type) {
-                    case 'pop'://GETTING POPULAR VIDEOS STARTS
-                        $rowF           = $this->_settingsData->rowMore; //row field of popular videos
-                        $colF           = $this->_settingsData->colMore; //column field of popular videos
+                    case 'pop':                                                     ## GETTING POPULAR VIDEOS STARTS
+                        $rowF           = $this->_settingsData->rowMore;            ## row field of popular videos
+                        $colF           = $this->_settingsData->colMore;            ## column field of popular videos
                         $dataLimit      = $rowF * $colF;
                         $where = '';
                         $thumImageorder = 'w.hitcount DESC';
@@ -61,7 +63,7 @@ if (class_exists('ContusMoreView') != true) {
                         $typename       = __('Popular', 'video_gallery');
                         $type_name      = 'popular';
                         $morePage       = '&more=pop';
-                        break; //GETTING POPULAR VIDEOS ENDS
+                        break;                                                      ## GETTING POPULAR VIDEOS ENDS
 
                     case 'rec':
                         $rowF           = $this->_settingsData->rowMore;
@@ -173,13 +175,13 @@ if (class_exists('ContusMoreView') != true) {
                     $div .= '<div>';
                     $div .= '<ul class="video-block-container">';
                     for ($j = 0; $j < count($TypeOFvideos); $j++) {
-                        if (strlen($nameF[$j]) > 30) { // Displaying Video Title
+                        if (strlen($nameF[$j]) > 30) { ## Displaying Video Title
                                 $videoname = substr($nameF[$j], 0, 30) . '..';
                             }
                             else {
                                 $videoname = $nameF[$j];
                             }
-                        if (($j % $colF) == 0 && $j!=0) {//COLUMN COUNT
+                        if (($j % $colF) == 0 && $j!=0) { ## COLUMN COUNT
                                 $div        .= '</ul><div class="clear"></div><ul class="video-block-container">';
                             }
                             $div            .= '<li class="video-block">';
@@ -214,8 +216,8 @@ if (class_exists('ContusMoreView') != true) {
                             $div            .= '</span>';
                             $div            .= '</div>';
                             $div            .= '</li>';
-                        //ELSE ENDS
-                    }//FOR EACH ENDS
+                        ## ELSE ENDS
+                    } ## FOR EACH ENDS
                     $div                    .= '</ul>';
                     $div                    .= '</div>';
                     $div                    .= '<div class="clear"></div>';
@@ -229,7 +231,7 @@ if (class_exists('ContusMoreView') != true) {
                 }
                 $div                        .= '</div>';
 
-                //PAGINATION STARTS
+                ## PAGINATION STARTS
                 $total          = $CountOFVideos;
                 $num_of_pages   = ceil($total / $dataLimit);
                 $page_links     = paginate_links(array(
@@ -244,7 +246,7 @@ if (class_exists('ContusMoreView') != true) {
                 if ($page_links) {
                     $div .='<div class="tablenav"><div class="tablenav-pages" >' . $page_links . '</div></div>';
                 }
-                //PAGINATION ENDS
+                ## PAGINATION ENDS
                 return $div;
             }
         }
@@ -259,7 +261,7 @@ if (class_exists('ContusMoreView') != true) {
 ?>
 
 <?php
-//            $div .='<div><h1 class="entry-title">'.__('Video Categories', 'video_gallery').'</h1></div>';
+
             $div .= '<style> .video-block { margin-left:' . $this->_settingsData->gutterspace . 'px !important; } </style>';
             foreach ($TypeOFvideos as $catList) {
             ## Fetch videos for every category
@@ -437,14 +439,14 @@ if (class_exists('ContusMoreView') != true) {
                     }
                     $div            .= '</ul>';
 
-                } else { // If there is no video for category
+                } else { ## If there is no video for category
                     $div            .= '<div>'.__('No Videos Found', 'video_gallery').'</div>';
                 }
 
 
             $div                    .= '<div class="clear"></div>';
 
-            //PAGINATION STARTS
+            ## PAGINATION STARTS
             $total          = $CountOFVideos;
             $num_of_pages   = ceil($total / $dataLimit);
             $arr_params     = array ( 'pagenum' => '%#%', 'video_search' => $video_search );
@@ -461,12 +463,12 @@ if (class_exists('ContusMoreView') != true) {
                 $div    .= '<div class="tablenav"><div class="tablenav-pages" >' . $page_links . '</div></div></div>';
             }
 
-            //PAGINATION ENDS
+            ## PAGINATION ENDS
             return $div;
         }
-        //CATEGORY FUNCTION ENDS
+        ## CATEGORY FUNCTION ENDS
     }
-    //class over
+    ## class over
 } else {
     echo 'class contusMore already exists';
 }
