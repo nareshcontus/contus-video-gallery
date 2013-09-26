@@ -21,11 +21,11 @@ $frontModelPath         = APPTHA_VGALLERY_BASEDIR . '/front/models/';
 $frontControllerPath    = APPTHA_VGALLERY_BASEDIR . '/front/controllers/';
 $frontViewPath          = APPTHA_VGALLERY_BASEDIR . '/front/views/';
 $widgetPath             = get_template_directory() . '/html/widgets';
-$_SESSION["stream_plugin"] = $dirPage;
 global $dirPage;
 $dir                    = dirname(plugin_basename(__FILE__));
 $dirExp                 = explode('/', $dir);
 $dirPage                = $dirExp[0];
+$_SESSION["stream_plugin"] = $dirPage;
 
 ## Load widgets
 if (file_exists($widgetPath . '/ContusFeatureVideos.php')) {
