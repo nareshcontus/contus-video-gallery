@@ -26,7 +26,6 @@ $dir                    = dirname(plugin_basename(__FILE__));
 $dirExp                 = explode('/', $dir);
 $dirPage                = $dirExp[0];
 $_SESSION["stream_plugin"] = $dirPage;
-
 ## Load widgets
 if (file_exists($widgetPath . '/ContusFeatureVideos.php')) {
     include_once($widgetPath . '/ContusFeatureVideos.php');
