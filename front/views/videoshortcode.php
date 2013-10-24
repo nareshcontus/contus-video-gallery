@@ -397,7 +397,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                 }
                 
                 if($videogalleryviews==true){
-                $output             .= '<div class="video-page-views"><strong>' . __("Views", "video_gallery") . '       </strong>: ' . $hitcount . '</div></div>';
+                $output             .= '<div class="video-page-views"><strong>' . __("Views", "video_gallery") . '       </strong>: ' . $hitcount . '</div>';
                 }
                 if ($this->_post_type == 'videogallery' || $this->_page_post_type == 'videogallery') {
                 $output             .= '<div class="video-page-info">';                    
@@ -410,7 +410,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                     }
                     $incre++;
                 }
-                $output                .=$playlistname . '</div>';
+                $output                .=$playlistname . '</div></div>';
                 }
                 ## Rating starts here
                 if ($this->_post_type == 'videogallery' || $this->_page_post_type == 'videogallery') {
@@ -644,7 +644,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
 
                     $output             .='</div>';
             } 
-            $output             .='</div>';
+            $output             .='</div></div>';
             if (($this->_post_type == 'videogallery' || $this->_page_post_type == 'videogallery') || (((isset($arguments['playlistid']) && isset($arguments['id'])) || (isset($arguments['playlistid']))) && (isset($arguments['relatedvideos']) && $arguments['relatedvideos']=='on')) ){
                 ## Display Related videos starts here
                 $select                 = "SELECT distinct(a.vid),b.playlist_id,name,guid,description,file,hdfile,file_type,duration,embedcode,image,opimage,download,link,featured,hitcount,
@@ -724,10 +724,10 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                     $output             .='</li>';
                 }
 
-                $output                 .= '</ul></div>';
-            }  else {
+                $output                 .= '</ul>';
+            }  
                 $output                 .= '</div>';
-            }
+
 
             ## Display Related videos ends here
             }
