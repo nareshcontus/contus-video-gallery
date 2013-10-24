@@ -257,8 +257,7 @@ function videogallery_admin_init() {
 }
 ## function to add css and javascript files for admin
 function videogallery_jcar_js_css() {
-    wp_register_script('videogallery_jcar_lib_js', APPTHA_VGALLERY_BASEURL . 'js/jquery-1.2.3.pack.js');
-    wp_enqueue_script('videogallery_jcar_lib_js');
+    wp_enqueue_script( 'jquery' );
     wp_register_script('videogallery_jcar_js', APPTHA_VGALLERY_BASEURL . 'js/jquery.jcarousel.pack.js');
     wp_enqueue_script('videogallery_jcar_js');
     wp_register_style('videogallery_jcar_css', APPTHA_VGALLERY_BASEURL . 'css/jquery.jcarousel.css');
@@ -272,31 +271,6 @@ add_action('wp_enqueue_scripts', 'videogallery_cssJs');
 ## Function to add og detail for facebook
 add_action('wp_head', 'add_meta_details');
 ## Function to add meta tag
-add_filter('wp_title', 'add_video_title', 0);
-## Function definition to add meta tag
-function add_video_title() {
-    global $wpdb;
-    $videoID            = url_to_custompostid(get_permalink());
-    if (isset($_GET['p'])) {
-        $videoID        = intval($_GET['p']);
-    }
-    if (isset($_GET['playid'])) {
-        $playId         = intval($_GET['playid']);
-    }
-    if (!empty($videoID)) {
-        $videoID        = $wpdb->get_var("SELECT vid FROM " . $wpdb->prefix . "hdflvvideoshare WHERE slug='" . intval($videoID) . "'");
-        $video_title    = $wpdb->get_var("SELECT t1.name"
-                        . " FROM " . $wpdb->prefix . "hdflvvideoshare AS t1"
-                        . " WHERE t1.publish='1' AND t1.vid='" . intval($videoID) . "' LIMIT 1");
-    }
-    if (!empty($playId)) {
-        $video_title    = $wpdb->get_var("SELECT t1.playlist_name AS name"
-                        . " FROM " . $wpdb->prefix . "hdflvvideoshare_playlist AS t1"
-                        . " WHERE t1.is_publish='1' AND t1.pid='" . intval($playId) . "' LIMIT 1");
-    }
-    if (!empty($video_title))
-        echo $video_title;
-}
 ## Function definition to add og detail for facebook
 function add_meta_details() {
     global $wpdb;
