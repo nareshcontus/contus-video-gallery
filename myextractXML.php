@@ -167,8 +167,8 @@ foreach ($singleVideodata as $media) {
             allow_download = "' . $download . '"
             video_hdpath = "' . $hdvideoUrl . '"
             copylink = "">
-            <title><![CDATA[' . htmlspecialchars($media->name) . ']]></title>
-            <tagline targeturl=""><![CDATA[' . htmlspecialchars($media->description) . ']]></tagline>
+            <title><![CDATA[' . strip_tags($media->name) . ']]></title>
+            <tagline targeturl=""><![CDATA[' . strip_tags($media->description) . ']]></tagline>
             </mainvideo>';
 }
 echo '</playlist>';
