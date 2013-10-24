@@ -84,7 +84,7 @@ if(class_exists('ContusMore') != true)
              return $results;
         }//function for getting settings data ends
 
-        public function get_Countof_Videos($thumImageorder)
+        public function get_Countof_Videos($thumImageorder,$where)
         {//function for getting settings data starts
             global $wpdb;
             $playid=filter_input(INPUT_GET, 'playid');
@@ -95,7 +95,7 @@ if(class_exists('ContusMore') != true)
             $query = "SELECT w.vid FROM " . $this->_videoinfotable. " w
                         INNER JOIN " . $this->_wpdb->prefix . "hdflvvideoshare_med2play m ON m.media_id = w.vid
                         INNER JOIN " . $this->_wpdb->prefix . "hdflvvideoshare_playlist p ON p.pid=m.playlist_id
-                        WHERE w.publish='1'  AND p.is_publish='1' GROUP BY w.vid ORDER BY ".$thumImageorder;
+                        WHERE w.publish='1' $where AND p.is_publish='1' GROUP BY w.vid ORDER BY ".$thumImageorder;
             $result = $this->_wpdb->get_results($query);
             $result= count($result);
             }

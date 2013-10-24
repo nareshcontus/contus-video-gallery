@@ -59,7 +59,7 @@ if (class_exists('ContusMoreView') != true) {
                         $where = '';
                         $thumImageorder = 'w.hitcount DESC';
                         $TypeOFvideos   = $this->home_thumbdata($thumImageorder, $where,$this->_pagenum, $dataLimit);
-                        $CountOFVideos  = $this->Countof_Videos($thumImageorder);
+                        $CountOFVideos  = $this->Countof_Videos($thumImageorder,$where);
                         $typename       = __('Popular', 'video_gallery');
                         $type_name      = 'popular';
                         $morePage       = '&more=pop';
@@ -72,7 +72,7 @@ if (class_exists('ContusMoreView') != true) {
                         $dataLimit      = $rowF * $colF;
                         $thumImageorder = 'w.vid DESC';
                         $TypeOFvideos   = $this->home_thumbdata($thumImageorder, $where,$this->_pagenum, $dataLimit);
-                        $CountOFVideos  = $this->Countof_Videos($thumImageorder);
+                        $CountOFVideos  = $this->Countof_Videos($thumImageorder,$where);
                         $typename       = __('Recent', 'video_gallery');
                         $type_name      = 'recent';
                         $morePage       = '&more=rec';
@@ -85,18 +85,19 @@ if (class_exists('ContusMoreView') != true) {
                         $colF           = $this->_settingsData->colMore;
                         $dataLimit      = $rowF * $colF;
                         $TypeOFvideos   = $this->home_thumbdata($thumImageorder, $where,$this->_pagenum, $dataLimit);
-                        $CountOFVideos  = $this->Countof_Videos($thumImageorder);
+                        $CountOFVideos  = $this->Countof_Videos($thumImageorder,$where);
                         $typename       = __('Featured', 'video_gallery');
                         $type_name      = 'featured';
                         $morePage       = '&more=fea';
                         break;
                     case 'cat':
                         $thumImageorder = $this->_playid;
+                        $where = '';
                         $rowF           = $this->_settingsData->rowCat;
                         $colF           = $this->_settingsData->colCat;
                         $dataLimit      = $rowF * $colF;
                         $TypeOFvideos   = $this->home_catthumbdata($thumImageorder, $this->_pagenum, $dataLimit);
-                        $CountOFVideos  = $this->Countof_Videos($thumImageorder);
+                        $CountOFVideos  = $this->Countof_Videos($thumImageorder,$where);
                         $typename       = __('Category', 'video_gallery');
                         $morePage       = '&playid=' . $thumImageorder;
                         break;
@@ -442,7 +443,7 @@ if (class_exists('ContusMoreView') != true) {
                 } else { ## If there is no video for category
                     $div            .= '<div>'.__('No Videos Found', 'video_gallery').'</div>';
                 }
-
+            $div                    .= '</div>';
 
             $div                    .= '<div class="clear"></div>';
 
@@ -460,7 +461,7 @@ if (class_exists('ContusMoreView') != true) {
                     ));
 
             if ($page_links) {
-                $div    .= '<div class="tablenav"><div class="tablenav-pages" >' . $page_links . '</div></div></div>';
+                $div    .= '<div class="tablenav"><div class="tablenav-pages" >' . $page_links . '</div></div>';
             }
 
             ## PAGINATION ENDS
