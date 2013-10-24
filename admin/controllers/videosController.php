@@ -260,14 +260,12 @@ if (class_exists('VideoController') != true) {//checks if the VideoController cl
                                 $i++;
                             }
                         }
-                     if(!empty($tags_name)){
-                         $insert_tags_name=$this->_wpdb->get_var("SELECT tags_name FROM ".$wpdb->prefix . "hdflvvideoshare_tags WHERE media_id = '$this->_videoId'");
-                         if(!empty($insert_tags_name))
-                            $wpdb->query("UPDATE " . $wpdb->prefix . "hdflvvideoshare_tags SET tags_name='$tags_name',seo_name='$seo_tags_name' WHERE media_id = '$this->_videoId'");
-                         else
+                         $insert_tags_name=$this->_wpdb->get_var("SELECT media_id FROM ".$wpdb->prefix . "hdflvvideoshare_tags WHERE media_id = '$this->_videoId'");
+                         if(empty($insert_tags_name)){
                              $wpdb->query("INSERT INTO " . $wpdb->prefix . "hdflvvideoshare_tags (media_id,tags_name,seo_name) VALUES ($this->_videoId, '$tags_name', '$seo_tags_name')");
-                        }
-
+                         } else {
+                             $wpdb->query("UPDATE " . $wpdb->prefix . "hdflvvideoshare_tags SET tags_name='$tags_name',seo_name='$seo_tags_name' WHERE media_id = '$this->_videoId'");
+                         }
                         $this->admin_redirect("admin.php?page=newvideo&videoId=" . $this->_videoId . "&update=1");
 //                    } else {
 //                        $this->admin_redirect("admin.php?page=newvideo&videoId=" . $this->_videoId . "&update=0");
