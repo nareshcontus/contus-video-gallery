@@ -105,9 +105,9 @@ function videogallery_register() {
 
 ## function to Add videogallery menu list in wp admin
 function videogallery_addpages() {
-    add_menu_page("Video Gallery", "Video Gallery", 'edit_pages', "video", "videogallery_menu", APPTHA_VGALLERY_BASEURL . "/images/apptha.png");
-    add_submenu_page("video", "Video Gallery", "All Videos", 'edit_pages', "video", "videogallery_menu");
-    add_submenu_page("", "New Videos", "", 'edit_pages', "newvideo", "videogallery_menu");
+    add_menu_page("Video Gallery", "Video Gallery", 'read', "video", "videogallery_menu", APPTHA_VGALLERY_BASEURL . "/images/apptha.png");
+    add_submenu_page("video", "Video Gallery", "All Videos", 'read', "video", "videogallery_menu");
+    add_submenu_page("", "New Videos", "", 'read', "newvideo", "videogallery_menu");
     add_submenu_page("video", "Video Gallery", "Categories", 'manage_options', "playlist", "videogallery_menu");
     add_submenu_page("", "Video Gallery", "Ajax Category", 'manage_options', "ajaxplaylist", "videogallery_menu");
     add_submenu_page("", "New Category", "", 'manage_options', "newplaylist", "videogallery_menu");

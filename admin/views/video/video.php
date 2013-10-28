@@ -60,6 +60,18 @@ $dirPage = $dirExp[0];
         <h2 class="option_title">
             <?php echo "<img src='" . APPTHA_VGALLERY_BASEURL . "/images/manage_video.png' alt='move' width='30'/>"; ?>
             <?php _e('Manage Videos', 'video_gallery'); ?><a class="button-primary" href="<?php echo get_bloginfo('url') ?>/wp-admin/admin.php?page=newvideo" style="margin-left: 10px;"><?php _e('Add Video', 'video_gallery'); ?></a></h2>
+        <?php
+        function get_current_user_role() {
+        global $current_user;
+        get_currentuserinfo();
+        $user_roles = $current_user->roles;
+        $user_role = array_shift($user_roles);
+        return $user_role;
+    };
+    $user_role = get_current_user_role();
+    if($user_role!='subscriber'){
+?>
+        
         <div class="admin_short_video_info"><span class="hint_heading"><?php _e('How To Use?', 'video_gallery'); ?></span>
             <?php _e("Once you install 'Wordpress Video Gallery' plugin, the page 'Videos' will be created automatically. If you would like to display the video gallery on any other page or post, you can use the following plugin code.-", "video_gallery"); ?>
 
@@ -300,5 +312,6 @@ $dirPage = $dirExp[0];
                 ?>
             </div>
         </form>
+<?php } ?>
     </div>
 </div>
