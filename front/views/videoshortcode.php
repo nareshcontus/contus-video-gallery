@@ -609,7 +609,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                                         <!-- Twitter like End and Google plus one Start -->
                                         <div class="floatleft gplusshare" ><script type="text/javascript" src="http://apis.google.com/js/plusone.js"></script><div class="g-plusone" data-size="medium" data-count="false"></div></div>
                                         <!-- Google plus one End -->
-                                        </div></div>';
+                                        </div>';
                 
                 $output                 .= '<div class="clearfix">';
                 $output                 .= '<div class="video-cat-thumb">';
