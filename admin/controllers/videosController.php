@@ -42,19 +42,6 @@ if (class_exists('VideoController') != true) {//checks if the VideoController cl
             $this->_orderBy = filter_input(INPUT_GET, 'orderby');
             $this->_settingsData = $this->get_settingsdata();
         }
-
-      public  function generateSlug($phrase, $maxLength=90)
-{
-    $result = strtolower($phrase);
-
-    $result = preg_replace("/[^a-z0-9\s-]/", "", $result);
-    $result = trim(preg_replace("/[\s-]+/", " ", $result));
-    $result = trim(substr($result, 0, $maxLength));
-    $result = preg_replace("/\s/", "-", $result);
-
-    return $result;
-}
-
         public function add_newvideo() {//function for adding video starts
             global $wpdb;
             if (isset($this->_status) || isset($this->_featured)) {//updating status of video starts
@@ -63,7 +50,11 @@ if (class_exists('VideoController') != true) {//checks if the VideoController cl
 
             if (isset($this->_addnewVideo)) {
                 $videoName = filter_input(INPUT_POST, 'name');
-                $slug = sanitize_title($videoName);
+                $titlequery         = $this->_wpdb->get_var("SELECT count(vid) FROM ".$wpdb->prefix . "hdflvvideoshare where name='$videoName'");
+                if(!empty($titlequery) || $titlequery>0){
+                    $videoName1       = $videoName.rand();
+                }
+                $slug = sanitize_title($videoName1);
                 $videoDescription = filter_input(INPUT_POST, 'description');
                 $embedcode = filter_input(INPUT_POST, 'embed_code');
                 $tags_name = filter_input(INPUT_POST, 'tags_name');
