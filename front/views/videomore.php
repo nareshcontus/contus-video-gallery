@@ -102,8 +102,17 @@ if (class_exists('ContusMoreView') != true) {
                         $morePage       = '&playid=' . $thumImageorder;
                         break;
                     case 'search':
-                        $thumImageorder = "( t4.tags_name LIKE '%" . $this->_video_search . "%' || t1.description LIKE '%" . $this->_video_search . "%' || t1.name LIKE '%" . $this->_video_search . "%')";
-                        $TypeSet = $this->_settingsData->feature;
+                        $video_search   = str_replace("%20", " ", $video_search);
+                        $searchname = explode(" ", $this->_video_search);
+                        $likequery = '';
+
+                        for ($i = 0; $i < count($searchname); $i++) {
+                            $likequery.="( t4.tags_name LIKE '%" . $searchname[$i] . "%' || t1.description LIKE '%" . $searchname[$i] . "%' || t1.name LIKE '%" . $searchname[$i] . "%')";
+                            if (($i + 1) != count($searchname)) {
+                                $likequery.=" OR ";
+                            }
+                        }
+                        $thumImageorder = $likequery;
                         $rowF = $this->_settingsData->rowMore;
                         $colF = $this->_settingsData->colMore;
                         $dataLimit = $rowF * $colF;
@@ -450,6 +459,7 @@ if (class_exists('ContusMoreView') != true) {
             ## PAGINATION STARTS
             $total          = $CountOFVideos;
             $num_of_pages   = ceil($total / $dataLimit);
+            $video_search   = str_replace(" ", "%20", $video_search);
             $arr_params     = array ( 'pagenum' => '%#%', 'video_search' => $video_search );
             $page_links     = paginate_links(array(
                         'base'      => add_query_arg($arr_params),
