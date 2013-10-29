@@ -38,12 +38,6 @@ $player_colors          = unserialize($settingsGrid->player_colors);
 
 
     <link rel="stylesheet" href="<?php echo APPTHA_VGALLERY_BASEURL . 'admin/css/jquery.ui.all.css'; ?>">
-
-            <script src="<?php echo APPTHA_VGALLERY_BASEURL . 'admin/js/jquery-1.4.4.js'; ?>"></script>
-            <script src="<?php echo APPTHA_VGALLERY_BASEURL . 'admin/js/jquery.ui.core.js'; ?>"></script>
-            <script src="<?php echo APPTHA_VGALLERY_BASEURL. 'admin/js/jquery.ui.widget.js'; ?>"></script>
-            <script src="<?php echo APPTHA_VGALLERY_BASEURL. 'admin/js/jquery.ui.mouse.js'; ?>"></script>
-            <script src="<?php echo APPTHA_VGALLERY_BASEURL. 'admin/js/jquery.ui.sortable.js'; ?>"></script>
             <script type="text/javascript">
 
                 function enablefbapi(val) {
@@ -71,21 +65,22 @@ $player_colors          = unserialize($settingsGrid->player_colors);
                                 document.getElementById('related_playlist_open').style.display = 'none';
                         }
                 }
-                $(function() {
-                    $( ".column" ).sortable({
+                var sortdr = jQuery.noConflict();
+                sortdr(function() {
+                    sortdr( ".column" ).sortable({
                         connectWith: ".column"
                     });
 
-                    $( ".portlet" ).addClass( "ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" )
+                    sortdr( ".portlet" ).addClass( "ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" )
                     .find( ".portlet-header" )
                     .addClass( "ui-widget-header ui-corner-all" )
                     .prepend( "<span class='ui-icon ui-icon-minusthick'></span>")
                     .end()
                     .find( ".portlet-content" );
 
-                    $( ".portlet-header .ui-icon" ).click(function() {
-                        $( this ).toggleClass( "ui-icon-minusthick" ).toggleClass( "ui-icon-plusthick" );
-                        $( this ).parents( ".portlet:first" ).find( ".portlet-content" ).toggle();
+                    sortdr( ".portlet-header .ui-icon" ).click(function() {
+                        sortdr( this ).toggleClass( "ui-icon-minusthick" ).toggleClass( "ui-icon-plusthick" );
+                        sortdr( this ).parents( ".portlet:first" ).find( ".portlet-content" ).toggle();
                     });
 
                 });

@@ -33,9 +33,6 @@ if (isset($_GET['videoId']))
                 <?php endif; ?>
 <div class="apptha_gallery">
 <div class="wrap">
-    <script type="text/javascript" src="../wp-content/plugins/<?php echo $dirPage; ?>/admin/js/jquery-1.3.2.min.js"></script>
-    <script type="text/javascript" src="../wp-content/plugins/<?php echo $dirPage; ?>/admin/js/jquery-ui-1.7.1.custom.min.js"></script>
-
     <script type="text/javascript">
         function t1(t2)
         { 
@@ -88,7 +85,8 @@ if (isset($_GET['videoId']))
 
         function savePlaylist(playlistName , mediaId){
             var name = playlistName.value;
-            $.ajax({
+            var playlistajax = jQuery.noConflict();
+            playlistajax.ajax({
                 type: "GET",
                 url: "admin.php?page=ajaxplaylist",
                 data: "name="+name+"&media="+mediaId,
@@ -99,9 +97,6 @@ if (isset($_GET['videoId']))
             });
         }
     </script>
-
-
-
     <h2> <?php _e('Add a new video file', 'video_gallery'); ?> </h2>
 
     <div id="poststuff" class="has-right-sidebar">
