@@ -12,9 +12,10 @@
 $dir = dirname(plugin_basename(__FILE__));
 $dirExp = explode('/', $dir);
 $dirPage = $dirExp[0];
+$page = '';
+if (isset($_GET['pagenum'])){
+        $page = '&pagenum=' . $_GET['pagenum'];}
 ?>
-<script type="text/javascript" src="<?php echo APPTHA_VGALLERY_BASEURL . "/js/jquery-1.3.2.min.js"; ?>"></script>
-<script type="text/javascript" src="<?php echo APPTHA_VGALLERY_BASEURL . "/js/jquery-ui-1.7.1.custom.min.js"; ?>"></script>
 <script type="text/javascript">
     // When the document is ready set up our sortable with it's inherant function(s)
     var dragdr = jQuery.noConflict();
@@ -24,24 +25,17 @@ $dirPage = $dirExp[0];
             handle : '.handle',
             update : function () {
                 var order = dragdr('#test-list').sortable('serialize');
-
                 orderid= order.split("listItem[]=");
-
                 for(i=1;i<orderid.length;i++)
                 {
                     videoid[i]=orderid[i].replace('&',"");
                     oid= "ordertd_"+videoid[i];
-                    //                    document.getElementById(oid).innerHTML=i-1;
                 }
-                dragdr.post("<?php echo get_bloginfo('url') . "/wp-content/plugins/$dirPage/sortorder.php"; ?>",order);
-
-                <!-- Codes by Quackit.com -->
-
+                dragdr.post("<?php echo get_bloginfo('url') . "/wp-content/plugins/$dirPage/sortorder.php?$page"; ?>",order);
             }
         });
     });
 </script>
-<script>jQuery.noConflict(true);</script>
 <div class="apptha_gallery">
     <!--   MENU OPTIONS STARTS  --->
     <h2 class="nav-tab-wrapper">
@@ -52,9 +46,7 @@ $dirPage = $dirExp[0];
     </h2>
     <!--  MENU OPTIONS ENDS --->
     <?php
-    $page = '';
-    if (isset($_GET['pagenum']))
-        $page = '&pagenum=' . $_GET['pagenum'];
+    
     $selfurl = get_bloginfo('url') . "/wp-admin/admin.php?page=video" . $page;
     ?>    <div class="wrap">
         <h2 class="option_title">

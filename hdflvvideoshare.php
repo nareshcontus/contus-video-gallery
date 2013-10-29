@@ -250,8 +250,10 @@ function videogallery_cssJs() {
 
 ## function to add css and javascript files for admin
 function videogallery_admin_init() {
+    wp_enqueue_script( 'jquery' );
     wp_register_script('videogallery_jscss', plugins_url('admin/js/admin.js', __FILE__));
     wp_enqueue_script('videogallery_jscss');
+    wp_enqueue_script('jquery-ui-sortable');
     wp_register_style('videogallery_css1', plugins_url('admin/css/adminsettings.css', __FILE__));
     wp_enqueue_style('videogallery_css1');
 }

@@ -80,7 +80,7 @@ if (class_exists('VideoController') != true) {//checks if the VideoController cl
                 $videoPrerollads = filter_input(INPUT_POST, 'prerollads');
                 $videoDate = date('Y-m-d H:i:s');
                 
-
+                $ordering    = $this->_wpdb->get_var("SELECT count(ordering) FROM ".$wpdb->prefix . "hdflvvideoshare");
                 $videoPublish = filter_input(INPUT_POST, 'publish');
                 $islive = filter_input(INPUT_POST, 'islive-value');
                 $video1 = $_POST['normalvideoform-value'];
@@ -207,6 +207,7 @@ if (class_exists('VideoController') != true) {//checks if the VideoController cl
                     'midrollads' => $videomidrollads,
                     'imaad' => $videoimaad,
                     'prerollads' => $videoPrerollads,
+                    'ordering' => $ordering,
                     'publish' => $videoPublish
                 );
 
