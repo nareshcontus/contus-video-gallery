@@ -277,9 +277,6 @@ if (class_exists('ContusVideoShortcodeView') != true) {
             $player_not_support      = __('Player doesnot support this video.', 'video_gallery');
             $htmlplayer_not_support  = __('Html5 Not support This video Format.', 'video_gallery');
                               
-            ## To increase hit count of a video
-//            $output                 .= '<script type="text/javascript" src="' . APPTHA_VGALLERY_BASEURL . 'js/script.js"></script>';
-
             $output                 .= ' <script>
                                         var baseurl,folder,videoPage;
                                         baseurl = "' . $this->_site_url . '";

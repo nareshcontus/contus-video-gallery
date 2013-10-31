@@ -190,6 +190,14 @@ function myadsXML_function(){
     die();
 }
 
+## RSS function
+add_action('wp_ajax_rss', 'rss_function');
+add_action('wp_ajax_nopriv_rss', 'rss_function');
+function rss_function(){
+    require_once( dirname(__FILE__) . '/videogalleryrss.php');   
+    die();
+}
+
 function videogallery_register() {
     $labels = array(
         'name'                  => _x('Contus Video Gallery', 'post type general name'),
@@ -371,6 +379,7 @@ function videogallery_cssJs() {
         wp_register_style('videogallery_css', plugins_url('/css/style.css', __FILE__));
         wp_enqueue_style('videogallery_css');
     }
+    ## To increase hit count of a video
     wp_register_script('videogallery_js', plugins_url('/js/script.js', __FILE__));
     wp_enqueue_script('videogallery_js');
 }
@@ -582,6 +591,7 @@ add_shortcode('hdvideo', 'video_shortcodeplace');
 function video_morereplace() {
     global $frontControllerPath, $frontModelPath, $frontViewPath;
     include_once ($frontControllerPath . 'videomoreController.php');
+    $videoOBJ           = new ContusMoreView();
     $more               = filter_input(INPUT_GET, 'more');
     $playid             = filter_input(INPUT_GET, 'playid');
     if (!empty($playid))
@@ -590,7 +600,6 @@ function video_morereplace() {
     $video_search1      = filter_var(filter_input(INPUT_GET, 'video_search'), FILTER_SANITIZE_STRING);
     if (!empty($video_search) || !empty($video_search1))
         $more           = 'search';
-    $videoOBJ           = new ContusMoreView();
     $contentvideoPlayer = $videoOBJ->video_more_pages($more);
     return $contentvideoPlayer;
 }

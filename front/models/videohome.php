@@ -170,6 +170,17 @@ if(class_exists('ContusVideo') != true)
           return  $this->_wpdb->get_results($query);
         }   ##function for getting settings data ends
         
+        public function get_home_catthumbdata($thumImageorder,$dataLimit)
+        {//function for getting settings data starts
+              global $wpdb;
+           $query = "SELECT s.guid,w.*,p.playlist_name FROM " . $wpdb->prefix . "hdflvvideoshare as w
+                    INNER JOIN " . $wpdb->prefix . "hdflvvideoshare_med2play as m ON m.media_id = w.vid
+                    INNER JOIN " . $wpdb->prefix . "hdflvvideoshare_playlist as p on m.playlist_id = p.pid
+                    INNER JOIN " . $wpdb->prefix . "posts s ON s.ID=w.slug
+                    WHERE w.publish='1' AND p.is_publish='1' AND m.playlist_id=" . intval($thumImageorder) . "
+                    GROUP BY w.vid ORDER BY w.ordering asc LIMIT $dataLimit";
+            return $this->_wpdb->get_results($query);
+        }//function for getting settings data ends
         
          public function get_thumdata($thumImageorder,$where,$dataLimit)
         {   ##function for getting settings data starts

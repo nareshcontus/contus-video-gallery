@@ -40,6 +40,10 @@ if(class_exists('ContusVideoController') != true)
             return $this->get_tag_name($vid);
         } //getting tag detail function ends
 
+         function home_catthumbdata($thumImageorder,$dataLimit)
+         {// HOME PAGE FEATURED VIDEOS STARTS
+            return $this->get_home_catthumbdata($thumImageorder,$dataLimit);
+         }
          function home_thumbdata($thumImageorder,$where,$dataLimit)
          {// HOME PAGE FEATURED VIDEOS STARTS
             return $this->get_thumdata($thumImageorder,$where,$dataLimit);
