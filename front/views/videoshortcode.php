@@ -196,12 +196,12 @@ if (class_exists('ContusVideoShortcodeView') != true) {
         ## to display player
         function HDFLV_shareRender($arguments= array()) {
             global $wpdb;
-            $output = $videourl = $imgurl = $vid = $playlistid = $homeplayerData = $ratecount = $rate = $plugin_css = '';
+            $output = $videourl = $imgurl = $vid = $playlistid = $homeplayerData = $ratecount = $rate = $plugin_css = $no_views = '';
+            $video_playlist_id = $videoId = $hitcount = 0;
             $image_path             = str_replace('plugins/'.$this->_plugin_name.'/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
             $_imagePath             = APPTHA_VGALLERY_BASEURL . 'images' . DS;
-            $configXML              = $wpdb->get_row("SELECT ratingscontrol,embed_visible,keydisqusApps,comment_option,keyApps,configXML,width,height FROM " . $wpdb->prefix . "hdflvvideoshare_settings");
+            $configXML              = $wpdb->get_row("SELECT ratingscontrol,view_visible,embed_visible,keydisqusApps,comment_option,keyApps,configXML,width,height FROM " . $wpdb->prefix . "hdflvvideoshare_settings");
             $flashvars = $pluginflashvars = "baserefW=" . get_option('siteurl');      ## generate flashvars detail for player starts here
-
             if (isset($arguments['width'])) {
                 $width              = $arguments['width'];          ## get width from short code
             } else {
@@ -232,6 +232,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                 $description        = $homeplayerData->description;
                 $tag_name           = $homeplayerData->tags_name;
                 $hitcount           = $homeplayerData->hitcount;
+                $uploadedby         = $homeplayerData->display_name;
                 $ratecount          = $homeplayerData->ratecount;
                 $rate               = $homeplayerData->rate;
                 $post_date          = $homeplayerData->post_date;
@@ -254,12 +255,16 @@ if (class_exists('ContusVideoShortcodeView') != true) {
             } elseif (!empty($playlistid)) {
                 $flashvars          .="&amp;pid=" . $playlistid . "&showPlaylist=true";
                 $playlist_videos     = $this->_contOBJ->video_Pid_detail($playlistid);
+//                echo "<pre>";print_r($playlist_videos);exit;
+                if(!empty($playlist_videos)){
                 $videoId             = $playlist_videos[0]->vid;
                 $video_playlist_id   = $playlist_videos[0]->playlist_id;
                 $hitcount            = $playlist_videos[0]->hitcount;
+                $uploadedby          = $playlist_videos[0]->display_name;
                 $ratecount           = $playlist_videos[0]->ratecount;
                 $rate                = $playlist_videos[0]->rate;
                 $fetched[]           = $playlist_videos[0];
+                }
             } else if ($this->_post_type != 'videogallery' && $this->_page_post_type != 'videogallery') {
                 $flashvars          .="&amp;vid=" . $vid . "&showPlaylist=false";
             } else {
@@ -283,64 +288,62 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                                     var baseurl,folder,videoPage;
                                     baseurl = "' . $this->_site_url . '";
                                     folder  = "' . $this->_plugin_name . '";
-                                    videoPage = "' . $this->_mPageid . '"; </script>';
+                                    videoPage = "' . $this->_mPageid . '"; 
+                                    </script>';
             if (isset($arguments['title']) && $arguments['title']=='on'){
                 $output              .= '<h2 id="video_title' . $videodivId . '" class="videoplayer_title" ></h2>';
                 $flashvars          .="&amp;videodata=current_video_".$videodivId;
             }
+            ## Player starts here
             $output                 .= '<div id="mediaspace' . $videodivId . '" class="player" >';
-
-            ## Embed player code
-            if($fetched[0]->file_type == 5 && !empty($fetched[0]->embedcode)){
-            $output                 .= stripslashes($fetched[0]->embedcode);
-            $output                 .= '<script> current_video('.$fetched[0]->vid.',"'.$fetched[0]->name.'"); </script>';
-            } else{            
-            ## Flash player code
-            $output                 .= '<embed src="' . $this->_swfPath . '" flashvars="' . $flashvars . '" width="' . $width . '" height="' . $height . '" allowfullscreen="true" allowscriptaccess="always" type="application/x-shockwave-flash" wmode="transparent">';
-            }
+            $mobile = $this->detect_mobile();
+                        ## Embed player code
+                        if(!empty($fetched) && $fetched[0]->file_type == 5 && !empty($fetched[0]->embedcode)){
+                        $output                 .= stripslashes($fetched[0]->embedcode);
+                        $output                 .= '<script> current_video('.$fetched[0]->vid.',"'.$fetched[0]->name.'"); </script>';
+                        } else if($mobile === true){
+                            ## Get video detail for HTML5 player
+                            foreach ($fetched as $media) {          ## Load video details
+                                $videourl            = $media->file;
+                                $imgurl              = $media->image;
+                                $file_type           = $media->file_type;
+                                if ($imgurl == '') {                ## If there is no thumb image for video
+                                $imgurl              = $_imagePath . 'nothumbimage.jpg';
+                                } else {
+                                    if ($file_type == 2) {          ## For uploaded image
+                                        $imgurl      = $image_path . $imgurl;
+                                    }
+                                }
+                            }
+                            ## Check for youtube video
+                            if (preg_match("/www\.youtube\.com\/watch\?v=[^&]+/", $videourl, $vresult)) {
+                                $urlArray           = explode("=", $vresult[0]);
+                                $video_id           = trim($urlArray[1]);
+                                $videourl           = "http://www.youtube.com/embed/$video_id";
+                                ## Generate youtube embed code for html5 player
+                                $output             .="<iframe  type='text/html' src='" . $videourl . "' frameborder='0'></iframe>";
+                            } else {        ## Check for upload, URL and RTMP videos
+                                if ($file_type == 2) {                  ## For uploaded image
+                                    $videourl       = $image_path . $videourl;
+                                } else if ($file_type == 4) {           ## For RTMP videos
+                                    $streamer       = str_replace("rtmp://", "http://", $media->streamer_path);
+                                    $videourl       = $streamer . '_definst_/mp4:' . $videourl . '/playlist.m3u8';
+                                }
+                                ## Generate video code for html5 player
+                                $output             .="<video id='video' poster='" . $imgurl . "'   src='" . $videourl . "' autobuffer controls onerror='failed(event)'>" . $htmlplayer_not_support . "</video>";
+                            }
+                        } else {
+                            ## Flash player code
+                            $output                 .= '<embed src="' . $this->_swfPath . '" flashvars="' . $flashvars . '" width="' . $width . '" height="' . $height . '" allowfullscreen="true" allowscriptaccess="always" type="application/x-shockwave-flash" wmode="transparent">';
+                        }
             
             $output                 .= '</div>';
             
             $useragent               = $_SERVER['HTTP_USER_AGENT'];
-            if (strpos($useragent, 'Windows Phone') > 0)            ## check for windows phone
+            if (strpos($useragent, 'Windows Phone') > 0) {           ## check for windows phone
             $windo                   = 'Windows Phone';
-
-            ## html5 player starts here
-            $output                  .='<div id="htmlplayer' . $videodivId . '" class="player" >';
-            ## GEt video detail for HTML5 player
-
-            foreach ($fetched as $media) {          ## Load video details
-                $videourl            = $media->file;
-                $imgurl              = $media->image;
-                $file_type           = $media->file_type;
-                if ($imgurl == '') {                ## If there is no thumb image for video
-                $imgurl              = $_imagePath . 'nothumbimage.jpg';
-                } else {
-                    if ($file_type == 2 || $file_type == 5 ) {          ## For uploaded image
-                        $imgurl      = $image_path . $imgurl;
-                    }
-                }
             }
-            ## Check for youtube video
-            if (preg_match("/www\.youtube\.com\/watch\?v=[^&]+/", $videourl, $vresult)) {
-                $urlArray           = explode("=", $vresult[0]);
-                $video_id           = trim($urlArray[1]);
-                $videourl           = "http://www.youtube.com/embed/$video_id";
-                ## Generate youtube embed code for html5 player
-                $htmlvideo          ="<iframe  type='text/html' src='" . $videourl . "' frameborder='0'></iframe>";
-            } else if($fetched[0]->file_type == 5 && !empty($fetched[0]->embedcode)){
-                $htmlvideo          = stripslashes($fetched[0]->embedcode);
-            } else {        ## Check for upload, URL and RTMP videos
-                if ($file_type == 2) {                  ## For uploaded image
-                    $videourl       = $image_path . $videourl;
-                } else if ($file_type == 4) {           ## For RTMP videos
-                    $streamer       = str_replace("rtmp://", "http://", $media->streamer_path);
-                    $videourl       = $streamer . '_definst_/mp4:' . $videourl . '/playlist.m3u8';
-                }
-                ## Generate video code for html5 player
-                $htmlvideo          ="<video id='video' poster='" . $imgurl . "'   src='" . $videourl . "' autobuffer controls onerror='failed(event)'>" . $htmlplayer_not_support . "</video>";
-            }
-            $output                 .='</div>';
+
             ## Check platform
             $output                 .=' <script>
                                     function current_video_'.$videodivId.'(video_id,d_title){ 
@@ -354,41 +357,33 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                                     }
                                     var txt =  navigator.platform ;
                                     var windo = "' . $windo . '";
-                                    if(txt =="iPod"|| txt =="iPad" || txt == "iPhone" || windo=="Windows Phone" || txt == "Linux armv7l" || txt == "Linux armv6l")
-                                    {
-                                    document.getElementById("htmlplayer' . $videodivId . '").innerHTML = "'.$htmlvideo.'";
-                                    document.getElementById("mediaspace' . $videodivId . '").style.display = "none";
-                                    }else{
-                                    document.getElementById("htmlplayer' . $videodivId . '").innerHTML = "";
-                                    document.getElementById("mediaspace' . $videodivId . '").style.display = "block";
-                                    }
                                     function failed(e) {
                                     if(txt =="iPod"|| txt =="iPad" || txt == "iPhone" || windo=="Windows Phone" || txt == "Linux armv7l" || txt == "Linux armv6l")
                                     {
                                     alert("' . $player_not_support . '"); } }
                                     function videogallery_change_player(embedcode,id,player_div,file_type,vid){ 
                                     if(file_type==5){
-                                    currentvideo("",vid); 
+                                    current_video(vid,""); 
                                     }
                                     document.getElementById("mediaspace"+id).innerHTML = "";
-                                    document.getElementById("htmlplayer"+id).innerHTML = "";
                                     document.getElementById(player_div+id).innerHTML = embedcode;
                                     document.getElementById(player_div+id).focus();
                                     }    
                                     </script>';
-            ## HTML5 player ends here
+            ## player ends here
             ## Display description, views, tags, playlist names detail under player
             if ($this->_post_type != 'videogallery' && $this->_page_post_type != 'videogallery') {
                 $plugin_css = "shortcode";
             }
-                if ($this->_post_type == 'videogallery' || $this->_page_post_type == 'videogallery') {
+                if (isset($arguments['views']) && $arguments['views']=='on'){
                     $videogalleryviews = true;
-                } else if (isset($arguments['views']) && $arguments['views']=='on'){
-                    $videogalleryviews = true;
-                    $no_views = '';
                 } else{
-                    $videogalleryviews = false;
-                    $no_views = 'noviews';
+                    if (($this->_post_type == 'videogallery' || $this->_page_post_type == 'videogallery') && $configXML->view_visible == 1) {
+                    $videogalleryviews = true;
+                    } else {
+                        $videogalleryviews = false;
+                        $no_views = 'noviews';
+                    }
                 }
                 $output             .='<div class="video-page-container '.$plugin_css.'">
                                     <div class="vido_info_container"><div class="video-page-info '.$no_views.'">';
@@ -399,8 +394,9 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                 if($videogalleryviews==true){
                 $output             .= '<div class="video-page-views"><strong>' . __("Views", "video_gallery") . '       </strong>: ' . $hitcount . '</div>';
                 }
+                $output                 .= '<div class="clearfix"></div>';
                 if ($this->_post_type == 'videogallery' || $this->_page_post_type == 'videogallery') {
-                $output             .= '<div class="video-page-info">';                    
+                    $output             .='<div class="video-page-username"><strong>' . __("Posted By", "video_gallery") . '    </strong>: ' . $uploadedby . '</div>';
                 $output             .= '<div class="video-page-category"><strong>' . __("Category", "video_gallery") . ' </strong>: ';
                 foreach ($playlistData as $playlist) {
                     if ($incre > 0) {
@@ -410,7 +406,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                     }
                     $incre++;
                 }
-                $output                .=$playlistname . '</div></div>';
+                $output                .=$playlistname . '</div>';
                 }
                 ## Rating starts here
                 if ($this->_post_type == 'videogallery' || $this->_page_post_type == 'videogallery') {
@@ -420,7 +416,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                 } else{
                     $ratingscontrol = false;
                 }
-                if ($configXML->ratingscontrol == 1 && $ratingscontrol==true) {
+                if ($configXML->ratingscontrol == 1 || $ratingscontrol==true) {
                     if (isset($ratecount) && $ratecount != 0) {
                         $ratestar = round($rate / $ratecount);
                     } else {
@@ -525,7 +521,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                             document.getElementById("ratemsg' . $videodivId .$vid. '").innerHTML="Thanks for rating!";
                             var vid= document.getElementById("videoid' . $videodivId .$vid. '").value;
                             nocache = Math.random();
-                            http.open("get", baseurl+"/wp-content/plugins/"+folder+"/rateCount.php?vid="+vid+"&rate="+t,true);
+                            http.open("get", baseurl+"/wp-admin/admin-ajax.php?action=rateCount&vid="+vid+"&rate="+t,true);
                             http.onreadystatechange = insertReply' . $videodivId .$vid. ';
                             http.send(null);
                             document.getElementById("rate' . $videodivId .$vid. '").style.visibility="disable";
@@ -592,6 +588,8 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                 }
                 $video_title_share      = str_replace(" ", "%20", $video_title);
                 $videodescription       = str_replace(" ", "%20", $description);
+                $videodescription       = str_replace('"', "", $videodescription);
+                $videodescription       = str_replace("'", "", $videodescription);
                 $blog_title             = get_bloginfo('name');
                 $current_url            = "http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . '?random=' . rand(0, 100);
                 if($video_file_type == 5 ){
@@ -703,7 +701,6 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                                 ## Generate video code for html5 player
                                 $player_values         =htmlentities('<video id="video" poster="' . $imageFea . '"   src="' . $reavideourl .'" autobuffer controls onerror="failed(event)">' . $htmlplayer_not_support . '</video>');
                             }
-                            $player_div             = 'htmlplayer';
                         }else{
                             $player_div             = 'mediaspace';
                         }
