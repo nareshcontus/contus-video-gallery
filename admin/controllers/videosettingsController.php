@@ -36,6 +36,8 @@ if (class_exists('SettingsController') != true) {//checks if the SettingsControl
                 $embedVisible = filter_input(INPUT_POST, 'embed_visible');
                 $view_visible = filter_input(INPUT_POST, 'view_visible');
                 $ratingscontrol = filter_input(INPUT_POST, 'ratingscontrol');
+                $tagdisplay = filter_input(INPUT_POST, 'tagdisplay');
+                $categorydisplay = filter_input(INPUT_POST, 'categorydisplay');
                 $downLoad = filter_input(INPUT_POST, 'download');
                 $playerTimer = filter_input(INPUT_POST, 'timer');
                 $playerZoom = filter_input(INPUT_POST, 'zoom');
@@ -141,6 +143,8 @@ if (class_exists('SettingsController') != true) {//checks if the SettingsControl
                     'embed_visible' => $embedVisible,
                     'view_visible' => $view_visible,
                     'ratingscontrol' => $ratingscontrol,
+                    'tagdisplay' => $tagdisplay,
+                    'categorydisplay' => $categorydisplay,
                     'download' => $downLoad,
                     'timer' => $playerTimer,
                     'zoom' => $playerZoom,
@@ -211,13 +215,13 @@ $image_path = str_replace('plugins/'.$dirPage.'/admin/controllers', 'uploads/vid
                                 }else{
                                     $settingsData['logopath'] = $logopath;
                                 }
-                $settingsDataformat = array('%d','%d','%d', '%d', '%d', '%s', '%s', '%d', '%d', '%d', '%d',
-                    '%d', '%d', '%d','%d', '%d', '%d', '%d', '%d', '%d', '%d',
-                    '%s', '%s', '%s','%s', '%s', '%s', '%s', '%s', '%s', '%s',
-                    '%d', '%d', '%d','%s', '%d', '%d', '%d', '%d', '%d', '%d',
-                    '%d', '%d', '%d','%d', '%d', '%d', '%s', '%d', '%d', '%d',
-                    '%s', '%s', '%s', '%s', '%d','%d', '%d', '%d', '%d', '%d',
-                    '%s', '%s');
+                $settingsDataformat = array('%d','%d','%d', '%d', '%d', '%s', '%s', '%d', '%d', '%d', 
+                    '%d','%d','%d','%d', '%d', '%d','%d', '%d', '%d', '%d',
+                    '%d', '%d', '%d','%s', '%s', '%s','%s', '%s', '%s', '%s',
+                    '%s', '%s', '%s','%d', '%d', '%d','%s', '%d', '%d', '%d',
+                    '%d', '%d', '%d','%d', '%d', '%d','%d', '%d', '%d', '%s',
+                    '%d', '%d', '%d','%s', '%s', '%s', '%s', '%d','%d', '%d',
+                    '%d', '%d', '%d','%s', '%s');
                 $updateflag = $this->update_settings($settingsData, $settingsDataformat);
                 if ($updateflag) {
                     $this->admin_redirect("admin.php?page=hdflvvideosharesettings&update=1");

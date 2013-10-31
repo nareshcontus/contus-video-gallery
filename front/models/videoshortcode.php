@@ -28,7 +28,7 @@ if(class_exists('ContusShortcode') != true)
  public function get_video_detail($vid)
         {//function for getting Tag name starts
             global $wpdb;
-           $video_count = $this->_wpdb->get_row("SELECT t1.vid,t1.description,t4.tags_name,t1.name,t1.post_date,t1.image,t1.file,t1.hitcount,t1.ratecount,t1.file_type,t1.embedcode,t1.rate,t2.playlist_id,t3.playlist_name"
+           $video_count = $this->_wpdb->get_row("SELECT t1.vid,t5.display_name,t1.description,t4.tags_name,t1.name,t1.post_date,t1.image,t1.file,t1.hitcount,t1.ratecount,t1.file_type,t1.embedcode,t1.rate,t2.playlist_id,t3.playlist_name"
                 . " FROM " . $this->_videoinfotable . " AS t1"
                 . " LEFT JOIN " . $wpdb->prefix . "hdflvvideoshare_med2play AS t2"
                 . " ON t2.media_id = t1.vid"
@@ -36,6 +36,8 @@ if(class_exists('ContusShortcode') != true)
                 . " ON t3.pid = t2.playlist_id"
                 . " LEFT JOIN " . $wpdb->prefix . "hdflvvideoshare_tags AS t4"
                 . " ON t1.vid = t4.media_id"
+                . " LEFT JOIN " . $wpdb->prefix . "users AS t5"
+                . " ON t1.member_id = t5.ID"
                 . " WHERE t1.publish='1' AND t3.is_publish='1' AND t1.vid='" . intval($vid) . "' LIMIT 1");
            return $video_count;
         }//function for getting Tag name ends

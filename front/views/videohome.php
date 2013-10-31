@@ -101,7 +101,7 @@ if (class_exists('ContusVideoView') != true) {
             ## Embed player code
             else if($homeplayerData->file_type == 5 && !empty($homeplayerData->embedcode)){
             $div                 .= stripslashes($homeplayerData->embedcode);
-            $div                 .= '<script> currentvideo("'.$homeplayerData->name.'",'.$homeplayerData->vid.'); </script>';
+            $div                 .= '<script> current_video('.$homeplayerData->vid.',"'.$homeplayerData->name.'"); </script>';
             } else{            
             ## Flash player code
                 $div                        .= '<embed id="player" src="' . $swf . '"  flashvars="baserefW=' . APPTHA_VGALLERY_BASEURL . $baseref . $showplaylist . '&amp;mtype=' . $moduleName . '" width="' . $settingsData->width . '" height="' . $settingsData->height . '"   allowFullScreen="true" allowScriptAccess="always" type="application/x-shockwave-flash" wmode="transparent" />';
@@ -288,12 +288,14 @@ if (class_exists('ContusVideoView') != true) {
                                 }
                                 $div             .= '<span class="ratethis1 '.$ratearray[$ratestar].'"></span>';
                             }
+                            if ($this->_settingsData->view_visible == 1) {
                             if ($hitcount[$j] > 1)
                                 $viewlang       = $this->_viewslang;
                             else
                                 $viewlang       = $this->_viewlang;
                             $div                .= '<span class="video_views">' . $hitcount[$j] . ' ' . $viewlang;
                             $div                .= '</span>';
+                            }
                             $div                .= '</div>';
                             $div                .= '</li>';
                         }       ##FOR EACH ENDS
@@ -370,14 +372,15 @@ if (class_exists('ContusVideoView') != true) {
                                 }
                                 $div             .= '<span class="ratethis1 '.$ratearray[$ratestar].'"></span>';
                             }
-                        ## Rating ends here
+                        ## Rating ends and views starts here
+                        if ($this->_settingsData->view_visible == 1) {
                         if ($playList->hitcount > 1)
                             $viewlang = $this->_viewslang;
                         else
                             $viewlang = $this->_viewlang;
 
                         $div         .= '<span class="video_views">' . $playList->hitcount . ' ' . $viewlang . '</span>';
-                        
+                        }
                             
                         $div         .= '</div></li>';
 

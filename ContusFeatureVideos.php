@@ -65,8 +65,8 @@ class widget_ContusFeaturedVideos_init extends WP_Widget {
 <!-- For Getting The Page Id More and Video-->
 <?php
         $moreName           = $wpdb->get_var("SELECT ID FROM " . $wpdb->prefix . "posts WHERE post_content='[videomore]' AND post_status='publish' AND post_type='page' LIMIT 1");
-        $ratingscontrol     = $wpdb->get_var("SELECT ratingscontrol FROM " . $wpdb->prefix . "hdflvvideoshare_settings WHERE settings_id='1'");
-?>
+        $settings_result    = $wpdb->get_row("SELECT ratingscontrol,view_visible FROM " . $wpdb->prefix . "hdflvvideoshare_settings WHERE settings_id='1'");
+        ?>
         <!-- For Featured Videos -->
 <?php
         echo $before_widget;
@@ -127,14 +127,17 @@ class widget_ContusFeaturedVideos_init extends WP_Widget {
                 }
                 $div        .='</a>';
                 $div        .='<div class="clear"></div>';
-                if ($feature->hitcount > 1)
+                if ($settings_result->view_visible == 1) {
+                if ($feature->hitcount > 1){
                     $viewlanguage = $viewslang;
-                else
+                } else {
                     $viewlanguage = $viewlang;
+                }
                 $div        .='<span class="views">' . $feature->hitcount . ' ' . $viewlanguage . '</span>';
+                }
                 
                 ## Rating starts here
-                if ($ratingscontrol == 1) {
+                if ($settings_result->ratingscontrol == 1) {
                         if (isset($feature->ratecount) && $feature->ratecount != 0) {
                             $ratestar    = round($feature->rate / $feature->ratecount);
                         } else {

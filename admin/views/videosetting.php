@@ -213,8 +213,20 @@ $player_colors          = unserialize($settingsGrid->player_colors);
                                 <td><input type='checkbox' class='check' <?php if ($settingsGrid->embed_visible == 1) { ?> checked <?php } ?> name="embed_visible" value="1" size=45  /></td>
                                     </tr>
                             <tr>
+                                <th scope='row'><?php _e("Enable Views", "video_gallery"); ?></th>
+                                <td><input type='checkbox' class='check' <?php if ($settingsGrid->view_visible == 1) { ?> checked <?php } ?> name="view_visible" value="1" size=45  /></td>
+                                    </tr>
+                            <tr>
                                 <th scope='row'><?php _e("Enable Ratings", "video_gallery"); ?></th>
                                 <td><input type='checkbox' class='check' <?php if ($settingsGrid->ratingscontrol == 1) { ?> checked <?php } ?> name="ratingscontrol" value="1" size=45  /></td>
+                                    </tr>
+                            <tr>
+                                <th scope='row'><?php _e("Enable Tags", "video_gallery"); ?></th>
+                                <td><input type='checkbox' class='check' <?php if ($settingsGrid->tagdisplay == 1) { ?> checked <?php } ?> name="tagdisplay" value="1" size=45  /></td>
+                                    </tr>
+                            <tr>
+                                <th scope='row'><?php _e("Enable Category", "video_gallery"); ?></th>
+                                <td><input type='checkbox' class='check' <?php if ($settingsGrid->categorydisplay == 1) { ?> checked <?php } ?> name="categorydisplay" value="1" size=45  /></td>
                                     </tr>
                                 </table>
                             </div>

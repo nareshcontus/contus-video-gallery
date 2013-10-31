@@ -198,7 +198,7 @@ if (isset($_GET['action']) && $_GET['action'] == "activate-plugin" && $_GET['plu
     $player_colors = $playlist_open = $updatecolMore = $updateembedcode = $updatesubtitle_lang1 = $updatemember_id = $updatesubtitle_lang2 = $updatesrtfile1 = $updatesrtfile2 = $updatedefault_player = $updaterowMore =
     $showPlaylist = $updatecontentId = $updateimaadpath = $updatepublisherId = $updateimaadwidth = $updateimaadheight = $midroll_ads = $adsSkip = $adsSkipDuration = $relatedVideoView = $imaAds = $trackCode = $showTag = $ratingscontrol = $view_visible =
     $updateaddescription = $updateimaadType = $updateadtargeturl = $updateadclickurl = $updateadimpressionurl = $updateadmethod = $updateadtype = $updateispublish =
-    $shareIcon = $updateimaad = $updatechannels = $updatemidrollads = $volumecontrol = $playlist_auto = $progressControl = $imageDefault = $updatepublish = $updateadpublish = '';
+    $shareIcon = $updateimaad = $categorydisplay = $tagdisplay = $updatechannels = $updatemidrollads = $volumecontrol = $playlist_auto = $progressControl = $imageDefault = $updatepublish = $updateadpublish = '';
 
     ## Video table update
     $updateSlug             = AddColumnIfNotExists($errorMsg, "$table_name", "slug", "TEXT $charset_collate NOT NULL");
@@ -253,6 +253,8 @@ if (isset($_GET['action']) && $_GET['action'] == "activate-plugin" && $_GET['plu
     $trackCode              = AddColumnIfNotExists($errorMsg, "$table_settings", "trackCode", "TEXT $charset_collate NOT NULL");
     $showTag                = AddColumnIfNotExists($errorMsg, "$table_settings", "showTag", "INT( 3 ) NOT NULL");
     $ratingscontrol         = AddColumnIfNotExists($errorMsg, "$table_settings", "ratingscontrol", "INT( 3 ) NOT NULL");
+    $tagdisplay           = AddColumnIfNotExists($errorMsg, "$table_settings", "tagdisplay", "INT( 3 ) NOT NULL");
+    $categorydisplay           = AddColumnIfNotExists($errorMsg, "$table_settings", "categorydisplay", "INT( 3 ) NOT NULL");
     $view_visible           = AddColumnIfNotExists($errorMsg, "$table_settings", "view_visible", "INT( 3 ) NOT NULL");
     $shareIcon              = AddColumnIfNotExists($errorMsg, "$table_settings", "shareIcon", "INT( 3 ) NOT NULL");
     $volumecontrol          = AddColumnIfNotExists($errorMsg, "$table_settings", "volumecontrol", "INT( 3 ) NOT NULL DEFAULT 1");

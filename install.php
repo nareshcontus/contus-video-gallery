@@ -230,6 +230,8 @@ function videogallery_install() {
                     embed_visible INT(3) NOT NULL DEFAULT '0',
                     view_visible INT(3) NOT NULL DEFAULT '0',
                     ratingscontrol INT(3) NOT NULL DEFAULT '0',
+                    tagdisplay INT(3) NOT NULL DEFAULT '0',
+                    categorydisplay INT(3) NOT NULL DEFAULT '0',
                     shareURL VARCHAR(200) NOT NULL,
                     playlistXML VARCHAR(200) NOT NULL,
                     debug INT(3) NOT NULL DEFAULT '0',

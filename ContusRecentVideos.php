@@ -66,7 +66,7 @@ class widget_ContusRecentVideos_init extends WP_Widget {
 <!-- For Getting The Page Id More and Video-->
 <?php
         $moreName               = $wpdb->get_var("SELECT ID FROM " . $wpdb->prefix . "posts WHERE post_content='[videomore]' AND post_status='publish' AND post_type='page' LIMIT 1");
-        $ratingscontrol         = $wpdb->get_var("SELECT ratingscontrol FROM " . $wpdb->prefix . "hdflvvideoshare_settings WHERE settings_id='1'");
+        $settings_result        = $wpdb->get_row("SELECT ratingscontrol,view_visible FROM " . $wpdb->prefix . "hdflvvideoshare_settings WHERE settings_id='1'");
 ?>
 
         <!-- Recent videos -->
@@ -127,14 +127,17 @@ class widget_ContusRecentVideos_init extends WP_Widget {
                     $div        .= $post->name;
                 }
                 $div            .= '</a><div class="clear"></div>';
-                if ($post->hitcount > 1)
-                    $viewlanguage = $viewslang;
-                else
-                    $viewlanguage = $viewlang;
-                $div             .= '<span class="views">' . $post->hitcount . ' ' . $viewlanguage;
-                $div             .= '</span>';
+                if ($settings_result->view_visible == 1) {
+                    if ($post->hitcount > 1){
+                        $viewlanguage = $viewslang;
+                    } else {
+                        $viewlanguage = $viewlang;
+                    }
+                    $div             .= '<span class="views">' . $post->hitcount . ' ' . $viewlanguage;
+                    $div             .= '</span>';
+                }
                 ## Rating starts here
-                if ($ratingscontrol == 1) {
+                if ($settings_result->ratingscontrol == 1) {
                         if (isset($post->ratecount) && $post->ratecount != 0) {
                             $ratestar    = round($post->rate / $post->ratecount);
                         } else {

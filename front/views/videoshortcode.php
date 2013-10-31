@@ -200,7 +200,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
             $video_playlist_id = $videoId = $hitcount = 0;
             $image_path             = str_replace('plugins/'.$this->_plugin_name.'/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
             $_imagePath             = APPTHA_VGALLERY_BASEURL . 'images' . DS;
-            $configXML              = $wpdb->get_row("SELECT ratingscontrol,view_visible,embed_visible,keydisqusApps,comment_option,keyApps,configXML,width,height FROM " . $wpdb->prefix . "hdflvvideoshare_settings");
+            $configXML              = $wpdb->get_row("SELECT ratingscontrol,view_visible,tagdisplay,categorydisplay,embed_visible,keydisqusApps,comment_option,keyApps,configXML,width,height FROM " . $wpdb->prefix . "hdflvvideoshare_settings");
             $flashvars = $pluginflashvars = "baserefW=" . get_option('siteurl');      ## generate flashvars detail for player starts here
             if (isset($arguments['width'])) {
                 $width              = $arguments['width'];          ## get width from short code
@@ -315,13 +315,26 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                                     }
                                 }
                             }
+                            if ($file_type == 1) { 
                             ## Check for youtube video
-                            if (preg_match("/www\.youtube\.com\/watch\?v=[^&]+/", $videourl, $vresult)) {
-                                $urlArray           = explode("=", $vresult[0]);
-                                $video_id           = trim($urlArray[1]);
-                                $videourl           = "http://www.youtube.com/embed/$video_id";
-                                ## Generate youtube embed code for html5 player
-                                $output             .="<iframe  type='text/html' src='" . $videourl . "' frameborder='0'></iframe>";
+                                if (preg_match("/www\.youtube\.com\/watch\?v=[^&]+/", $videourl, $vresult)) {
+                                    $urlArray           = explode("=", $vresult[0]);
+                                    $video_id           = trim($urlArray[1]);
+                                    $videourl           = "http://www.youtube.com/embed/$video_id";
+                                    ## Generate youtube embed code for html5 player
+                                    $output             .="<iframe  type='text/html' src='" . $videourl . "' frameborder='0'></iframe>";
+                                } else if (strpos($videourl, 'dailymotion') > 0) {    ## For dailymotion videos
+                                $video = $videourl;
+                                ?>
+                                <iframe src="<?php echo $video; ?>" class="iframe_frameborder" ></iframe>
+                                <?php
+                            } else if (strpos($videourl, 'viddler') > 0) {        ## For viddler videos
+                                $imgstr = explode("/", $videourl);
+                                ?>
+                                <iframe id="viddler-<?php echo $imgstr; ?>" src="//www.viddler.com/embed/<?php echo $imgstr; ?>/?f=1&autoplay=0&player=full&secret=26392356&loop=false&nologo=false&hd=false" frameborder="0" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+                                <?php
+                            }
+            
                             } else {        ## Check for upload, URL and RTMP videos
                                 if ($file_type == 2) {                  ## For uploaded image
                                     $videourl       = $image_path . $videourl;
@@ -397,8 +410,9 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                 $output                 .= '<div class="clearfix"></div>';
                 if ($this->_post_type == 'videogallery' || $this->_page_post_type == 'videogallery') {
                     $output             .='<div class="video-page-username"><strong>' . __("Posted By", "video_gallery") . '    </strong>: ' . $uploadedby . '</div>';
-                $output             .= '<div class="video-page-category"><strong>' . __("Category", "video_gallery") . ' </strong>: ';
-                foreach ($playlistData as $playlist) {
+                if($configXML->categorydisplay == 1){
+                    $output             .= '<div class="video-page-category"><strong>' . __("Category", "video_gallery") . ' </strong>: ';
+                    foreach ($playlistData as $playlist) {
                     if ($incre > 0) {
                         $playlistname.=', ' . '<a href="' . $this->_site_url . '/?page_id=' . $this->_mPageid . '&amp;playid=' . $playlist->pid . '">' . $playlist->playlist_name . '</a>';
                     } else {
@@ -407,6 +421,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                     $incre++;
                 }
                 $output                .=$playlistname . '</div>';
+                }
                 }
                 ## Rating starts here
                 if ($this->_post_type == 'videogallery' || $this->_page_post_type == 'videogallery') {
@@ -576,7 +591,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                 ## Rating ends here
                 $output                .='</div>';
                 if ($this->_post_type == 'videogallery' || $this->_page_post_type == 'videogallery') {  
-                    if(!empty($tag_name)){                  ## Tag display
+                    if(!empty($tag_name) && $configXML->tagdisplay == 1){                  ## Tag display
                 $output                .='<div class="video-page-tag"><strong>' . __("Tags", "video_gallery") . '          </strong>: ' . $tag_name . ' ' . '</div>';
                     }
                 ## Display Social icons start here
@@ -585,7 +600,14 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                     $imgval             = explode("&", $imgstr[1]);
                     $videoId1           = $imgval[0];
                     $video_thumb        = "http://img.youtube.com/vi/" . $videoId1 . "/mqdefault.jpg";
-                }
+                } else if(strpos($videoUrl,'dailymotion') > 0){                 ## check video url is dailymotion
+                        $split      = explode("/",$videoUrl);
+                        $split_id   = explode("_",$split[4]);
+                        $video_thumb = 'http://www.dailymotion.com/thumbnail/video/'.$split_id[0];
+                    } else if(strpos($videoUrl,'viddler') > 0) {                    ## check video url is viddler
+                            $imgstr = explode("/", $act_filepath);
+                            $video_thumb = "http://cdn-thumbs.viddler.com/thumbnail_2_" . $imgstr[4] . "_v1.jpg";
+                    }
                 $video_title_share      = str_replace(" ", "%20", $video_title);
                 $videodescription       = str_replace(" ", "%20", $description);
                 $videodescription       = str_replace('"', "", $videodescription);

@@ -76,7 +76,7 @@ class widget_ContusRelatedVideos_init extends WP_Widget {
             $videoID            = $wpdb->get_var("SELECT vid FROM " . $wpdb->prefix . "hdflvvideoshare WHERE slug='$videoID'");
             if (!empty($videoID)) {
             $video_playlist_id  = $wpdb->get_var("SELECT playlist_id FROM " . $wpdb->prefix . "hdflvvideoshare_med2play WHERE media_id='$videoID'");
-            $ratingscontrol     = $wpdb->get_var("SELECT ratingscontrol FROM " . $wpdb->prefix . "hdflvvideoshare_settings WHERE settings_id='1'");
+            $settings_result    = $wpdb->get_row("SELECT ratingscontrol,view_visible FROM " . $wpdb->prefix . "hdflvvideoshare_settings WHERE settings_id='1'");
             $site_url           = get_bloginfo('url');
             $ratearray = array("nopos1", "onepos1", "twopos1", "threepos1", "fourpos1", "fivepos1");
 
@@ -142,14 +142,17 @@ class widget_ContusRelatedVideos_init extends WP_Widget {
                         $div    .= $feature->name;
                     }
                     $div        .= '</a><div class="clear"></div>';
-                    if ($feature->hitcount > 1)
-                        $viewlanguage = $viewslang;
-                    else
-                        $viewlanguage = $viewlang;
-                    $div        .= '<span class="views">' . $feature->hitcount . ' ' . $viewlanguage;
-                    $div        .= '</span>';
+                    if ($settings_result->view_visible == 1) {
+                        if ($feature->hitcount > 1){
+                            $viewlanguage = $viewslang;
+                        } else {
+                            $viewlanguage = $viewlang;
+                        }
+                        $div        .= '<span class="views">' . $feature->hitcount . ' ' . $viewlanguage;
+                        $div        .= '</span>';
+                    }
                     ## Rating starts here
-                    if ($ratingscontrol == 1) {
+                    if ($settings_result->ratingscontrol == 1) {
                             if (isset($feature->ratecount) && $feature->ratecount != 0) {
                                 $ratestar    = round($feature->rate / $feature->ratecount);
                             } else {
