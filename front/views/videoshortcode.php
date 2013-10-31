@@ -35,88 +35,87 @@ if (class_exists('ContusVideoShortcodeView') != true) {
             $this->_site_url        = get_bloginfo('url');                                  ## Get base url
             $this->_swfPath         = APPTHA_VGALLERY_BASEURL . 'hdflvplayer' . DS . 'hdplayer.swf';    ## Declare swf path
             $this->_imagePath       = APPTHA_VGALLERY_BASEURL . 'images' . DS;                          ## Declare image path
-        }
-        ## contructor ends
+        }                                                                                   ## contructor ends
         ## Get video id from url if permalink on
         public function url_to_custompostid($url) {
             global $wp_rewrite;
 
             $url                    = apply_filters('url_to_postid', $url);
 
-        ## First, check to see if there is a 'p=N' or 'page_id=N' to match against
+            ## First, check to see if there is a 'p=N' or 'page_id=N' to match against
             if (preg_match('#[?&](p|page_id|attachment_id)=(\d+)#', $url, $values)) {
                 $id                 = absint($values[2]);
                 if ($id)
                     return $id;
             }
 
-        ## Check to see if we are using rewrite rules
+            ## Check to see if we are using rewrite rules
             $rewrite                = $wp_rewrite->wp_rewrite_rules();
 
-        ## Not using rewrite rules, and 'p=N' and 'page_id=N' methods failed, so we're out of options
+            ## Not using rewrite rules, and 'p=N' and 'page_id=N' methods failed, so we're out of options
             if (empty($rewrite))
                 return 0;
 
-        ## Get rid of the #anchor
+            ## Get rid of the #anchor
             $url_split              = explode('#', $url);
             $url                    = $url_split[0];
 
-        ## Get rid of URL ?query=string
+            ## Get rid of URL ?query=string
             $url_split              = explode('?', $url);
             $url                    = $url_split[0];
 
-        ## Add 'www.' if it is absent and should be there
+            ## Add 'www.' if it is absent and should be there
             if (false !== strpos(home_url(), '://www.') && false === strpos($url, '://www.'))
                 $url                = str_replace('://', '://www.', $url);
 
-        ## Strip 'www.' if it is present and shouldn't be
+            ## Strip 'www.' if it is present and shouldn't be
             if (false === strpos(home_url(), '://www.'))
                 $url                = str_replace('://www.', '://', $url);
 
-        ## Strip 'index.php/' if we're not using path info permalinks
+            ## Strip 'index.php/' if we're not using path info permalinks
             if (!$wp_rewrite->using_index_permalinks())
                 $url                = str_replace('index.php/', '', $url);
 
             if (false !== strpos($url, home_url())) {
-        ## Chop off http://domain.com
+            ## Chop off http://domain.com
                 $url                = str_replace(home_url(), '', $url);
             } else {
-        ## Chop off /path/to/blog
+            ## Chop off /path/to/blog
                 $home_path          = parse_url(home_url());
                 $home_path          = isset($home_path['path']) ? $home_path['path'] : '';
                 $url                = str_replace($home_path, '', $url);
             }
 
-        ## Trim leading and lagging slashes
+            ## Trim leading and lagging slashes
             $url                    = trim($url, '/');
 
             $request                = $url;
 
-        ## Look for matches.
+            ## Look for matches.
             $request_match          = $request;
             foreach ((array) $rewrite as $match => $query) {
 
-        ## If the requesting file is the anchor of the match, prepend it
-        ## to the path info.
+            ## If the requesting file is the anchor of the match, prepend it
+            ## to the path info.
                 if (!empty($url) && ($url != $request) && (strpos($match, $url) === 0))
                     $request_match  = $url . '/' . $request;
 
                 if (preg_match("!^$match!", $request_match, $matches)) {
 
                     if ($wp_rewrite->use_verbose_page_rules && preg_match('/pagename=\$matches\[([0-9]+)\]/', $query, $varmatch)) {
-        ## this is a verbose page match, lets check to be sure about it
+                        ## this is a verbose page match, lets check to be sure about it
                         if (!get_page_by_path($matches[$varmatch[1]]))
                             continue;
                     }
 
-        ## Got a match.
-        ## Trim the query of everything up to the '?'.
+                    ## Got a match.
+                    ## Trim the query of everything up to the '?'.
                     $query          = preg_replace("!^.+\?!", '', $query);
 
-        ## Substitute the substring matches into the query.
+                    ## Substitute the substring matches into the query.
                     $query          = addslashes(WP_MatchesMapRegex::apply($query, $matches));
 
-        ## Filter out non-public query vars
+                    ## Filter out non-public query vars
                     global $wp;
                     global $wpdb;
                     parse_str($query, $query_vars);
@@ -129,7 +128,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                         }
                     }
                     $post_type      = '';
-        ## Do the query
+                    ## Do the query
                     if (!empty($query['videogallery']))
                         $post_type  = "videogallery";
                     return $post_type;
@@ -139,69 +138,66 @@ if (class_exists('ContusVideoShortcodeView') != true) {
         }
         
         ## Detect mobile device
-       
         function detect_mobile()
         {
-            $_SERVER['ALL_HTTP'] = isset($_SERVER['ALL_HTTP']) ? $_SERVER['ALL_HTTP'] : '';
-
-            $mobile_browser = '0';
-
-            $agent = strtolower($_SERVER['HTTP_USER_AGENT']);
-
-            if(preg_match('/(up.browser|up.link|mmp|symbian|smartphone|midp|wap|phone|iphone|ipad|ipod|android|xoom)/i', $agent))
+            $_SERVER['ALL_HTTP']    = isset($_SERVER['ALL_HTTP']) ? $_SERVER['ALL_HTTP'] : '';
+            $mobile_browser         = '0';
+            $agent                  = strtolower($_SERVER['HTTP_USER_AGENT']);
+            if(preg_match('/(up.browser|up.link|mmp|symbian|smartphone|midp|wap|phone|iphone|ipad|ipod|android|xoom)/i', $agent)){
                 $mobile_browser++;
-
-            if((isset($_SERVER['HTTP_ACCEPT'])) and (strpos(strtolower($_SERVER['HTTP_ACCEPT']),'application/vnd.wap.xhtml+xml') !== false))
+            }
+            if((isset($_SERVER['HTTP_ACCEPT'])) and (strpos(strtolower($_SERVER['HTTP_ACCEPT']),'application/vnd.wap.xhtml+xml') !== false)){
                 $mobile_browser++;
-
-            if(isset($_SERVER['HTTP_X_WAP_PROFILE']))
+            }
+            if(isset($_SERVER['HTTP_X_WAP_PROFILE'])){
                 $mobile_browser++;
-
-            if(isset($_SERVER['HTTP_PROFILE']))
+            }
+            if(isset($_SERVER['HTTP_PROFILE'])){
                 $mobile_browser++;
+            }
+            $mobile_ua              = substr($agent,0,4);
+            $mobile_agents          = array(
+                                    'w3c ','acs-','alav','alca','amoi','audi','avan','benq','bird','blac',
+                                    'blaz','brew','cell','cldc','cmd-','dang','doco','eric','hipt','inno',
+                                    'ipaq','java','jigs','kddi','keji','leno','lg-c','lg-d','lg-g','lge-',
+                                    'maui','maxo','midp','mits','mmef','mobi','mot-','moto','mwbp','nec-',
+                                    'newt','noki','oper','palm','pana','pant','phil','play','port','prox',
+                                    'qwap','sage','sams','sany','sch-','sec-','send','seri','sgh-','shar',
+                                    'sie-','siem','smal','smar','sony','sph-','symb','t-mo','teli','tim-',
+                                    'tosh','tsm-','upg1','upsi','vk-v','voda','wap-','wapa','wapi','wapp',
+                                    'wapr','webc','winw','xda','xda-'
+                                    );
 
-            $mobile_ua = substr($agent,0,4);
-            $mobile_agents = array(
-                                'w3c ','acs-','alav','alca','amoi','audi','avan','benq','bird','blac',
-                                'blaz','brew','cell','cldc','cmd-','dang','doco','eric','hipt','inno',
-                                'ipaq','java','jigs','kddi','keji','leno','lg-c','lg-d','lg-g','lge-',
-                                'maui','maxo','midp','mits','mmef','mobi','mot-','moto','mwbp','nec-',
-                                'newt','noki','oper','palm','pana','pant','phil','play','port','prox',
-                                'qwap','sage','sams','sany','sch-','sec-','send','seri','sgh-','shar',
-                                'sie-','siem','smal','smar','sony','sph-','symb','t-mo','teli','tim-',
-                                'tosh','tsm-','upg1','upsi','vk-v','voda','wap-','wapa','wapi','wapp',
-                                'wapr','webc','winw','xda','xda-'
-                                );
-
-            if(in_array($mobile_ua, $mobile_agents))
+            if(in_array($mobile_ua, $mobile_agents)){
                 $mobile_browser++;
-
-            if(strpos(strtolower($_SERVER['ALL_HTTP']), 'operamini') !== false)
+            }
+            if(strpos(strtolower($_SERVER['ALL_HTTP']), 'operamini') !== false){
                 $mobile_browser++;
-
+            }
             ## Pre-final check to reset everything if the user is on Windows
-            if(strpos($agent, 'windows') !== false)
+            if(strpos($agent, 'windows') !== false){
                 $mobile_browser=0;
-
+            }
             ## But WP7 is also Windows, with a slightly different characteristic
-            if(strpos($agent, 'windows phone') !== false)
+            if(strpos($agent, 'windows phone') !== false){
                 $mobile_browser++;
-
-            if($mobile_browser>0)
+            }
+            if($mobile_browser>0){
                 return true;
-            else
+            } else {
                 return false;
+            }
         }
 
         ## to display player
         function HDFLV_shareRender($arguments= array()) {
             global $wpdb;
-            $output = $videourl = $imgurl = $vid = $playlistid = $homeplayerData = $ratecount = $rate = $plugin_css = $no_views = '';
-            $video_playlist_id = $videoId = $hitcount = 0;
+            $output = $videourl     = $imgurl = $vid = $playlistid = $homeplayerData = $ratecount = $rate = $plugin_css = $no_views = '';
+            $video_playlist_id      = $videoId = $hitcount = 0;
             $image_path             = str_replace('plugins/'.$this->_plugin_name.'/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
             $_imagePath             = APPTHA_VGALLERY_BASEURL . 'images' . DS;
             $configXML              = $wpdb->get_row("SELECT ratingscontrol,view_visible,tagdisplay,categorydisplay,embed_visible,keydisqusApps,comment_option,keyApps,configXML,width,height FROM " . $wpdb->prefix . "hdflvvideoshare_settings");
-            $flashvars = $pluginflashvars = "baserefW=" . get_option('siteurl');      ## generate flashvars detail for player starts here
+            $flashvars              = $pluginflashvars = "baserefW=" . get_option('siteurl').'&amp;config=' . $this->_site_url . '/wp-admin/admin-ajax.php?action=configXML';      ## generate flashvars detail for player starts here
             if (isset($arguments['width'])) {
                 $width              = $arguments['width'];          ## get width from short code
             } else {
@@ -282,17 +278,17 @@ if (class_exists('ContusVideoShortcodeView') != true) {
             $htmlplayer_not_support  = __('Html5 Not support This video Format.', 'video_gallery');
                               
             ## To increase hit count of a video
-            $output                 .= '<script type="text/javascript" src="' . APPTHA_VGALLERY_BASEURL . 'js/script.js"></script>';
+//            $output                 .= '<script type="text/javascript" src="' . APPTHA_VGALLERY_BASEURL . 'js/script.js"></script>';
 
-            $output                 .=' <script>
-                                    var baseurl,folder,videoPage;
-                                    baseurl = "' . $this->_site_url . '";
-                                    folder  = "' . $this->_plugin_name . '";
-                                    videoPage = "' . $this->_mPageid . '"; 
-                                    </script>';
+            $output                 .= ' <script>
+                                        var baseurl,folder,videoPage;
+                                        baseurl = "' . $this->_site_url . '";
+                                        folder  = "' . $this->_plugin_name . '";
+                                        videoPage = "' . $this->_mPageid . '"; 
+                                        </script>';
             if (isset($arguments['title']) && $arguments['title']=='on'){
-                $output              .= '<h2 id="video_title' . $videodivId . '" class="videoplayer_title" ></h2>';
-                $flashvars          .="&amp;videodata=current_video_".$videodivId;
+                $output             .= '<h2 id="video_title' . $videodivId . '" class="videoplayer_title" ></h2>';
+                $flashvars          .= "&amp;videodata=current_video_".$videodivId;
             }
             ## Player starts here
             $output                 .= '<div id="mediaspace' . $videodivId . '" class="player" >';
@@ -359,30 +355,32 @@ if (class_exists('ContusVideoShortcodeView') != true) {
 
             ## Check platform
             $output                 .=' <script>
-                                    function current_video_'.$videodivId.'(video_id,d_title){ 
-                                        if(d_title == undefined)
-                                        {
-                                            document.getElementById("video_title'.$videodivId.'").innerHTML="";
-                                         }
-                                        else { 
-                                            document.getElementById("video_title'.$videodivId.'").innerHTML=d_title;
+                                        function current_video_'.$videodivId.'(video_id,d_title){ 
+                                            if(d_title == undefined)
+                                            {
+                                                document.getElementById("video_title'.$videodivId.'").innerHTML="";
+                                             }
+                                            else { 
+                                                document.getElementById("video_title'.$videodivId.'").innerHTML=d_title;
+                                            }
                                         }
-                                    }
-                                    var txt =  navigator.platform ;
-                                    var windo = "' . $windo . '";
-                                    function failed(e) {
-                                    if(txt =="iPod"|| txt =="iPad" || txt == "iPhone" || windo=="Windows Phone" || txt == "Linux armv7l" || txt == "Linux armv6l")
-                                    {
-                                    alert("' . $player_not_support . '"); } }
-                                    function videogallery_change_player(embedcode,id,player_div,file_type,vid){ 
-                                    if(file_type==5){
-                                    current_video(vid,""); 
-                                    }
-                                    document.getElementById("mediaspace"+id).innerHTML = "";
-                                    document.getElementById(player_div+id).innerHTML = embedcode;
-                                    document.getElementById(player_div+id).focus();
-                                    }    
-                                    </script>';
+                                        var txt =  navigator.platform ;
+                                        var windo = "' . $windo . '";
+                                        function failed(e) {
+                                            if(txt =="iPod"|| txt =="iPad" || txt == "iPhone" || windo=="Windows Phone" || txt == "Linux armv7l" || txt == "Linux armv6l")
+                                            {
+                                                alert("' . $player_not_support . '"); 
+                                            } 
+                                        }
+                                        function videogallery_change_player(embedcode,id,player_div,file_type,vid){ 
+                                            if(file_type==5){
+                                                current_video(vid,""); 
+                                            }
+                                        document.getElementById("mediaspace"+id).innerHTML = "";
+                                        document.getElementById(player_div+id).innerHTML = embedcode;
+                                        document.getElementById(player_div+id).focus();
+                                        }    
+                                        </script>';
             ## player ends here
             ## Display description, views, tags, playlist names detail under player
             if ($this->_post_type != 'videogallery' && $this->_page_post_type != 'videogallery') {
@@ -398,29 +396,29 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                         $no_views = 'noviews';
                     }
                 }
-                $output             .='<div class="video-page-container '.$plugin_css.'">
-                                    <div class="vido_info_container"><div class="video-page-info '.$no_views.'">';
+                $output                 .='<div class="video-page-container '.$plugin_css.'">
+                                       <div class="vido_info_container"><div class="video-page-info '.$no_views.'">';
                 if ($this->_post_type == 'videogallery' || $this->_page_post_type == 'videogallery') {
-                $output             .='<div class="video-page-date"><strong>' . __("Posted on", "video_gallery") . '    </strong>: ' . date("m-d-Y", strtotime($post_date)) . '</div>';
+                $output                 .='<div class="video-page-date"><strong>' . __("Posted on", "video_gallery") . '    </strong>: ' . date("m-d-Y", strtotime($post_date)) . '</div>';
                 }
                 
                 if($videogalleryviews==true){
-                $output             .= '<div class="video-page-views"><strong>' . __("Views", "video_gallery") . '       </strong>: ' . $hitcount . '</div>';
+                $output                 .= '<div class="video-page-views"><strong>' . __("Views", "video_gallery") . '       </strong>: ' . $hitcount . '</div>';
                 }
                 $output                 .= '<div class="clearfix"></div>';
                 if ($this->_post_type == 'videogallery' || $this->_page_post_type == 'videogallery') {
-                    $output             .='<div class="video-page-username"><strong>' . __("Posted By", "video_gallery") . '    </strong>: ' . $uploadedby . '</div>';
+                    $output             .= '<div class="video-page-username"><strong>' . __("Posted By", "video_gallery") . '    </strong>: ' . $uploadedby . '</div>';
                 if($configXML->categorydisplay == 1){
                     $output             .= '<div class="video-page-category"><strong>' . __("Category", "video_gallery") . ' </strong>: ';
                     foreach ($playlistData as $playlist) {
                     if ($incre > 0) {
-                        $playlistname.=', ' . '<a href="' . $this->_site_url . '/?page_id=' . $this->_mPageid . '&amp;playid=' . $playlist->pid . '">' . $playlist->playlist_name . '</a>';
+                        $playlistname   .= ', ' . '<a href="' . $this->_site_url . '/?page_id=' . $this->_mPageid . '&amp;playid=' . $playlist->pid . '">' . $playlist->playlist_name . '</a>';
                     } else {
-                        $playlistname .= '<a href="' . $this->_site_url . '/?page_id=' . $this->_mPageid . '&amp;playid=' . $playlist->pid . '">' . $playlist->playlist_name . '</a>';
+                        $playlistname   .= '<a href="' . $this->_site_url . '/?page_id=' . $this->_mPageid . '&amp;playid=' . $playlist->pid . '">' . $playlist->playlist_name . '</a>';
                     }
                     $incre++;
                 }
-                $output                .=$playlistname . '</div>';
+                $output                .= $playlistname . '</div>';
                 }
                 }
                 ## Rating starts here
@@ -491,116 +489,91 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                     }
                 $output                 .=  'ratecal' . $videodivId .$vid. '('.$ratestar.','.$ratecount.'); ';
                 }
-                $output                 .='
-                        function createObject' . $videodivId .$vid. '()
-                        {
-                            var request_type;
-                            var browser = navigator.appName;
-                            if(browser == "Microsoft Internet Explorer"){
-                                request_type = new ActiveXObject("Microsoft.XMLHTTP");
-                            }else{
-                                request_type = new XMLHttpRequest();
-                            }
-                            return request_type;
-                        }
-                        var http = createObject' . $videodivId .$vid. '();
-                        var nocache = 0;
-                        function getrate' . $videodivId .$vid. '(t)
-                        {
-                            if(t==1)
-                            {
-                                document.getElementById("rate' . $videodivId .$vid. '").className="ratethis onepos";
-                                document.getElementById("a' . $videodivId .$vid. '").className="ratethis onepos";
-                            }
-                            if(t==2)
-                            {
-                                document.getElementById("rate' . $videodivId .$vid. '").className="ratethis twopos";
-                                document.getElementById("a' . $videodivId .$vid. '").className="ratethis twopos";
-                            }
-                            if(t==3)
-                            {
-                                document.getElementById("rate' . $videodivId .$vid. '").className="ratethis threepos";
-                                document.getElementById("a' . $videodivId .$vid. '").className="ratethis threepos";
-                            }
-                            if(t==4)
-                            {
-                                document.getElementById("rate' . $videodivId .$vid. '").className="ratethis fourpos";
-                                document.getElementById("a' . $videodivId .$vid. '").className="ratethis fourpos";
-                            }
-                            if(t==5)
-                            {
-                                document.getElementById("rate' . $videodivId .$vid. '").className="ratethis fivepos";
-                                document.getElementById("a' . $videodivId .$vid. '").className="ratethis fivepos";
-                            }
-                            document.getElementById("rate' . $videodivId .$vid. '").style.display="none";
-                            document.getElementById("ratemsg' . $videodivId .$vid. '").innerHTML="Thanks for rating!";
-                            var vid= document.getElementById("videoid' . $videodivId .$vid. '").value;
-                            nocache = Math.random();
-                            http.open("get", baseurl+"/wp-admin/admin-ajax.php?action=rateCount&vid="+vid+"&rate="+t,true);
-                            http.onreadystatechange = insertReply' . $videodivId .$vid. ';
-                            http.send(null);
-                            document.getElementById("rate' . $videodivId .$vid. '").style.visibility="disable";
-                        }
-                        function insertReply' . $videodivId .$vid. '()
-                        {
-                            if(http.readyState == 4)
-                            {
-                                document.getElementById("ratemsg' . $videodivId .$vid. '").innerHTML="Ratings: "+http.responseText;
-                                document.getElementById("rate' . $videodivId .$vid. '").className="";
-                                document.getElementById("storeratemsg' . $videodivId .$vid. '").value=http.responseText;
-                            }
-                        }
+                $output                 .='function createObject' . $videodivId .$vid. '() {
+                                                var request_type;
+                                                var browser = navigator.appName;
+                                                if(browser == "Microsoft Internet Explorer"){
+                                                    request_type = new ActiveXObject("Microsoft.XMLHTTP");
+                                                } else {
+                                                    request_type = new XMLHttpRequest();
+                                                }
+                                                return request_type;
+                                            }
+                                            var http = createObject' . $videodivId .$vid. '();
+                                            var nocache = 0;
+                                            function getrate' . $videodivId .$vid. '(t) {
+                                                if(t==1) {
+                                                    document.getElementById("rate' . $videodivId .$vid. '").className="ratethis onepos";
+                                                    document.getElementById("a' . $videodivId .$vid. '").className="ratethis onepos";
+                                                } else if(t==2) {
+                                                    document.getElementById("rate' . $videodivId .$vid. '").className="ratethis twopos";
+                                                    document.getElementById("a' . $videodivId .$vid. '").className="ratethis twopos";
+                                                } else if(t==3) {
+                                                    document.getElementById("rate' . $videodivId .$vid. '").className="ratethis threepos";
+                                                    document.getElementById("a' . $videodivId .$vid. '").className="ratethis threepos";
+                                                } else if(t==4) {
+                                                    document.getElementById("rate' . $videodivId .$vid. '").className="ratethis fourpos";
+                                                    document.getElementById("a' . $videodivId .$vid. '").className="ratethis fourpos";
+                                                } else if(t==5) {
+                                                    document.getElementById("rate' . $videodivId .$vid. '").className="ratethis fivepos";
+                                                    document.getElementById("a' . $videodivId .$vid. '").className="ratethis fivepos";
+                                                }
+                                                document.getElementById("rate' . $videodivId .$vid. '").style.display="none";
+                                                document.getElementById("ratemsg' . $videodivId .$vid. '").innerHTML="Thanks for rating!";
+                                                var vid     = document.getElementById("videoid' . $videodivId .$vid. '").value;
+                                                nocache     = Math.random();
+                                                http.open("get", baseurl+"/wp-admin/admin-ajax.php?action=rateCount&vid="+vid+"&rate="+t,true);
+                                                http.onreadystatechange = insertReply' . $videodivId .$vid. ';
+                                                http.send(null);
+                                                document.getElementById("rate' . $videodivId .$vid. '").style.visibility="disable";
+                                            }
+                                            function insertReply' . $videodivId .$vid. '() {
+                                                if(http.readyState == 4) {
+                                                    document.getElementById("ratemsg' . $videodivId .$vid. '").innerHTML="Ratings: "+http.responseText;
+                                                    document.getElementById("rate' . $videodivId .$vid. '").className="";
+                                                    document.getElementById("storeratemsg' . $videodivId .$vid. '").value=http.responseText;
+                                                }
+                                            }
 
-                        function resetvalue' . $videodivId .$vid. '()
-                        {
-                            document.getElementById("ratemsg1' . $videodivId .$vid. '").style.display="none";
-                            document.getElementById("ratemsg' . $videodivId .$vid. '").style.display="block";
-                            if(document.getElementById("storeratemsg' . $videodivId .$vid. '").value == "") {
-                                document.getElementById("ratemsg' . $videodivId . $vid.'").innerHTML="Ratings: '.$ratecount.'";
-                            }else {
-                                document.getElementById("ratemsg' . $videodivId .$vid. '").innerHTML="Ratings:  "+document.getElementById("storeratemsg' . $videodivId .$vid. '").value;
-                            }
-                        }
-                        function displayrating' . $videodivId .$vid. '(t)
-                        {
-                            if(t==1)
-                            {
-                                document.getElementById("ratemsg' . $videodivId .$vid. '").innerHTML="Poor";
-                            }
-                            if(t==2)
-                            {
-                                document.getElementById("ratemsg' . $videodivId .$vid. '").innerHTML="Nothing Special";
-                            }
-                            if(t==3)
-                            {
-                                document.getElementById("ratemsg' . $videodivId .$vid. '").innerHTML="Worth Watching";
-                            }
-                            if(t==4)
-                            {
-                                document.getElementById("ratemsg' . $videodivId .$vid. '").innerHTML="Pretty Cool";
-                            }
-                            if(t==5)
-                            {
-                                document.getElementById("ratemsg' . $videodivId .$vid. '").innerHTML="Awesome";
-                            }
-                            document.getElementById("ratemsg1' . $videodivId .$vid. '").style.display="none";
-                            document.getElementById("ratemsg' . $videodivId .$vid. '").style.display="block";
-                        }
-                    </script>';
+                                            function resetvalue' . $videodivId .$vid. '() {
+                                                document.getElementById("ratemsg1' . $videodivId .$vid. '").style.display="none";
+                                                document.getElementById("ratemsg' . $videodivId .$vid. '").style.display="block";
+                                                if(document.getElementById("storeratemsg' . $videodivId .$vid. '").value == "") {
+                                                    document.getElementById("ratemsg' . $videodivId . $vid.'").innerHTML="Ratings: '.$ratecount.'";
+                                                } else {
+                                                    document.getElementById("ratemsg' . $videodivId .$vid. '").innerHTML="Ratings:  "+document.getElementById("storeratemsg' . $videodivId .$vid. '").value;
+                                                }
+                                            }
+                                            function displayrating' . $videodivId .$vid. '(t) {
+                                                if(t==1) {
+                                                    document.getElementById("ratemsg' . $videodivId .$vid. '").innerHTML="Poor";
+                                                } else if(t==2) {
+                                                    document.getElementById("ratemsg' . $videodivId .$vid. '").innerHTML="Nothing Special";
+                                                } else if(t==3) {
+                                                    document.getElementById("ratemsg' . $videodivId .$vid. '").innerHTML="Worth Watching";
+                                                } else if(t==4) {
+                                                    document.getElementById("ratemsg' . $videodivId .$vid. '").innerHTML="Pretty Cool";
+                                                } else if(t==5) {
+                                                    document.getElementById("ratemsg' . $videodivId .$vid. '").innerHTML="Awesome";
+                                                }
+                                                document.getElementById("ratemsg1' . $videodivId .$vid. '").style.display="none";
+                                                document.getElementById("ratemsg' . $videodivId .$vid. '").style.display="block";
+                                            }
+                                        </script>';
                 }
                 ## Rating ends here
                 $output                .='</div>';
                 if ($this->_post_type == 'videogallery' || $this->_page_post_type == 'videogallery') {  
                     if(!empty($tag_name) && $configXML->tagdisplay == 1){                  ## Tag display
-                $output                .='<div class="video-page-tag"><strong>' . __("Tags", "video_gallery") . '          </strong>: ' . $tag_name . ' ' . '</div>';
+                        $output                .='<div class="video-page-tag"><strong>' . __("Tags", "video_gallery") . '          </strong>: ' . $tag_name . ' ' . '</div>';
                     }
                 ## Display Social icons start here
-                if (strpos($videoUrl, 'youtube') > 0) { ## IF VIDEO IS YOUTUBE
+                if (strpos($videoUrl, 'youtube') > 0) {                             ## check video url is Youtube
                     $imgstr             = explode("v=", $videoUrl);
                     $imgval             = explode("&", $imgstr[1]);
                     $videoId1           = $imgval[0];
                     $video_thumb        = "http://img.youtube.com/vi/" . $videoId1 . "/mqdefault.jpg";
-                } else if(strpos($videoUrl,'dailymotion') > 0){                 ## check video url is dailymotion
+                } else if(strpos($videoUrl,'dailymotion') > 0){                     ## check video url is dailymotion
                         $split      = explode("/",$videoUrl);
                         $split_id   = explode("_",$split[4]);
                         $video_thumb = 'http://www.dailymotion.com/thumbnail/video/'.$split_id[0];
@@ -636,33 +609,18 @@ if (class_exists('ContusVideoShortcodeView') != true) {
 
                 if ($configXML->embed_visible == 1) {
                     ## embed code
-
                     if($fetched[0]->file_type == 5 && !empty($fetched[0]->embedcode)){
-                    $embed_code          = stripslashes($fetched[0]->embedcode);
+                        $embed_code          = stripslashes($fetched[0]->embedcode);
                     } else {
-                        $embed_code      = '<embed src="' . $this->_swfPath . '" flashvars="' . $flashvars . '&amp;shareIcon=false&amp;email=false&amp;showPlaylist=false&amp;zoomIcon=false&amp;copylink=' . get_permalink() . '&amp;embedplayer=true" width="' . $width . '" height="' . $height . '" allowfullscreen="true" allowscriptaccess="always" type="application/x-shockwave-flash" wmode="transparent">';
+                        $embed_code         = '<embed src="' . $this->_swfPath . '" flashvars="' . $flashvars . '&amp;shareIcon=false&amp;email=false&amp;showPlaylist=false&amp;zoomIcon=false&amp;copylink=' . get_permalink() . '&amp;embedplayer=true" width="' . $width . '" height="' . $height . '" allowfullscreen="true" allowscriptaccess="always" type="application/x-shockwave-flash" wmode="transparent">';
                     }
-                    $output             .='<a href="javascript:void(0)" onclick="enableEmbed();" class="embed" id="allowEmbed"><span class="embed_text">' . __("Embed Code", "video_gallery") . '</span><span class="embed_arrow"></span></a>
-                                                <textarea onclick="this.select()" id="embedcode" name="embedcode" style="display:none;" rows="7" >' . $embed_code . '</textarea>
-                                                <input type="hidden" name="flagembed" id="flagembed" />
-                                                <script type="text/javascript">
-                                                function enableEmbed(){
-                                                embedFlag = document.getElementById("flagembed").value
-                                                if(embedFlag != 1){
-                                                document.getElementById("embedcode").style.display="block";
-                                                document.getElementById("flagembed").value = "1";
-                                                }
-                                                else{
-                                                document.getElementById("embedcode").style.display="none";
-                                                document.getElementById("flagembed").value = "0";
-                                                }
-                                                }
-                                                </script>';
+                    $output             .= '<a href="javascript:void(0)" onclick="enableEmbed();" class="embed" id="allowEmbed"><span class="embed_text">' . __("Embed Code", "video_gallery") . '</span><span class="embed_arrow"></span></a>
+                                           <textarea onclick="this.select()" id="embedcode" name="embedcode" style="display:none;" rows="7" >' . $embed_code . '</textarea>
+                                           <input type="hidden" name="flagembed" id="flagembed" />';
                 }
 
                 $output                 .= '<div style="clear: both;"></div><div class="video-page-desc">' . $description . '</div></div>';
-
-                    $output             .='</div>';
+                $output                 .= '</div>';
             } 
             $output             .='</div></div>';
             if (($this->_post_type == 'videogallery' || $this->_page_post_type == 'videogallery') || (((isset($arguments['playlistid']) && isset($arguments['id'])) || (isset($arguments['playlistid']))) && (isset($arguments['relatedvideos']) && $arguments['relatedvideos']=='on')) ){
@@ -761,13 +719,15 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                 $output                 .='<div class="clear"></div>
                                         <h2 class="related-videos">' . __("Post Your Comments", "video_gallery") . '</h2>
                                         <div id="fb-root"></div>
-                                        <script>(function(d, s, id) {
-                                        var js, fjs = d.getElementsByTagName(s)[0];
-                                        if (d.getElementById(id)) return;
-                                        js = d.createElement(s); js.id = id;
-                                        js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=' . $configXML->keyApps . '";
-                                        fjs.parentNode.insertBefore(js, fjs);
-                                        }(document, "script", "facebook-jssdk"));</script>';
+                                        <script>
+                                        (function(d, s, id) {
+                                            var js, fjs = d.getElementsByTagName(s)[0];
+                                            if (d.getElementById(id)) return;
+                                            js = d.createElement(s); js.id = id;
+                                            js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=' . $configXML->keyApps . '";
+                                            fjs.parentNode.insertBefore(js, fjs);
+                                        }(document, "script", "facebook-jssdk"));
+                                        </script>';
                 $output                 .='<div class="fb-comments" data-href="' . get_permalink() . '" data-num-posts="5"></div>';
             }
         ## Disqus Comment
@@ -777,9 +737,9 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                                         <script type="text/javascript">
                                         var disqus_shortname = "' . $configXML->keydisqusApps . '";
                                         (function() {
-                                        var dsq = document.createElement("script"); dsq.type = "text/javascript"; dsq.async = true;
-                                        dsq.src = "http://"+ disqus_shortname + ".disqus.com/embed.js";
-                                        (document.getElementsByTagName("head")[0] || document.getElementsByTagName("body")[0]).appendChild(dsq);
+                                            var dsq = document.createElement("script"); dsq.type = "text/javascript"; dsq.async = true;
+                                            dsq.src = "http://"+ disqus_shortname + ".disqus.com/embed.js";
+                                            (document.getElementsByTagName("head")[0] || document.getElementsByTagName("body")[0]).appendChild(dsq);
                                         })();
                                         </script>
                                         <noscript>' . __("Please enable JavaScript to view the", "video_gallery") . ' <a href="http://disqus.com/?ref_noscript">' . __("comments powered by Disqus.", "video_gallery") . '</a></noscript>

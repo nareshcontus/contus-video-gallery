@@ -77,10 +77,11 @@ if (class_exists('ContusVideoView') != true) {
                                             baseurl = "' . $this->_site_url . '";
                                             folder  = "' . $this->_plugin_name . '";
                                             videoPage = "' . $this->_mPageid . '"; </script>';
+            $baseref = '&amp;config=' . $this->_site_url . '/wp-admin/admin-ajax.php?action=configXML';
             if (!empty($this->_vId)) {
-                $baseref                    = '&amp;vid=' . $this->_vId;
+                $baseref                    .= '&amp;vid=' . $this->_vId;
             } else {
-                $baseref                    = '&amp;featured=true';
+                $baseref                    .= '&amp;featured=true';
             }
             $div                            .='<div id="mediaspace" class="mediaspace" style="color: #666;">';
             $div                            .='<h3 id="video_title" style="width:' . $settingsData->width . ';text-align: left;"  class="more_title"></h3>';

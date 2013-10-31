@@ -126,6 +126,70 @@ function rateCount_function(){
     die();
 }
 
+## Configxml function
+add_action('wp_ajax_configXML', 'configXML_function');
+add_action('wp_ajax_nopriv_configXML', 'configXML_function');
+function configXML_function(){
+    require_once( dirname(__FILE__) . '/configXML.php');   
+    die();
+}
+
+## myextractXML function
+add_action('wp_ajax_myextractXML', 'myextractXML_function');
+add_action('wp_ajax_nopriv_myextractXML', 'myextractXML_function');
+function myextractXML_function(){
+    require_once( dirname(__FILE__) . '/myextractXML.php');   
+    die();
+}
+
+## mymidrollXML function
+add_action('wp_ajax_mymidrollXML', 'mymidrollXML_function');
+add_action('wp_ajax_nopriv_mymidrollXML', 'mymidrollXML_function');
+function mymidrollXML_function(){
+    require_once( dirname(__FILE__) . '/mymidrollXML.php');   
+    die();
+}
+
+## myimaadsXML function
+add_action('wp_ajax_myimaadsXML', 'myimaadsXML_function');
+add_action('wp_ajax_nopriv_myimaadsXML', 'myimaadsXML_function');
+function myimaadsXML_function(){
+    require_once( dirname(__FILE__) . '/myimaadsXML.php');   
+    die();
+}
+
+## languageXML function
+add_action('wp_ajax_languageXML', 'languageXML_function');
+add_action('wp_ajax_nopriv_languageXML', 'languageXML_function');
+function languageXML_function(){
+    require_once( dirname(__FILE__) . '/languageXML.php');   
+    die();
+}
+
+## email function
+add_action('wp_ajax_email', 'email_function');
+add_action('wp_ajax_nopriv_email', 'email_function');
+function email_function(){
+    require_once( dirname(__FILE__) . '/email.php');   
+    die();
+}
+
+## download function
+add_action('wp_ajax_download', 'download_function');
+add_action('wp_ajax_nopriv_download', 'download_function');
+function download_function(){
+    require_once( dirname(__FILE__) . '/download.php');   
+    die();
+}
+
+## myadsXML function
+add_action('wp_ajax_myadsXML', 'myadsXML_function');
+add_action('wp_ajax_nopriv_myadsXML', 'myadsXML_function');
+function myadsXML_function(){
+    require_once( dirname(__FILE__) . '/myadsXML.php');   
+    die();
+}
+
 function videogallery_register() {
     $labels = array(
         'name'                  => _x('Contus Video Gallery', 'post type general name'),
@@ -307,6 +371,8 @@ function videogallery_cssJs() {
         wp_register_style('videogallery_css', plugins_url('/css/style.css', __FILE__));
         wp_enqueue_style('videogallery_css');
     }
+    wp_register_script('videogallery_js', plugins_url('/js/script.js', __FILE__));
+    wp_enqueue_script('videogallery_js');
 }
 
 ## function to add css and javascript files for admin

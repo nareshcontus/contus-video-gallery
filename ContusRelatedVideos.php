@@ -58,8 +58,6 @@ class widget_ContusRelatedVideos_init extends WP_Widget {
         $countF = $div = '';
         ?>
 <!-- Recent videos -->
-<script type="text/javascript" src="<?php echo $site_url; ?>/wp-content/plugins/<?php echo dirname(plugin_basename(__FILE__)) ?>/js/script.js"></script>
-
 <script type="text/javascript">
     var baseurl;
     baseurl = '<?php echo $site_url; ?>';

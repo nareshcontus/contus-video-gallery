@@ -55,15 +55,8 @@ class widget_ContusVideoCategory_init extends WP_Widget {
         $dirExp                 = explode('/', $dir);
         $dirPage                = $dirExp[0];
         ?>
-<!-- Recent videos -->
-<script type="text/javascript" src="<?php echo $site_url; ?>/wp-content/plugins/<?php echo dirname(plugin_basename(__FILE__)) ?>/js/script.js"></script>
-
-<script type="text/javascript">
-    var baseurl;
-    baseurl = '<?php echo $site_url; ?>';
-    folder  = '<?php echo $dirPage; ?>'
-</script>
-<!-- For Getting The Page Id More and Video-->
+<!-- Recent videos 
+For Getting The Page Id More and Video-->
 <?php
         $moreName               = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content='[videomore]' and post_status='publish' and post_type='page' limit 1");
         $styleSheet             = $wpdb->get_var("select stylesheet from " . $wpdb->prefix . "hdflvvideoshare_settings WHERE settings_id='1'");
