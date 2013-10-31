@@ -159,6 +159,10 @@ function videogallery_install() {
                     slug TEXT NULL,
                     file_type TINYINT(25) NOT NULL,
                     duration varchar(255) NOT NULL,
+                    srtfile1 varchar(255) NOT NULL,
+                    srtfile2 varchar(255) NOT NULL,
+                    subtitle_lang1 MEDIUMTEXT NOT NULL,
+                    subtitle_lang2 MEDIUMTEXT NOT NULL,
                     image MEDIUMTEXT NULL,
                     opimage MEDIUMTEXT NULL,
                     download varchar(10) NOT NULL,
@@ -174,6 +178,7 @@ function videogallery_install() {
                     imaad INT NOT NULL DEFAULT '0',
                     publish INT NOT NULL,
                     islive INT NOT NULL,
+                    member_id INT(3) NOT NULL,
                     ordering INT NOT NULL DEFAULT '0'
                     ) $charset_collate;";
 
@@ -223,6 +228,7 @@ function videogallery_install() {
                     skin_autohide INT(3) NOT NULL DEFAULT '0',
                     stagecolor VARCHAR(45) NOT NULL,
                     embed_visible INT(3) NOT NULL DEFAULT '0',
+                    view_visible INT(3) NOT NULL DEFAULT '0',
                     ratingscontrol INT(3) NOT NULL DEFAULT '0',
                     shareURL VARCHAR(200) NOT NULL,
                     playlistXML VARCHAR(200) NOT NULL,
@@ -454,7 +460,7 @@ function videogallery_install() {
                                 `rowMore`,`player_colors`,`playlist_open`,`showPlaylist`,`midroll_ads`,
                                 `adsSkip`,`adsSkipDuration`,`relatedVideoView`,`imaAds`,`trackCode`,
                                 `showTag`,`shareIcon`,`volumecontrol`,`playlist_auto`,`progressControl`,
-                                `imageDefault`)
+                                `imageDefault`,`view_visible`)
                                 VALUES
                                 (0,1, 1, 1, 1,
                                 3, 2, 2, 'platoon.jpg', '' ,
@@ -472,7 +478,7 @@ function videogallery_install() {
                                 '2','','1','1','0',
                                 '1','5','center','0','',
                                 '1','1','1','1', '1',
-                                '1')");
+                                '1','1')");
     }
 
     ## Update video and category details in med2play table

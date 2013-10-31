@@ -42,31 +42,55 @@ if (isset($_GET['videoId']))
                 document.getElementById('supportformats').style.display = "";
                 document.getElementById('ffmpeg_disable_new4').style.display = "";
                 document.getElementById('ffmpeg_disable_new2').style.display = "";
+                document.getElementById('ffmpeg_disable_new3').style.display = "";
                 document.getElementById('ffmpeg_disable_new1').style.display = "";
+                document.getElementById('ffmpeg_disable_new5').style.display = "";
+                document.getElementById('ffmpeg_disable_new6').style.display = "";
                 document.getElementById('youtube').style.display = "none";
                 document.getElementById('embedvideo').style.display = "none";
                 document.getElementById('customurl').style.display = "none";
             } else if(t2.value == "c" || t2 == "c"){
                 document.getElementById('youtube').style.display = "block";
-                document.getElementById('upload2').style.display = "none";
+                document.getElementById('upload2').style.display = "block";
+                document.getElementById('supportformats').style.display = "none";
+                document.getElementById('ffmpeg_disable_new4').style.display = "none";
+                document.getElementById('ffmpeg_disable_new2').style.display = "none";
+                document.getElementById('ffmpeg_disable_new3').style.display = "none";
+                document.getElementById('ffmpeg_disable_new1').style.display = "none";
+                document.getElementById('ffmpeg_disable_new5').style.display = "";
+                document.getElementById('ffmpeg_disable_new6').style.display = "";
                 document.getElementById('embedvideo').style.display = "none";
                 document.getElementById('customurl').style.display = "none";
             } else if(t2.value == "url" || t2 == "url"){
                 document.getElementById('customurl').style.display = "block";
                 document.getElementById('embedvideo').style.display = "none";
                 document.getElementById('islive_visible').style.display = "none";
+                document.getElementById('upload2').style.display = "block";
+                document.getElementById('supportformats').style.display = "none";
+                document.getElementById('ffmpeg_disable_new4').style.display = "none";
+                document.getElementById('ffmpeg_disable_new2').style.display = "none";
+                document.getElementById('ffmpeg_disable_new3').style.display = "none";
+                document.getElementById('ffmpeg_disable_new1').style.display = "none";
+                document.getElementById('ffmpeg_disable_new5').style.display = "";
+                document.getElementById('ffmpeg_disable_new6').style.display = "";
                 document.getElementById('stream1').style.display = "none";
                 document.getElementById('hdvideourl').style.display = "";
                 document.getElementById('youtube').style.display = "none";
-                document.getElementById('upload2').style.display = "none";
             } else if(t2.value == "rtmp" || t2 == "rtmp"){
                 document.getElementById('customurl').style.display = "block";
                 document.getElementById('islive_visible').style.display = "";
                 document.getElementById('stream1').style.display = "";
+                document.getElementById('upload2').style.display = "block";
+                document.getElementById('supportformats').style.display = "none";
+                document.getElementById('ffmpeg_disable_new4').style.display = "none";
+                document.getElementById('ffmpeg_disable_new2').style.display = "none";
+                document.getElementById('ffmpeg_disable_new3').style.display = "none";
+                document.getElementById('ffmpeg_disable_new1').style.display = "none";
+                document.getElementById('ffmpeg_disable_new5').style.display = "";
+                document.getElementById('ffmpeg_disable_new6').style.display = "";
                 document.getElementById('embedvideo').style.display = "none";
                 document.getElementById('hdvideourl').style.display = "none";
                 document.getElementById('youtube').style.display = "none";
-                document.getElementById('upload2').style.display = "none";
             } else if(t2.value == "embed" || t2 == "embed"){
                 document.getElementById('embedvideo').style.display = "block";
                 document.getElementById('islive_visible').style.display = "";
@@ -80,6 +104,8 @@ if (isset($_GET['videoId']))
                 document.getElementById('ffmpeg_disable_new4').style.display = "none";
                 document.getElementById('ffmpeg_disable_new2').style.display = "none";
                 document.getElementById('ffmpeg_disable_new1').style.display = "none";
+                document.getElementById('ffmpeg_disable_new5').style.display = "none";
+                document.getElementById('ffmpeg_disable_new6').style.display = "none";
             }
         }
 
@@ -107,7 +133,7 @@ if (isset($_GET['videoId']))
         <?php } ?>
         <div class="stuffbox videoform" name="youtube" >
             <h3 class="hndle videoform_title">
-                <span><input type="radio" name="agree" id="btn2" value="c" onClick="t1(this)" /> <?php _e('YouTube URL', 'video_gallery'); ?></span>
+                <span><input type="radio" name="agree" id="btn2" value="c" onClick="t1(this)" /> <?php _e('YouTube URL / Viddler / Dailymotion', 'video_gallery'); ?></span>
                 <span><input type="radio" name="agree" id="btn1" value="y" onClick="t1(this)" /> <?php _e('Upload file', 'video_gallery'); ?></span>
                 <span><input type="radio" name="agree" id="btn3" value="url" onClick="t1(this)" /> <?php _e('Custom URL', 'video_gallery'); ?></span>
                 <span><input type="radio" name="agree" id="btn4" value="rtmp" onClick="t1(this)" /> <?php _e('RTMP', 'video_gallery'); ?></span>
@@ -131,6 +157,8 @@ if (isset($_GET['videoId']))
                                 <span id="Youtubeurlmessage" style="display: block; "></span>
                                 <p><?php _e('Here you need to enter the video URL', 'video_gallery') ?></p>
                                 <p><?php _e('It accepts Youtube links like : http://www.youtube.com/watch?v=tTGHCRUdlBs or http://youtu.be/tTGHCRUdlBs', 'video_gallery') ?></p>
+                                <p><?php _e('Viddler link like : http://www.viddler.com/v/67b33b8f', 'video_gallery') ?></p>
+                                <p><?php _e('Dailymotion link like : http://www.dailymotion.com/video/x16787y_nature-catskills_news', 'video_gallery') ?></p>
                             </td>
                         </tr>
                     </table>
@@ -336,7 +364,69 @@ if (isset($_GET['videoId']))
                                                                                            </div>
                                                                                            <div id="nor"><iframe id="uploadvideo_target" name="uploadvideo_target" src="#" style="width:0;height:0;border:0px solid #fff;"></iframe></div>
                                                                                        </td></tr>
+                                                                                   <!--Subtitle starts here-->
+                                                                                  
+                                                                                   <tr id="ffmpeg_disable_new5" name="ffmpeg_disable_new5"><td><?php _e('Upload srt file for Subtitle1', 'video_gallery') ?></td><td>
+                                                                                           <div id="f5-upload-form" >
+                                                                                               <form name="subtitle1form" method="post" enctype="multipart/form-data" >
+                                                                                                   <input type="file" name="myfile" onchange="enableUpload(this.form.name);" />
+                                                                                                   <input type="button" class="button" name="uploadBtn" value="Upload File" disabled="disabled" onclick="return addQueue(this.form.name,this.form.myfile.value);" />
+                                                                                                   <input type="hidden" name="mode" value="srt" />
+                                                                                                   <label id="lbl_normal"><?php if (isset($videoEdit->file_type) && $videoEdit->file_type != 5)
+                                                                                   echo $videoEdit->srtfile1; ?></label>
+                                                                                               </form>
+                                                                                           </div>
+                                                                                           
+                                                                                           <div id="f5-upload-progress" style="display:none">
+                                                                                               <div style="float:left"><img id="f5-upload-image" src="<?php echo get_option('siteurl') . '/wp-content/plugins/'.$dirPage.'/images/empty.gif' ?>" alt="Uploading" style="padding-top:2px" />
+                                                                                                   <label style="padding-top:0px;padding-left:4px;font-size:14px;font-weight:bold;vertical-align:top"  id="f5-upload-filename">SubTitle.srt</label></div>
+                                                                                               <div style="float:right"><span id="f5-upload-cancel">
+                                                                                                       <a style="float:right;padding-right:10px;" href="javascript:cancelUpload('subtitle1form');" name="submitcancel">Cancel</a>
+                                                                                                   </span>
+                                                                                                   <label id="f5-upload-status" style="float:right;padding-right:40px;padding-left:20px;">Uploading</label>
+                                                                                                   <span id="f5-upload-message" style="float:right;font-size:10px;background:#FFAFAE;">
+                                                                                                       <b><?php _e('Upload Failed:', 'video_gallery') ?></b> <?php _e('User Cancelled the upload', 'video_gallery') ?>
+                                                                                                   </span></div>
 
+
+                                                                                           </div>
+                                                                                        </td></tr>
+                                                                                    <tr id="subtilelang1" style="display:none;"><td width="17%"><?php echo _e('Enter subtile1 language');?></td>
+                                                                                    <td width="83%"><input type="text" name="subtile_lang1"  id="subtile_lang1" style="width:300px" maxlength="250" value="<?php if(isset($videoEdit->subtitle_lang1)) echo htmlentities($videoEdit->subtitle_lang1); ?>" />
+                                                                                    <span id="uploadsrt1message" style="display: block; margin-top:10px;color:red;font-size:12px;font-weight:bold;"></span>
+                                                                                    </td>
+                                                                                    </tr>
+                                                                                   
+                                                                                    <tr id="ffmpeg_disable_new6" name="ffmpeg_disable_new6"><td><?php _e('Upload srt file for Subtitle2', 'video_gallery') ?></td><td>
+                                                                                           <div id="f6-upload-form" >
+                                                                                               <form name="subtitle2form" method="post" enctype="multipart/form-data" >
+                                                                                                   <input type="file" name="myfile" onchange="enableUpload(this.form.name);" />
+                                                                                                   <input type="button" class="button" name="uploadBtn" value="Upload File" disabled="disabled" onclick="return addQueue(this.form.name,this.form.myfile.value);" />
+                                                                                                   <input type="hidden" name="mode" value="srt" />
+                                                                                                   <label id="lbl_normal"><?php if (isset($videoEdit->file_type) && $videoEdit->file_type != 5)
+                                                                                   echo $videoEdit->srtfile2; ?></label>
+                                                                                               </form>
+                                                                                           </div>
+                                                                                            
+                                                                                           <div id="f6-upload-progress" style="display:none">
+                                                                                               <div style="float:left"><img id="f6-upload-image" src="<?php echo get_option('siteurl') . '/wp-content/plugins/'.$dirPage.'/images/empty.gif' ?>" alt="Uploading" style="padding-top:2px" />
+                                                                                                   <label style="padding-top:0px;padding-left:4px;font-size:14px;font-weight:bold;vertical-align:top"  id="f6-upload-filename">SubTitle.srt</label></div>
+                                                                                               <div style="float:right"><span id="f6-upload-cancel">
+                                                                                                       <a style="float:right;padding-right:10px;" href="javascript:cancelUpload('subtitle2form');" name="submitcancel">Cancel</a>
+                                                                                                   </span>
+                                                                                                   <label id="f6-upload-status" style="float:right;padding-right:40px;padding-left:20px;">Uploading</label>
+                                                                                                   <span id="f6-upload-message" style="float:right;font-size:10px;background:#FFAFAE;">
+                                                                                                       <b><?php _e('Upload Failed:', 'video_gallery') ?></b> <?php _e('User Cancelled the upload', 'video_gallery') ?>
+                                                                                                   </span></div>
+
+
+                                                                                           </div>
+                                                                                       </td></tr>
+                                                                                    <tr id="subtilelang2" style="display:none;"><td width="17%"><?php echo _e('Enter subtile2 language');?></td>
+                                                                                    <td width="83%"><input type="text" name="subtile_lang2"  id="subtile_lang2" style="width:300px" maxlength="250" value="<?php if(isset($videoEdit->subtitle_lang2)) echo htmlentities($videoEdit->subtitle_lang2); ?>" />
+                                                                                    <span id="uploadsrt2message" style="display: block; margin-top:10px;color:red;font-size:12px;font-weight:bold;"></span>
+                                                                                    </td>
+                                                                                    </tr>
                                                                                </table>
                                                                            </div>
                                                                        </div>
@@ -352,12 +442,19 @@ if (isset($_GET['videoId']))
                                                                                    echo $videoEdit->image; ?>" />
                                                                            <input type="hidden" name="previewimageform-value" id="previewimageform-value"  value="<?php if (isset($videoEdit->file_type) && $videoEdit->file_type == 2)
                                                                                    echo $videoEdit->opimage; ?>" />
+                                                                           <input type="hidden" name="subtitle1form-value" id="subtitle1form-value"  value="<?php if (isset($videoEdit->file_type) && $videoEdit->file_type != 5)
+                                                                                   echo $videoEdit->srtfile1; ?>" />
+                                                                           <input type="hidden" name="subtitle2form-value" id="subtitle2form-value"  value="<?php if (isset($videoEdit->file_type) && $videoEdit->file_type != 5)
+                                                                                   echo $videoEdit->srtfile2; ?>" />
+                                                                           <input type="hidden" name="subtitle_lang1" id="subtitle_lang1" value="" />
+                                                                        <input type="hidden" name="subtitle_lang2" id="subtitle_lang2" value="" />
                                                                            <input type="hidden" name="youtube-value" id="youtube-value"  value="" />
                                                                            <input type="hidden" name="streamerpath-value" id="streamerpath-value" value="" />
                                                                            <input type="hidden" name="embed_code" id="embed_code" value="" />
                                                                            <input type="hidden" name="islive-value" id="islive-value" value="0" />
                                                                            <input type="hidden" name="customurl" id="customurl1"  value="" />
                                                                            <input type="hidden" name="customhd" id="customhd1"  value="" />
+                                                                           <input type="hidden" name="member_id" id="member_id"  value="<?php if (isset($videoEdit->member_id)) echo $videoEdit->member_id; ?>" />
                                                                            <input type="hidden" name="customimage" id="customimage"  value="" />
                                                                            <input type="hidden" name="custompreimage" id="custompreimage"  value="" />
                                                                            <!-- Start of sidebar  -->
@@ -627,7 +724,7 @@ if (isset($_GET['videoId']))
                                                                         var theurl=document.getElementById("filepath1").value;
                                                                         var regExp = /^.*(youtu.be\/|v\/|embed\/|watch\?|youtube.com\/user\/[^#]*#([^\/]*?\/)*)\??v?=?([^#\&\?]*).*/;
                                                                         var match = theurl.match(regExp);
-                                                                        if (match){
+                                                                        if (theurl.indexOf("youtu.be") !== -1 || theurl.indexOf("youtube.com") !== -1){
                                                                              document.getElementById('generate').style.visibility = "visible";
                                                                         }
                                                                          else document.getElementById('generate').style.visibility  = "hidden";

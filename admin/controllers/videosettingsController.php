@@ -34,6 +34,7 @@ if (class_exists('SettingsController') != true) {//checks if the SettingsControl
                 $keyApps = filter_input(INPUT_POST, 'keyApps');
                 $keydisqusApps = filter_input(INPUT_POST, 'keydisqusApps');
                 $embedVisible = filter_input(INPUT_POST, 'embed_visible');
+                $view_visible = filter_input(INPUT_POST, 'view_visible');
                 $ratingscontrol = filter_input(INPUT_POST, 'ratingscontrol');
                 $downLoad = filter_input(INPUT_POST, 'download');
                 $playerTimer = filter_input(INPUT_POST, 'timer');
@@ -138,6 +139,7 @@ if (class_exists('SettingsController') != true) {//checks if the SettingsControl
                     'keyApps' => $keyApps,
                     'keydisqusApps' => $keydisqusApps,
                     'embed_visible' => $embedVisible,
+                    'view_visible' => $view_visible,
                     'ratingscontrol' => $ratingscontrol,
                     'download' => $downLoad,
                     'timer' => $playerTimer,
@@ -209,7 +211,7 @@ $image_path = str_replace('plugins/'.$dirPage.'/admin/controllers', 'uploads/vid
                                 }else{
                                     $settingsData['logopath'] = $logopath;
                                 }
-                $settingsDataformat = array('%d','%d','%d', '%d', '%d', '%s', '%s', '%d', '%d', '%d',
+                $settingsDataformat = array('%d','%d','%d', '%d', '%d', '%s', '%s', '%d', '%d', '%d', '%d',
                     '%d', '%d', '%d','%d', '%d', '%d', '%d', '%d', '%d', '%d',
                     '%s', '%s', '%s','%s', '%s', '%s', '%s', '%s', '%s', '%s',
                     '%d', '%d', '%d','%s', '%d', '%d', '%d', '%d', '%d', '%d',

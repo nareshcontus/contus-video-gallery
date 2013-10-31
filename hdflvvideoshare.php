@@ -72,6 +72,59 @@ if (isset($_GET['page']) && $_GET['page'] == 'ajaxplaylist') {
 ## Register Video Gallery Custom Post
 add_action('init', 'videogallery_register');
 add_action('admin_init', 'videogallery_admin_init');
+## Video Sort order function
+add_action('wp_ajax_videosortorder', 'videosort_function');
+
+function videosort_function(){
+    global $wpdb;
+    $listitem       = $_POST['listItem'];
+    $ids            = implode(',', $listitem);
+    $sql            = 'UPDATE `' . $wpdb->prefix . 'hdflvvideoshare` SET `ordering` = CASE vid ';
+    if (isset($_GET['pagenum'])){
+           $page = $_GET['pagenum'];
+           $page = (20*($page-1));
+       }
+    foreach($listitem as $key => $value){
+       $listitems[$key+$page]=$value;
+    }
+    foreach ($listitems as $position => $item) {
+        $sql       .= sprintf("WHEN %d THEN %d ", $item, $position);
+    }
+    $sql           .= ' END WHERE vid IN (' . $ids . ')';
+    $wpdb->query($sql);
+    die();
+}
+## Video Hit count increase function
+add_action('wp_ajax_videohitCount', 'videohitCount_function');
+add_action('wp_ajax_nopriv_videohitCount', 'videohitCount_function');
+function videohitCount_function(){
+    global $wpdb;
+    $vid            = $_GET['vid'];             ## Get video id from url
+    $hitList            = $wpdb->get_row("SELECT * FROM " . $wpdb->prefix . "hdflvvideoshare WHERE vid='" . intval($vid) . "'");
+    $hitCount       = $hitList->hitcount;       ## Get view count for particular video and increase it
+    $hitInc         = ++$hitCount;
+    ## Update Hit count here
+    $wpdb->update( $wpdb->prefix . "hdflvvideoshare", array('hitcount' => intval($hitInc)), array( 'vid' => intval($vid) ));
+    die();
+}
+
+## Video Hit count increase function
+add_action('wp_ajax_rateCount', 'rateCount_function');
+add_action('wp_ajax_nopriv_rateCount', 'rateCount_function');
+function rateCount_function(){
+    global $wpdb;
+    $vid            = $_GET['vid'];             ## Get video id from url
+    $get_rate       = $_GET['rate'];            ## Get Rate count from url
+    if ($get_rate) {
+        ## Update rate count count here
+        mysql_query("UPDATE " . $wpdb->prefix . "hdflvvideoshare SET rate=" . intval($get_rate) . "+rate,ratecount=1+ratecount WHERE vid = '" . intval($vid) . "'");
+        $ratecount            = mysql_query("SELECT * FROM " . $wpdb->prefix . "hdflvvideoshare WHERE vid='" . intval($vid) . "'");
+        $rateList        = mysql_fetch_object($ratecount);
+        $rateCount      = $rateList->ratecount;       ## Get rate count for particular video and display it
+        echo $rateCount;
+    }    
+    die();
+}
 
 function videogallery_register() {
     $labels = array(
@@ -142,8 +195,8 @@ if (isset($_GET['action']) && $_GET['action'] == "activate-plugin" && $_GET['plu
 
     ## declare variables
     $updateSlug = $updatestreamer_path = $updateislive = $updateratecount = $updaterate = $updateordering = $updatekeyApps = $updatekeydisqusApps =
-    $player_colors = $playlist_open = $updatecolMore = $updateembedcode = $updatedefault_player = $updaterowMore =
-    $showPlaylist = $updatecontentId = $updateimaadpath = $updatepublisherId = $updateimaadwidth = $updateimaadheight = $midroll_ads = $adsSkip = $adsSkipDuration = $relatedVideoView = $imaAds = $trackCode = $showTag = $ratingscontrol =
+    $player_colors = $playlist_open = $updatecolMore = $updateembedcode = $updatesubtitle_lang1 = $updatemember_id = $updatesubtitle_lang2 = $updatesrtfile1 = $updatesrtfile2 = $updatedefault_player = $updaterowMore =
+    $showPlaylist = $updatecontentId = $updateimaadpath = $updatepublisherId = $updateimaadwidth = $updateimaadheight = $midroll_ads = $adsSkip = $adsSkipDuration = $relatedVideoView = $imaAds = $trackCode = $showTag = $ratingscontrol = $view_visible =
     $updateaddescription = $updateimaadType = $updateadtargeturl = $updateadclickurl = $updateadimpressionurl = $updateadmethod = $updateadtype = $updateispublish =
     $shareIcon = $updateimaad = $updatechannels = $updatemidrollads = $volumecontrol = $playlist_auto = $progressControl = $imageDefault = $updatepublish = $updateadpublish = '';
 
@@ -158,6 +211,11 @@ if (isset($_GET['action']) && $_GET['action'] == "activate-plugin" && $_GET['plu
     $updateratecount        = AddColumnIfNotExists($errorMsg, "$table_name", "ratecount", "INT( 25 ) NOT NULL DEFAULT 0");
     $updaterate             = AddColumnIfNotExists($errorMsg, "$table_name", "rate", "INT( 25 ) NOT NULL DEFAULT 0");
     $updateembedcode        = AddColumnIfNotExists($errorMsg, "$table_name", "embedcode", "LONGTEXT NOT NULL");
+    $updatesrtfile1         = AddColumnIfNotExists($errorMsg, "$table_name", "srtfile1", "varchar(255) NOT NULL");
+    $updatesrtfile2         = AddColumnIfNotExists($errorMsg, "$table_name", "srtfile2", "varchar(255) NOT NULL");
+    $updatesubtitle_lang1   = AddColumnIfNotExists($errorMsg, "$table_name", "subtitle_lang1", "MEDIUMTEXT NOT NULL");
+    $updatesubtitle_lang2   = AddColumnIfNotExists($errorMsg, "$table_name", "subtitle_lang2", "MEDIUMTEXT NOT NULL");
+    $updatemember_id   = AddColumnIfNotExists($errorMsg, "$table_name", "member_id", "INT(3) NOT NULL");
 
     ## AD table update
     $updateadpublish        = AddColumnIfNotExists($errorMsg, "$table_ad", "publish", "INT( 11 ) NOT NULL DEFAULT 1");
@@ -195,6 +253,7 @@ if (isset($_GET['action']) && $_GET['action'] == "activate-plugin" && $_GET['plu
     $trackCode              = AddColumnIfNotExists($errorMsg, "$table_settings", "trackCode", "TEXT $charset_collate NOT NULL");
     $showTag                = AddColumnIfNotExists($errorMsg, "$table_settings", "showTag", "INT( 3 ) NOT NULL");
     $ratingscontrol         = AddColumnIfNotExists($errorMsg, "$table_settings", "ratingscontrol", "INT( 3 ) NOT NULL");
+    $view_visible           = AddColumnIfNotExists($errorMsg, "$table_settings", "view_visible", "INT( 3 ) NOT NULL");
     $shareIcon              = AddColumnIfNotExists($errorMsg, "$table_settings", "shareIcon", "INT( 3 ) NOT NULL");
     $volumecontrol          = AddColumnIfNotExists($errorMsg, "$table_settings", "volumecontrol", "INT( 3 ) NOT NULL DEFAULT 1");
     $playlist_auto          = AddColumnIfNotExists($errorMsg, "$table_settings", "playlist_auto", "INT( 3 ) NOT NULL");

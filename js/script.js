@@ -26,7 +26,7 @@ else
     }
   }
 
-xmlhttp.open("GET",baseurl+"/wp-content/plugins/"+folder+"/hitCount.php?vid="+vid,true);
+xmlhttp.open("GET",baseurl+"/wp-admin/admin-ajax.php?action=videohitCount&vid="+vid,true);
 xmlhttp.send();
 }
  

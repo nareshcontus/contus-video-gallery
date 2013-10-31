@@ -49,10 +49,10 @@ if (class_exists('VideoController') != true) {//checks if the VideoController cl
             }//updating status of video ends
 
             if (isset($this->_addnewVideo)) {
-                $videoName = filter_input(INPUT_POST, 'name');
-                $titlequery         = $this->_wpdb->get_var("SELECT count(vid) FROM ".$wpdb->prefix . "hdflvvideoshare where name='$videoName'");
+                $videoName = $videoName1 = filter_input(INPUT_POST, 'name');
+                $titlequery         = $this->_wpdb->get_var($wpdb->prepare("SELECT count(vid) FROM ".$wpdb->prefix . "hdflvvideoshare where name=%s",$videoName1));
                 if(!empty($titlequery) || $titlequery>0){
-                    $videoName1       = $videoName.rand();
+                    $videoName1       = $videoName1.rand();
                 }
                 $slug = sanitize_title($videoName1);
                 $videoDescription = filter_input(INPUT_POST, 'description');
@@ -64,7 +64,6 @@ if (class_exists('VideoController') != true) {//checks if the VideoController cl
 		$seo_tags_name = preg_replace('/[#!@$%^.,:;\/&*(){}\"\'\[\]<>|?]+/i', '', $seo_tags_name);
 		$seo_tags_name = preg_replace('/---|--+/i', '-', $seo_tags_name);
                 $streamname = filter_input(INPUT_POST, 'streamerpath-value');
-                //$videoTag = filter_input(INPUT_POST, 'videotag');
                 $videoLinkurl = filter_input(INPUT_POST, 'youtube-value');
                 $sorder=$act_playlist='';
                 if(!empty($_POST['playlist']))
@@ -80,17 +79,32 @@ if (class_exists('VideoController') != true) {//checks if the VideoController cl
                 $videoPrerollads = filter_input(INPUT_POST, 'prerollads');
                 $videoDate = date('Y-m-d H:i:s');
                 
+                $dir                    = dirname(plugin_basename(__FILE__));
+                $dirExp                 = explode('/', $dir);
+                $dirPage                = $dirExp[0];
+                $video_path             = str_replace('plugins/'.$dirPage.'/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
+                $srt_path1               = str_replace('plugins', 'uploads/videogallery/', APPTHA_VGALLERY_BASEDIR);
+                $srt_path               = str_replace($dirPage, '', $srt_path1);
+                    
                 $ordering    = $this->_wpdb->get_var("SELECT count(ordering) FROM ".$wpdb->prefix . "hdflvvideoshare");
                 $videoPublish = filter_input(INPUT_POST, 'publish');
                 $islive = filter_input(INPUT_POST, 'islive-value');
-                $video1 = $_POST['normalvideoform-value'];
-                $video2 = $_POST['hdvideoform-value'];
-                $img1 = $_POST['thumbimageform-value'];
-                $img2 = $_POST['previewimageform-value'];
-                $img3 = $_POST['customimage'];
+                $video1 = filter_input(INPUT_POST, 'normalvideoform-value');
+                $video2 = filter_input(INPUT_POST, 'hdvideoform-value');
+                $img1 = filter_input(INPUT_POST, 'thumbimageform-value');
+                $img2 = filter_input(INPUT_POST, 'previewimageform-value');
+                $subtitle1 = filter_input(INPUT_POST, 'subtitle1form-value');
+                $subtitle2 = filter_input(INPUT_POST, 'subtitle2form-value');
+                $subtitle_lang1 = filter_input(INPUT_POST, 'subtitle_lang1');
+                $subtitle_lang2 = filter_input(INPUT_POST, 'subtitle_lang2');
+                $member_id = filter_input(INPUT_POST, 'member_id');
+                 $img3 = $_POST['customimage'];
                 $pre_image = $_POST['custompreimage'];
 
                     if ($videoLinkurl != '') {
+                        if (preg_match("#https?://#", $videoLinkurl) === 0) {
+                            $videoLinkurl = 'http://' . $videoLinkurl;
+                        }
                     $act_filepath = addslashes(trim($videoLinkurl));
                     $file_type = '1';
 
@@ -106,6 +120,15 @@ if (class_exists('VideoController') != true) {//checks if the VideoController cl
                         $previewurl = "http://img.youtube.com/vi/" . $imgstr[3] . "/maxresdefault.jpg";
                         $img = "http://img.youtube.com/vi/" . $imgstr[3] . "/mqdefault.jpg";
                         $act_filepath = "http://www.youtube.com/watch?v=" . $imgstr[3];
+                    } else if(strpos($act_filepath,'dailymotion') > 0){                 ## check video url is dailymotion
+                        $split      = explode("/",$act_filepath);
+                        $split_id   = explode("_",$split[4]);
+                        $img        = $previewurl = 'http://www.dailymotion.com/thumbnail/video/'.$split_id[0];
+                        $file_type  = '1';
+                    } else if(strpos($act_filepath,'viddler') > 0) {                    ## check video url is viddler
+                            $imgstr = explode("/", $act_filepath);
+                            $img    = $previewurl = "http://cdn-thumbs.viddler.com/thumbnail_2_" . $imgstr[4] . "_v1.jpg";
+                            $file_type = '1';
                     }
 
                     $youtube_data = $this->hd_GetSingleYoutubeVideo($match);
@@ -114,10 +137,6 @@ if (class_exists('VideoController') != true) {//checks if the VideoController cl
                     $duration = $this->convertTime($sec);
                 } else {
                     $act_filepath1 = $_REQUEST['normalvideoform-value'];
-                    $dir                    = dirname(plugin_basename(__FILE__));
-                    $dirExp                 = explode('/', $dir);
-                    $dirPage                = $dirExp[0];
-                    $video_path=str_replace('plugins/'.$dirPage.'/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
                     $act_filepath1=$video_path.$act_filepath1;
                     $act_filepath = addslashes(trim($_POST['customurl']));
                     $ffmpeg_path = $this->_settingsData->ffmpeg_path;
@@ -163,6 +182,15 @@ if (class_exists('VideoController') != true) {//checks if the VideoController cl
                             $file_type = '1';
                         } else
                             $this->render_error(__('Could not retrieve Youtube video information', 'hdflvvideoshare'));
+                    }else if(strpos($act_filepath,'dailymotion') > 0){              ## check video url is dailymotion
+                        $split      = explode("/",$act_filepath);
+                        $split_id   = explode("_",$split[4]);
+                        $act_image        = $act_opimage = 'http://www.dailymotion.com/thumbnail/video/'.$split_id[0];
+                        $file_type  = '1';
+                    } else if(strpos($act_filepath,'viddler') > 0) {                    ## check video url is viddler
+                            $imgstr = explode("/", $act_filepath);
+                            $act_image    = $act_opimage = "http://cdn-thumbs.viddler.com/thumbnail_2_" . $imgstr[4] . "_v1.jpg";
+                            $file_type = '1';
                     }else {
                         $act_hdpath = $act_filepath2;
                         $act_image = $img3;
@@ -187,19 +215,27 @@ if (class_exists('VideoController') != true) {//checks if the VideoController cl
                 if(!empty($embedcode)){
                     $file_type = '5';
                     }
-
+                if(empty($member_id)){    
+                    $current_user = wp_get_current_user();
+                    $member_id = $current_user->ID;
+                }
                 $videoData = array(
                     'name' => $videoName,
                     'description' => $videoDescription,
                     'embedcode' => $embedcode,
                     'file' => $act_filepath,
                     'file_type' => $file_type,
+                    'member_id' => $member_id,
                     'duration' => $duration,
                     'hdfile' => $act_hdpath,
                     'streamer_path' => $streamname,
                     'islive' => $islive,
                     'image' => $act_image,
                     'opimage' => $act_opimage,
+                    'srtfile1' => $subtitle1,
+                    'srtfile2' => $subtitle2,
+                    'subtitle_lang1' => $subtitle_lang1,
+                    'subtitle_lang2' => $subtitle_lang2,
                     'link' => $videoLinkurl,
                     'featured' => $videoFeatured,
                     'download' => $videoDownload,
@@ -207,19 +243,37 @@ if (class_exists('VideoController') != true) {//checks if the VideoController cl
                     'midrollads' => $videomidrollads,
                     'imaad' => $videoimaad,
                     'prerollads' => $videoPrerollads,
-                    'ordering' => $ordering,
                     'publish' => $videoPublish
                 );
 
                 if (!isset($this->_videoId)) {
                     $videoData['post_date'] = $videoDate;
+                    $videoData['ordering'] = $ordering;
                     $videoData['slug'] = '';
                 }
-
+                
                 if (isset($this->_videoId)) {   //update for video if starts
                     $slug_id=$this->_wpdb->get_var("SELECT slug FROM ".$wpdb->prefix . "hdflvvideoshare WHERE vid =$this->_videoId");
                     $videoData['slug'] = $slug_id;
                    $updateflag = $this->video_update($videoData, $this->_videoId,$slug);
+
+                        if(!empty($subtitle1)){
+                            $sub_title1 = $srt_path.$subtitle1;
+                            $new_subtitle1 = $this->_videoId.'_'.$subtitle_lang1.'.srt';
+                            rename($sub_title1,$srt_path.$new_subtitle1);
+                        } else {
+                            $new_subtitle1 = '';
+                        }
+                        
+                        if(!empty($subtitle2)){
+                            $sub_title2 = $srt_path.$subtitle2;
+                            $new_subtitle2 = $this->_videoId.'_'.$subtitle_lang2.'.srt';
+                            rename($sub_title2,$srt_path.$new_subtitle2);
+                        } else {
+                            $new_subtitle2 = '';
+                        }
+                        $wpdb->query(" UPDATE " . $wpdb->prefix . "hdflvvideoshare SET srtfile1= '$new_subtitle1',srtfile2= '$new_subtitle2' WHERE vid = '$this->_videoId'");
+
 //                    if ($updateflag) {
                         if ($this->_videoId && is_array($act_playlist)) {
                             $old_playlist = $wpdb->get_col(" SELECT playlist_id FROM " . $wpdb->prefix . "hdflvvideoshare_med2play WHERE media_id = $this->_videoId");
@@ -266,7 +320,24 @@ if (class_exists('VideoController') != true) {//checks if the VideoController cl
                 else {//adding video else starts
                     $insertflag = $this->insert_video($videoData,$slug);
                     if ($insertflag != 0) {
-
+                         
+                        if(!empty($subtitle1)){
+                            $sub_title1 = $srt_path.$subtitle1;
+                            $new_subtitle1 = $insertflag.'_'.$subtitle_lang1.'.srt';
+                            rename($sub_title1,$srt_path.$new_subtitle1);
+                        } else {
+                            $new_subtitle1 = '';
+                        }
+                        
+                        if(!empty($subtitle2)){
+                            $sub_title2 = $srt_path.$subtitle2;
+                            $new_subtitle2 = $insertflag.'_'.$subtitle_lang2.'.srt';
+                            rename($sub_title2,$srt_path.$new_subtitle2);
+                        } else {
+                            $new_subtitle2 = '';
+                        }
+                        $wpdb->query(" UPDATE " . $wpdb->prefix . "hdflvvideoshare SET srtfile1= '$new_subtitle1',srtfile2= '$new_subtitle2' WHERE vid = '$insertflag'");
+                        
                         if(!empty($tags_name)){
                             $wpdb->query("INSERT INTO " . $wpdb->prefix . "hdflvvideoshare_tags (media_id,tags_name,seo_name) VALUES ($insertflag, '$tags_name', '$seo_tags_name')");
                         }
@@ -597,7 +668,6 @@ $gridVideo = $videoOBJ->video_data();
 $videosearchQuery =$videoOBJ->_videosearchQuery;
 $searchBtn = $videoOBJ->_searchBtn;
 $Video_count = $videoOBJ->video_count($videosearchQuery, $searchBtn);
-//$playlistVideo = $videoOBJ->get_playlist();
 $videoEdit = $videoOBJ->video_edit($videoId);
 $displayMsg = $videoOBJ->get_message();
 $searchMsg = $videoOBJ->_videosearchQuery;

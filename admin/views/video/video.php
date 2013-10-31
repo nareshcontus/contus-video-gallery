@@ -31,7 +31,7 @@ if (isset($_GET['pagenum'])){
                     videoid[i]=orderid[i].replace('&',"");
                     oid= "ordertd_"+videoid[i];
                 }
-                dragdr.post("<?php echo get_bloginfo('url') . "/wp-content/plugins/$dirPage/sortorder.php?$page"; ?>",order);
+                dragdr.post("<?php echo get_bloginfo('url'); ?>/wp-admin/admin-ajax.php?action=videosortorder<?php echo $page; ?>",order);
             }
         });
     });
@@ -90,10 +90,9 @@ if (isset($_GET['pagenum'])){
             <?php _e('title - You can enable/disable Title on the page or post above the player. By default, it will be in "off" status.', 'video_gallery'); ?><br><br>
             <?php _e('views - You can enable/disable View count of the video on the page or post under the player. By default, it will be in "off" status.', 'video_gallery'); ?>
         </div>
-
-
-
-        <?php if ($displayMsg): ?>
+        <?php 
+    }
+        if ($displayMsg): ?>
                 <div class="updated below-h2">
                     <p>
                 <?php echo $displayMsg; ?>
@@ -201,12 +200,16 @@ if (isset($_GET['pagenum'])){
                                             <tr id="listItem_<?php echo $videoView->vid; ?>">
                                                 <th scope="row" class="check-column">
                                                     <input type="checkbox" name="video_id[]" value="<?php echo $videoView->vid ?>"></th>
+                                                
                                                 <td>
+                                                    <?php if($user_role!='subscriber'){ ?>
                                                     <span class="hasTip content" title="<?php _e('Click and Drag', 'video_gallery'); ?>" style="padding: 6px;">
                                                         <img src="<?php echo APPTHA_VGALLERY_BASEURL . 'images/arrow.png'; ?>" alt="move"
                                                              width="16" height="16" class="handle" />
                                                     </span>
+                                                    <?php } ?>
                                                 </td>
+                                                
                                                 <td class="image column-image" style='text-align:center;'>
                                                     <a title="Edit <?php echo $videoView->name; ?>"  href="<?php echo $_SERVER["PHP_SELF"]; ?>?page=newvideo&videoId=<?php echo $videoView->vid; ?>" ><?php echo $videoView->vid; ?></a>
                                                 </td>
@@ -304,6 +307,5 @@ if (isset($_GET['pagenum'])){
                 ?>
             </div>
         </form>
-<?php } ?>
     </div>
 </div>

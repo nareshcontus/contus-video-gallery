@@ -35,7 +35,7 @@ if(class_exists('VideoModel') != true)
                 
                 $post_content="[hdvideo id=".$this->_wpdb->insert_id."]";
                 $post_id=$post_id+1;
-               
+
                 $postsData= array(
                     'post_author' => '1',
                     'post_date' => date('Y-m-d H:i:s'),
@@ -121,21 +121,39 @@ if(class_exists('VideoModel') != true)
                $this->_wpdb->update($this->_videotable, array('slug' =>$this->_wpdb->insert_id), array( 'vid' => $videoId ));
             }else{
                 $this->_wpdb->update($this->_posttable, array('comment_status' => 'open','post_title' =>$videoData['name'],'post_name' => $slug,'post_modified' => date('Y-m-d H:i:s'),'post_modified_gmt' => date('Y-m-d H:i:s')), array( 'ID' => $slug_id ));
-            }
+             }
 
 
             return ;
         }//function for updating video ends
 
+         function get_current_user_role() {
+        global $current_user;
+        get_currentuserinfo();
+        $user_roles = $current_user->roles;
+        $user_role = array_shift($user_roles);
+        return $user_role;
+    }
+    
         public function get_videodata($searchValue,$searchBtn,$order,$orderDirection)
         {//function for getting search videos starts
             $where='';
+            $user_role = $this->get_current_user_role();
+            $current_user = wp_get_current_user();
+            if($user_role!='administrator'){
+                $where .=  " WHERE member_id=".$current_user->ID;
+            }
             $pagenum = isset( $_GET['pagenum'] ) ? absint( $_GET['pagenum'] ) : 1;
             $limit = 20;
             $offset = ( $pagenum - 1 ) * $limit;
             if(isset($searchBtn))
             {
-                $where =  " WHERE name LIKE '%" . $searchValue . "%' || description LIKE '%" . $searchValue . "%'";
+                if(empty($where)){
+                    $where .= " WHERE";
+                } else {
+                    $where .= " AND";
+                }
+                $where .=  " (name LIKE '%" . $searchValue . "%' || description LIKE '%" . $searchValue . "%')";
             }
             if(!isset($orderDirection))
             {
@@ -153,9 +171,19 @@ if(class_exists('VideoModel') != true)
         public function video_count($searchValue,$searchBtn)
         {//function for getting single video starts
             $where='';
+            $user_role = $this->get_current_user_role();
+            $current_user = wp_get_current_user();
+            if($user_role!='administrator'){
+                $where .=  " WHERE member_id=".$current_user->ID;
+            }
             if(isset($searchBtn))
             {
-                $where =  " WHERE name LIKE '%" . $searchValue . "%' || description LIKE '%" . $searchValue . "%'";
+                if(empty($where)){
+                    $where .= " WHERE";
+                } else {
+                    $where .= " AND";
+                }
+                $where .=  " (name LIKE '%" . $searchValue . "%' || description LIKE '%" . $searchValue . "%')";
             }
             return $this->_wpdb->get_var("SELECT COUNT(`vid`) FROM ".$this->_videotable.$where);
         }//function for getting single video ends
