@@ -215,15 +215,17 @@ if (class_exists('ContusMoreView') != true) {
                                 }
                                 $div             .= '<span class="ratethis1 '.$ratearray[$ratestar].'"></span>';
                             } 
-                            ## Rating ends here
-                            $div            .= '
-                                    <span class="video_views">';
-                            if($hitcount[$j]>1)
-                                $viewlang   = $this->_viewslang;
-                                else
-                                   $viewlang = $this->_viewlang;
+                            ## Rating ends and views starts here
+                            if ($this->_settingsData->view_visible == 1) {
+                            $div            .= '<span class="video_views">';
+                                if($hitcount[$j]>1){
+                                    $viewlang   = $this->_viewslang;
+                                } else {
+                                       $viewlang = $this->_viewlang;
+                                }
                             $div            .= $hitcount[$j] . ' '.$viewlang;
                             $div            .= '</span>';
+                            }
                             $div            .= '</div>';
                             $div            .= '</li>';
                         ## ELSE ENDS
@@ -322,14 +324,15 @@ if (class_exists('ContusMoreView') != true) {
                                 }
                                 $div             .= '<span class="ratethis1 '.$ratearray[$ratestar].'"></span>';
                             }
-                        ## Rating ends here
-                        if($playList->hitcount>1)
-                                $viewlang = $this->_viewslang;
-                                else
-                                   $viewlang = $this->_viewlang;
-
-                            $div    .= '<span class="video_views">' . $playList->hitcount . ' '.$viewlang . '</span>';
-                        
+                        ## Rating ends and views starts here
+                            if ($this->_settingsData->view_visible == 1) {
+                                if($playList->hitcount>1){
+                                        $viewlang = $this->_viewslang;
+                                } else {
+                                           $viewlang = $this->_viewlang;
+                                }
+                                $div    .= '<span class="video_views">' . $playList->hitcount . ' '.$viewlang . '</span>';
+                            }
                         $div        .= '</div></li>';
 
                         if ($i > ($this->_perCat-2)) {
@@ -436,13 +439,15 @@ if (class_exists('ContusMoreView') != true) {
                                 }
                                 $div             .= '<span class="ratethis1 '.$ratearray[$ratestar].'"></span>';
                             }
-                        ## Rating ends here
-                        if($playList->hitcount>1)
-                                $viewlang = $this->_viewslang;
-                                else
-                                   $viewlang = $this->_viewlang;
-                        $div        .= '<span class="video_views">' . $playList->hitcount . ' '.$viewlang . '</span>';
- 
+                        ## Rating ends and views starts here
+                        if ($this->_settingsData->view_visible == 1) {
+                            if($playList->hitcount>1){
+                                    $viewlang = $this->_viewslang;
+                            } else {
+                                       $viewlang = $this->_viewlang;
+                            }
+                            $div        .= '<span class="video_views">' . $playList->hitcount . ' '.$viewlang . '</span>';
+                        }
                         $div        .= '</div></li>';
 
                         $inc++;
