@@ -54,7 +54,7 @@ if(class_exists('ContusMore') != true)
         {//function for getting settings data starts
             $pagenum = isset($pagenum ) ? absint($pagenum ) : 1;
             $offset = ( $pagenum - 1 ) * $dataLimit;
-            $query = "SELECT * FROM " . $this->_wpdb->prefix . "hdflvvideoshare_playlist WHERE is_publish='1' LIMIT " . $offset . "," . $dataLimit ;
+            $query = "SELECT * FROM " . $this->_wpdb->prefix . "hdflvvideoshare_playlist WHERE is_publish='1' ORDER BY playlist_order ASC LIMIT " . $offset . "," . $dataLimit ;
             return $this->_wpdb->get_results($query);
         }//function for getting settings data ends
 

@@ -124,7 +124,7 @@ if(class_exists('PlaylistController') != true)
                 break;
 
                 case 'sorder':
-                    $order ='ordering';
+                    $order ='playlist_order';
                 break;
 
                 default:

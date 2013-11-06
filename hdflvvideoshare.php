@@ -94,6 +94,29 @@ function videosort_function(){
     $wpdb->query($sql);
     die();
 }
+
+## Playlist Sort order function
+add_action('wp_ajax_playlistsortorder', 'playlist_function');
+
+function playlist_function(){
+    global $wpdb;
+    $listitem       = $_POST['listItem'];
+    $ids            = implode(',', $listitem);
+    $sql            = 'UPDATE `' . $wpdb->prefix . 'hdflvvideoshare_playlist` SET `playlist_order` = CASE pid ';
+    if (isset($_GET['pagenum'])){
+           $page = $_GET['pagenum'];
+           $page = (20*($page-1));
+       }
+    foreach($listitem as $key => $value){
+       $listitems[$key+$page]=$value;
+    }
+    foreach ($listitems as $position => $item) {
+        $sql       .= sprintf("WHEN %d THEN %d ", $item, $position);
+    }
+    $sql           .= ' END WHERE pid IN (' . $ids . ')';
+    $wpdb->query($sql);
+    die();
+}
 ## Video Hit count increase function
 add_action('wp_ajax_videohitCount', 'videohitCount_function');
 add_action('wp_ajax_nopriv_videohitCount', 'videohitCount_function');
@@ -287,7 +310,7 @@ if (isset($_GET['action']) && $_GET['action'] == "activate-plugin" && $_GET['plu
     $updatesrtfile2         = AddColumnIfNotExists($errorMsg, "$table_name", "srtfile2", "varchar(255) NOT NULL");
     $updatesubtitle_lang1   = AddColumnIfNotExists($errorMsg, "$table_name", "subtitle_lang1", "MEDIUMTEXT NOT NULL");
     $updatesubtitle_lang2   = AddColumnIfNotExists($errorMsg, "$table_name", "subtitle_lang2", "MEDIUMTEXT NOT NULL");
-    $updatemember_id   = AddColumnIfNotExists($errorMsg, "$table_name", "member_id", "INT(3) NOT NULL");
+    $updatemember_id        = AddColumnIfNotExists($errorMsg, "$table_name", "member_id", "INT(3) NOT NULL");
 
     ## AD table update
     $updateadpublish        = AddColumnIfNotExists($errorMsg, "$table_ad", "publish", "INT( 11 ) NOT NULL DEFAULT 1");
@@ -325,8 +348,8 @@ if (isset($_GET['action']) && $_GET['action'] == "activate-plugin" && $_GET['plu
     $trackCode              = AddColumnIfNotExists($errorMsg, "$table_settings", "trackCode", "TEXT $charset_collate NOT NULL");
     $showTag                = AddColumnIfNotExists($errorMsg, "$table_settings", "showTag", "INT( 3 ) NOT NULL");
     $ratingscontrol         = AddColumnIfNotExists($errorMsg, "$table_settings", "ratingscontrol", "INT( 3 ) NOT NULL");
-    $tagdisplay           = AddColumnIfNotExists($errorMsg, "$table_settings", "tagdisplay", "INT( 3 ) NOT NULL");
-    $categorydisplay           = AddColumnIfNotExists($errorMsg, "$table_settings", "categorydisplay", "INT( 3 ) NOT NULL");
+    $tagdisplay             = AddColumnIfNotExists($errorMsg, "$table_settings", "tagdisplay", "INT( 3 ) NOT NULL");
+    $categorydisplay        = AddColumnIfNotExists($errorMsg, "$table_settings", "categorydisplay", "INT( 3 ) NOT NULL");
     $view_visible           = AddColumnIfNotExists($errorMsg, "$table_settings", "view_visible", "INT( 3 ) NOT NULL");
     $shareIcon              = AddColumnIfNotExists($errorMsg, "$table_settings", "shareIcon", "INT( 3 ) NOT NULL");
     $volumecontrol          = AddColumnIfNotExists($errorMsg, "$table_settings", "volumecontrol", "INT( 3 ) NOT NULL DEFAULT 1");
@@ -356,7 +379,6 @@ function videogallery_menu() {
         case 'playlist' :
         case 'newplaylist' :
             include_once($adminControllerPath . 'playlistController.php');              ## Include playlist controller to create new playlist
-            $playlistoBj = new PlaylistController();
             break;
         case 'videoads' :
         case 'newvideoad' :
@@ -447,6 +469,13 @@ function add_meta_details() {
         if (strpos($imageFea, 'youtube') > 0) {
             $imgstr     = explode("/", $imageFea);
             $imageFea   = "http://img.youtube.com/vi/" . $imgstr[4] . "/mqdefault.jpg";
+        } else if(strpos($imageFea,'dailymotion') > 0){                     ## check video url is dailymotion
+                $split      = explode("/",$imageFea);
+                $split_id   = explode("_",$split[4]);
+                $imageFea = 'http://www.dailymotion.com/thumbnail/video/'.$split_id[0];
+        } else if(strpos($imageFea,'viddler') > 0) {                    ## check video url is viddler
+                $imgstr = explode("/", $imageFea);
+                $imageFea = "http://cdn-thumbs.viddler.com/thumbnail_2_" . $imgstr[4] . "_v1.jpg";
         }
         $videoname      = $video_count->name;           ## Get video name
         $des            = $video_count->description;    ## Get Video Description

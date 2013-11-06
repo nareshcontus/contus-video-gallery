@@ -45,7 +45,7 @@ if(class_exists('ContusVideo') != true)
             global $wpdb;
             $pagenum    = isset($pagenum ) ? absint($pagenum ) : 1;
             $offset     = ( $pagenum - 1 ) * $dataLimit;
-            $query      = "SELECT * FROM " . $wpdb->prefix . "hdflvvideoshare_playlist WHERE is_publish='1' LIMIT " . $offset . "," . $dataLimit ;
+            $query      = "SELECT * FROM " . $wpdb->prefix . "hdflvvideoshare_playlist WHERE is_publish='1' ORDER BY playlist_order ASC LIMIT " . $offset . "," . $dataLimit ;
             $result     = $wpdb->get_results($query);
             return $result;
         }   ##function for getting settings data ends
