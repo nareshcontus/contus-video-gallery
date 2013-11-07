@@ -189,6 +189,7 @@ function videogallery_install() {
         $sql        = "CREATE TABLE " . $table_playlist . " (
                     pid BIGINT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
                     playlist_name VARCHAR(200) NOT NULL ,
+                    playlist_slugname TEXT NOT NULL ,
                     playlist_desc LONGTEXT NULL,
                     is_publish INT NOT NULL,
                     playlist_order INT NOT NULL
@@ -435,13 +436,13 @@ function videogallery_install() {
     $movieTrailer               = $wpdb->get_results("SELECT * FROM " . $table_playlist);
     if (empty($movieTrailer)) {
 
-        $contus_movieTrailer    = $wpdb->query("INSERT INTO " . $table_playlist . "(`pid`, `playlist_name`, `playlist_desc`, `playlist_order`, `is_publish`)
+        $contus_movieTrailer    = $wpdb->query("INSERT INTO " . $table_playlist . "(`pid`, `playlist_name`,`playlist_slugname`, `playlist_desc`, `playlist_order`, `is_publish`)
                                 VALUES
-                                (1, 'Movie Trailer', '', '1','1'),
-                                (2, 'Animation', '', '2','1'),
-                                (3, 'Animals', '', '3','1'),
-                                (4, 'Cricket', '', '4','1'),
-                                (5, 'Video Game', '', '5','1') ");
+                                (1, 'Movie Trailer','movie-trailer', '', '1','1'),
+                                (2, 'Animation','animation', '', '2','1'),
+                                (3, 'Animals','animals', '', '3','1'),
+                                (4, 'Cricket','cricket', '', '4','1'),
+                                (5, 'Video Game','video-game', '', '5','1') ");
     }
     ## Update settings
     $videoSettings              = $wpdb->get_results("SELECT * FROM " . $table_settings);

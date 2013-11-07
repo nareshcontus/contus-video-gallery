@@ -192,12 +192,12 @@ if (class_exists('ContusVideoShortcodeView') != true) {
         ## to display player
         function HDFLV_shareRender($arguments= array()) {
             global $wpdb;
-            $output = $videourl     = $imgurl = $vid = $playlistid = $homeplayerData = $ratecount = $rate = $plugin_css = $no_views = '';
+            $output = $videourl     = $imgurl = $player_div = $vid = $playlistid = $homeplayerData = $ratecount = $rate = $plugin_css = $no_views = '';
             $video_playlist_id      = $videoId = $hitcount = 0;
             $image_path             = str_replace('plugins/'.$this->_plugin_name.'/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
             $_imagePath             = APPTHA_VGALLERY_BASEURL . 'images' . DS;
             $configXML              = $wpdb->get_row("SELECT ratingscontrol,view_visible,tagdisplay,categorydisplay,embed_visible,keydisqusApps,comment_option,keyApps,configXML,width,height FROM " . $wpdb->prefix . "hdflvvideoshare_settings");
-            $flashvars              = $pluginflashvars = "baserefW=" . get_option('siteurl').'&amp;config=' . $this->_site_url . '/wp-admin/admin-ajax.php?action=configXML';      ## generate flashvars detail for player starts here
+            $flashvars              = $pluginflashvars = "baserefW=" . get_option('siteurl');      ## generate flashvars detail for player starts here
             if (isset($arguments['width'])) {
                 $width              = $arguments['width'];          ## get width from short code
             } else {
@@ -221,6 +221,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                 $videoId            = $homeplayerData->vid;
                 $video_title        = $homeplayerData->name;
                 $video_file_type    = $homeplayerData->file_type;
+                $video_thumb        = $homeplayerData->image;
                 if($video_file_type == 2 || $video_file_type == 5 ){
                 $video_thumb        = $image_path . $homeplayerData->image;
                 }
@@ -292,8 +293,14 @@ if (class_exists('ContusVideoShortcodeView') != true) {
             $mobile = $this->detect_mobile();
                         ## Embed player code
                         if(!empty($fetched) && $fetched[0]->file_type == 5 && !empty($fetched[0]->embedcode)){
-                        $output                 .= stripslashes($fetched[0]->embedcode);
-                        $output                 .= '<script> current_video('.$fetched[0]->vid.',"'.$fetched[0]->name.'"); </script>';
+                            $playerembedcode                = stripslashes($fetched[0]->embedcode);
+                            $playeriframewidth              =  str_replace('width=', 'width="'.$width.'"', $playerembedcode);
+                            if($mobile === true){
+                                $output                     .= $playerembedcode;
+                            } else {
+                                $output                     .= str_replace('height=', 'height="'.$height.'"', $playeriframewidth);
+                            }
+                            $output                 .= '<script> current_video('.$fetched[0]->vid.',"'.$fetched[0]->name.'"); </script>';
                         } else if($mobile === true){
                             ## Get video detail for HTML5 player
                             foreach ($fetched as $media) {          ## Load video details
@@ -303,7 +310,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                                 if ($imgurl == '') {                ## If there is no thumb image for video
                                 $imgurl              = $_imagePath . 'nothumbimage.jpg';
                                 } else {
-                                    if ($file_type == 2) {          ## For uploaded image
+                                    if ($file_type == 2  || $file_type == 5) {          ## For uploaded image
                                         $imgurl      = $image_path . $imgurl;
                                     }
                                 }
@@ -369,14 +376,6 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                                                 alert("' . $player_not_support . '"); 
                                             } 
                                         }
-                                        function videogallery_change_player(embedcode,id,player_div,file_type,vid){ 
-                                            if(file_type==5){
-                                                current_video(vid,""); 
-                                            }
-                                        document.getElementById("mediaspace"+id).innerHTML = "";
-                                        document.getElementById(player_div+id).innerHTML = embedcode;
-                                        document.getElementById(player_div+id).focus();
-                                        }    
                                         </script>';
             ## player ends here
             ## Display description, views, tags, playlist names detail under player
@@ -408,10 +407,11 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                 if($configXML->categorydisplay == 1){
                     $output             .= '<div class="video-page-category"><strong>' . __("Category", "video_gallery") . ' </strong>: ';
                     foreach ($playlistData as $playlist) {
+                        $playlist_url = get_playlist_permalink($this->_mPageid,$playlist->pid,$playlist->playlist_slugname);
                     if ($incre > 0) {
-                        $playlistname   .= ', ' . '<a href="' . $this->_site_url . '/?page_id=' . $this->_mPageid . '&amp;playid=' . $playlist->pid . '">' . $playlist->playlist_name . '</a>';
+                        $playlistname   .= ', ' . '<a href="' . $playlist_url . '">' . $playlist->playlist_name . '</a>';
                     } else {
-                        $playlistname   .= '<a href="' . $this->_site_url . '/?page_id=' . $this->_mPageid . '&amp;playid=' . $playlist->pid . '">' . $playlist->playlist_name . '</a>';
+                        $playlistname   .= '<a href="' . $playlist_url . '">' . $playlist->playlist_name . '</a>';
                     }
                     $incre++;
                 }
@@ -570,14 +570,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                     $imgval             = explode("&", $imgstr[1]);
                     $videoId1           = $imgval[0];
                     $video_thumb        = "http://img.youtube.com/vi/" . $videoId1 . "/mqdefault.jpg";
-                } else if(strpos($videoUrl,'dailymotion') > 0){                     ## check video url is dailymotion
-                        $split      = explode("/",$videoUrl);
-                        $split_id   = explode("_",$split[4]);
-                        $video_thumb = 'http://www.dailymotion.com/thumbnail/video/'.$split_id[0];
-                    } else if(strpos($videoUrl,'viddler') > 0) {                    ## check video url is viddler
-                            $imgstr = explode("/", $act_filepath);
-                            $video_thumb = "http://cdn-thumbs.viddler.com/thumbnail_2_" . $imgstr[4] . "_v1.jpg";
-                    }
+                } 
                 $video_title_share      = str_replace(" ", "%20", $video_title);
                 $videodescription       = str_replace(" ", "%20", $description);
                 $videodescription       = str_replace('"', "", $videodescription);
@@ -622,7 +615,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
             $output             .='</div></div>';
             if (($this->_post_type == 'videogallery' || $this->_page_post_type == 'videogallery') || (((isset($arguments['playlistid']) && isset($arguments['id'])) || (isset($arguments['playlistid']))) && (isset($arguments['relatedvideos']) && $arguments['relatedvideos']=='on')) ){
                 ## Display Related videos starts here
-                $select                 = "SELECT distinct(a.vid),b.playlist_id,name,guid,description,file,hdfile,file_type,duration,embedcode,image,opimage,download,link,featured,hitcount,
+                $select                 = "SELECT distinct(a.vid),b.playlist_id,name,guid,description,file,hdfile,file_type,duration,embedcode,image,opimage,download,link,featured,hitcount,slug,
                                         a.post_date,postrollads,prerollads FROM " . $wpdb->prefix . "hdflvvideoshare a
                                         INNER JOIN " . $wpdb->prefix . "hdflvvideoshare_med2play b ON a.vid=b.media_id
                                         INNER JOIN " . $wpdb->prefix . "hdflvvideoshare_playlist p ON p.pid=b.playlist_id
@@ -641,7 +634,8 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                     $file_type           = $relFet->file_type; ## Video Type
                     $imageFea            = $relFet->image; ##VIDEO IMAGE
                     $reafile             = $relFet->file; ##VIDEO IMAGE
-                    $guid                = $relFet->guid; ##guid
+                    $guid                = get_video_permalink($relFet->slug); ##guid
+                    
                     if ($imageFea == '') {  ##If there is no thumb image for video
                         $imageFea        = $this->_imagePath . 'nothumbimage.jpg';
                     } else {
@@ -651,15 +645,15 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                     }
                     ## Embed player code
                     if($file_type == 5 && !empty($relFet->embedcode)){
-                    $player_values                 = htmlentities(stripslashes($relFet->embedcode));
-                     } else{            
-                    ## Flash player code
-                    $player_values                 = htmlentities('<embed src="' . $this->_swfPath . '" flashvars="' . $pluginflashvars . '&amp;mtype=playerModule&amp;vid='.$relFet->vid.'" width="' . $width . '" height="' . $height . '" allowfullscreen="true" allowscriptaccess="always" type="application/x-shockwave-flash" wmode="transparent">');
-                    }
-                    if ($this->_post_type == 'videogallery' || $this->_page_post_type == 'videogallery') {
-                        $thumb_href     = 'href="'. $guid.'"';
-                    } else{
-                        $mobile = $this->detect_mobile();
+                        $relFetembedcode                = stripslashes($relFet->embedcode);
+                            $relFetiframewidth              =  str_replace('width=', 'width="'.$width.'"', $relFetembedcode);
+                            if($mobile === true){
+                                $player_values                     = $relFetembedcode;
+                            } else {
+                                $player_values                     = str_replace('height=', 'height="'.$height.'"', $relFetiframewidth);
+                            }
+                     } else{
+                         $mobile = $this->detect_mobile();
                         if($mobile === true){
                             ## Check for youtube video
                             if (preg_match("/www\.youtube\.com\/watch\?v=[^&]+/", $reafile, $vresult)) {
@@ -667,7 +661,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                                 $video_id           = trim($urlArray[1]);
                                 $reavideourl           = "http://www.youtube.com/embed/$video_id";
                                 ## Generate youtube embed code for html5 player
-                                $player_values          =htmlentities('<iframe  type="text/html" src="' . $reavideourl . '" frameborder="0"></iframe>');
+                                $player_values          = htmlentities('<iframe  type="text/html" src="' . $reavideourl . '" frameborder="0"></iframe>');
                             } else if ($file_type != 5) {        ## Check for upload, URL and RTMP videos
                                 if ($file_type == 2) {                  ## For uploaded image
                                     $reavideourl       = $image_path . $reafile;
@@ -676,11 +670,17 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                                     $reavideourl       = $streamer . '_definst_/mp4:' . $reafile . '/playlist.m3u8';
                                 }
                                 ## Generate video code for html5 player
-                                $player_values         =htmlentities('<video id="video" poster="' . $imageFea . '"   src="' . $reavideourl .'" autobuffer controls onerror="failed(event)">' . $htmlplayer_not_support . '</video>');
+                                $player_values         = htmlentities('<video id="video" poster="' . $imageFea . '"   src="' . $reavideourl .'" autobuffer controls onerror="failed(event)">' . $htmlplayer_not_support . '</video>');
                             }
-                        }else{
-                            $player_div             = 'mediaspace';
+                        } else {
+                            ## Flash player code
+                            $player_values                 = htmlentities('<embed src="' . $this->_swfPath . '" flashvars="' . $pluginflashvars . '&amp;mtype=playerModule&amp;vid='.$relFet->vid.'" width="' . $width . '" height="' . $height . '" allowfullscreen="true" allowscriptaccess="always" type="application/x-shockwave-flash" wmode="transparent">');
                         }
+                    }
+                    if ($this->_post_type == 'videogallery' || $this->_page_post_type == 'videogallery') {
+                        $thumb_href     = 'href="'. $guid.'"';
+                    } else{
+                        $player_div             = 'mediaspace';
                         $embedplayer    = "videogallery_change_player('".$player_values."',".$videodivId.",'".$player_div."',$file_type,$relFet->vid)";
                         $thumb_href     = 'href="javascript:void(0);" onclick="'.$embedplayer.'"';
                     }

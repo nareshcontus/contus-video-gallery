@@ -305,7 +305,6 @@ function VideodeleteIds()
     {
         if(videoID)
         {
-            alert("You want to delete Video? ");
             return true;
         }
         else

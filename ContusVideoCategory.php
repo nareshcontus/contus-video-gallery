@@ -70,16 +70,19 @@ For Getting The Page Id More and Video-->
         $moreCategories         = $wpdb->get_results("SELECT COUNT(*) AS contus FROM " . $wpdb->prefix . "hdflvvideoshare_playlist WHERE is_publish='1'");
         $countCategories        = $moreCategories[0]->contus;
         $div                    = '';
-        $div                    .= '<div id="videos-category"  class="sidebar-wrap "> <h3 class="widget-title"><a href="' . $site_url . '/?page_id=' . $moreName . '&amp;more=categories">' . $title . '</a></h3>';
+        $more_videos_link       = get_morepage_permalink($moreName,'categories');
+        $div                    .= '<div id="videos-category"  class="sidebar-wrap "> <h3 class="widget-title"><a href="' . $more_videos_link . '">' . $title . '</a></h3>';
         $div                    .='<ul class="ulwidget clearfix">';
         ## were there any posts found?
         if (!empty($features)) {
         ## posts were found, loop through them
             foreach ($features as $feature) {
                 $fetched        = $feature->playlist_name;
+                $playlist_slugname = $feature->playlist_slugname;
                 $playlist_id    = $feature->pid;
                 $div            .= '<li>';
-                $div            .= '<div class="clear"></div><a class="videoHname "  href="' . $site_url . '?page_id=' . $moreName . '&amp;playid=' . $playlist_id . '">' . $fetched . '</a>';
+                $playlist_url = get_playlist_permalink($moreName,$playlist_id,$playlist_slugname);
+                $div            .= '<div class="clear"></div><a class="videoHname "  href="' . $playlist_url . '">' . $fetched . '</a>';
                 $div            .= '</li>';
             }
         } else {
@@ -87,7 +90,7 @@ For Getting The Page Id More and Video-->
         }
         ## end list
         if (($show < $countCategories)) {
-            $div                .= '<li><div class="right video-more"><a href="' . $site_url . '/?page_id=' . $moreName . '&amp;more=categories">' . __('More Categories', 'video_gallery') . ' &#187;</a></div></li>';
+            $div                .= '<li><div class="right video-more"><a href="' . $more_videos_link . '">' . __('More Categories', 'video_gallery') . ' &#187;</a></div></li>';
         }
         $div                    .= '</ul></div>';
 

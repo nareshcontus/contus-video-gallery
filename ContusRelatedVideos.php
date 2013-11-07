@@ -83,7 +83,7 @@ class widget_ContusRelatedVideos_init extends WP_Widget {
 
             $show               = $instance['show'];
 
-            $sql                = "SELECT distinct a.*,s.guid,b.playlist_id,p.playlist_name
+            $sql                = "SELECT distinct a.*,s.guid,b.playlist_id,p.playlist_name,p.playlist_slugname
                                 FROM " . $wpdb->prefix . "hdflvvideoshare a
                                 INNER JOIN " . $wpdb->prefix . "hdflvvideoshare_med2play b ON a.vid=b.media_id
                                 INNER JOIN " . $wpdb->prefix . "hdflvvideoshare_playlist p ON p.pid=b.playlist_id
@@ -93,6 +93,7 @@ class widget_ContusRelatedVideos_init extends WP_Widget {
             $relatedVideos      = $wpdb->get_results($sql);
             if (!empty($relatedVideos)) {
                 $playlistID     = $relatedVideos[0]->playlist_id;
+                $playlist_slugname     = $relatedVideos[0]->playlist_slugname;
                 $fetched        = $relatedVideos[0]->playlist_name;
                 $moreF          = $wpdb->get_results("select count(a.vid) as relatedcontus from " . $wpdb->prefix . "hdflvvideoshare a INNER JOIN " . $wpdb->prefix . "hdflvvideoshare_med2play b ON a.vid=b.media_id WHERE b.playlist_id=" . $playlistID . " ORDER BY a.vid DESC");
                 $countF         = $moreF[0]->relatedcontus;
@@ -116,7 +117,7 @@ class widget_ContusRelatedVideos_init extends WP_Widget {
                 foreach ($relatedVideos as $feature) {
                     $file_type  = $feature->file_type; ## Video Type
                     $imageFea   = $feature->image;
-                    $guid       = $feature->guid; ##guid
+                    $guid       = get_video_permalink($feature->slug); ##guid
                     if ($imageFea == '') {  ##If there is no thumb image for video
                         $imageFea = $_imagePath . 'nothumbimage.jpg';
                     } else {
@@ -175,7 +176,8 @@ class widget_ContusRelatedVideos_init extends WP_Widget {
         }
 
         if (($show < $countF) || ($show == $countF)) {
-            $div                .= '<li><div class="right video-more"><a href="' . $site_url . '/?page_id=' . $moreName . '&amp;playid=' . $playlistID . '">' . __('More Videos', 'video_gallery') . ' &#187;</a></div>';
+            $playlist_url = get_playlist_permalink($moreName,$playlistID,$playlist_slugname);
+            $div                .= '<li><div class="right video-more"><a href="' . $playlist_url . '">' . __('More Videos', 'video_gallery') . ' &#187;</a></div>';
             $div                .= '<div class="clear"></div></li>';
         }
         $div                    .= '</ul></div><div class="clear"></div>';

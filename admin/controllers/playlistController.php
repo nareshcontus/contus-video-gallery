@@ -52,19 +52,16 @@ if(class_exists('PlaylistController') != true)
              if(isset($this->_addnewPlaylist))
             {   
                 $playlistName = filter_input(INPUT_POST, 'playlistname');
-//                $playlistDescription = filter_input(INPUT_POST, 'playlistdescription');
+                $playlist_slugname = sanitize_title($playlistName);
                 $playlistPublish = filter_input(INPUT_POST, 'ispublish');
-                $playlistOrder = filter_input(INPUT_POST, 'playlist_order');
-                $playlistordering = filter_input(INPUT_POST, 'ordering');
                 
                 $playlsitData = array(
                 'playlist_name' => $playlistName,
-//                'playlist_desc' => $playlistDescription,
+                'playlist_slugname' => $playlist_slugname,
                 'is_publish' => $playlistPublish,
-                'playlist_order' => $playlistordering,
                 );
 
-                $playlistDataformat = array('%s', '%s', '%d', '%d','%d');
+                $playlistDataformat = array('%s', '%s', '%d');
 
                 if (isset($this->_playListId)) 
                 {//update for playlist if starts

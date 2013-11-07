@@ -22,7 +22,7 @@ $image_path = str_replace('plugins/'.$dirPage.'/', 'uploads/videogallery/', APPT
     <?php if (isset($videoadId)) {
  ?>
         <h2 class="option_title"><?php _e('Update Video Ad', 'video_gallery'); ?></h2> <?php } else {
- ?> <h2  class="option_title"><?php echo "<img src='" . APPTHA_VGALLERY_BASEURL . "images/vid_ad.png' alt='move' width='30'/>"; ?><?php _e('Add a New Video Ad', 'video_gallery'); ?></h2> <?php } ?>
+ ?> <h2  class="option_title"><?php echo "<img src='" . APPTHA_VGALLERY_BASEURL . "images/vid_ad.png' alt='move' width='30'/>"; ?><?php _e('Add New Video Ad', 'video_gallery'); ?></h2> <?php } ?>
 <?php if (isset($msg)): ?>
         <div class="updated below-h2">
             <p>
@@ -54,14 +54,14 @@ $image_path = str_replace('plugins/'.$dirPage.'/', 'uploads/videogallery/', APPT
                                                if (isset($videoadEdit) && $videoadEdit->admethod == 'prepost') {
                                                    echo 'checked="checked" ';
                                                }
-                                               ?> onClick="Videoadtype('prepostroll')"/> Preroll/Postroll Ad
+                                               ?> onClick="Videoadtype('prepostroll')"/> Pre-roll/Post-roll Ad
                             </span>
                             <span>
                                 <input type="radio" name="videoadtype" id="midroll" value="2" <?php
                                                if (isset($videoadEdit) && $videoadEdit->admethod == 'midroll') {
                                                    echo 'checked="checked" ';
                                                }
-                                               ?> onClick="Videoadtype('midroll')" />  Midroll Ad
+                                               ?> onClick="Videoadtype('midroll')" />  Mid-roll Ad
                             </span>
                             <span>
                                 <input type="radio" name="videoadtype" id="imaad" value="3" <?php

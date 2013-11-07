@@ -141,7 +141,7 @@ if(class_exists('VideoModel') != true)
             $user_role = $this->get_current_user_role();
             $current_user = wp_get_current_user();
             if($user_role!='administrator'){
-                $where .=  " WHERE member_id=".$current_user->ID;
+                $where .=  " WHERE a.member_id=".$current_user->ID;
             }
             $pagenum = isset( $_GET['pagenum'] ) ? absint( $_GET['pagenum'] ) : 1;
             $limit = 20;
@@ -153,21 +153,50 @@ if(class_exists('VideoModel') != true)
                 } else {
                     $where .= " AND";
                 }
-                $where .=  " (name LIKE '%" . $searchValue . "%' || description LIKE '%" . $searchValue . "%')";
+                $where .=  " (a.name LIKE '%" . $searchValue . "%' || a.description LIKE '%" . $searchValue . "%')";
             }
             if(!isset($orderDirection))
             {
                 $orderDirection = 'DESC';
             }
-            $query = "SELECT * FROM ".$this->_videotable .$where ." ORDER BY ". $order . ' '.$orderDirection." LIMIT $offset, $limit";
+           $query = "SELECT DISTINCT (a.vid),a.*,u.display_name FROM ".$this->_videotable .' a 
+                    LEFT JOIN '. $this->_wpdb->prefix .'users u 
+                    ON u.ID=a.member_id 
+                    LEFT JOIN '. $this->_wpdb->prefix .'hdflvvideoshare_med2play p 
+                    ON p.media_id=a.vid 
+                    LEFT JOIN '. $this->_wpdb->prefix .'hdflvvideoshare_playlist pl 
+                    ON pl.pid=p.playlist_id 
+                    '.$where ." 
+                    ORDER BY ". $order . ' '.$orderDirection." 
+                    LIMIT $offset, $limit";
             return $this->_wpdb->get_results($query);
         }//function for getting search videos ends
 
-        public function video_edit($videoId)
-        {//function for getting single video starts
-            return $this->_wpdb->get_row("SELECT a.*,b.tags_name FROM ".$this->_videotable." as a LEFT JOIN ".$this->_wpdb->prefix."hdflvvideoshare_tags b ON b.media_id=a.vid WHERE vid ='$videoId'");
-        }//function for getting single video ends
-
+         public function get_playlist_detail($vid)
+        {//function for getting Tag name starts
+            global $wpdb;
+           $video_count = $this->_wpdb->get_results("SELECT t3.playlist_name,t3.pid"
+                . " FROM " . $wpdb->prefix . "hdflvvideoshare_playlist AS t3"
+                . " LEFT JOIN  ". $wpdb->prefix . "hdflvvideoshare_med2play AS t2"
+                . " ON t3.pid = t2.playlist_id"
+                . " WHERE t3.is_publish='1' AND t2.media_id='" . intval($vid) . "'");
+           return $video_count;
+        }
+        
+        public function video_edit($videoId) {
+            global $current_user, $wpdb;           
+            if (isset($videoId) && !current_user_can('manage_options')) {
+                $user_id = $current_user->ID;
+                $video_count = $wpdb->get_var("SELECT count(*) FROM $this->_videotable WHERE vid = $videoId and member_id = $user_id");
+                if ($video_count == 0) {                   
+                    wp_die( __( 'You do not have permission to access this page.' ) );
+                }
+            }
+            //function for getting single video starts
+            return $this->_wpdb->get_row("SELECT a.*,b.tags_name FROM " . $this->_videotable . " as a LEFT JOIN " . $this->_wpdb->prefix . "hdflvvideoshare_tags b ON b.media_id=a.vid WHERE a.vid ='$videoId'");
+        }
+        
+        //function for getting single video ends
         public function video_count($searchValue,$searchBtn)
         {//function for getting single video starts
             $where='';

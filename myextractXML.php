@@ -60,6 +60,7 @@ echo "<playlist autoplay = '$ap' random = 'false'>";
 //echo "<pre>";print_r($singleVideodata);exit;
 foreach ($singleVideodata as $media) {
     $file_type          = $media->file_type;
+    if($file_type != 5) {
     $videoUrl           = $media->file;
     if (!empty($media->duration))
     $duration           = $media->duration;
@@ -184,6 +185,7 @@ foreach ($singleVideodata as $media) {
             <title><![CDATA[' . strip_tags($media->name) . ']]></title>
             <tagline targeturl=""><![CDATA[' . strip_tags($media->description) . ']]></tagline>
             </mainvideo>';
+}
 }
 echo '</playlist>';
 ## XML end here

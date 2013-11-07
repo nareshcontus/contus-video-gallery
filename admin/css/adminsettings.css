@@ -104,7 +104,7 @@ line-height: 24px;
 .apptha_gallery tr.gallery_separator_row th{padding: 5px 0 8px 10px;}
 
 .apptha_gallery .has-right-sidebar .inner-sidebar {top: 60px;right: 28px;}
-.apptha_gallery .has-right-sidebar .inner-sidebar .inside{max-height: 300px;
+.apptha_gallery .inside .submitbox{max-height: 300px;
                                                           *height: 300px;
 overflow-y: scroll;}
 
@@ -132,8 +132,9 @@ color: #000;
 #jaxcat{
     color: #ff0000;
 }
-
-
-
-
-
+.handle {
+cursor: move;
+}
+.ui-helper-clearfix {
+cursor: move;
+}

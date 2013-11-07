@@ -647,8 +647,8 @@ msgid "Click and Drag"
 msgstr "Click and Drag"
 
 #: addvideo.php:70
-msgid "Add a new video file"
-msgstr "Add a new video file"
+msgid "Add a new video"
+msgstr "Add a new video"
 
 #: addvideo.php:80
 msgid "YouTube URL"

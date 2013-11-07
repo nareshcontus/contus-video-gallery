@@ -100,7 +100,7 @@ class widget_ContusRecentVideos_init extends WP_Widget {
             foreach ($posts as $post) {
                 $file_type      = $post->file_type; ## Video Type
                 $image          = $post->image;
-                $guid           = $post->guid; ##guid
+                $guid           = get_video_permalink($post->slug); ##guid
                 if ($image == '') {  ##If there is no thumb image for video
                     $image      = $_imagePath . 'nothumbimage.jpg';
                 } else {
@@ -153,7 +153,8 @@ class widget_ContusRecentVideos_init extends WP_Widget {
             $div                 .= "<li>" . __('No recent Videos', 'video_gallery') . "</li>";
         ## end list
         if (($show < $countR) || ($show == $countR)) {
-            $div                 .= '<li><div class="right video-more"><a href="' . $site_url . '/?page_id=' . $moreName . '&amp;more=rec">' . __('More Videos', 'video_gallery') . ' &#187;</a></div>';
+            $more_videos_link = get_morepage_permalink($moreName,'recent');
+            $div                 .= '<li><div class="right video-more"><a href="' . $more_videos_link . '">' . __('More Videos', 'video_gallery') . ' &#187;</a></div>';
             $div                 .= '<div class="clear"></div></li>';
         }
         $div                     .='</ul></div>';

@@ -100,6 +100,7 @@ if (isset($_GET['videoId']))
                 document.getElementById('youtube').style.display = "none";
                 document.getElementById('adstypebox').style.display = "none";
                 document.getElementById('upload2').style.display = "block"
+                document.getElementById('ffmpeg_disable_new3').style.display = ""
                 document.getElementById('supportformats').style.display = "none";
                 document.getElementById('ffmpeg_disable_new4').style.display = "none";
                 document.getElementById('ffmpeg_disable_new2').style.display = "none";
@@ -123,7 +124,7 @@ if (isset($_GET['videoId']))
             });
         }
     </script>
-    <h2> <?php _e('Add a new video file', 'video_gallery'); ?> </h2>
+    <h2> <?php _e('Add a new video', 'video_gallery'); ?> </h2>
 
     <div id="poststuff" class="has-right-sidebar">
         <?php if (isset($get_key) && $get_title != $get_key) {
@@ -433,8 +434,7 @@ if (isset($_GET['videoId']))
                                                                    </div>
 
                                                                    <form name="table_options" enctype="multipart/form-data" method="post" id="video_options" onsubmit="return chkbut()">
-                                                                       <div id="poststuff" class="has-right-sidebar">
-                                                                           <input type="hidden" name="normalvideoform-value" id="normalvideoform-value" value="<?php if (isset($videoEdit->file_type) && $videoEdit->file_type == 2)
+                                                                       <input type="hidden" name="normalvideoform-value" id="normalvideoform-value" value="<?php if (isset($videoEdit->file_type) && $videoEdit->file_type == 2)
                                                                                    echo $videoEdit->file; ?>"  />
                                                                            <input type="hidden" name="hdvideoform-value" id="hdvideoform-value" value="<?php if (isset($videoEdit->file_type) && $videoEdit->file_type == 2)
                                                                                    echo $videoEdit->hdfile; ?>" />
@@ -457,30 +457,9 @@ if (isset($_GET['videoId']))
                                                                            <input type="hidden" name="member_id" id="member_id"  value="<?php if (isset($videoEdit->member_id)) echo $videoEdit->member_id; ?>" />
                                                                            <input type="hidden" name="customimage" id="customimage"  value="" />
                                                                            <input type="hidden" name="custompreimage" id="custompreimage"  value="" />
-                                                                           <!-- Start of sidebar  -->
-                                                                           <div class="inner-sidebar" >
-                                                                               <div id="submitdiv" class="postbox">
-                                                                                   <h3 class="hndle" style="color:white;background:none;background-color:black"><span><?php _e('Category', 'video_gallery') ?></span></h3>
-                                                                                   <div class="inside" style="color:blue" >
-                                                                                       <div id="submitpost" class="submitbox">
-
-                                                                                           <div class="misc-pub-section">
-                                                                                               <h4><?php _e('Category', 'video_gallery'); ?>&nbsp;&nbsp;
-                                                                                                   <a style="cursor:pointer"  onclick="playlistdisplay()"><?php _e('Create New', 'video_gallery') ?></a></h4>
-                                                                                               <div id="playlistcreate1"><?php _e('Name', 'video_gallery'); ?><input type="text" size="20" name="p_name" id="p_name" value="" />
-                                                                                                   <input type="button" class="button-primary" name="add_pl1" value="<?php _e('Add'); ?>" onclick="return savePlaylist(document.getElementById('p_name') , <?php echo $act_vid ?>);" class="button button-highlighted" />
-                                                                                                   <a style="cursor:pointer;margin: 5px 0 0 175px;display: inline-block;text-decoration: underline;" onclick="playlistclose()"><b>Close</b></a></div>
-                                                                                               <div id="jaxcat"></div>
-                                                                                               <div id="playlistchecklist"><?php $ajaxplaylistOBJ->get_playlist(); ?></div>
-                                                                                           </div>
-                                                                                       </div>
-                                                                                   </div>
-                                                                               </div>
-
-                                                                           </div>
-                                                                           <!-- End of sidebar -->
-                                                                           <div id="post-body" class="has-sidebar"><br>
-                                                                               <div id="post-body-content" class="has-sidebar-content">
+                                                                       <div id="poststuff">
+                                                                       <div id="post-body" class="metabox-holder columns-2">
+                                                                               <div id="post-body-content">
 
                                                                                    <div class="stuffbox">
                                                                                        <h3 class="hndle"><span><?php _e('Enter Title / Name', 'video_gallery'); ?></span></h3>
@@ -667,6 +646,31 @@ if (isset($_GET['videoId']))
 
 
                                                                            </div>
+                                                                               <!-- Start of sidebar  -->
+                                                                               <div id="postbox-container-1" class="postbox-container">
+                                                                           <div id="side-sortables" class="inner-sidebar meta-box-sortables ui-sortable" >
+                                                                               <div id="categorydiv" class="postbox">
+                                                                                   <div class="handlediv" title="Click to toggle"><br></div>
+                                                                                   <h3 class="hndle"><span><?php _e('Categories', 'video_gallery'); ?></span></h3>                                                                                   
+                                                                                   <div class="inside" style="color:blue" >
+                                                                                       <div id="submitpost" class="submitbox">
+
+                                                                                           <div class="misc-pub-section">
+                                                                                             <h4><span>
+                                                                                                   <a style="cursor:pointer"  onclick="playlistdisplay()"><?php _e('Create New', 'video_gallery') ?></a></span></h4>
+                                                                                               <div id="playlistcreate1"><?php _e('Name', 'video_gallery'); ?><input type="text" size="20" name="p_name" id="p_name" value="" />
+                                                                                                   <input type="button" class="button-primary" name="add_pl1" value="<?php _e('Add'); ?>" onclick="return savePlaylist(document.getElementById('p_name') , <?php echo $act_vid ?>);" class="button button-highlighted" />
+                                                                                                   <a style="cursor:pointer;margin: 5px 0 0 175px;display: inline-block;text-decoration: underline;" onclick="playlistclose()"><b>Close</b></a></div>
+                                                                                               <div id="jaxcat"></div>
+                                                                                               <div id="playlistchecklist"><?php $ajaxplaylistOBJ->get_playlist(); ?></div>
+                                                                                           </div>
+                                                                                       </div>
+                                                                                   </div>
+                                                                               </div>
+
+                                                                           </div>
+                                                                                   </div>
+                                                                           <!-- End of sidebar -->
                                                                            <p>
 <?php
                                                                                $adminPage = filter_input(INPUT_GET, 'page');
@@ -680,7 +684,7 @@ if (isset($_GET['videoId']))
                                                                                <input type="submit" name="add_video" class="button-primary"  onclick="return validateInput();" value="<?php echo $editbutton; ?>" class="button" />
                                                                                <input type="button" onclick="window.location.href='admin.php?page=video'" class="button-secondary" name="cancel" value="<?php _e('Cancel'); ?>" class="button" />
                                                                            </p>
-                                                                       </div>
+                                                                   </div><!--END Post body -->
                                                                    </div><!--END Poststuff -->
                                                                </form>
 
@@ -716,6 +720,7 @@ if (isset($_GET['videoId']))
                                                                      function playlistclose()
                                                                      {
                                                                          document.getElementById('playlistcreate1').style.display = "none";
+                                                                         document.getElementById('message').style.display = "none";
                                                                      }
 
                                                                      function generate12(str1)

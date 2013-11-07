@@ -45,7 +45,7 @@ if(class_exists('ContusShortcode') != true)
  public function get_playlist_detail($vid)
         {//function for getting Tag name starts
             global $wpdb;
-           $video_count = $this->_wpdb->get_results("SELECT t3.playlist_name,t3.pid"
+           $video_count = $this->_wpdb->get_results("SELECT t3.playlist_name,t3.pid,t3.playlist_slugname"
                 . " FROM " . $wpdb->prefix . "hdflvvideoshare_playlist AS t3"
                 . " LEFT JOIN  ". $wpdb->prefix . "hdflvvideoshare_med2play AS t2"
                 . " ON t3.pid = t2.playlist_id"

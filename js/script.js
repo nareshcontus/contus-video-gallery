@@ -32,3 +32,12 @@ if(embedFlag !== 1){
     document.getElementById("flagembed").value = "0";
 }
 }
+
+function videogallery_change_player(embedcode,id,player_div,file_type,vid){ 
+    if(file_type === 5){
+        current_video(vid,""); 
+    }
+    document.getElementById("mediaspace"+id).innerHTML = "";
+    document.getElementById(player_div+id).innerHTML = embedcode;
+    document.getElementById(player_div+id).focus();
+}

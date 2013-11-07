@@ -100,7 +100,7 @@ class widget_ContusFeaturedVideos_init extends WP_Widget {
             foreach ($features as $feature) {
                 $file_type  = $feature->file_type; ## Video Type
                 $imageFea   = $feature->image; ##VIDEO IMAGE
-                $guid       = $feature->guid; ##guid
+                $guid       = get_video_permalink($feature->slug); ##guid
                 if ($imageFea == '') {  ##If there is no thumb image for video
                     $imageFea = $_imagePath . 'nothumbimage.jpg';
                 } else {
@@ -155,7 +155,8 @@ class widget_ContusFeaturedVideos_init extends WP_Widget {
             $div            .="<li>" . __('No Featured Videos', 'video_gallery') . "</li>";
         ## end list
         if (($show < $countF) || ($show == $countF)) {
-            $div            .='<li><div class="video-more"><a href="' . $site_url . '/?page_id=' . $moreName . '&amp;more=fea">' . __('More Videos', 'video_gallery') . ' &#187;</a></div>';
+            $more_videos_link = get_morepage_permalink($moreName,'featured');
+            $div            .='<li><div class="video-more"><a href="' . $more_videos_link . '">' . __('More Videos', 'video_gallery') . ' &#187;</a></div>';
             $div            .='<div class="clear"></div></li>';
         } else {
             $div            .='<li><div align="right"> </div></li>';

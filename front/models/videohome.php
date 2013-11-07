@@ -156,7 +156,7 @@ if(class_exists('ContusVideo') != true)
                           INNER JOIN " . $this->_wpdb->prefix . "hdflvvideoshare_med2play m ON m.media_id = w.vid
                           INNER JOIN " . $this->_wpdb->prefix . "hdflvvideoshare_playlist p ON p.pid=m.playlist_id
                           INNER JOIN " . $this->_wpdb->prefix . "posts s ON s.ID=w.slug
-                          WHERE featured='1' AND w.file_type!=5 AND publish='1' AND p.is_publish='1' GROUP BY w.vid ORDER BY ordering ASC";
+                          WHERE featured='1' AND publish='1' AND p.is_publish='1' GROUP BY w.vid ORDER BY ordering ASC";
           return  $this->_wpdb->get_results($query);
         }   ##function for getting settings data ends
 
@@ -184,7 +184,7 @@ if(class_exists('ContusVideo') != true)
         
          public function get_thumdata($thumImageorder,$where,$dataLimit)
         {   ##function for getting settings data starts
-            $query      = "SELECT distinct w.*,s.guid,p.playlist_name,p.pid FROM " . $this->_videoinfotable. " w
+            $query      = "SELECT distinct w.*,s.guid,p.playlist_name,p.pid,p.playlist_slugname FROM " . $this->_videoinfotable. " w
                           INNER JOIN " . $this->_wpdb->prefix . "hdflvvideoshare_med2play m ON m.media_id = w.vid
                           INNER JOIN " . $this->_wpdb->prefix . "hdflvvideoshare_playlist p ON p.pid=m.playlist_id
                           INNER JOIN " . $this->_wpdb->prefix . "posts s ON s.ID=w.slug

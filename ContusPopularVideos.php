@@ -101,7 +101,7 @@ class widget_ContusPopularVideos_init extends WP_Widget {
             foreach ($populars as $popular) {
                 $file_type  = $popular->file_type; ## Video Type
                  $imagePop  = $popular->image;##VIDEO IMAGE
-                 $guid      = $popular->guid; ##guid
+                 $guid      = get_video_permalink($popular->slug); ##guid
                  if ($imagePop == '') {  ##If there is no thumb image for video
                         $imagePop = $_imagePath . 'nothumbimage.jpg';
                     } else {
@@ -153,7 +153,8 @@ class widget_ContusPopularVideos_init extends WP_Widget {
             $div         .="<li>".__('No Popular videos', 'video_gallery')."</li>";
         ## end list
         if (($show < $countP) || ($show == $countP)) {
-            $div         .='<li><div class="right video-more"><a href="' . $site_url . '/?page_id=' . $moreName . '&amp;more=pop">'.__('More Videos', 'video_gallery').' &#187;</a></div>';
+            $more_videos_link = get_morepage_permalink($moreName,'popular');
+            $div         .='<li><div class="right video-more"><a href="' . $more_videos_link . '">'.__('More Videos', 'video_gallery').' &#187;</a></div>';
             $div         .='<div class="clear"></div></li>';
         } else {
             $div         .='<li><div align="right"> </div></li>';

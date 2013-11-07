@@ -61,7 +61,7 @@ if (class_exists('ContusVideoView') != true) {
                 if ($thumb_image == '') {       ## If there is no thumb image for video
                     $thumb_image            = $_imagePath . 'nothumbimage.jpg';
                 } else {
-                    if ($file_type == 2) {      ## For uploaded image
+                    if ($file_type == 2 || $file_type == 5) {      ## For uploaded image
                         $thumb_image        = $image_path . $thumb_image;
                     }
                 }
@@ -77,7 +77,7 @@ if (class_exists('ContusVideoView') != true) {
                                             baseurl = "' . $this->_site_url . '";
                                             folder  = "' . $this->_plugin_name . '";
                                             videoPage = "' . $this->_mPageid . '"; </script>';
-            $baseref = '&amp;config=' . $this->_site_url . '/wp-admin/admin-ajax.php?action=configXML';
+            $baseref = '';
             if (!empty($this->_vId)) {
                 $baseref                    .= '&amp;vid=' . $this->_vId;
             } else {
@@ -171,7 +171,7 @@ if (class_exists('ContusVideoView') != true) {
             if (function_exists('homeVideo') != true) {
                 $TypeSet                = '';
                 switch ($type) {
-                    case 'pop':         ##GETTING POPULAR VIDEOS STARTS
+                    case 'popular':         ##GETTING POPULAR VIDEOS STARTS
                         $TypeSet        = $this->_settingsData->popular;            ## Popular Videos
                         $rowF           = $this->_settingsData->rowsPop;            ## get row of popular videos
                         $colF           = $this->_settingsData->colPop;             ## get column of popular videos
@@ -184,7 +184,7 @@ if (class_exists('ContusVideoView') != true) {
                         $morePage       = 'pop';
                         break;          ##GETTING POPULAR VIDEOS ENDS
 
-                    case 'rec':
+                    case 'recent':
                         $TypeSet        = $this->_settingsData->recent;             ## Recent Videos
                         $rowF           = $this->_settingsData->rowsRec;            ## get row of Recent videos
                         $colF           = $this->_settingsData->colRec;             ## get column of Recent videos
@@ -197,7 +197,7 @@ if (class_exists('ContusVideoView') != true) {
                         $morePage       = 'rec';
                         break;
 
-                    case 'fea':
+                    case 'featured':
                         $thumImageorder = 'w.ordering ASC';
                         $where          = 'AND w.featured=1';
                         $TypeSet        = $this->_settingsData->feature;            ## feature Videos
@@ -240,7 +240,8 @@ if (class_exists('ContusVideoView') != true) {
                             $file_type          = $video->file_type;        ## Video Type
                             $playlist_id[$j]    = $video->pid;              ## VIDEO CATEGORY ID
                             $fetched[$j]        = $video->playlist_name;    ## CATEOGORY NAME
-                            $guid[$j]           = $video->guid;             ## guid
+                            $fetched_pslug[$j]  = $video->playlist_slugname;    ## CATEOGORY slug NAME
+                            $guid[$j]           = get_video_permalink($video->slug);            ## guid
                             if ($imageFea[$j] == '') {                      ## If there is no thumb image for video
                                 $imageFea[$j] = $this->_imagePath . 'nothumbimage.jpg';
                             } else {
@@ -279,7 +280,8 @@ if (class_exists('ContusVideoView') != true) {
                             $div                .= '</span></a>';
                             $div                .= '';
                             if ($fetched[$j] != '') {
-                                $div            .= '<a class="playlistName" href="' . $this->_site_url . '/?page_id=' . $this->_mPageid . '&amp;playid=' . $playlist_id[$j] . '"><span>' . $fetched[$j] . '</span></a>';
+                                $playlist_url = get_playlist_permalink($this->_mPageid,$playlist_id[$j],$fetched_pslug[$j]);
+                                $div            .= '<a class="playlistName" href="'.$playlist_url.'"><span>' . $fetched[$j] . '</span></a>';
                             }
                             if ($this->_settingsData->ratingscontrol == 1) {
                                 if (isset($ratecount[$j]) && $ratecount[$j] != 0) {
@@ -306,7 +308,8 @@ if (class_exists('ContusVideoView') != true) {
 
 
                         if (($this->_showF < $this->_feaMore)) {        ##PAGINATION STARTS
-                            $div                .= '<span class="more_title" ><a class="video-more" href="' . $this->_site_url . '/?page_id=' . $this->_mPageid . '&amp;more=' . $morePage . '">' . __('More Videos', 'video_gallery') . ' &#187;</a></span>';
+                            $more_videos_link = get_morepage_permalink($this->_mPageid,$morePage);
+                            $div                .= '<span class="more_title" ><a class="video-more" href="' . $more_videos_link .'">' . __('More Videos', 'video_gallery') . ' &#187;</a></span>';
                         } else if (($this->_showF == $this->_feaMore)) {
                             $div                .= '<div style="float:right"></div>';
                         }       ##PAGINATION ENDS
@@ -345,7 +348,7 @@ if (class_exists('ContusVideoView') != true) {
                         $duration   = $playList->duration;
                         $imageFea   = $playList->image;         ## VIDEO IMAGE
                         $file_type  = $playList->file_type;     ## Video Type
-                        $guid       = $playList->guid;          ## guid - url for video detail page
+                        $guid       = get_video_permalink($playList->slug);          ## guid - url for video detail page
                         if ($imageFea == '') {                  ## If there is no thumb image for video
                             $imageFea = $this->_imagePath . 'nothumbimage.jpg';
                         } else {
@@ -392,8 +395,8 @@ if (class_exists('ContusVideoView') != true) {
                     }
                     $div             .= '</ul>';
                     if (($playlistCount > 8)) {
-
-                        $div         .= '<a class="video-more" href="' . $this->_site_url . '/?page_id=' . $this->_mPageid . '&amp;playid=' . $catList->pid . '">' . __('More Videos', 'video_gallery') . '</a>';
+                        $more_playlist_link = get_playlist_permalink($this->_mPageid,$catList->pid,$catList->playlist_slugname);
+                        $div         .= '<a class="video-more" href="' . $more_playlist_link .'">' . __('More Videos', 'video_gallery') . '</a>';
                     } else {
                         $div         .= '<div align="right"> </div>';
                     }

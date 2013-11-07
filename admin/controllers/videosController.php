@@ -543,7 +543,7 @@ if (class_exists('VideoController') != true) {//checks if the VideoController cl
 //admin redirection url function ends
 
         public function video_data() {//getting video data function starts
-            $orderBy = array('id', 'title', 'desc', 'fea', 'publish', 'date','ordering');
+            $orderBy = array('id', 'title', 'author','category', 'fea', 'publish', 'date','ordering');
             $order='';
             if (isset($this->_orderBy) && in_array($this->_orderBy, $orderBy)) {
                 $order = $this->_orderBy;
@@ -558,8 +558,11 @@ if (class_exists('VideoController') != true) {//checks if the VideoController cl
                     $order = 'name';
                     break;
 
-                case 'desc':
-                    $order = 'description';
+                case 'author':
+                    $order = 'u.display_name';
+                    break;
+                case 'category':
+                    $order = 'pl.playlist_name';
                     break;
 
                 case 'fea':
