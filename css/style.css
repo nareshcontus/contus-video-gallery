@@ -144,7 +144,7 @@ h3.related-videos{margin: 0 !important; padding: 0 !important; text-align: left;
 .video-page-info .video-page-rating{float: right; }
 .video-page-info .video-page-rating .rateimgleft{float: right; }
 .video-page-info .video-page-rating .rateright-views{margin-right: 5px;padding-top: 2px;width: 120px;text-align: right;}
-.video-page-info .video-page-category{float: left;width: 49%;text-align: right;}
+.video-page-info .video-page-category{float: right;width: 49%;text-align: right;}
 .player embed{margin: 0 0 10px 0 !important; }
 .embed{ padding: 0 10px; border: 1px solid #ccc; text-decoration: none; float: left; }
 .embed .embed_text{ float: left;  }
