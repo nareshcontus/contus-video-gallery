@@ -48,7 +48,7 @@ if (class_exists('ContusVideoView') != true) {
         function home_player() {                ## FUNCTION FOR HOME PAGE STARTS
             $settingsData                   = $this->_settingsData;
             $videoUrl = $videoId = $thumb_image = $homeplayerData = $file_type = '';
-            $mobile = detect_mobile();
+            $mobile = vgallery_detect_mobile();
             if (!empty($this->_featuredvideodata[0])){
                 $homeplayerData             = $this->_featuredvideodata[0];
             }

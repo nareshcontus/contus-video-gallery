@@ -77,7 +77,7 @@ function get_morepage_permalink($morepageid, $morePage) {
 }
 
 ## Detect mobile device
-function detect_mobile()
+function vgallery_detect_mobile()
 {
     $_SERVER['ALL_HTTP']    = isset($_SERVER['ALL_HTTP']) ? $_SERVER['ALL_HTTP'] : '';
     $mobile_browser         = '0';

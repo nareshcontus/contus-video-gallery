@@ -238,7 +238,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
             }
             ## Player starts here
             $output                 .= '<div id="mediaspace' . $videodivId . '" class="player" >';
-            $mobile = detect_mobile();
+            $mobile = vgallery_detect_mobile();
                         ## Embed player code
                         if(!empty($fetched) && $fetched[0]->file_type == 5 && !empty($fetched[0]->embedcode)){
                             $playerembedcode                = stripslashes($fetched[0]->embedcode);
@@ -601,7 +601,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                                 $player_values                     = str_replace('height=', 'height="'.$height.'"', $relFetiframewidth);
                             }
                      } else{
-                         $mobile = detect_mobile();
+                         $mobile = vgallery_detect_mobile();
                         if($mobile === true){
                             ## Check for youtube video
                             if (preg_match("/www\.youtube\.com\/watch\?v=[^&]+/", $reafile, $vresult)) {
