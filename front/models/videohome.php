@@ -139,7 +139,7 @@ if(class_exists('ContusVideo') != true)
         $select        .= " LEFT JOIN " . $wpdb->prefix . "users u ON s.ID=w.member_id";
         $select        .= " WHERE (m.playlist_id = '".intval($pid)."'";
         $select        .= " AND m.media_id = w.vid AND w.file_type!=5 AND w.publish='1' AND p.is_publish='1') GROUP BY w.vid ";
-        $select        .= " ORDER BY m.sorder ASC , m.porder ASC ,w.vid ASC";
+        $select        .= " ORDER BY w.vid ASC";
         $themediafiles  = $wpdb->get_results($select);
            return $themediafiles;
         }   ##function for getting Tag name ends
@@ -190,6 +190,15 @@ if(class_exists('ContusVideo') != true)
                           INNER JOIN " . $this->_wpdb->prefix . "posts s ON s.ID=w.slug
                           WHERE w.publish='1' AND p.is_publish='1' $where GROUP BY w.vid ORDER BY ".$thumImageorder." LIMIT ".$dataLimit;
             return $this->_wpdb->get_results($query);
+        }   ##function for getting settings data ends
+         public function get_countof_thumdata($thumImageorder,$where)
+        {   ##function for getting settings data starts
+           $query      = "SELECT w.vid FROM " . $this->_videoinfotable. " w
+                          INNER JOIN " . $this->_wpdb->prefix . "hdflvvideoshare_med2play m ON m.media_id = w.vid
+                          INNER JOIN " . $this->_wpdb->prefix . "hdflvvideoshare_playlist p ON p.pid=m.playlist_id
+                          INNER JOIN " . $this->_wpdb->prefix . "posts s ON s.ID=w.slug
+                          WHERE w.publish='1' AND p.is_publish='1' $where GROUP BY w.vid ORDER BY ".$thumImageorder;
+            return count($this->_wpdb->get_results($query));
         }   ##function for getting settings data ends
          public function get_playxmldata($getVid,$thumImageorder,$where,$numberofvideos)
         {   ##function for getting settings data starts

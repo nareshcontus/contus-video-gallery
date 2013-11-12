@@ -529,7 +529,7 @@ function add_meta_details() {
             $tags_name = $video_count->tags_name;      ## Get Tag name
 
             echo '
-<meta name="description" content="' . $des . '" />
+<meta name="description" content="' . strip_tags($des) . '" />
 <meta name="keyword" content="' . $tags_name . '" />
 <link rel="image_src" href="' . $imageFea . '"/>
 <link rel="canonical" href="' . get_permalink() . '"/>
@@ -537,7 +537,7 @@ function add_meta_details() {
 <meta property="og:type" content="website"/>
 <meta property="og:url" content="' . get_permalink() . '"/>
 <meta property="og:title" content="' . $videoname . '"/>
-<meta property="og:description" content="' . $des . '"/>
+<meta property="og:description" content="' . strip_tags($des) . '"/>
 <meta property="og:image" content="' . $imageFea . '"/>
 ';
         }
@@ -646,9 +646,9 @@ function video_homereplace() {
     include_once ($frontControllerPath . 'videohomeController.php');
     $pageOBJ = new ContusVideoView();
     $contentPlayer = $pageOBJ->home_player();
-    $contentPopular = $pageOBJ->home_thumb('pop');
-    $contentRecent = $pageOBJ->home_thumb('rec');
-    $contentFeatured = $pageOBJ->home_thumb('fea');
+    $contentPopular = $pageOBJ->home_thumb('popular');
+    $contentRecent = $pageOBJ->home_thumb('recent');
+    $contentFeatured = $pageOBJ->home_thumb('featured');
     $contentCategories = $pageOBJ->home_thumb('cat');
     return $contentPlayer . $contentPopular . $contentRecent . $contentFeatured . $contentCategories;
 }

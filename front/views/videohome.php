@@ -48,6 +48,7 @@ if (class_exists('ContusVideoView') != true) {
         function home_player() {                ## FUNCTION FOR HOME PAGE STARTS
             $settingsData                   = $this->_settingsData;
             $videoUrl = $videoId = $thumb_image = $homeplayerData = $file_type = '';
+            $mobile = detect_mobile();
             if (!empty($this->_featuredvideodata[0])){
                 $homeplayerData             = $this->_featuredvideodata[0];
             }
@@ -94,33 +95,21 @@ if (class_exists('ContusVideoView') != true) {
                 $swf                        = $this->_swfPath;
                 $showplaylist               = '';
             }
-            ## IF VIDEO IS Vimeo
-            if ((preg_match('/vimeo/', $videoUrl)) && ($videoUrl != '')) {
-                $vresult                    = explode("/", $videoUrl);
-                $div                        .='<iframe  type="text/html" width="' . $settingsData->width . '" height="' . $settingsData->height . '"  src="http://player.vimeo.com/video/' . $vresult[3] . '" frameborder="0"></iframe>';
-            } 
             ## Embed player code
-            else if($homeplayerData->file_type == 5 && !empty($homeplayerData->embedcode)){
-            $div                 .= stripslashes($homeplayerData->embedcode);
-            $div                 .= '<script> current_video('.$homeplayerData->vid.',"'.$homeplayerData->name.'"); </script>';
-            } else{            
-            ## Flash player code
-                $div                        .= '<embed id="player" src="' . $swf . '"  flashvars="baserefW=' . APPTHA_VGALLERY_BASEURL . $baseref . $showplaylist . '&amp;mtype=' . $moduleName . '" width="' . $settingsData->width . '" height="' . $settingsData->height . '"   allowFullScreen="true" allowScriptAccess="always" type="application/x-shockwave-flash" wmode="transparent" />';
-            }
-            $div                            .='</div>';
-            ## FLASH PLAYER ENDS AND HTML5 PLAYER STARTS HERE
-            $htmlvideo = '';
-            $div                            .='<div id="htmlplayer">';
-            if ((preg_match('/vimeo/', $videoUrl)) && ($videoUrl != '')) { ##IF VIDEO IS YOUTUBE
+            if($homeplayerData->file_type == 5 && !empty($homeplayerData->embedcode)){
+            $playerembedcode                 = stripslashes($homeplayerData->embedcode);
+            $div                            .=  str_replace('width=', 'width="'.$settingsData->width.'"', $playerembedcode);
+            $div                            .= '<script> current_video('.$homeplayerData->vid.',"'.$homeplayerData->name.'"); </script>';
+            } else{
+                if($mobile === true){
+                    if ((preg_match('/vimeo/', $videoUrl)) && ($videoUrl != '')) { ##IF VIDEO IS YOUTUBE
                 $vresult                    = explode("/", $videoUrl);
-                $htmlvideo                  ="<iframe  type='text/html' src='http://player.vimeo.com/video/" . $vresult[3] . "' frameborder='0'></iframe>";
+                $div                  .="<iframe  type='text/html' src='http://player.vimeo.com/video/" . $vresult[3] . "' frameborder='0'></iframe>";
             } elseif (strpos($videoUrl, 'youtube') > 0) {
                 $imgstr                     = explode("v=", $videoUrl);
                 $imgval                     = explode("&", $imgstr[1]);
                 $videoId1                   = $imgval[0];
-                $htmlvideo                  ="<iframe  type='text/html' src='http://www.youtube.com/embed/" . $videoId1 . "' frameborder='0'></iframe>";
-            } else if($homeplayerData->file_type == 5 && !empty($homeplayerData->embedcode)){
-                $htmlvideo                 = stripslashes($homeplayerData->embedcode);
+                $div                  .="<iframe  type='text/html' src='http://www.youtube.com/embed/" . $videoId1 . "' frameborder='0'></iframe>";
             } else {    ##IF VIDEO IS UPLOAD OR DIRECT PATH
                 if ($file_type == 2) {          ##For uploaded image
                     $videoUrl               = $image_path . $videoUrl;
@@ -128,9 +117,17 @@ if (class_exists('ContusVideoView') != true) {
                     $streamer               = str_replace("rtmp://", "http://", $homeplayerData->streamer_path);
                     $videoUrl               = $streamer . '_definst_/mp4:' . $videoUrl . '/playlist.m3u8';
                 }
-                $htmlvideo                  ="<video id='video' poster='" . $thumb_image . "'   src='" . $videoUrl . "' autobuffer controls onerror='failed(event)'>" . __('Html5 Not support This video Format.', 'video_gallery') . "</video>";
+                $div                  .="<video id='video' poster='" . $thumb_image . "'   src='" . $videoUrl . "' autobuffer controls onerror='failed(event)'>" . __('Html5 Not support This video Format.', 'video_gallery') . "</video>";
+            }
+                } else {
+                    ## Flash player code
+                $div                        .= '<embed id="player" src="' . $swf . '"  flashvars="baserefW=' . APPTHA_VGALLERY_BASEURL . $baseref . $showplaylist . '&amp;mtype=' . $moduleName . '" width="' . $settingsData->width . '" height="' . $settingsData->height . '"   allowFullScreen="true" allowScriptAccess="always" type="application/x-shockwave-flash" wmode="transparent" />';
+                }
             }
             $div                            .='</div>';
+            ## FLASH PLAYER ENDS AND HTML5 PLAYER STARTS HERE
+            $htmlvideo = '';
+
             $windo                          = '';
             $useragent                      = $_SERVER['HTTP_USER_AGENT'];
             if (strpos($useragent, 'Windows Phone') > 0)
@@ -139,16 +136,6 @@ if (class_exists('ContusVideoView') != true) {
             $div                            .= '<script>
                                             var txt =  navigator.platform ;
                                             var windo = "' . $windo . '";
-                                            if(txt =="iPod"|| txt =="iPad" || txt == "iPhone" || windo=="Windows Phone" || txt == "Linux armv7l" || txt == "Linux armv6l")
-                                            {
-                                            document.getElementById("htmlplayer").innerHTML = "'.$htmlvideo.'";
-                                            document.getElementById("flashplayer").style.display = "none";
-                                            }
-                                            else
-                                            {
-                                            document.getElementById("htmlplayer").innerHTML = "";
-                                            document.getElementById("flashplayer").style.display = "block";
-                                            }
                                             function failed(e)
                                             {
                                             if(txt =="iPod"|| txt =="iPad" || txt == "iPhone" || windo=="Windows Phone" || txt == "Linux armv7l" || txt == "Linux armv6l")
@@ -179,9 +166,10 @@ if (class_exists('ContusVideoView') != true) {
                         $thumImageorder = 'w.hitcount DESC';
                         $where          = '';
                         $TypeOFvideos   = $this->home_thumbdata($thumImageorder, $where, $dataLimit);
+                        $CountOFVideos  = $this->countof_home_thumbdata($thumImageorder, $where);
                         $typename       = __('Popular', 'video_gallery');
                         $type_name      = 'popular';
-                        $morePage       = 'pop';
+                        $morePage       = 'popular';
                         break;          ##GETTING POPULAR VIDEOS ENDS
 
                     case 'recent':
@@ -192,9 +180,10 @@ if (class_exists('ContusVideoView') != true) {
                         $thumImageorder = 'w.vid DESC';
                         $where          = '';
                         $TypeOFvideos   = $this->home_thumbdata($thumImageorder, $where, $dataLimit);
+                        $CountOFVideos  = $this->countof_home_thumbdata($thumImageorder, $where);
                         $typename       = __('Recent', 'video_gallery');
                         $type_name      = 'recent';
-                        $morePage       = 'rec';
+                        $morePage       = 'recent';
                         break;
 
                     case 'featured':
@@ -205,9 +194,10 @@ if (class_exists('ContusVideoView') != true) {
                         $colF           = $this->_settingsData->colFea;             ## get column of feature videos
                         $dataLimit      = $rowF * $colF;
                         $TypeOFvideos   = $this->home_thumbdata($thumImageorder, $where, $dataLimit);
+                        $CountOFVideos  = $this->countof_home_thumbdata($thumImageorder, $where);
                         $typename       = __('Featured', 'video_gallery');
                         $type_name      = 'featured';
-                        $morePage       = 'fea';
+                        $morePage       = 'featured';
                         break;
 
                     case 'cat':
@@ -307,10 +297,10 @@ if (class_exists('ContusVideoView') != true) {
                         $div                    .= '<div class="clear"></div>';
 
 
-                        if (($this->_showF < $this->_feaMore)) {        ##PAGINATION STARTS
+                        if (($dataLimit < $CountOFVideos)) {        ##PAGINATION STARTS
                             $more_videos_link = get_morepage_permalink($this->_mPageid,$morePage);
                             $div                .= '<span class="more_title" ><a class="video-more" href="' . $more_videos_link .'">' . __('More Videos', 'video_gallery') . ' &#187;</a></span>';
-                        } else if (($this->_showF == $this->_feaMore)) {
+                        } else if (($dataLimit == $CountOFVideos)) {
                             $div                .= '<div style="float:right"></div>';
                         }       ##PAGINATION ENDS
                     }
@@ -401,7 +391,7 @@ if (class_exists('ContusVideoView') != true) {
                         $div         .= '<div align="right"> </div>';
                     }
                 } else {            ## If there is no video for category
-                    $div             .='<div>' . __('No Videos For this Category', 'video_gallery') . '</div>';
+                    $div             .='<div>' . __('No Videos for this Category', 'video_gallery') . '</div>';
                 }
             }
 

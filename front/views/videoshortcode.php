@@ -137,58 +137,6 @@ if (class_exists('ContusVideoShortcodeView') != true) {
             return 0;
         }
         
-        ## Detect mobile device
-        function detect_mobile()
-        {
-            $_SERVER['ALL_HTTP']    = isset($_SERVER['ALL_HTTP']) ? $_SERVER['ALL_HTTP'] : '';
-            $mobile_browser         = '0';
-            $agent                  = strtolower($_SERVER['HTTP_USER_AGENT']);
-            if(preg_match('/(up.browser|up.link|mmp|symbian|smartphone|midp|wap|phone|iphone|ipad|ipod|android|xoom)/i', $agent)){
-                $mobile_browser++;
-            }
-            if((isset($_SERVER['HTTP_ACCEPT'])) and (strpos(strtolower($_SERVER['HTTP_ACCEPT']),'application/vnd.wap.xhtml+xml') !== false)){
-                $mobile_browser++;
-            }
-            if(isset($_SERVER['HTTP_X_WAP_PROFILE'])){
-                $mobile_browser++;
-            }
-            if(isset($_SERVER['HTTP_PROFILE'])){
-                $mobile_browser++;
-            }
-            $mobile_ua              = substr($agent,0,4);
-            $mobile_agents          = array(
-                                    'w3c ','acs-','alav','alca','amoi','audi','avan','benq','bird','blac',
-                                    'blaz','brew','cell','cldc','cmd-','dang','doco','eric','hipt','inno',
-                                    'ipaq','java','jigs','kddi','keji','leno','lg-c','lg-d','lg-g','lge-',
-                                    'maui','maxo','midp','mits','mmef','mobi','mot-','moto','mwbp','nec-',
-                                    'newt','noki','oper','palm','pana','pant','phil','play','port','prox',
-                                    'qwap','sage','sams','sany','sch-','sec-','send','seri','sgh-','shar',
-                                    'sie-','siem','smal','smar','sony','sph-','symb','t-mo','teli','tim-',
-                                    'tosh','tsm-','upg1','upsi','vk-v','voda','wap-','wapa','wapi','wapp',
-                                    'wapr','webc','winw','xda','xda-'
-                                    );
-
-            if(in_array($mobile_ua, $mobile_agents)){
-                $mobile_browser++;
-            }
-            if(strpos(strtolower($_SERVER['ALL_HTTP']), 'operamini') !== false){
-                $mobile_browser++;
-            }
-            ## Pre-final check to reset everything if the user is on Windows
-            if(strpos($agent, 'windows') !== false){
-                $mobile_browser=0;
-            }
-            ## But WP7 is also Windows, with a slightly different characteristic
-            if(strpos($agent, 'windows phone') !== false){
-                $mobile_browser++;
-            }
-            if($mobile_browser>0){
-                return true;
-            } else {
-                return false;
-            }
-        }
-
         ## to display player
         function HDFLV_shareRender($arguments= array()) {
             global $wpdb;
@@ -290,7 +238,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
             }
             ## Player starts here
             $output                 .= '<div id="mediaspace' . $videodivId . '" class="player" >';
-            $mobile = $this->detect_mobile();
+            $mobile = detect_mobile();
                         ## Embed player code
                         if(!empty($fetched) && $fetched[0]->file_type == 5 && !empty($fetched[0]->embedcode)){
                             $playerembedcode                = stripslashes($fetched[0]->embedcode);
@@ -403,7 +351,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                 }
                 $output                 .= '<div class="clearfix"></div>';
                 if ($this->_post_type == 'videogallery' || $this->_page_post_type == 'videogallery') {
-                    $output             .= '<div class="video-page-username"><strong>' . __("Posted By", "video_gallery") . '    </strong>: ' . $uploadedby . '</div>';
+                    $output             .= '<div class="video-page-username"><strong>' . __("Posted by", "video_gallery") . '    </strong>: ' . $uploadedby . '</div>';
                 if($configXML->categorydisplay == 1){
                     $output             .= '<div class="video-page-category"><strong>' . __("Category", "video_gallery") . ' </strong>: ';
                     foreach ($playlistData as $playlist) {
@@ -419,7 +367,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                 }
                 }
                 ## Rating starts here
-                if ($this->_post_type == 'videogallery' || $this->_page_post_type == 'videogallery') {
+                if ($this->_post_type == 'videogallery' || ($this->_page_post_type == 'videogallery' && $this->_page_post_type == '')) {
                     $ratingscontrol = true;
                 } else if (isset($arguments['ratingscontrol']) && $arguments['ratingscontrol']=='on'){
                     $ratingscontrol = true;
@@ -653,7 +601,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                                 $player_values                     = str_replace('height=', 'height="'.$height.'"', $relFetiframewidth);
                             }
                      } else{
-                         $mobile = $this->detect_mobile();
+                         $mobile = detect_mobile();
                         if($mobile === true){
                             ## Check for youtube video
                             if (preg_match("/www\.youtube\.com\/watch\?v=[^&]+/", $reafile, $vresult)) {

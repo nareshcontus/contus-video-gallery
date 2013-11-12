@@ -47,14 +47,72 @@ if (isset($_GET['pagenum'])){
     <div class="wrap">
         <h2 class="option_title">
             <?php echo "<img src='" . APPTHA_VGALLERY_BASEURL . "/images/manage_list.png' alt='move' width='30'/>"; ?>
-            <?php _e('Manage Categories', 'video_gallery'); ?>
-            <a class="button-primary" href="<?php echo get_bloginfo('url') ?>/wp-admin/admin.php?page=newplaylist" ><?php _e('Add Category', 'video_gallery'); ?></a>
+            <?php _e('Categories', 'video_gallery'); ?>
         </h2>
+        <div class="floatleft category_addpages">
+        <?php 
+$dir                    = dirname(plugin_basename(__FILE__));
+$dirExp                 = explode('/', $dir);
+$dirPage                = $dirExp[0];
+?>
+<script type="text/javascript">
+    folder  = '<?php echo $dirPage; ?>'
+</script>
+<div class="apptha_gallery">
+<?php       if(isset($playListId)){ ?>
+    <h3><?php _e('Update Category','video_gallery'); ?></h3>
+ <?php } else { ?> <h3><?php _e('Add a New Category','video_gallery'); ?></h3> <?php } ?>
+    <?php if ($displayMsg && $displayMsg[1] == 'addcategory'): ?>
+    <div class="updated below-h2">
+        <p>
+            <?php  echo $displayMsg[0];
+            ?>
+        </p>
+    </div>
+    <?php endif; ?>
+    <div id="post-body" class="has-sidebar">
+        <div id="post-body-content" class="has-sidebar-content">
+            <div class="stuffbox">
+                <h3 class="hndle"><span><?php _e('Enter Title / Name', 'video_gallery'); ?></span></h3>
+                <div class="inside" style="margin:15px;">
+                    <form name="adsform" method="post" enctype="multipart/form-data" >
+                        <table class="form-table">
+                            <tr>
+                            <th scope="row"><?php _e('Title / Name', 'video_gallery') ?></th>
+                            <td>
+                                <input type="text" size="50" maxlength="200" id="playlistname" name="playlistname" value="<?php echo (isset($playlistEdit->playlist_name))? $playlistEdit->playlist_name:""; ?>"  />
+                                <span id="playlistnameerrormessage" style="display: block;color:red; "></span>
+                            </td>
+                            </tr>
 
-<?php if ($displayMsg): ?>
+                            <tr>
+                                <th scope="row"><?php _e('Publish', 'video_gallery') ?></th>
+                                <td>
+                                    <input type="radio" name="ispublish" id="publish_yes" <?php if (isset($playlistEdit->is_publish) && $playlistEdit->is_publish == 1) {  echo "checked"; } ?> value="1"> <label><?php _e('Yes', 'video_gallery'); ?></label>
+                                    <input type="radio" name="ispublish" id="ispublish_no" <?php if (isset($playlistEdit->is_publish) && $playlistEdit->is_publish == 0) { echo "checked"; } ?> value="0"><label> <?php _e('No', 'video_gallery'); ?></label>
+                                </td>
+                            </tr>
+                        </table>
+                    <?php       if(isset($playListId)){ ?>
+                    <input type="submit" name="playlistadd" onclick="return validateplyalistInput();" class="button-primary"  value="<?php _e('Update Category', 'video_gallery'); ?>" class="button" /> <?php }  else{?>
+                    <input type="submit" name="playlistadd" onclick="return validateplyalistInput();" class="button-primary"  value="<?php _e('Add Category', 'video_gallery'); ?>" class="button" /> <?php }  ?>
+                    <input type="button" onclick="window.location.href='admin.php?page=playlist'" class="button-secondary" name="cancel" value="<?php _e('Cancel'); ?>" class="button" />
+                    </form>
+                </div>
+            </div>
+        </div>
+        <p>
+    </div>
+</div>
+ <script type="text/javascript">
+document.getElementById("publish_yes").checked = true;
+ </script>
+    </div>
+<div class="floatleft category_addpages">
+<?php if ($displayMsg && $displayMsg[1] == 'category'): ?>
             <div class="updated below-h2">
                 <p>
-<?php echo $displayMsg; ?>
+<?php echo $displayMsg[0]; ?>
                     </p>
                 </div>
 <?php
@@ -69,9 +127,9 @@ if (isset($_GET['pagenum'])){
                     $url = get_bloginfo('url') . '/wp-admin/admin.php?page=playlist';
                     $searchmsg = filter_input(INPUT_POST, 'PlaylistssearchQuery');
                     if (count($gridPlaylist)) {
-                        echo count($gridPlaylist) . "   "._e('Search Result(s) for', 'video_gallery')." '" . $searchMsg . "'.&nbsp&nbsp&nbsp<a href='$url' >"._e('Back to Category List', 'video_gallery')."</a>";
+                        echo _e('Search Results for', 'video_gallery').' "' . $searchMsg.'"' ;
                     } else {
-                        echo " "._e('No Search Result(s) for', 'video_gallery')." '" . $searchMsg . "'.&nbsp&nbsp&nbsp<a href='$url' >"._e('Back to Category List', 'video_gallery')."</a>";
+                        echo _e('No Search Results for', 'video_gallery').' "' . $searchMsg.'"' ;
                     }
             ?> </div> <?php } ?>
             <form name="Playlists" action="" method="post" onsubmit="return Playlistsearch();">
@@ -248,5 +306,6 @@ if (isset($_GET['pagenum'])){
                     }
             ?>
         </form>
+</div>
     </div>
 </div>

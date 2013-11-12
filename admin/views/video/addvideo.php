@@ -20,6 +20,7 @@ $dirPage                = $dirExp[0];
 </script>
 <?php
 $act_vid = 0;
+$video_description = '';
 $site_url = get_option('siteurl');
 if (isset($_GET['videoId']))
     $act_vid = (int) $_GET['videoId'];
@@ -177,7 +178,7 @@ if (isset($_GET['videoId']))
                     </table>
                 </div>
 
-                <div id="customurl" class="rtmp_inside" style="margin:15px;">
+                <div id="customurl" class="rtmp_inside inside">
                     <table class="form-table">
                         <tr id="stream1" >
                             <th scope="row"><?php _e('Streamer Path', 'video_gallery') ?></th>
@@ -254,10 +255,10 @@ if (isset($_GET['videoId']))
                                                         </div>
 
                                                     </form>
-                                                    <div id="upload2" class="inside" style="margin:15px;">
+                                                    <div id="upload2" class="inside">
                 <div id="supportformats"><?php _e('<b>Supported video formats:</b>( MP4, M4V, M4A, MOV, Mp4v or F4V)', 'video_gallery') ?></div>
                                                                                <table class="form-table">
-                                                                                   <tr id="ffmpeg_disable_new1" name="ffmpeg_disable_new1"><td style="vertical-align: middle;"><?php _e('Upload Video', 'video_gallery') ?></td>
+                                                                                   <tr id="ffmpeg_disable_new1" name="ffmpeg_disable_new1"><th style="vertical-align: middle;"><?php _e('Upload Video', 'video_gallery') ?></th>
                                                                                        <td>
                                                                                            <div id="f1-upload-form" >
                                                                                                <form name="normalvideoform" method="post" enctype="multipart/form-data" >
@@ -284,7 +285,7 @@ if (isset($_GET['videoId']))
                                                                                            </div>
                                                                                        </td></tr>
 
-                                                                                   <tr id="ffmpeg_disable_new2" name="ffmpeg_disable_new1"> <td><?php _e('Upload HD Video (Optional)', 'video_gallery') ?></td>
+                                                                                   <tr id="ffmpeg_disable_new2" name="ffmpeg_disable_new1"> <th><?php _e('Upload HD Video (Optional)', 'video_gallery') ?></th>
                                                                                        <td>
                                                                                            <div id="f2-upload-form" >
                                                                                                <form name="hdvideoform" method="post" enctype="multipart/form-data" >
@@ -314,7 +315,7 @@ if (isset($_GET['videoId']))
 
 
 
-                                                                                   <tr id="ffmpeg_disable_new3" name="ffmpeg_disable_new1"><td><?php _e('Upload Thumb Image', 'video_gallery') ?></td><td>
+                                                                                   <tr id="ffmpeg_disable_new3" name="ffmpeg_disable_new1"><th><?php _e('Upload Thumb Image', 'video_gallery') ?></th><td>
                                                                                            <div id="f3-upload-form" >
                                                                                                <form name="thumbimageform" method="post" enctype="multipart/form-data" >
                                                                                                    <input type="file" name="myfile"  onchange="enableUpload(this.form.name);" />
@@ -340,7 +341,7 @@ if (isset($_GET['videoId']))
 
                                                                                        </td></tr>
 
-                                                                                   <tr id="ffmpeg_disable_new4" name="ffmpeg_disable_new1"><td><?php _e('Upload Preview Image (Optional)', 'video_gallery') ?></td><td>
+                                                                                   <tr id="ffmpeg_disable_new4" name="ffmpeg_disable_new1"><th><?php _e('Upload Preview Image (Optional)', 'video_gallery') ?></th><td>
                                                                                            <div id="f4-upload-form" >
                                                                                                <form name="previewimageform" method="post" enctype="multipart/form-data" >
                                                                                                    <input type="file" name="myfile" onchange="enableUpload(this.form.name);" />
@@ -367,7 +368,9 @@ if (isset($_GET['videoId']))
                                                                                        </td></tr>
                                                                                    <!--Subtitle starts here-->
                                                                                   
-                                                                                   <tr id="ffmpeg_disable_new5" name="ffmpeg_disable_new5"><td><?php _e('Upload srt file for Subtitle1', 'video_gallery') ?></td><td>
+                                                                                   <tr id="ffmpeg_disable_new5" name="ffmpeg_disable_new5">
+                                                                                       <th><?php _e('Upload srt file for Subtitle1', 'video_gallery') ?></th>
+                                                                                       <td>
                                                                                            <div id="f5-upload-form" >
                                                                                                <form name="subtitle1form" method="post" enctype="multipart/form-data" >
                                                                                                    <input type="file" name="myfile" onchange="enableUpload(this.form.name);" />
@@ -392,13 +395,13 @@ if (isset($_GET['videoId']))
 
                                                                                            </div>
                                                                                         </td></tr>
-                                                                                    <tr id="subtilelang1" style="display:none;"><td width="17%"><?php echo _e('Enter subtile1 language');?></td>
+                                                                                    <tr id="subtilelang1" style="display:none;"><th width="17%"><?php echo _e('Enter subtile1 language');?></th>
                                                                                     <td width="83%"><input type="text" name="subtile_lang1"  id="subtile_lang1" style="width:300px" maxlength="250" value="<?php if(isset($videoEdit->subtitle_lang1)) echo htmlentities($videoEdit->subtitle_lang1); ?>" />
                                                                                     <span id="uploadsrt1message" style="display: block; margin-top:10px;color:red;font-size:12px;font-weight:bold;"></span>
                                                                                     </td>
                                                                                     </tr>
                                                                                    
-                                                                                    <tr id="ffmpeg_disable_new6" name="ffmpeg_disable_new6"><td><?php _e('Upload srt file for Subtitle2', 'video_gallery') ?></td><td>
+                                                                                    <tr id="ffmpeg_disable_new6" name="ffmpeg_disable_new6"><th><?php _e('Upload srt file for Subtitle2', 'video_gallery') ?></th><td>
                                                                                            <div id="f6-upload-form" >
                                                                                                <form name="subtitle2form" method="post" enctype="multipart/form-data" >
                                                                                                    <input type="file" name="myfile" onchange="enableUpload(this.form.name);" />
@@ -423,7 +426,7 @@ if (isset($_GET['videoId']))
 
                                                                                            </div>
                                                                                        </td></tr>
-                                                                                    <tr id="subtilelang2" style="display:none;"><td width="17%"><?php echo _e('Enter subtile2 language');?></td>
+                                                                                    <tr id="subtilelang2" style="display:none;"><th width="17%"><?php echo _e('Enter subtile2 language');?></th>
                                                                                     <td width="83%"><input type="text" name="subtile_lang2"  id="subtile_lang2" style="width:300px" maxlength="250" value="<?php if(isset($videoEdit->subtitle_lang2)) echo htmlentities($videoEdit->subtitle_lang2); ?>" />
                                                                                     <span id="uploadsrt2message" style="display: block; margin-top:10px;color:red;font-size:12px;font-weight:bold;"></span>
                                                                                     </td>
@@ -463,7 +466,7 @@ if (isset($_GET['videoId']))
 
                                                                                    <div class="stuffbox">
                                                                                        <h3 class="hndle"><span><?php _e('Enter Title / Name', 'video_gallery'); ?></span></h3>
-                                                        <div class="inside" style="margin:15px;">
+                                                        <div class="inside">
                                                             <table class="form-table">
                                                                 <tr>
                                                                     <th scope="row"><?php _e('Title / Name', 'video_gallery') ?></th>
@@ -475,9 +478,16 @@ if (isset($_GET['videoId']))
                                                                    </tr>
                                                                    <tr>
                                                                        <th scope="row"><?php _e('Description', 'video_gallery') ?></th>
-                                                                       <td><textarea id="description" name="description" rows="5" cols="60"><?php if (isset($videoEdit->description)
+                                                                       <td>
+                                                                           <?php 
+                                                                           if (isset($videoEdit->description)){
+                                                                               $video_description = $videoEdit->description;
+                                                                           }
+                                                                           wp_editor($video_description, 'description'); ?>
+<!--                                                                           <textarea id="description" name="description" rows="5" cols="60"><?php if (isset($videoEdit->description)
 
-                                                                                   )echo $videoEdit->description; ?></textarea></td>
+                                                                                   )echo $videoEdit->description; ?></textarea>-->
+                                                                       </td>
                                                                        </tr>
                                                                        <tr>
                                                                     <th scope="row"><?php _e('Tags / Keywords', 'video_gallery') ?></th>
@@ -550,7 +560,7 @@ if (isset($_GET['videoId']))
 
                                                                            <div class="stuffbox" id="adstypebox">
                                                                                <h3 class="hndle"><span><?php _e('Select Ads', 'video_gallery'); ?></span></h3>
-                                                                               <div class="inside" style="margin:15px;">
+                                                                               <div class="inside">
 <?php if ($settings[0]->preroll == 0) { ?>
                                                                        <table class="form-table">
                                                                            <tr>

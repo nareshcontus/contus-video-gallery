@@ -166,7 +166,7 @@ if (isset($_GET['pagenum'])){
                                <th width="3%" scope="col"  style="">
                                    <span>
                                     <?php _e('', 'video_gallery'); ?> </span><span class="sorting-indicator"></span></th>
-                            <th width="3%" scope="col"  style="">
+                            <th width="4%" scope="col"  class="manage-column column-description sortable desc" style="">
                                 <a href="<?php echo get_bloginfo('url') ?>/wp-admin/admin.php?page=video&orderby=id&order=<?php echo $reverse_direction; ?>"><span>
                                         <?php _e('ID', 'video_gallery'); ?> </span><span class="sorting-indicator"></span></a></th>
                             <th width="6%" scope="col"  style="">
@@ -180,17 +180,17 @@ if (isset($_GET['pagenum'])){
                             <th width="14%" scope="col"  class="manage-column column-description sortable desc" style="">
                                 <a href="<?php echo get_bloginfo('url') ?>/wp-admin/admin.php?page=video&orderby=category&order=<?php echo $reverse_direction; ?>"><span>
                                         <?php _e('Categories', 'video_gallery'); ?></span><span class="sorting-indicator"></span></a></th>
-                            <th width="8%" scope="col" class="text_center"  style="">
+                            <th width="8%" scope="col" class="manage-column column-description sortable desc text_center"  style="">
                                 <a href="<?php echo get_bloginfo('url') ?>/wp-admin/admin.php?page=video&orderby=fea&order=<?php echo $reverse_direction; ?>"><span>
                                         <?php _e('Featured', 'video_gallery'); ?></span><span class="sorting-indicator"></span></a></th>
-                            <th  width="5%" scope="col"  class="manage-column column-slug sortable desc" style="width:10%">
+                            <th  width="4%" scope="col"  class="manage-column column-slug sortable desc" style="width:10%">
                                 <a href="<?php echo get_bloginfo('url') ?>/wp-admin/admin.php?page=video&orderby=date&order=<?php echo $reverse_direction; ?>"><span><?php _e('Date', 'digi'); ?></span><span class="sorting-indicator"></span></a></th>
-                            <th width="6%" scope="col" class="text_center manage-column column-name sortable desc" style="">
+                            <th width="7%" scope="col" class="text_center manage-column column-name sortable desc" style="">
                                 <a href="<?php echo get_bloginfo('url') ?>/wp-admin/admin.php?page=video&orderby=publish&order=<?php echo $reverse_direction; ?>"><span>
                                         <?php _e('Publish', 'video_gallery'); ?></span><span class="sorting-indicator"></span></a></th>
-                            <th width="8%" scope="col" class="manage-column column-description sortable desc" style="">
+                            <th width="7%" scope="col" class="manage-column column-description sortable desc" style="">
                                 <a href="<?php echo get_bloginfo('url') ?>/wp-admin/admin.php?page=video&orderby=ordering&order=<?php echo $reverse_direction; ?>">
-                                    <span><?php _e('Order', 'video_gallery'); ?></span>                                    
+                                    <span><?php _e('Order', 'video_gallery'); ?></span><span class="sorting-indicator"></span>                                 
                                 </a>
                             </th>
 
@@ -328,7 +328,7 @@ if (isset($_GET['pagenum'])){
 
                             <th scope="col" class="manage-column column-description sortable desc" style="">
                                 <a href="<?php echo get_bloginfo('url') ?>/wp-admin/admin.php?page=video&orderby=ordering&order=<?php echo $reverse_direction; ?>">
-                                    <span><?php _e('Order', 'video_gallery'); ?></span>
+                                    <span><?php _e('Order', 'video_gallery'); ?></span><span class="sorting-indicator"></span>
                                 </a>
                             </th>
 

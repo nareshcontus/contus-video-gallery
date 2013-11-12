@@ -357,7 +357,7 @@ if (class_exists('ContusMoreView') != true) {
                         $div        .= '<div align="right"> </div>';
                     }
                 } else {                                                        ## If there is no video for category
-                    $div            .= '<div>'.__('No Videos For this Category', 'video_gallery').'</div>';
+                    $div            .= '<div>'.__('No Videos for this Category', 'video_gallery').'</div>';
                 }
             }
 
