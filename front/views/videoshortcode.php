@@ -141,7 +141,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
         function HDFLV_shareRender($arguments= array()) {
             global $wpdb;
             $output = $videourl     = $imgurl = $player_div = $vid = $playlistid = $homeplayerData = $ratecount = $rate = $plugin_css = $no_views = '';
-            $video_playlist_id      = $videoId = $hitcount = 0;
+            $video_playlist_id      = $videoId = $hitcount = $videodivId = 0;
             $image_path             = str_replace('plugins/'.$this->_plugin_name.'/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
             $_imagePath             = APPTHA_VGALLERY_BASEURL . 'images' . DS;
             $configXML              = $wpdb->get_row("SELECT ratingscontrol,view_visible,tagdisplay,categorydisplay,embed_visible,keydisqusApps,comment_option,keyApps,configXML,width,height FROM " . $wpdb->prefix . "hdflvvideoshare_settings");
