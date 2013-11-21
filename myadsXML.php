@@ -11,10 +11,15 @@
 /* Used to import plugin configuration */
 require_once( dirname(__FILE__) . '/hdflv-config.php');
 ## get the path url from querystring
+$playlist_id        = $_GET['pid'];
 global $wpdb;
+$title              = 'hdflv Adslist';
+$themediafiles      = array();
+$limit              = '';
 ## Get video details from database
-$selectPlaylist     = "SELECT * FROM " . $wpdb->prefix . "hdflvvideoshare_vgads WHERE publish=1";
-$themediafiles      = $wpdb->get_results($selectPlaylist);
+$selectPlaylist     .= "SELECT * FROM " . $wpdb->prefix . "hdflvvideoshare_vgads WHERE publish=1";
+$adsFiles           = $wpdb->get_results($wpdb->prepare($selectPlaylist));
+$themediafiles      = $adsFiles;
 ob_clean();
 header ("content-type: text/xml");
 echo '<?xml version="1.0" encoding="utf-8"?>';

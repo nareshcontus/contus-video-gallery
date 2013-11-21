@@ -20,24 +20,22 @@ if (class_exists('ContusMoreView') != true) {
 
         public function __construct() {                                             ## contructor starts
             parent::__construct();
-            global $wp_query;
-            $video_search = '';
             $this->_settingsData    = $this->settings_data();                       ## Get player settings
             $this->_mPageid         = $this->More_pageid();                         ## Get more page id
             $this->_feaMore         = $this->Video_count();                         ## Get featured videos count
             $this->_vId             = filter_input(INPUT_GET, 'vid');               ## Get vid from URL
             $this->_pagenum         = filter_input(INPUT_GET, 'pagenum');           ## Get current page number
-            $this->_playid          = &$wp_query->query_vars["playid"];   
-            
-            ## Get pid from URL
+            $this->_playid          = filter_input(INPUT_GET, 'playid');            ## Get pid from URL
             $this->_viewslang = __('Views', 'video_gallery');
             $this->_viewlang = __('View', 'video_gallery');
             ## Get search keyword
-            if(isset($wp_query->query_vars['video_search'])){
-            $video_search    = $wp_query->query_vars['video_search'];
+            $video_search    = filter_var(filter_input(INPUT_POST, 'video_search'), FILTER_SANITIZE_STRING);
+            $video_search1    = filter_var(filter_input(INPUT_GET, 'video_search'), FILTER_SANITIZE_STRING);
+            if(empty($video_search)){
+               $this->_video_search= $video_search1;
+            } else {
+                $this->_video_search= $video_search;
             }
-            $this->_video_search = $video_search;
-
             $this->_showF           = 5;
             $this->_colF            = $this->_settingsData->colMore;                ## get row of more page
             $this->_colCat          = $this->_settingsData->colCat;                 ## get column of more page
@@ -54,69 +52,60 @@ if (class_exists('ContusMoreView') != true) {
             if (function_exists('homeVideo') != true) {
             $type_name='';
                 switch ($type) {
-                    case 'popular':                                                     ## GETTING POPULAR VIDEOS STARTS
+                    case 'pop':                                                     ## GETTING POPULAR VIDEOS STARTS
                         $rowF           = $this->_settingsData->rowMore;            ## row field of popular videos
                         $colF           = $this->_settingsData->colMore;            ## column field of popular videos
                         $dataLimit      = $rowF * $colF;
-                        $where          = '';
+                        $where = '';
                         $thumImageorder = 'w.hitcount DESC';
                         $TypeOFvideos   = $this->home_thumbdata($thumImageorder, $where,$this->_pagenum, $dataLimit);
-                        $CountOFVideos  = $this->Countof_Videos('',$thumImageorder,$where);
+                        $CountOFVideos  = $this->Countof_Videos($thumImageorder);
                         $typename       = __('Popular', 'video_gallery');
                         $type_name      = 'popular';
                         $morePage       = '&more=pop';
                         break;                                                      ## GETTING POPULAR VIDEOS ENDS
 
-                    case 'recent':
+                    case 'rec':
                         $rowF           = $this->_settingsData->rowMore;
-                        $where          = '';
+                        $where = '';
                         $colF           = $this->_settingsData->colMore;
                         $dataLimit      = $rowF * $colF;
                         $thumImageorder = 'w.vid DESC';
                         $TypeOFvideos   = $this->home_thumbdata($thumImageorder, $where,$this->_pagenum, $dataLimit);
-                        $CountOFVideos  = $this->Countof_Videos('',$thumImageorder,$where);
+                        $CountOFVideos  = $this->Countof_Videos($thumImageorder);
                         $typename       = __('Recent', 'video_gallery');
                         $type_name      = 'recent';
                         $morePage       = '&more=rec';
                         break;
 
-                    case 'featured':
+                    case 'fea':
                         $thumImageorder = 'w.ordering ASC';
-                        $where          = 'AND w.featured=1';
+                        $where = 'AND w.featured=1';
                         $rowF           = $this->_settingsData->rowMore;
                         $colF           = $this->_settingsData->colMore;
                         $dataLimit      = $rowF * $colF;
                         $TypeOFvideos   = $this->home_thumbdata($thumImageorder, $where,$this->_pagenum, $dataLimit);
-                        $CountOFVideos  = $this->Countof_Videos('',$thumImageorder,$where);
+                        $CountOFVideos  = $this->Countof_Videos($thumImageorder);
                         $typename       = __('Featured', 'video_gallery');
                         $type_name      = 'featured';
                         $morePage       = '&more=fea';
                         break;
                     case 'cat':
                         $thumImageorder = $this->_playid;
-                        $where          = '';
                         $rowF           = $this->_settingsData->rowCat;
                         $colF           = $this->_settingsData->colCat;
                         $dataLimit      = $rowF * $colF;
                         $TypeOFvideos   = $this->home_catthumbdata($thumImageorder, $this->_pagenum, $dataLimit);
-                        $CountOFVideos  = $this->Countof_Videos($this->_playid,$thumImageorder,$where);
+                        $CountOFVideos  = $this->Countof_Videos($thumImageorder);
                         $typename       = __('Category', 'video_gallery');
                         $morePage       = '&playid=' . $thumImageorder;
                         break;
                     case 'search':
-                        $video_search   = str_replace("%20", " ", $this->_video_search);
-                        $searchname     = explode(" ", $video_search);
-                        $likequery      = '';
-                        for ($i = 0; $i < count($searchname); $i++) {
-                            $likequery.="( t4.tags_name LIKE '%" . $searchname[$i] . "%' || t1.description LIKE '%" . $searchname[$i] . "%' || t1.name LIKE '%" . $searchname[$i] . "%')";
-                            if (($i + 1) != count($searchname)) {
-                                $likequery.=" OR ";
-                            }
-                        }
-                        $thumImageorder = $likequery;
-                        $rowF           = $this->_settingsData->rowMore;
-                        $colF           = $this->_settingsData->colMore;
-                        $dataLimit      = $rowF * $colF;
+                        $thumImageorder = "( t4.tags_name LIKE '%" . $this->_video_search . "%' || t1.description LIKE '%" . $this->_video_search . "%' || t1.name LIKE '%" . $this->_video_search . "%')";
+                        $TypeSet = $this->_settingsData->feature;
+                        $rowF = $this->_settingsData->rowMore;
+                        $colF = $this->_settingsData->colMore;
+                        $dataLimit = $rowF * $colF;
                         $TypeOFvideos   = $this->home_searchthumbdata($thumImageorder,$this->_pagenum, $dataLimit);
                         $CountOFVideos  = $this->Countof_Videosearch($thumImageorder);
                         return $this->searchList($this->_video_search,$CountOFVideos, $TypeOFvideos, $this->_pagenum, $dataLimit);
@@ -157,7 +146,7 @@ if (class_exists('ContusMoreView') != true) {
                         $duration[$j]   = $video->duration;         ## VIDEO DURATION
                         $imageFea[$j]   = $video->image;            ## VIDEO IMAGE
                         $file_type      = $video->file_type;        ## Video Type
-                        $guid[$j]       = get_video_permalink($video->slug);             ## guid
+                       $guid[$j]        = $video->guid;             ## guid
                         if ($imageFea[$j] == '') {                  ## If there is no thumb image for video
                             $imageFea[$j] = $this->_imagePath . 'nothumbimage.jpg';
                         } else {
@@ -172,15 +161,13 @@ if (class_exists('ContusMoreView') != true) {
                         $rate[$j]        = $video->rate;             ## VIDEO RATE
                         if (!empty($this->_playid)) {
                             $fetched[$j] = $video->playlist_name;
-                            $fetched_pslug[$j] = $video->playlist_slugname;
                             $playlist_id = $this->_playid;
                         } else {
                             $getPlaylist     = $this->_wpdb->get_row("SELECT playlist_id FROM " . $this->_wpdb->prefix . "hdflvvideoshare_med2play WHERE media_id='".intval($vidF[$j])."'");
                             if (isset($getPlaylist->playlist_id)) {
                                 $playlist_id = $getPlaylist->playlist_id;       ## VIDEO CATEGORY ID
-                                $fetPlay[$j] = $this->_wpdb->get_row("SELECT playlist_name,playlist_slugname FROM " . $this->_wpdb->prefix . "hdflvvideoshare_playlist WHERE pid='".intval($playlist_id)."'");
+                                $fetPlay[$j] = $this->_wpdb->get_row("SELECT playlist_name FROM " . $this->_wpdb->prefix . "hdflvvideoshare_playlist WHERE pid='".intval($playlist_id)."'");
                                 $fetched[$j] = $fetPlay[$j]->playlist_name;     ## CATEOGORY NAME
-                                $fetched_pslug[$j] = $fetPlay[$j]->playlist_slugname;     ## CATEOGORY NAME
                             }
                         }
                         $j++;
@@ -207,8 +194,7 @@ if (class_exists('ContusMoreView') != true) {
                             $div            .= $videoname;
                             $div            .= '</span></a>';
                             if (!empty($fetched[$j])) {
-                                $playlist_url = get_playlist_permalink($this->_mPageid,$playlist_id,$fetched_pslug[$j]);
-                                $div        .= '<a  class="playlistName" href="' . $playlist_url . '"><span>' . $fetched[$j] . '</span></a>';
+                                $div        .= '<a  class="playlistName" href="' . $this->_site_url . '/?page_id=' . $this->_mPageid . '&amp;playid=' . $playlist_id . '"><span>' . $fetched[$j] . '</span></a>';
                             }
                             ## Rating starts here
                             if ($this->_settingsData->ratingscontrol == 1) {
@@ -219,17 +205,15 @@ if (class_exists('ContusMoreView') != true) {
                                 }
                                 $div             .= '<span class="ratethis1 '.$ratearray[$ratestar].'"></span>';
                             } 
-                            ## Rating ends and views starts here
-                            if ($this->_settingsData->view_visible == 1) {
-                            $div            .= '<span class="video_views">';
-                                if($hitcount[$j]>1){
-                                    $viewlang   = $this->_viewslang;
-                                } else {
-                                       $viewlang = $this->_viewlang;
-                                }
+                            ## Rating ends here
+                            $div            .= '
+                                    <span class="video_views">';
+                            if($hitcount[$j]>1)
+                                $viewlang   = $this->_viewslang;
+                                else
+                                   $viewlang = $this->_viewlang;
                             $div            .= $hitcount[$j] . ' '.$viewlang;
                             $div            .= '</span>';
-                            }
                             $div            .= '</div>';
                             $div            .= '</li>';
                         ## ELSE ENDS
@@ -300,7 +284,7 @@ if (class_exists('ContusMoreView') != true) {
                         $duration   = $playList->duration;
                         $imageFea   = $playList->image;             ## VIDEO IMAGE
                         $file_type  = $playList->file_type;         ## Video Type
-                        $guid       = get_video_permalink($playList->slug);              ## guid
+                        $guid       = $playList->guid;              ## guid
                         if ($imageFea == '') {                      ## If there is no thumb image for video
                             $imageFea = $this->_imagePath . 'nothumbimage.jpg';
                         } else {
@@ -328,15 +312,14 @@ if (class_exists('ContusMoreView') != true) {
                                 }
                                 $div             .= '<span class="ratethis1 '.$ratearray[$ratestar].'"></span>';
                             }
-                        ## Rating ends and views starts here
-                            if ($this->_settingsData->view_visible == 1) {
-                                if($playList->hitcount>1){
-                                        $viewlang = $this->_viewslang;
-                                } else {
-                                           $viewlang = $this->_viewlang;
-                                }
-                                $div    .= '<span class="video_views">' . $playList->hitcount . ' '.$viewlang . '</span>';
-                            }
+                        ## Rating ends here
+                        if($playList->hitcount>1)
+                                $viewlang = $this->_viewslang;
+                                else
+                                   $viewlang = $this->_viewlang;
+
+                            $div    .= '<span class="video_views">' . $playList->hitcount . ' '.$viewlang . '</span>';
+                        
                         $div        .= '</div></li>';
 
                         if ($i > ($this->_perCat-2)) {
@@ -357,7 +340,7 @@ if (class_exists('ContusMoreView') != true) {
                         $div        .= '<div align="right"> </div>';
                     }
                 } else {                                                        ## If there is no video for category
-                    $div            .= '<div>'.__('No Videos for this Category', 'video_gallery').'</div>';
+                    $div            .= '<div>'.__('No Videos For this Category', 'video_gallery').'</div>';
                 }
             }
 
@@ -410,7 +393,7 @@ if (class_exists('ContusMoreView') != true) {
                         $duration   = $playList->duration;
                         $imageFea   = $playList->image;         ## VIDEO IMAGE
                         $file_type  = $playList->file_type;     ## Video Type
-                        $guid       = get_video_permalink($playList->slug);         ## guid
+                        $guid       = $playList->guid;          ## guid
                         if ($imageFea == '') {                  ## If there is no thumb image for video
                             $imageFea = $this->_imagePath . 'nothumbimage.jpg';
                         } else {
@@ -432,8 +415,7 @@ if (class_exists('ContusMoreView') != true) {
                         }
                         $div        .= '</div><h5><a href="' . $guid . '" class="videoHname">' . $playListName . '</a></h5><div class="vid_info">';
                         if (!empty($playList->playlist_name)) {
-                            $playlist_url = get_playlist_permalink($this->_mPageid,$playList->pid,$playList->playlist_slugname);
-                                $div .= '<h6 class="playlistName"><a href="' . $playlist_url . '">' . $playList->playlist_name . '</a></h6>';
+                                $div .= '<h6 class="playlistName"><a href="' . $this->_site_url . '/?page_id=' . $this->_mPageid . '&amp;playid=' . $playList->pid . '">' . $playList->playlist_name . '</a></h6>';
                             }
                         ## Rating starts here
                         if ($this->_settingsData->ratingscontrol == 1) {
@@ -444,15 +426,13 @@ if (class_exists('ContusMoreView') != true) {
                                 }
                                 $div             .= '<span class="ratethis1 '.$ratearray[$ratestar].'"></span>';
                             }
-                        ## Rating ends and views starts here
-                        if ($this->_settingsData->view_visible == 1) {
-                            if($playList->hitcount>1){
-                                    $viewlang = $this->_viewslang;
-                            } else {
-                                       $viewlang = $this->_viewlang;
-                            }
-                            $div        .= '<span class="video_views">' . $playList->hitcount . ' '.$viewlang . '</span>';
-                        }
+                        ## Rating ends here
+                        if($playList->hitcount>1)
+                                $viewlang = $this->_viewslang;
+                                else
+                                   $viewlang = $this->_viewlang;
+                        $div        .= '<span class="video_views">' . $playList->hitcount . ' '.$viewlang . '</span>';
+ 
                         $div        .= '</div></li>';
 
                         $inc++;
@@ -462,15 +442,14 @@ if (class_exists('ContusMoreView') != true) {
                 } else { ## If there is no video for category
                     $div            .= '<div>'.__('No Videos Found', 'video_gallery').'</div>';
                 }
-            $div                    .= '</div>';
+
 
             $div                    .= '<div class="clear"></div>';
 
             ## PAGINATION STARTS
             $total          = $CountOFVideos;
             $num_of_pages   = ceil($total / $dataLimit);
-            $video_search   = str_replace(" ", "%20", $video_search);
-            $arr_params     = array ( 'pagenum' => '%#%');
+            $arr_params     = array ( 'pagenum' => '%#%', 'video_search' => $video_search );
             $page_links     = paginate_links(array(
                         'base'      => add_query_arg($arr_params),
                         'format'    => '',
@@ -481,7 +460,7 @@ if (class_exists('ContusMoreView') != true) {
                     ));
 
             if ($page_links) {
-                $div    .= '<div class="tablenav"><div class="tablenav-pages" >' . $page_links . '</div></div>';
+                $div    .= '<div class="tablenav"><div class="tablenav-pages" >' . $page_links . '</div></div></div>';
             }
 
             ## PAGINATION ENDS

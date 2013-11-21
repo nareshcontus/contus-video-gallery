@@ -52,16 +52,19 @@ if(class_exists('PlaylistController') != true)
              if(isset($this->_addnewPlaylist))
             {   
                 $playlistName = filter_input(INPUT_POST, 'playlistname');
-                $playlist_slugname = sanitize_title($playlistName);
+//                $playlistDescription = filter_input(INPUT_POST, 'playlistdescription');
                 $playlistPublish = filter_input(INPUT_POST, 'ispublish');
+                $playlistOrder = filter_input(INPUT_POST, 'playlist_order');
+                $playlistordering = filter_input(INPUT_POST, 'ordering');
                 
                 $playlsitData = array(
                 'playlist_name' => $playlistName,
-                'playlist_slugname' => $playlist_slugname,
+//                'playlist_desc' => $playlistDescription,
                 'is_publish' => $playlistPublish,
+                'playlist_order' => $playlistordering,
                 );
 
-                $playlistDataformat = array('%s', '%s', '%d');
+                $playlistDataformat = array('%s', '%s', '%d', '%d','%d');
 
                 if (isset($this->_playListId)) 
                 {//update for playlist if starts
@@ -121,7 +124,7 @@ if(class_exists('PlaylistController') != true)
                 break;
 
                 case 'sorder':
-                    $order ='playlist_order';
+                    $order ='ordering';
                 break;
 
                 default:
@@ -132,41 +135,34 @@ if(class_exists('PlaylistController') != true)
 
          public function get_message()
          {//displaying database message function starts
-             $message_div = '';
             if (isset($this->_update) && $this->_update == '1')
             {
                 $this->_msg = 'Category Updated Successfully ...';
-                $message_div = "addcategory";
             }
             else if($this->_update == '0')
             {
                 $this->_msg = 'Category Not Updated  Successfully ...';
-                $message_div = "addcategory";
             }
 
             if (isset($this->_add) && $this->_add == '1')
             {
                 $this->_msg ='Category Added Successfully ...';
-                $message_div = "addcategory";
             }
 
               if (isset($this->_del) && $this->_del == '1')
             {
                 $this->_msg ='Category Deleted Successfully ...';
-                $message_div = "category";
             }
                if (isset($this->_status) && $this->_status == '1')
             {
                 $this->_msg ='Category Published Successfully ...';
-                $message_div = "category";
             }
             else if($this->_status == '0')
             {
                 $this->_msg = 'Category UnPublished Successfully ...';
-                $message_div = "category";
             }
-            $return_values = array(0=>$this->_msg,1=>$message_div);
-            return $return_values;
+
+            return $this->_msg;
          }//displaying database message function ends
 
         public function get_delete()
@@ -212,5 +208,12 @@ $playlistEdit = $playlistOBJ->playlist_edit($playListId);
 $displayMsg = $playlistOBJ->get_message();
 $adminPage = filter_input(INPUT_GET, 'page');
 $adminPage = filter_input(INPUT_GET, 'page');
+if ($adminPage == 'playlist')
+{//including playlist form if starts
     require_once(APPTHA_VGALLERY_BASEDIR . DS . 'admin/views/playlist/playlist.php');
+}//including playlist form if starts
+else if ($adminPage == 'newplaylist')
+{//including newplaylist ad form if starts
+    require_once(APPTHA_VGALLERY_BASEDIR . DS . 'admin/views/playlist/addplaylist.php');
+}//including newplaylist ad form if ends
 ?>

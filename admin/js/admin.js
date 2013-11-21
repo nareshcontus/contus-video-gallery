@@ -288,12 +288,7 @@ function VideoaddeleteIds()
     return false;
 }
 
-function getsubtitle1name() {
-	document.getElementById('subtilelang1').style.display = "";
-}
-function getsubtitle2name() {
-	document.getElementById('subtilelang2').style.display = "";
-}
+
 
 function VideodeleteIds()
 
@@ -305,6 +300,7 @@ function VideodeleteIds()
     {
         if(videoID)
         {
+            alert("You want to delete Video? ");
             return true;
         }
         else
@@ -370,13 +366,6 @@ function addQueue(whichForm,myfile)
             alert(extn+" is not a valid Video Extension");
             return false;
         }
-    } else if( whichForm == 'subtitle1form' || whichForm == 'subtitle2form' )
-    {
-        if(extn != 'srt' && extn != 'SRT')
-        {
-            alert(extn+" is not a valid Video Extension");
-            return false;
-        }
     }
     else
     {
@@ -418,15 +407,8 @@ function updateQueue(statuscode,statusmessage,outfile)
 {
     uploadmessage = statusmessage;
     form_handler = uploadqueue[0];
-    if (statuscode == 0){
+    if (statuscode == 0)
         document.getElementById(form_handler+"-value").value = outfile;
-        if(form_handler === 'subtitle1form'){
-                    getsubtitle1name();
-                }
-                if(form_handler === 'subtitle2form'){
-                    getsubtitle2name();
-                }
-    }
     setStatus(form_handler,statuscode);
     uploadqueue.shift();
     processQueue();
@@ -454,12 +436,6 @@ function setStatus(form_handle,status)
             break;
         case "previewimageform":
             divprefix = 'f4';
-            break;
-        case "subtitle1form":
-            divprefix = 'f5';
-            break;
-        case "subtitle2form":
-            divprefix = 'f6';
             break;
     }
     switch(status)
@@ -605,13 +581,16 @@ function validateInput(){
             var theurl=document.getElementById("filepath1").value;
             var regExp = /^.*(youtu.be\/|v\/|embed\/|watch\?|youtube.com\/user\/[^#]*#([^\/]*?\/)*)\??v?=?([^#\&\?]*).*/;
             var match = theurl.match(regExp);
-            if (!match && theurl.indexOf("dailymotion.com") === -1 && theurl.indexOf("viddler.com") === -1){
+            if (!match){
                 document.getElementById('Youtubeurlmessage').innerHTML = 'Enter Valid Youtube URL';
                 document.getElementById('filepath1').focus();
                 return false;
-            } else {
-                document.getElementById("youtube-value").value = theurl;
             }
+//            if (theurl.indexOf("youtube.com") == -1 || theurl.indexOf("youtu.be") == -1 ) {
+//                document.getElementById('Youtubeurlmessage').innerHTML = 'Enter Valid Youtube URL';
+//                document.getElementById('filepath1').focus();
+//                return false;
+//            }
             }
     } else if(document.getElementById('btn1').checked == true && document.getElementById('f1-upload-form').style.display != 'none' && document.getElementById('lbl_normal').innerHTML==''){
         document.getElementById('uploadmessage').innerHTML = 'Upload Video';
@@ -711,32 +690,6 @@ function validateInput(){
         document.getElementById('titlemessage').innerHTML = 'Enter Title';
         return false;
     }
-    
-    //    validation for Video subtitle
-
-    if (document.getElementById('subtitle1form-value').value !== "")
-    {
-    if (document.getElementById('subtile_lang1').value === "")
-    {
-        document.getElementById('uploadsrt1message').innerHTML = 'You must provide SubTitle1';
-        document.getElementById('subtile_lang1').focus();
-        return false;
-        } else {
-            document.getElementById('subtitle_lang1').value = document.getElementById('subtile_lang1').value;
-        }
-    }
-    if (document.getElementById('subtitle2form-value').value !== "")
-    {
-    if (document.getElementById('subtile_lang2').value === "")
-    {
-        document.getElementById('uploadsrt2message').innerHTML = 'You must provide SubTitle2';
-        document.getElementById('subtile_lang2').focus();
-        return false;
-        } else {
-         document.getElementById('subtitle_lang2').value = document.getElementById('subtile_lang2').value;   
-        }
-    }
-
     var check_box = document.getElementsByTagName('input');
     for (var i = 0; i < check_box.length; i++)
     {

@@ -126,13 +126,12 @@ h3.related-videos{margin: 0 !important; padding: 0 !important; text-align: left;
 .video-page-container{ font-family: helvetica, arial, sans-serif; font-size: 12px; }
 .video-page-container .video-page-info strong{width: auto; display: inline-block;  }
 .video-page-container strong{width: auto; display: inline-block;}
-.video-page-container .video-page-date{width: auto; float: left;/*width: 50%; */}
-.video-page-container .video-page-views{ float: right; text-align: right;/*width: 50%;*/}
-.video-page-container .video-page-username{ float: left; text-align: left;/*width: 50%;*/}
-.video-page-container.shortcode .video-page-info{float: right;text-align: right;width: 100%;}
+.video-page-container .video-page-date{width: auto; float: left;width: 50%; }
+.video-page-container .video-page-views{ float: right; text-align: right;width: 50%;}
+.video-page-container.shortcode .video-page-info{float: left;text-align: left;width: 50%;}
 .video-page-container.shortcode .video-page-info.noviews{width: 100%;}
-.video-page-container.shortcode .video-page-views {width:100%;float: right;text-align: right;}
-.video-page-container.shortcode .video-page-rating{width: 100%;float: right;}
+.video-page-container.shortcode .video-page-views {float: left;text-align: left;}
+.video-page-container.shortcode .video-page-rating{width: 50%;float: left;}
 .video-page-container.shortcode .noviews .video-page-rating{width: 100%;}
 
 .video-page-container.shortcode .video-page-rating .floatleft {float: right;}
@@ -144,7 +143,7 @@ h3.related-videos{margin: 0 !important; padding: 0 !important; text-align: left;
 .video-page-info .video-page-rating{float: right; }
 .video-page-info .video-page-rating .rateimgleft{float: right; }
 .video-page-info .video-page-rating .rateright-views{margin-right: 5px;padding-top: 2px;width: 120px;text-align: right;}
-.video-page-info .video-page-category{float: right;width: 49%;text-align: right;}
+.video-page-info .video-page-category{float: left;width: 49%;}
 .player embed{margin: 0 0 10px 0 !important; }
 .embed{ padding: 0 10px; border: 1px solid #ccc; text-decoration: none; float: left; }
 .embed .embed_text{ float: left;  }
@@ -293,7 +292,7 @@ padding: 0px !important;
 h2.hoverable a{font-size:18px;}
 h2.hoverable a:hover{background:none;}
 /*.gr h2 {border-bottom:1px solid #C3C3C3;padding-bottom:5px;}*/
-ul.ratethis li a {text-indent: 100px; position:absolute;left:0;top:0;width:20px;height:20px;text-decoration:none;z-index: 200;}
+ul.ratethis li a { position:absolute;left:0;top:0;width:20px;height:20px;text-decoration:none;z-index: 200;}
 ul.ratethis li.one a {left:0}
 ul.ratethis li.two a {left:20px;}
 ul.ratethis li.three a {left:40px;}

@@ -55,8 +55,15 @@ class widget_ContusVideoCategory_init extends WP_Widget {
         $dirExp                 = explode('/', $dir);
         $dirPage                = $dirExp[0];
         ?>
-<!-- Recent videos 
-For Getting The Page Id More and Video-->
+<!-- Recent videos -->
+<script type="text/javascript" src="<?php echo $site_url; ?>/wp-content/plugins/<?php echo dirname(plugin_basename(__FILE__)) ?>/js/script.js"></script>
+
+<script type="text/javascript">
+    var baseurl;
+    baseurl = '<?php echo $site_url; ?>';
+    folder  = '<?php echo $dirPage; ?>'
+</script>
+<!-- For Getting The Page Id More and Video-->
 <?php
         $moreName               = $wpdb->get_var("select ID from " . $wpdb->prefix . "posts WHERE post_content='[videomore]' and post_status='publish' and post_type='page' limit 1");
         $styleSheet             = $wpdb->get_var("select stylesheet from " . $wpdb->prefix . "hdflvvideoshare_settings WHERE settings_id='1'");
@@ -70,19 +77,16 @@ For Getting The Page Id More and Video-->
         $moreCategories         = $wpdb->get_results("SELECT COUNT(*) AS contus FROM " . $wpdb->prefix . "hdflvvideoshare_playlist WHERE is_publish='1'");
         $countCategories        = $moreCategories[0]->contus;
         $div                    = '';
-        $more_videos_link       = get_morepage_permalink($moreName,'categories');
-        $div                    .= '<div id="videos-category"  class="sidebar-wrap "> <h3 class="widget-title"><a href="' . $more_videos_link . '">' . $title . '</a></h3>';
+        $div                    .= '<div id="videos-category"  class="sidebar-wrap "> <h3 class="widget-title"><a href="' . $site_url . '/?page_id=' . $moreName . '&amp;more=categories">' . $title . '</a></h3>';
         $div                    .='<ul class="ulwidget clearfix">';
         ## were there any posts found?
         if (!empty($features)) {
         ## posts were found, loop through them
             foreach ($features as $feature) {
                 $fetched        = $feature->playlist_name;
-                $playlist_slugname = $feature->playlist_slugname;
                 $playlist_id    = $feature->pid;
                 $div            .= '<li>';
-                $playlist_url = get_playlist_permalink($moreName,$playlist_id,$playlist_slugname);
-                $div            .= '<div class="clear"></div><a class="videoHname "  href="' . $playlist_url . '">' . $fetched . '</a>';
+                $div            .= '<div class="clear"></div><a class="videoHname "  href="' . $site_url . '?page_id=' . $moreName . '&amp;playid=' . $playlist_id . '">' . $fetched . '</a>';
                 $div            .= '</li>';
             }
         } else {
@@ -90,7 +94,7 @@ For Getting The Page Id More and Video-->
         }
         ## end list
         if (($show < $countCategories)) {
-            $div                .= '<li><div class="right video-more"><a href="' . $more_videos_link . '">' . __('More Categories', 'video_gallery') . ' &#187;</a></div></li>';
+            $div                .= '<li><div class="right video-more"><a href="' . $site_url . '/?page_id=' . $moreName . '&amp;more=categories">' . __('More Categories', 'video_gallery') . ' &#187;</a></div></li>';
         }
         $div                    .= '</ul></div>';
 
