@@ -565,7 +565,7 @@ if (isset($_GET['videoId'])){
                                                                                //check whether preroll ads are enable
                                                                                // get the ads list
                                                                                global $wpdb;
-                                                                               $tables = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "hdflvvideoshare_vgads WHERE admethod='prepost'");
+                                                                               $tables = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "hdflvvideoshare_vgads WHERE admethod='prepost' AND publish='1'");
 
                                                                                $settings = $wpdb->get_results("SELECT * FROM " . $wpdb->prefix . "hdflvvideoshare_settings");
                                                                                if ($settings[0]->preroll == 0 || $settings[0]->postroll == 0 || $settings[0]->midroll_ads == 0 || $settings[0]->imaAds == 1) {
