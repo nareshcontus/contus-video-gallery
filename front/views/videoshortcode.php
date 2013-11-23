@@ -654,7 +654,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
             if ($this->_post_type == 'videogallery' || $this->_page_post_type == 'videogallery') {
             ## Default Comments
              if ($configXML->comment_option == 0) {
-                $output                 .='<style type="text/css">#comments #respond,#comments.comments-area, #disqus_thread{ display: none!important; } </style>';
+                $output                 .='<style type="text/css">#comments #respond,#comments.comments-area, #disqus_thread, .comments-link{ display: none!important; } </style>';
              }
             ## Facebook Comments
             if ($configXML->comment_option == 2) {
