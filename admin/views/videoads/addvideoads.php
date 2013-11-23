@@ -73,7 +73,7 @@ $image_path = str_replace('plugins/'.$dirPage.'/', 'uploads/videogallery/', APPT
                         </h3>
                         <table class="form-table">
                         <tr id="videoadmethod" name="videoadmethod">
-                                <td  width="150"><?php _e('Select File Path', 'video_gallery') ?></td>
+                                <td  width="150"><?php _e('Select file type', 'video_gallery') ?></td>
                                 <td>
                                 <input type="radio" name="videoad" id="filebtn" value="1" onClick="Videoadtypemethod('fileuplo');" /> File
                                 <input type="radio" name="videoad" id="urlbtn" value="2" onClick="Videoadtypemethod('urlad');" />  URL
