@@ -179,7 +179,7 @@ document.getElementById("publish_yes").checked = true;
                             <th scope="col"  class="manage-column column-cb check-column" style="">
                                 <input type="checkbox" name="" >
                             </th>
-                            <th width="3%" scope="col"  style="">
+                            <th scope="col"  style="">
                                    <span>
                                     <?php _e('', 'video_gallery'); ?> </span><span class="sorting-indicator"></span></th>
                             <th scope="col"  class="manage-column column-name sortable desc" style="">
