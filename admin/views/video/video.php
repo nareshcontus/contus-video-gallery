@@ -284,7 +284,7 @@ if (isset($_GET['pagenum'])){
 
                                         </td>
                                         <td style="text-align:center">
-                                            <a title="Edit <?php echo $videoView->ordering; ?>" class="row-title" ><?php echo $videoView->ordering; ?></a>
+                                            <?php echo $videoView->ordering; ?>
                                         </td>
                                     </tr>
                         <?php
