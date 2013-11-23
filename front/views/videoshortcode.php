@@ -519,9 +519,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                     $videoId1           = $imgval[0];
                     $video_thumb        = "http://img.youtube.com/vi/" . $videoId1 . "/mqdefault.jpg";
                 } 
-                $video_title_share      = str_replace(" ", "%20", $video_title);
-                $videodescription       = str_replace(" ", "%20", $description);
-                $videodescription       = str_replace('"', "", $videodescription);
+                $videodescription       = str_replace('"', "", $description);
                 $videodescription       = str_replace("'", "", $videodescription);
                 $blog_title             = get_bloginfo('name');
                 $current_url            = "http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] . '?random=' . rand(0, 100);
@@ -530,7 +528,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                 } else{
                 $sd                     = "%5Bvideo%5D%5Bheight%5D=360&amp;p%5Bvideo%5D%5Bsrc%5D=" . urlencode($this->_swfPath) . "%3Ffile%3D" . urlencode($videoUrl) . "%26baserefW%3D" . urlencode(APPTHA_VGALLERY_BASEURL) . "%2F%26vid%3D" . $vid . "%26embedplayer%3Dtrue%26HD_default%3Dtrue%26share%3Dfalse%26skin_autohide%3Dtrue%26showPlaylist%3Dfalse&amp;p";
                 }
-                $url_fb                 = "http://www.facebook.com/sharer/sharer.php?s=100&amp;p%5Btitle%5D=" . $video_title_share . "&amp;p%5Bsummary%5D=" . strip_tags($videodescription) . "&amp;p%5Bmedium%5D=103&amp;p%5Bvideo%5D%5Bwidth%5D=640&amp;p" . $sd . "%5Burl%5D=" . urlencode($current_url) . "&amp;p%5Bimages%5D%5B0%5D=" . urlencode($video_thumb);
+                $url_fb                 = "http://www.facebook.com/sharer/sharer.php?s=100&amp;p%5Btitle%5D=" . urlencode($video_title) . "&amp;p%5Bsummary%5D=" . urlencode($videodescription) . "&amp;p%5Bmedium%5D=103&amp;p%5Bvideo%5D%5Bwidth%5D=640&amp;p" . $sd . "%5Burl%5D=" . urlencode($current_url) . "&amp;p%5Bimages%5D%5B0%5D=" . urlencode($video_thumb);
                 $output                 .= '
                                         <!-- Facebook share Start -->
                                         <div class="video-socialshare">
