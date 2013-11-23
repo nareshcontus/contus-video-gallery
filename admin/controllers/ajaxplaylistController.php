@@ -45,9 +45,7 @@ if(class_exists('AjaxPlaylistController') != true)
     // Get input informations from POST
     $p_name = addslashes(trim($name));
     $p_description = '';
-    $p_playlistorder = 0;
-    if (empty($p_playlistorder))
-        $p_playlistorder = "ASC";
+    $p_playlistorder    = $wpdb->get_var("SELECT count(playlist_order) FROM ".$wpdb->prefix . "hdflvvideoshare_playlist");
     $playlistname1 = "select playlist_name from " . $wpdb->prefix . "hdflvvideoshare_playlist where playlist_name='" . $p_name . "'";
     $planame1 = mysql_query($playlistname1);
     if (mysql_fetch_array($planame1, MYSQL_NUM)) {

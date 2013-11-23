@@ -44,6 +44,7 @@ if(class_exists('PlaylistController') != true)
         public function add_playlist() 
         {//function for adding playlist starts
 
+            global $wpdb;
             if(isset($this->_status))
             {//updating status of video ad starts
             $this->status_update($this->_playListId,$this->_status);
@@ -61,11 +62,9 @@ if(class_exists('PlaylistController') != true)
                 'is_publish' => $playlistPublish,
                 );
 
-                $playlistDataformat = array('%s', '%s', '%d');
-
                 if (isset($this->_playListId)) 
                 {//update for playlist if starts
-                    $updateflag = $this->playlist_update($playlsitData, $playlistDataformat, $this->_playListId);
+                    $updateflag = $this->playlist_update($playlsitData, $this->_playListId);
 
                     if ($updateflag)
                     {
@@ -78,7 +77,9 @@ if(class_exists('PlaylistController') != true)
                 }//update for playlist if ends
                 else 
                 {//adding playlist else starts
-                    $addflag = $this->insert_playlist($playlsitData, $playlistDataformat);
+                    $ordering    = $wpdb->get_var("SELECT count(playlist_order) FROM ".$wpdb->prefix . "hdflvvideoshare_playlist");
+                    $playlsitData['playlist_order'] = $ordering;
+                    $addflag = $this->insert_playlist($playlsitData);
                     
                     if (!$addflag)
                     {
