@@ -343,7 +343,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                 $output                 .='<div class="video-page-container '.$plugin_css.'">
                                        <div class="vido_info_container"><div class="video-page-info '.$no_views.'">';
                 if ($this->_post_type == 'videogallery' || $this->_page_post_type == 'videogallery') {
-                $output                 .='<div class="video-page-date"><strong>' . __("Posted on", "video_gallery") . '    </strong>: ' . date("m-d-Y", strtotime($post_date)) . '</div>';
+                $output                 .='<div class="video-page-date"><strong>' . __("Posted on", "video_gallery") . '    </strong>: ' . date("d-M-Y", strtotime($post_date)) . '</div>';
                 }
                 
                 if($videogalleryviews==true){
