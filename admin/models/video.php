@@ -24,6 +24,8 @@ if(class_exists('VideoModel') != true)
             $this->_posttable = $this->_wpdb->prefix.'posts';
             $this->_videosettingstable = $this->_wpdb->prefix.'hdflvvideoshare_settings';
             $this->_videoId = filter_input(INPUT_GET, 'videoId');
+            $current_user = wp_get_current_user();
+            $this->member_id = $current_user->ID;
         }//contructor ends
         
         public function insert_video($videoData,$slug)
@@ -37,7 +39,7 @@ if(class_exists('VideoModel') != true)
                 $post_id=$post_id+1;
 
                 $postsData= array(
-                    'post_author' => '1',
+                    'post_author' => $this->member_id,
                     'post_date' => date('Y-m-d H:i:s'),
                     'post_date_gmt' => date('Y-m-d H:i:s'),
                     'post_content' => $post_content,
@@ -92,7 +94,7 @@ if(class_exists('VideoModel') != true)
                 $post_content="[hdvideo id=".$videoId."]";
 
                 $postsData= array(
-                    'post_author' => '1',
+                    'post_author' => $this->member_id,
                     'post_date' => date('Y-m-d H:i:s'),
                     'post_date_gmt' => date('Y-m-d H:i:s'),
                     'post_content' => $post_content,
