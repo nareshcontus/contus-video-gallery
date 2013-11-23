@@ -33,7 +33,8 @@ if (class_exists('ContusMoreView') != true) {
             $this->_viewslang = __('Views', 'video_gallery');
             $this->_viewlang = __('View', 'video_gallery');
             ## Get search keyword
-            if(isset($wp_query->query_vars['video_search'])){
+            $searchVal = str_replace(" ", "%20",__('Video Search ...', 'video_gallery'));
+            if(isset($wp_query->query_vars['video_search']) && $wp_query->query_vars['video_search'] !== $searchVal){
             $video_search    = $wp_query->query_vars['video_search'];
             }
             $this->_video_search = $video_search;
@@ -119,7 +120,7 @@ if (class_exists('ContusMoreView') != true) {
                         $dataLimit      = $rowF * $colF;
                         $TypeOFvideos   = $this->home_searchthumbdata($thumImageorder,$this->_pagenum, $dataLimit);
                         $CountOFVideos  = $this->Countof_Videosearch($thumImageorder);
-                        return $this->searchList($this->_video_search,$CountOFVideos, $TypeOFvideos, $this->_pagenum, $dataLimit);
+                        return $this->searchList($video_search,$CountOFVideos, $TypeOFvideos, $this->_pagenum, $dataLimit);
                         break;
                     case 'categories':
                     default:
