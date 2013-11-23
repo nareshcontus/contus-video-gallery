@@ -22,16 +22,17 @@ $dirPage                = $dirExp[0];
 $act_vid = 0;
 $video_description = '';
 $site_url = get_option('siteurl');
-if (isset($_GET['videoId']))
+if (isset($_GET['videoId'])){
     $act_vid = (int) $_GET['videoId'];
+}
 ?>
-<?php  if ($displayMsg): ?>
+<?php  if ($displayMsg){ ?>
                 <div class="updated below-h2">
                 <p>
                 <?php echo $displayMsg; ?>
                 </p>
                 </div>
-                <?php endif; ?>
+<?php } ?>
 <div class="apptha_gallery">
 <div class="wrap">
     <script type="text/javascript">
@@ -125,7 +126,19 @@ if (isset($_GET['videoId']))
             });
         }
     </script>
-    <h2> <?php _e('Add a new video', 'video_gallery'); ?> </h2>
+    <?php
+    $adminPage = filter_input(INPUT_GET, 'page');
+    $videoId = filter_input(INPUT_GET, 'videoId');
+    if ($adminPage == 'newvideo' && !empty($videoId)) {
+        $editbutton = 'Update video';
+        $page_title = 'Edit video';
+    } else {
+        $editbutton = 'Add video';
+        $page_title = 'Add a new video';
+    }
+    ?>
+    <h2> <?php echo _e($page_title, 'video_gallery'); ?> </h2>
+
 
     <div id="poststuff" class="has-right-sidebar">
         <?php if (isset($get_key) && $get_title != $get_key) {
@@ -682,16 +695,7 @@ if (isset($_GET['videoId']))
                                                                                    </div>
                                                                            <!-- End of sidebar -->
                                                                            <p>
-<?php
-                                                                               $adminPage = filter_input(INPUT_GET, 'page');
-                                                                               $videoId = filter_input(INPUT_GET, 'videoId');
-                                                                               if ($adminPage == 'newvideo' && !empty($videoId)) {
-                                                                                   $editbutton = 'Update video';
-                                                                               } else {
-                                                                                   $editbutton = 'Add video';
-                                                                               }
-?>
-                                                                               <input type="submit" name="add_video" class="button-primary"  onclick="return validateInput();" value="<?php echo $editbutton; ?>" class="button" />
+                                                                               <input type="submit" name="add_video" class="button-primary"  onclick="return validateInput();" value="<?php echo _e($editbutton, 'video_gallery'); ?>" class="button" />
                                                                                <input type="button" onclick="window.location.href='admin.php?page=video'" class="button-secondary" name="cancel" value="<?php _e('Cancel'); ?>" class="button" />
                                                                            </p>
                                                                    </div><!--END Post body -->
