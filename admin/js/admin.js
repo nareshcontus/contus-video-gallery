@@ -700,10 +700,12 @@ function validateInput(){
         if(embed_code===''){
         document.getElementById('embedmessage').innerHTML = 'Enter Embed Code';
         return false;
-        } else if(embed_code.indexOf('<iframe')!=0 && embed_code.indexOf('<embed')!=0 && embed_code.indexOf('<object')!=0){
-        document.getElementById('embedmessage').innerHTML = 'Enter Valid Embed Code';
-        return false;
-        } else{
+        } 
+//        else if(embed_code.indexOf('<iframe')!=0 && embed_code.indexOf('<embed')!=0 && embed_code.indexOf('<object')!=0){
+//        document.getElementById('embedmessage').innerHTML = 'Enter Valid Embed Code';
+//        return false;
+//        } 
+        else{
            document.getElementById('embedmessage').innerHTML = ''; 
         }
     }
