@@ -103,11 +103,11 @@ if (isset($_GET['pagenum'])){
                 $orderField = filter_input(INPUT_GET, 'order');
                 $direction = isset($orderField) ? $orderField : false;
                 $reverse_direction = ($direction == 'DESC' ? 'ASC' : 'DESC');
+                $url = get_bloginfo('url') . '/wp-admin/admin.php?page=video';
                 if (isset($_REQUEST["videosearchbtn"])) {
         ?>
                     <div  class="updated below-h2">
             <?php
-                    $url = get_bloginfo('url') . '/wp-admin/admin.php?page=video';
                     $searchmsg = filter_input(INPUT_POST, 'videosearchQuery');
                     if (count($gridVideo)) {
                         echo count($gridVideo) . "   Search Result(s) for '" . $searchmsg . "'.&nbsp&nbsp&nbsp<a href='$url' >Back to Videos List</a>";
@@ -117,7 +117,7 @@ if (isset($_GET['pagenum'])){
             ?>
                 </div>
         <?php } ?>
-                <form class="admin_video_search" name="videos" action="" method="post" onsubmit="return videosearch();">
+                <form class="admin_video_search" name="videos" action="<?php echo $url.'&#videofrm'; ?>" method="post" onsubmit="return videosearch();">
                     <p class="search-box">
                         <input type="text"  name="videosearchQuery" id="VideosearchQuery" value="<?php if (isset($searchmsg))
                     echo $searchmsg; ?>">
