@@ -711,6 +711,7 @@ function validateInput(){
     }
     if(document.getElementById('name').value === ''){
         document.getElementById('titlemessage').innerHTML = 'Enter Title';
+        document.getElementById('name').focus();
         return false;
     }
     
@@ -745,11 +746,12 @@ function validateInput(){
         if (check_box[i].type === 'checkbox')
         {
             if (check_box[i].checked) {
-                return true
+                return true;
             }
         }
     }
     document.getElementById('jaxcat').innerHTML = 'Select any category for your Video';
+    check_box[0].focus();
     return false;
        
 }
