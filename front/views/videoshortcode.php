@@ -200,7 +200,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                 $flashvars          .="&amp;vid=" . $vid;
             } elseif (!empty($playlistid)) {
                 $flashvars          .="&amp;pid=" . $playlistid . "&showPlaylist=true";
-                $playlist_videos     = $this->_contOBJ->video_Pid_detail($playlistid);
+                $playlist_videos     = $this->_contOBJ->video_Pid_detail($playlistid,'detailpage');
                 if(!empty($playlist_videos)){
                 $videoId             = $playlist_videos[0]->vid;
                 $video_playlist_id   = $playlist_videos[0]->playlist_id;
@@ -595,11 +595,11 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                     ## Embed player code
                     if($file_type == 5 && !empty($relFet->embedcode)){
                         $relFetembedcode                = stripslashes($relFet->embedcode);
-                            $relFetiframewidth              =  str_replace('width=', 'width="'.$width.'"', $relFetembedcode);
+                        $relFetiframewidth = preg_replace(array('/width="\d+"/i'),array(sprintf('width="%d"', $width)),$relFetembedcode);
                             if($mobile === true){
-                                $player_values                     = $relFetembedcode;
+                                $player_values                     = htmlentities($relFetiframewidth);
                             } else {
-                                $player_values                     = str_replace('height=', 'height="'.$height.'"', $relFetiframewidth);
+                                $player_values = htmlentities(preg_replace(array('/height="\d+"/i'),array(sprintf('height="%d"', $height)),$relFetiframewidth));
                             }
                      } else{
                          $mobile = vgallery_detect_mobile();
@@ -630,7 +630,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                         $thumb_href     = 'href="'. $guid.'"';
                     } else{
                         $player_div             = 'mediaspace';
-                        $embedplayer    = "videogallery_change_player('".$player_values."',".$videodivId.",'".$player_div."',$file_type,$relFet->vid,'".$relFet->name."')";
+                        $embedplayer    = "videogallery_change_player('$player_values',$videodivId,'$player_div',$file_type,$relFet->vid,'$relFet->name')";
                         $thumb_href     = 'href="javascript:void(0);" onclick="'.$embedplayer.'"';
                     }
                     $output             .='<li><div  class="imgSidethumb"><a ' . $thumb_href . '>

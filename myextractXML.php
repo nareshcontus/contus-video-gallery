@@ -33,7 +33,7 @@ if (!empty($type) && $type == 1) {                                     ## IF typ
 } else if (!empty($getVid)) {
     $singleVideodata    = $contOBJ->video_detail($getVid);             ## Get detail for particular video
 } else if (!empty($getPid)) {
-    $singleVideodata    = $contOBJ->video_Pid_detail($getPid);         ## Get detail for particular playlist
+    $singleVideodata    = $contOBJ->video_Pid_detail($getPid,'playxml');         ## Get detail for particular playlist
 } else {
     $singleVideodata    = $pageOBJ->_featuredvideodata;                ## Get detail of featured videos
 }

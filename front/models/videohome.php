@@ -129,7 +129,7 @@ if(class_exists('ContusVideo') != true)
            return $themediafiles;
         }   ##function for getting Tag name ends
 
-        public function video_Pid_detail($pid)
+        public function video_Pid_detail($pid,$type)
         {   ##function for getting Tag name starts
             global $wpdb;
         $select         = " SELECT w.*,s.guid,m.playlist_id,u.display_name,u.ID FROM " . $wpdb->prefix . "hdflvvideoshare w";
@@ -138,7 +138,12 @@ if(class_exists('ContusVideo') != true)
         $select        .= " INNER JOIN " . $wpdb->prefix . "posts s ON s.ID=w.slug";
         $select        .= " LEFT JOIN " . $wpdb->prefix . "users u ON u.ID=w.member_id";
         $select        .= " WHERE (m.playlist_id = '".intval($pid)."'";
-        $select        .= " AND m.media_id = w.vid AND w.file_type!=5 AND w.publish='1' AND p.is_publish='1') GROUP BY w.vid ";
+        if($type === 'playxml'){
+            $where = "AND w.file_type!=5";
+        } else {
+            $where = '';
+        }
+        $select        .= " AND m.media_id = w.vid $where AND w.publish='1' AND p.is_publish='1') GROUP BY w.vid ";
         $select        .= " ORDER BY w.vid ASC";
         $themediafiles  = $wpdb->get_results($select);
            return $themediafiles;
