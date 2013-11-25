@@ -3,7 +3,7 @@
 Name: Wordpress Video Gallery
 Plugin URI: http://www.apptha.com/category/extension/Wordpress/Video-Gallery
 Description: video settings view file.
-Version: 2.3.1.0.1
+Version: 2.5
 Author: Apptha
 Author URI: http://www.apptha.com
 License: GPL2
@@ -38,12 +38,6 @@ $player_colors          = unserialize($settingsGrid->player_colors);
 
 
     <link rel="stylesheet" href="<?php echo APPTHA_VGALLERY_BASEURL . 'admin/css/jquery.ui.all.css'; ?>">
-
-            <script src="<?php echo APPTHA_VGALLERY_BASEURL . 'admin/js/jquery-1.4.4.js'; ?>"></script>
-            <script src="<?php echo APPTHA_VGALLERY_BASEURL . 'admin/js/jquery.ui.core.js'; ?>"></script>
-            <script src="<?php echo APPTHA_VGALLERY_BASEURL. 'admin/js/jquery.ui.widget.js'; ?>"></script>
-            <script src="<?php echo APPTHA_VGALLERY_BASEURL. 'admin/js/jquery.ui.mouse.js'; ?>"></script>
-            <script src="<?php echo APPTHA_VGALLERY_BASEURL. 'admin/js/jquery.ui.sortable.js'; ?>"></script>
             <script type="text/javascript">
 
                 function enablefbapi(val) {
@@ -71,21 +65,22 @@ $player_colors          = unserialize($settingsGrid->player_colors);
                                 document.getElementById('related_playlist_open').style.display = 'none';
                         }
                 }
-                $(function() {
-                    $( ".column" ).sortable({
+                var sortdr = jQuery.noConflict();
+                sortdr(function() {
+                    sortdr( ".column" ).sortable({
                         connectWith: ".column"
                     });
 
-                    $( ".portlet" ).addClass( "ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" )
+                    sortdr( ".portlet" ).addClass( "ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" )
                     .find( ".portlet-header" )
                     .addClass( "ui-widget-header ui-corner-all" )
                     .prepend( "<span class='ui-icon ui-icon-minusthick'></span>")
                     .end()
                     .find( ".portlet-content" );
 
-                    $( ".portlet-header .ui-icon" ).click(function() {
-                        $( this ).toggleClass( "ui-icon-minusthick" ).toggleClass( "ui-icon-plusthick" );
-                        $( this ).parents( ".portlet:first" ).find( ".portlet-content" ).toggle();
+                    sortdr( ".portlet-header .ui-icon" ).click(function() {
+                        sortdr( this ).toggleClass( "ui-icon-minusthick" ).toggleClass( "ui-icon-plusthick" );
+                        sortdr( this ).parents( ".portlet:first" ).find( ".portlet-content" ).toggle();
                     });
 
                 });
@@ -148,7 +143,7 @@ $player_colors          = unserialize($settingsGrid->player_colors);
                             </div>
                         </div>
                         <div class="portlet">
-                            <div class="portlet-header"><b><?php _e("Display Configuration", "video_gallery"); ?></b></div>
+                            <div class="portlet-header"><b><?php _e("Player Configuration", "video_gallery"); ?></b></div>
                             <div class="portlet-content">
                                 <table class="form-table">
                                     <tr>
@@ -169,16 +164,18 @@ $player_colors          = unserialize($settingsGrid->player_colors);
                                             <br /><?php _e('Ex : 0xdddddd ', 'video_gallery') ?>
                                         </td>
                                     </tr>
-                                    <!--  Display Description on the player-->
-                                     <tr>
-                                        <th scope='row'><?php _e("Show Description", "video_gallery"); ?></th>
-                                        <td><input type='checkbox' class='check' name="showTag" <?php if ($settingsGrid->showTag == 1) { ?> checked <?php } ?> value="1" size=45  /></td>
-                                    </tr>
-                                    <!--  Display Default Image-->
-                                     <tr>
-                                        <th scope='row'><?php _e("Display Default Image", "video_gallery"); ?></th>
-                                        <td><input type='checkbox' class='check' name="imageDefault" <?php if ($settingsGrid->imageDefault == 1) { ?> checked <?php } ?> value="1" size=45  /></td>
-                                    </tr>
+                                    <tr>
+                            <th scope='row'><?php _e("Download", "video_gallery"); ?></th>
+                            <td><input type='checkbox' class='check' name="download" <?php if ($settingsGrid->download == 1) { ?> checked <?php } ?> value="1" size=45  /></td>
+                        </tr>
+                        <tr>
+                            <th scope='row'><?php _e("Buffer", "video_gallery"); ?></th>
+                            <td><input type='text' name="buffer" value="<?php echo $settingsGrid->buffer ?>" size=45  /></td>
+                        </tr>
+                        <tr>
+                            <th scope='row'><?php _e("Volume", "video_gallery"); ?></th>
+                            <td><input type='text' name="volume" value="<?php echo $settingsGrid->volume ?>" size=45  /></td>
+                        </tr>
                                 </table>
                             </div>
                         </div>
@@ -218,8 +215,30 @@ $player_colors          = unserialize($settingsGrid->player_colors);
                                 <td><input type='checkbox' class='check' <?php if ($settingsGrid->embed_visible == 1) { ?> checked <?php } ?> name="embed_visible" value="1" size=45  /></td>
                                     </tr>
                             <tr>
+                                <th scope='row'><?php _e("Enable Views", "video_gallery"); ?></th>
+                                <td><input type='checkbox' class='check' <?php if ($settingsGrid->view_visible == 1) { ?> checked <?php } ?> name="view_visible" value="1" size=45  /></td>
+                                    </tr>
+                            <tr>
                                 <th scope='row'><?php _e("Enable Ratings", "video_gallery"); ?></th>
                                 <td><input type='checkbox' class='check' <?php if ($settingsGrid->ratingscontrol == 1) { ?> checked <?php } ?> name="ratingscontrol" value="1" size=45  /></td>
+                                    </tr>
+                            <tr>
+                                <th scope='row'><?php _e("Enable Tags", "video_gallery"); ?></th>
+                                <td><input type='checkbox' class='check' <?php if ($settingsGrid->tagdisplay == 1) { ?> checked <?php } ?> name="tagdisplay" value="1" size=45  /></td>
+                                    </tr>
+                            <tr>
+                                <th scope='row'><?php _e("Enable Category", "video_gallery"); ?></th>
+                                <td><input type='checkbox' class='check' <?php if ($settingsGrid->categorydisplay == 1) { ?> checked <?php } ?> name="categorydisplay" value="1" size=45  /></td>
+                                    </tr>
+                                    <!--  Display Description on the player-->
+                                     <tr>
+                                        <th scope='row'><?php _e("Show Description", "video_gallery"); ?></th>
+                                        <td><input type='checkbox' class='check' name="showTag" <?php if ($settingsGrid->showTag == 1) { ?> checked <?php } ?> value="1" size=45  /></td>
+                                    </tr>
+                                    <!--  Display Default Image-->
+                                     <tr>
+                                        <th scope='row'><?php _e("Display Default Image", "video_gallery"); ?></th>
+                                        <td><input type='checkbox' class='check' name="imageDefault" <?php if ($settingsGrid->imageDefault == 1) { ?> checked <?php } ?> value="1" size=45  /></td>
                                     </tr>
                                 </table>
                             </div>
@@ -472,7 +491,7 @@ $player_colors          = unserialize($settingsGrid->player_colors);
 						echo "selected=selected"; ?>>Default Comment</option>
 						<option value="2"
 						<?php if ($settingsGrid->comment_option == 2)
-						echo "selected=selected"; ?>>Face Book Comment</option>
+						echo "selected=selected"; ?>>Facebook Comment</option>
 						<option value="3"
 						<?php if ($settingsGrid->comment_option == 3)
 						echo "selected=selected"; ?>>DisQus Comment</option>
@@ -491,26 +510,6 @@ $player_colors          = unserialize($settingsGrid->player_colors);
                         </table>
                     </div>
                 </div>
-                <div class="portlet">
-                <div class="portlet-header"><b><?php _e("Video Configuration", "video_gallery"); ?></b></div>
-                <div class="portlet-content">
-                    <table class="form-table">
-
-                        <tr>
-                            <th scope='row'><?php _e("Download", "video_gallery"); ?></th>
-                            <td><input type='checkbox' class='check' name="download" <?php if ($settingsGrid->download == 1) { ?> checked <?php } ?> value="1" size=45  /></td>
-                        </tr>
-                        <tr>
-                            <th scope='row'><?php _e("Buffer", "video_gallery"); ?></th>
-                            <td><input type='text' name="buffer" value="<?php echo $settingsGrid->buffer ?>" size=45  /></td>
-                        </tr>
-                        <tr>
-                            <th scope='row'><?php _e("Volume", "video_gallery"); ?></th>
-                            <td><input type='text' name="volume" value="<?php echo $settingsGrid->volume ?>" size=45  /></td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
 
  <div class="portlet">
                 <div class="portlet-header"><b><?php _e("Skin Configuration", "video_gallery"); ?></b></div>

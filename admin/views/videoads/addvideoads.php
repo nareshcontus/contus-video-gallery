@@ -3,7 +3,7 @@
   Name: Wordpress Video Gallery
   Plugin URI: http://www.apptha.com/category/extension/Wordpress/Video-Gallery
   Description: Add video ads view file.
-  Version: 2.3.1.0.1
+  Version: 2.5
   Author: Apptha
   Author URI: http://www.apptha.com
   License: GPL2
@@ -22,7 +22,7 @@ $image_path = str_replace('plugins/'.$dirPage.'/', 'uploads/videogallery/', APPT
     <?php if (isset($videoadId)) {
  ?>
         <h2 class="option_title"><?php _e('Update Video Ad', 'video_gallery'); ?></h2> <?php } else {
- ?> <h2  class="option_title"><?php echo "<img src='" . APPTHA_VGALLERY_BASEURL . "images/vid_ad.png' alt='move' width='30'/>"; ?><?php _e('Add a New Video Ad', 'video_gallery'); ?></h2> <?php } ?>
+ ?> <h2  class="option_title"><?php echo "<img src='" . APPTHA_VGALLERY_BASEURL . "images/vid_ad.png' alt='move' width='30'/>"; ?><?php _e('Add New Video Ad', 'video_gallery'); ?></h2> <?php } ?>
 <?php if (isset($msg)): ?>
         <div class="updated below-h2">
             <p>
@@ -54,14 +54,14 @@ $image_path = str_replace('plugins/'.$dirPage.'/', 'uploads/videogallery/', APPT
                                                if (isset($videoadEdit) && $videoadEdit->admethod == 'prepost') {
                                                    echo 'checked="checked" ';
                                                }
-                                               ?> onClick="Videoadtype('prepostroll')"/> Preroll/Postroll Ad
+                                               ?> onClick="Videoadtype('prepostroll')"/> Pre-roll/Post-roll Ad
                             </span>
                             <span>
                                 <input type="radio" name="videoadtype" id="midroll" value="2" <?php
                                                if (isset($videoadEdit) && $videoadEdit->admethod == 'midroll') {
                                                    echo 'checked="checked" ';
                                                }
-                                               ?> onClick="Videoadtype('midroll')" />  Midroll Ad
+                                               ?> onClick="Videoadtype('midroll')" />  Mid-roll Ad
                             </span>
                             <span>
                                 <input type="radio" name="videoadtype" id="imaad" value="3" <?php
@@ -73,7 +73,7 @@ $image_path = str_replace('plugins/'.$dirPage.'/', 'uploads/videogallery/', APPT
                         </h3>
                         <table class="form-table">
                         <tr id="videoadmethod" name="videoadmethod">
-                                <td  width="150"><?php _e('Select File Path', 'video_gallery') ?></td>
+                                <td  width="150"><?php _e('Select file type', 'video_gallery') ?></td>
                                 <td>
                                 <input type="radio" name="videoad" id="filebtn" value="1" onClick="Videoadtypemethod('fileuplo');" /> File
                                 <input type="radio" name="videoad" id="urlbtn" value="2" onClick="Videoadtypemethod('urlad');" />  URL
