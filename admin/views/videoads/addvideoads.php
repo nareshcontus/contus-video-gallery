@@ -116,7 +116,19 @@ $image_path = str_replace('plugins/'.$dirPage.'/', 'uploads/videogallery/', APPT
                     </table>
                 </div>
                 <form action="" name="videoadsform" class="videoform" method="post" enctype="multipart/form-data"  >
-                    
+                     <div id="videoadurl" style="display: none;" >
+                        <table class="form-table">
+                            <tr>
+                                <td scope="row"  width="150"><?php _e('Video Ad URL', 'video_gallery') ?></td>
+                                <td>
+                                    <input type="text" size="50" onchange="clear_upload();" name="videoadfilepath" id="videoadfilepath"  value="<?php echo (isset($videoadEdit->file_path)) ? $videoadEdit->file_path : ""; ?>"  />&nbsp;&nbsp
+                                    <br /><?php _e('Here you need to enter the video ad URL', 'video_gallery') ?>
+                                    <br /><?php _e('It accept also a Youtube link : http://www.youtube.com/watch?v=tTGHCRUdlBs', 'video_gallery') ?>
+                                <span id="filepatherrormessage" style="display: block;color:red; "></span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
                     <table id="videoimaaddetails" style="display: none;" class="form-table">
                         <tr>
 				<td scope="row"  width="150"><?php _e('IMA Ad Type', 'video_gallery') ?></td>
@@ -207,19 +219,7 @@ $image_path = str_replace('plugins/'.$dirPage.'/', 'uploads/videogallery/', APPT
                                 </td>
 			</tr>
                     </table>
-                    <div id="videoadurl" style="display: none;" >
-                        <table class="form-table">
-                            <tr>
-                                <td scope="row"  width="150"><?php _e('Video Ad URL', 'video_gallery') ?></td>
-                                <td>
-                                    <input type="text" size="50" onchange="clear_upload();" name="videoadfilepath" id="videoadfilepath"  value="<?php echo (isset($videoadEdit->file_path)) ? $videoadEdit->file_path : ""; ?>"  />&nbsp;&nbsp
-                                    <br /><?php _e('Here you need to enter the video ad URL', 'video_gallery') ?>
-                                    <br /><?php _e('It accept also a Youtube link : http://www.youtube.com/watch?v=tTGHCRUdlBs', 'video_gallery') ?>
-                                <span id="filepatherrormessage" style="display: block;color:red; "></span>
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
+                   
 
 
                     <table class="form-table add_video_publish">
