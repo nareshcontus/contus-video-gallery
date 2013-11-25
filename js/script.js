@@ -33,11 +33,12 @@ if(embedFlag !== 1){
 }
 }
 
-function videogallery_change_player(embedcode,id,player_div,file_type,vid){ 
+function videogallery_change_player(embedcode,id,player_div,file_type,vid,title){ 
     if(file_type === 5){
-        current_video(vid,""); 
+        current_video(vid,''); 
     }
     document.getElementById("mediaspace"+id).innerHTML = "";
     document.getElementById(player_div+id).innerHTML = embedcode;
     document.getElementById(player_div+id).focus();
+    document.getElementById("video_title"+id).innerHTML=title;
 }
