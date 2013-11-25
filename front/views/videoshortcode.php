@@ -178,6 +178,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                 $tag_name           = $homeplayerData->tags_name;
                 $hitcount           = $homeplayerData->hitcount;
                 $uploadedby         = $homeplayerData->display_name;
+                $uploadedby_id      = $homeplayerData->ID;
                 $ratecount          = $homeplayerData->ratecount;
                 $rate               = $homeplayerData->rate;
                 $post_date          = $homeplayerData->post_date;
@@ -200,12 +201,12 @@ if (class_exists('ContusVideoShortcodeView') != true) {
             } elseif (!empty($playlistid)) {
                 $flashvars          .="&amp;pid=" . $playlistid . "&showPlaylist=true";
                 $playlist_videos     = $this->_contOBJ->video_Pid_detail($playlistid);
-//                echo "<pre>";print_r($playlist_videos);exit;
                 if(!empty($playlist_videos)){
                 $videoId             = $playlist_videos[0]->vid;
                 $video_playlist_id   = $playlist_videos[0]->playlist_id;
                 $hitcount            = $playlist_videos[0]->hitcount;
                 $uploadedby          = $playlist_videos[0]->display_name;
+                $uploadedby_id       = $playlist_videos[0]->ID;
                 $ratecount           = $playlist_videos[0]->ratecount;
                 $rate                = $playlist_videos[0]->rate;
                 $fetched[]           = $playlist_videos[0];
@@ -351,7 +352,8 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                 }
                 $output                 .= '<div class="clearfix"></div>';
                 if ($this->_post_type == 'videogallery' || $this->_page_post_type == 'videogallery') {
-                    $output             .= '<div class="video-page-username"><strong>' . __("Posted by", "video_gallery") . '    </strong>: ' . $uploadedby . '</div>';
+                    $user_url           = get_user_permalink($this->_mPageid,$uploadedby_id,$uploadedby);
+                    $output             .= '<div class="video-page-username"><strong>' . __("Posted by", "video_gallery") . '    </strong>: <a href="' . $user_url . '">' . $uploadedby . '</a></div>';
                 if($configXML->categorydisplay == 1){
                     $output             .= '<div class="video-page-category"><strong>' . __("Category", "video_gallery") . ' </strong>: ';
                     foreach ($playlistData as $playlist) {

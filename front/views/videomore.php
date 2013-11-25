@@ -28,6 +28,7 @@ if (class_exists('ContusMoreView') != true) {
             $this->_vId             = filter_input(INPUT_GET, 'vid');               ## Get vid from URL
             $this->_pagenum         = filter_input(INPUT_GET, 'pagenum');           ## Get current page number
             $this->_playid          = &$wp_query->query_vars["playid"];   
+            $this->_userid          = &$wp_query->query_vars["userid"];   
             
             ## Get pid from URL
             $this->_viewslang = __('Views', 'video_gallery');
@@ -62,7 +63,7 @@ if (class_exists('ContusMoreView') != true) {
                         $where          = '';
                         $thumImageorder = 'w.hitcount DESC';
                         $TypeOFvideos   = $this->home_thumbdata($thumImageorder, $where,$this->_pagenum, $dataLimit);
-                        $CountOFVideos  = $this->Countof_Videos('',$thumImageorder,$where);
+                        $CountOFVideos  = $this->Countof_Videos('','',$thumImageorder,$where);
                         $typename       = __('Popular', 'video_gallery');
                         $type_name      = 'popular';
                         $morePage       = '&more=pop';
@@ -75,7 +76,7 @@ if (class_exists('ContusMoreView') != true) {
                         $dataLimit      = $rowF * $colF;
                         $thumImageorder = 'w.vid DESC';
                         $TypeOFvideos   = $this->home_thumbdata($thumImageorder, $where,$this->_pagenum, $dataLimit);
-                        $CountOFVideos  = $this->Countof_Videos('',$thumImageorder,$where);
+                        $CountOFVideos  = $this->Countof_Videos('','',$thumImageorder,$where);
                         $typename       = __('Recent', 'video_gallery');
                         $type_name      = 'recent';
                         $morePage       = '&more=rec';
@@ -88,7 +89,7 @@ if (class_exists('ContusMoreView') != true) {
                         $colF           = $this->_settingsData->colMore;
                         $dataLimit      = $rowF * $colF;
                         $TypeOFvideos   = $this->home_thumbdata($thumImageorder, $where,$this->_pagenum, $dataLimit);
-                        $CountOFVideos  = $this->Countof_Videos('',$thumImageorder,$where);
+                        $CountOFVideos  = $this->Countof_Videos('','',$thumImageorder,$where);
                         $typename       = __('Featured', 'video_gallery');
                         $type_name      = 'featured';
                         $morePage       = '&more=fea';
@@ -100,9 +101,20 @@ if (class_exists('ContusMoreView') != true) {
                         $colF           = $this->_settingsData->colCat;
                         $dataLimit      = $rowF * $colF;
                         $TypeOFvideos   = $this->home_catthumbdata($thumImageorder, $this->_pagenum, $dataLimit);
-                        $CountOFVideos  = $this->Countof_Videos($this->_playid,$thumImageorder,$where);
+                        $CountOFVideos  = $this->Countof_Videos($this->_playid,'',$thumImageorder,$where);
                         $typename       = __('Category', 'video_gallery');
                         $morePage       = '&playid=' . $thumImageorder;
+                        break;
+                    case 'user':
+                        $thumImageorder = $this->_userid;
+                        $where          = '';
+                        $rowF           = $this->_settingsData->rowCat;
+                        $colF           = $this->_settingsData->colCat;
+                        $dataLimit      = $rowF * $colF;
+                        $TypeOFvideos   = $this->home_userthumbdata($thumImageorder, $this->_pagenum, $dataLimit);
+                        $CountOFVideos  = $this->Countof_Videos('',$this->_userid,$thumImageorder,$where);
+                        $typename       = __('User', 'video_gallery');
+                        $morePage       = '&userid=' . $thumImageorder;
                         break;
                     case 'search':
                         $video_search   = str_replace("%20", " ", $this->_video_search);
@@ -142,10 +154,13 @@ if (class_exists('ContusMoreView') != true) {
 <?php
                 $pagenum            = isset($this->_pagenum) ? absint($this->_pagenum) : 1;
                 $div                = '<div class="video_wrapper" id="'. $type_name.'_video">';
-                $div                .= '<style type="text/css"> .video-block {  margin-left:' . $this->_settingsData->gutterspace . 'px !important; } </style>';
-                $playlist_name = $this->_wpdb->get_var("SELECT playlist_name FROM " . $this->_wpdb->prefix . "hdflvvideoshare_playlist WHERE pid='".intval($this->_playid)."'");
+                $div               .= '<style type="text/css"> .video-block {  margin-left:' . $this->_settingsData->gutterspace . 'px !important; } </style>';
                     if($typename=='Category'){
+                        $playlist_name      = get_playlist_name(intval($this->_playid));
                     $div            .='<h2 >'.$playlist_name.' </h2>';
+                    } else if($typename=='User'){
+                        $user_name      = get_user_name(intval($this->_userid));
+                        $div            .='<h2 >'.$user_name.' </h2>';
                     } else {
                     $div            .='<h2 >' . $typename . ' '.__('Videos', 'video_gallery').' </h2>';
                     }

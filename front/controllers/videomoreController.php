@@ -45,9 +45,9 @@ if(class_exists('ContusMoreController') != true)
          {// HOME PAGE FEATURED VIDEOS STARTS
             return $this->get_searchthumbdata($thumImageorder,$pagenum,$dataLimit);
          }
-        function Countof_Videos($playid,$thumImageorder,$where)
+        function Countof_Videos($playid,$userid,$thumImageorder,$where)
          {// HOME PAGE FEATURED VIDEOS STARTS
-            return $this->get_Countof_Videos($playid,$thumImageorder,$where);
+            return $this->get_Countof_Videos($playid,$userid,$thumImageorder,$where);
          }
         function Countof_Videocategories()
          {// HOME PAGE FEATURED VIDEOS STARTS

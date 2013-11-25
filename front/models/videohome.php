@@ -132,11 +132,11 @@ if(class_exists('ContusVideo') != true)
         public function video_Pid_detail($pid)
         {   ##function for getting Tag name starts
             global $wpdb;
-        $select         = " SELECT w.*,s.guid,m.playlist_id,u.display_name FROM " . $wpdb->prefix . "hdflvvideoshare w";
+        $select         = " SELECT w.*,s.guid,m.playlist_id,u.display_name,u.ID FROM " . $wpdb->prefix . "hdflvvideoshare w";
         $select        .= " INNER JOIN " . $wpdb->prefix . "hdflvvideoshare_med2play m";
         $select        .= " INNER JOIN " . $wpdb->prefix . "hdflvvideoshare_playlist p";
         $select        .= " INNER JOIN " . $wpdb->prefix . "posts s ON s.ID=w.slug";
-        $select        .= " LEFT JOIN " . $wpdb->prefix . "users u ON s.ID=w.member_id";
+        $select        .= " LEFT JOIN " . $wpdb->prefix . "users u ON u.ID=w.member_id";
         $select        .= " WHERE (m.playlist_id = '".intval($pid)."'";
         $select        .= " AND m.media_id = w.vid AND w.file_type!=5 AND w.publish='1' AND p.is_publish='1') GROUP BY w.vid ";
         $select        .= " ORDER BY w.vid ASC";

@@ -88,6 +88,9 @@ function add_my_rule() {
     $wp->add_query_var('playlist_name');
     add_rewrite_rule('category\/(.*)', 'index.php?page_id=' . $morepage_id . '&playlist_name=$matches[1]', 'top');
 
+    $wp->add_query_var('user_name');
+    add_rewrite_rule('user\/(.*)', 'index.php?page_id=' . $morepage_id . '&user_name=$matches[1]', 'top');
+
     $wp->add_query_var('video_search');
     add_rewrite_rule('search/(.*)', 'index.php?page_id=' . $morepage_id . '&video_search=$matches[1]', 'top');
 
@@ -677,15 +680,26 @@ function video_morereplace() {
     }
     $wp_query->query_vars["playid"] = $playid;
 
+    $userid = filter_input(INPUT_GET, 'userid'); 
+    $user_name = &$wp_query->query_vars["user_name"];
+    if (!empty($user_name)) {
+        $userid = get_user_id($user_name);
+    }
+    $wp_query->query_vars["userid"] = $userid;
+
     include_once ($frontControllerPath . 'videomoreController.php');
     $videoOBJ = new ContusMoreView();
 
-    if (!empty($playid))
+    if (!empty($playid)){
         $more = 'cat';
-    
+    }    
+    if (!empty($userid)){
+        $more = 'user';
+    }    
     $video_search = &$wp_query->query_vars["video_search"];
-    if (!empty($video_search))
+    if (!empty($video_search)){
         $more = 'search';
+    }
     $contentvideoPlayer = $videoOBJ->video_more_pages($more);
     return $contentvideoPlayer;
 }

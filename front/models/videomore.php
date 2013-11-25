@@ -84,13 +84,16 @@ if(class_exists('ContusMore') != true)
              return $results;
         }//function for getting settings data ends
 
-        public function get_Countof_Videos($playid,$thumImageorder,$where)
+        public function get_Countof_Videos($playid,$userid,$thumImageorder,$where)
         {//function for getting settings data starts
             global $wpdb;
             if(!empty($playid)){
               $query = "SELECT count(*) FROM " . $wpdb->prefix . "hdflvvideoshare as w INNER JOIN " . $wpdb->prefix . "hdflvvideoshare_med2play as m ON m.media_id = w.vid INNER JOIN " . $wpdb->prefix . "hdflvvideoshare_playlist as p on m.playlist_id = p.pid WHERE w.publish='1' and p.is_publish='1' and m.playlist_id=" . intval($thumImageorder);
              $result = $this->_wpdb->get_var($query);
-            }else{
+            } else if(!empty($userid)){
+              $query = "SELECT count(*) FROM " . $wpdb->prefix . "hdflvvideoshare as w INNER JOIN " . $wpdb->prefix . "hdflvvideoshare_med2play as m ON m.media_id = w.vid INNER JOIN " . $wpdb->prefix . "hdflvvideoshare_playlist as p on m.playlist_id = p.pid INNER JOIN " . $wpdb->prefix . "users u ON u.ID=w.member_id WHERE w.publish='1' and p.is_publish='1' and u.ID=" . intval($thumImageorder);
+             $result = $this->_wpdb->get_var($query);
+            } else{
              $query = "SELECT count(w.vid) FROM " . $this->_videoinfotable. " w
                         INNER JOIN " . $this->_wpdb->prefix . "hdflvvideoshare_med2play m ON m.media_id = w.vid
                         INNER JOIN " . $this->_wpdb->prefix . "hdflvvideoshare_playlist p ON p.pid=m.playlist_id
@@ -121,6 +124,21 @@ if(class_exists('ContusMore') != true)
                     GROUP BY w.vid ORDER BY w.ordering asc LIMIT ".$offset.','.$dataLimit;
             return $this->_wpdb->get_results($query);
         }//function for getting settings data ends
+
+         public function home_userthumbdata($thumImageorder,$pagenum,$dataLimit)
+        {//function for gettimg user data starts
+              global $wpdb;
+              $pagenum = isset($pagenum ) ? absint($pagenum ) : 1;
+              $offset = ( $pagenum - 1 ) * $dataLimit;
+           $query = "SELECT s.guid,w.*,p.playlist_name,p.playlist_slugname FROM " . $wpdb->prefix . "hdflvvideoshare as w
+                    INNER JOIN " . $wpdb->prefix . "hdflvvideoshare_med2play as m ON m.media_id = w.vid
+                    INNER JOIN " . $wpdb->prefix . "hdflvvideoshare_playlist as p on m.playlist_id = p.pid
+                    INNER JOIN " . $wpdb->prefix . "posts s ON s.ID=w.slug
+                    INNER JOIN " . $wpdb->prefix . "users u ON u.ID=w.member_id
+                    WHERE w.publish='1' AND p.is_publish='1' AND u.ID=" . intval($thumImageorder) . "
+                    GROUP BY w.vid ORDER BY w.ordering asc LIMIT ".$offset.','.$dataLimit;
+            return $this->_wpdb->get_results($query);
+        }//function for getting user data ends
 
     }//ContusVideo class ends
 }//checks the ContusVideo class has been defined if ends

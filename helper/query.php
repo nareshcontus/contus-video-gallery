@@ -14,8 +14,35 @@ function get_playlist_id($play_name) {
     
     global $wpdb;
     
-    $playlist_id = $wpdb->get_var("select pid from " . $wpdb->prefix . "hdflvvideoshare_playlist WHERE playlist_slugname='" . $play_name . "' LIMIT 1");
+    $playlist_id = $wpdb->get_var("SELECT pid FROM " . $wpdb->prefix . "hdflvvideoshare_playlist WHERE playlist_slugname='" . $play_name . "' LIMIT 1");
     return $playlist_id;
+}
+
+## Get playlist Name from ID
+function get_playlist_name($play_id) {
+    
+    global $wpdb;
+    
+    $playlist_name = $wpdb->get_var("SELECT playlist_name FROM " . $wpdb->prefix . "hdflvvideoshare_playlist WHERE pid='" . $play_id . "' LIMIT 1");
+    return $playlist_name;
+}
+
+## Get user ID from name
+function get_user_id($user_name) {
+    
+    global $wpdb;
+    
+    $user_id = $wpdb->get_var("SELECT ID FROM " . $wpdb->prefix . "users WHERE display_name='" . $user_name . "' LIMIT 1");
+    return $user_id;
+}
+
+## Get user name from ID
+function get_user_name($user_id) {
+    
+    global $wpdb;
+    
+    $user_name = $wpdb->get_var("SELECT display_name FROM " . $wpdb->prefix . "users WHERE ID='" . $user_id . "' LIMIT 1");
+    return $user_name;
 }
 
 ## Get video permalink
@@ -43,6 +70,19 @@ function get_playlist_permalink($morepageid, $playlist_id, $slug_name) {
         return get_site_url() . "/category/" . $slug_name . "/";
     } else {                    ## Return Non SEO playlist URL if permalink disabled
         return get_site_url() . '/?page_id=' . $morepageid . '&amp;playid=' . $playlist_id;
+    }
+}
+
+## Get playlist permalink
+function get_user_permalink($morepageid, $userid, $username) {
+    
+    global $wp_rewrite;
+    
+    $link = $wp_rewrite->get_page_permastruct();            ## check whether permalink enabled or not
+    if (!empty($link)) {        ## Return SEO playlist URL if permalink enabled
+        return get_site_url() . "/user/" . $username . "/";
+    } else {                    ## Return Non SEO playlist URL if permalink disabled
+        return get_site_url() . '/?page_id=' . $morepageid . '&amp;userid=' . $userid;
     }
 }
 
