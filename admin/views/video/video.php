@@ -3,7 +3,7 @@
   Name: Wordpress Video Gallery
   Plugin URI: http://www.apptha.com/category/extension/Wordpress/Video-Gallery
   Description: Video view file.
-  Version: 2.5
+  Version: 2.3.1.0.1
   Author: Apptha
   Author URI: http://www.apptha.com
   License: GPL2
@@ -12,10 +12,9 @@
 $dir = dirname(plugin_basename(__FILE__));
 $dirExp = explode('/', $dir);
 $dirPage = $dirExp[0];
-$page = '';
-if (isset($_GET['pagenum'])){
-        $page = '&pagenum=' . $_GET['pagenum'];}
 ?>
+<script type="text/javascript" src="<?php echo APPTHA_VGALLERY_BASEURL . "/js/jquery-1.3.2.min.js"; ?>"></script>
+<script type="text/javascript" src="<?php echo APPTHA_VGALLERY_BASEURL . "/js/jquery-ui-1.7.1.custom.min.js"; ?>"></script>
 <script type="text/javascript">
     // When the document is ready set up our sortable with it's inherant function(s)
     var dragdr = jQuery.noConflict();
@@ -25,17 +24,24 @@ if (isset($_GET['pagenum'])){
             handle : '.handle',
             update : function () {
                 var order = dragdr('#test-list').sortable('serialize');
+
                 orderid= order.split("listItem[]=");
+
                 for(i=1;i<orderid.length;i++)
                 {
                     videoid[i]=orderid[i].replace('&',"");
                     oid= "ordertd_"+videoid[i];
+                    //                    document.getElementById(oid).innerHTML=i-1;
                 }
-                dragdr.post("<?php echo get_bloginfo('url'); ?>/wp-admin/admin-ajax.php?action=videosortorder<?php echo $page; ?>",order);
+                dragdr.post("<?php echo get_bloginfo('url') . "/wp-content/plugins/$dirPage/sortorder.php"; ?>",order);
+
+                <!-- Codes by Quackit.com -->
+
             }
         });
     });
 </script>
+<script>jQuery.noConflict(true);</script>
 <div class="apptha_gallery">
     <!--   MENU OPTIONS STARTS  --->
     <h2 class="nav-tab-wrapper">
@@ -46,24 +52,14 @@ if (isset($_GET['pagenum'])){
     </h2>
     <!--  MENU OPTIONS ENDS --->
     <?php
-    
+    $page = '';
+    if (isset($_GET['pagenum']))
+        $page = '&pagenum=' . $_GET['pagenum'];
     $selfurl = get_bloginfo('url') . "/wp-admin/admin.php?page=video" . $page;
     ?>    <div class="wrap">
         <h2 class="option_title">
             <?php echo "<img src='" . APPTHA_VGALLERY_BASEURL . "/images/manage_video.png' alt='move' width='30'/>"; ?>
             <?php _e('Manage Videos', 'video_gallery'); ?><a class="button-primary" href="<?php echo get_bloginfo('url') ?>/wp-admin/admin.php?page=newvideo" style="margin-left: 10px;"><?php _e('Add Video', 'video_gallery'); ?></a></h2>
-        <?php
-        function get_current_user_role() {
-        global $current_user;
-        get_currentuserinfo();
-        $user_roles = $current_user->roles;
-        $user_role = array_shift($user_roles);
-        return $user_role;
-    };
-    $user_role = get_current_user_role();
-    if($user_role!='subscriber'){
-?>
-        
         <div class="admin_short_video_info"><span class="hint_heading"><?php _e('How To Use?', 'video_gallery'); ?></span>
             <?php _e("Once you install 'Wordpress Video Gallery' plugin, the page 'Videos' will be created automatically. If you would like to display the video gallery on any other page or post, you can use the following plugin code.-", "video_gallery"); ?>
 
@@ -73,7 +69,7 @@ if (isset($_GET['pagenum'])){
             <?php _e('To display single video player on any page or post use the plugin code in any of the formats specified below.', 'video_gallery'); ?>
             <br><br>
 
-            <strong><?php _e('[hdvideo id=11 playlistid=4 width=400 height=400] or [hdvideo playlistid=5] or [hdvideo id=10] or [hdvideo playlistid=2 relatedvideos=on]', 'video_gallery'); ?></strong><br><br>
+            <strong><?php _e('[hdvideo id=3 playlistid=2 width=400 height=400] or [hdvideo playlistid=2] or [hdvideo id=3] or [hdvideo playlistid=2 relatedvideos=on]', 'video_gallery'); ?></strong><br><br>
 
             <?php _e("id - The Video ID, you can find the video id on 'All Videos' admin page.", "video_gallery"); ?><br><br>
             <?php _e('Playlist id - You can find the Category ID on manage Category page.', 'video_gallery'); ?><br><br>
@@ -90,9 +86,10 @@ if (isset($_GET['pagenum'])){
             <?php _e('title - You can enable/disable Title on the page or post above the player. By default, it will be in "off" status.', 'video_gallery'); ?><br><br>
             <?php _e('views - You can enable/disable View count of the video on the page or post under the player. By default, it will be in "off" status.', 'video_gallery'); ?>
         </div>
-        <?php 
-    }
-        if ($displayMsg): ?>
+
+
+
+        <?php if ($displayMsg): ?>
                 <div class="updated below-h2">
                     <p>
                 <?php echo $displayMsg; ?>
@@ -103,11 +100,11 @@ if (isset($_GET['pagenum'])){
                 $orderField = filter_input(INPUT_GET, 'order');
                 $direction = isset($orderField) ? $orderField : false;
                 $reverse_direction = ($direction == 'DESC' ? 'ASC' : 'DESC');
-                $url = get_bloginfo('url') . '/wp-admin/admin.php?page=video';
                 if (isset($_REQUEST["videosearchbtn"])) {
         ?>
                     <div  class="updated below-h2">
             <?php
+                    $url = get_bloginfo('url') . '/wp-admin/admin.php?page=video';
                     $searchmsg = filter_input(INPUT_POST, 'videosearchQuery');
                     if (count($gridVideo)) {
                         echo count($gridVideo) . "   Search Result(s) for '" . $searchmsg . "'.&nbsp&nbsp&nbsp<a href='$url' >Back to Videos List</a>";
@@ -117,7 +114,7 @@ if (isset($_GET['pagenum'])){
             ?>
                 </div>
         <?php } ?>
-                <form class="admin_video_search" name="videos" action="<?php echo $url.'&#videofrm'; ?>" method="post" onsubmit="return videosearch();">
+                <form class="admin_video_search" name="videos" action="" method="post" onsubmit="return videosearch();">
                     <p class="search-box">
                         <input type="text"  name="videosearchQuery" id="VideosearchQuery" value="<?php if (isset($searchmsg))
                     echo $searchmsg; ?>">
@@ -125,7 +122,7 @@ if (isset($_GET['pagenum'])){
                 <input type="hidden"  name="page" value="videos">
                 <input type="submit" name="videosearchbtn"  class="button" value="<?php _e('Search Videos', 'video_gallery'); ?>"></p>
         </form>
-        <form  class="admin_video_action" name="videofrm" id="videofrm" action="" method="post" onsubmit="return VideodeleteIds()">
+        <form  class="admin_video_action" name="videofrm" action="" method="post" onsubmit="return VideodeleteIds()">
             <div class="tablenav top">
                 <div class="alignleft actions" style="margin-bottom:10px;">
                     <select name="videoactionup" id="videoactionup">
@@ -139,9 +136,8 @@ if (isset($_GET['pagenum'])){
                        $pagenum = isset($_GET['pagenum']) ? absint($_GET['pagenum']) : 1;
                        $total = $Video_count;
                        $num_of_pages = ceil($total / $limit);
-                       $arr_params     = array ( 'pagenum' => '%#%', '#videofrm'=> '' );
                        $page_links = paginate_links(array(
-                                   'base' => add_query_arg($arr_params),
+                                   'base' => add_query_arg('pagenum', '%#%'),
                                    'format' => '',
                                    'prev_text' => __('&laquo;', 'aag'),
                                    'next_text' => __('&raquo;', 'aag'),
@@ -161,36 +157,31 @@ if (isset($_GET['pagenum'])){
                    <table class="wp-list-table widefat fixed tags" cellspacing="0" width="100%">
                        <thead>
                            <tr>
-                               <th width="3%"  scope="col" style="" class="manage-column column-cb check-column">
+                               <th width="5%"  scope="col" style="" class="manage-column column-cb check-column">
                                    <input type="checkbox" name="" ></th>
-                               <th width="3%" scope="col"  style="">
+                               <th width="5%" scope="col"  style="">
                                    <span>
                                     <?php _e('', 'video_gallery'); ?> </span><span class="sorting-indicator"></span></th>
-                            <th width="4%" scope="col"  class="manage-column column-description sortable desc" style="">
+                            <th width="7%" scope="col"  style="">
                                 <a href="<?php echo get_bloginfo('url') ?>/wp-admin/admin.php?page=video&orderby=id&order=<?php echo $reverse_direction; ?>"><span>
-                                        <?php _e('ID', 'video_gallery'); ?> </span><span class="sorting-indicator"></span></a></th>
-                            <th width="6%" scope="col"  style="">
-                                <span class="sorting-indicator"></span></th>
+                                        <?php _e('Video ID', 'video_gallery'); ?> </span><span class="sorting-indicator"></span></a></th>
                             <th width="30%" scope="col"  class="manage-column column-name sortable desc" style="">
                                 <a href="<?php echo get_bloginfo('url') ?>/wp-admin/admin.php?page=video&orderby=title&order=<?php echo $reverse_direction; ?>"><span>
                                         <?php _e('Title', 'video_gallery'); ?> </span><span class="sorting-indicator"></span></a></th>
-                            <th width="14%" scope="col"  class="manage-column column-description sortable desc" style="">
-                                <a href="<?php echo get_bloginfo('url') ?>/wp-admin/admin.php?page=video&orderby=author&order=<?php echo $reverse_direction; ?>"><span>
-                                        <?php _e('Author', 'video_gallery'); ?></span><span class="sorting-indicator"></span></a></th>
-                            <th width="14%" scope="col"  class="manage-column column-description sortable desc" style="">
-                                <a href="<?php echo get_bloginfo('url') ?>/wp-admin/admin.php?page=video&orderby=category&order=<?php echo $reverse_direction; ?>"><span>
-                                        <?php _e('Categories', 'video_gallery'); ?></span><span class="sorting-indicator"></span></a></th>
-                            <th width="8%" scope="col" class="manage-column column-description sortable desc text_center"  style="">
+                            <th width="28%" scope="col"  class="manage-column column-description sortable desc" style="">
+                                <a href="<?php echo get_bloginfo('url') ?>/wp-admin/admin.php?page=video&orderby=desc&order=<?php echo $reverse_direction; ?>"><span>
+                                        <?php _e('Path', 'video_gallery'); ?></span><span class="sorting-indicator"></span></a></th>
+                            <th width="8%" scope="col" class="text_center"  style="">
                                 <a href="<?php echo get_bloginfo('url') ?>/wp-admin/admin.php?page=video&orderby=fea&order=<?php echo $reverse_direction; ?>"><span>
                                         <?php _e('Featured', 'video_gallery'); ?></span><span class="sorting-indicator"></span></a></th>
-                            <th  width="4%" scope="col"  class="manage-column column-slug sortable desc" style="width:10%">
+                            <th  width="5%" scope="col"  class="manage-column column-slug sortable desc" style="width:10%">
                                 <a href="<?php echo get_bloginfo('url') ?>/wp-admin/admin.php?page=video&orderby=date&order=<?php echo $reverse_direction; ?>"><span><?php _e('Date', 'digi'); ?></span><span class="sorting-indicator"></span></a></th>
-                            <th width="7%" scope="col" class="text_center manage-column column-name sortable desc" style="">
+                            <th width="6%" scope="col" class="text_center manage-column column-name sortable desc" style="">
                                 <a href="<?php echo get_bloginfo('url') ?>/wp-admin/admin.php?page=video&orderby=publish&order=<?php echo $reverse_direction; ?>"><span>
                                         <?php _e('Publish', 'video_gallery'); ?></span><span class="sorting-indicator"></span></a></th>
-                            <th width="7%" scope="col" class="manage-column column-description sortable desc" style="">
+                            <th width="8%" scope="col" class="manage-column column-description sortable desc" style="">
                                 <a href="<?php echo get_bloginfo('url') ?>/wp-admin/admin.php?page=video&orderby=ordering&order=<?php echo $reverse_direction; ?>">
-                                    <span><?php _e('Order', 'video_gallery'); ?></span><span class="sorting-indicator"></span>                                 
+                                    <span><?php _e('Sort Order', 'video_gallery'); ?></span>                                    
                                 </a>
                             </th>
 
@@ -206,54 +197,19 @@ if (isset($_GET['pagenum'])){
                                             <tr id="listItem_<?php echo $videoView->vid; ?>">
                                                 <th scope="row" class="check-column">
                                                     <input type="checkbox" name="video_id[]" value="<?php echo $videoView->vid ?>"></th>
-                                                
                                                 <td>
-                                                    <?php if($user_role!='subscriber'){ ?>
                                                     <span class="hasTip content" title="<?php _e('Click and Drag', 'video_gallery'); ?>" style="padding: 6px;">
                                                         <img src="<?php echo APPTHA_VGALLERY_BASEURL . 'images/arrow.png'; ?>" alt="move"
                                                              width="16" height="16" class="handle" />
                                                     </span>
-                                                    <?php } ?>
                                                 </td>
-                                                
-                                                <td class="image column-image">
+                                                <td class="image column-image" style='text-align:center;'>
                                                     <a title="Edit <?php echo $videoView->name; ?>"  href="<?php echo $_SERVER["PHP_SELF"]; ?>?page=newvideo&videoId=<?php echo $videoView->vid; ?>" ><?php echo $videoView->vid; ?></a>
-                                                </td>
-                                                <td class="image column-image">
-                                                    <?php 
-                                                    $image_path                     = str_replace('plugins/'.$dirPage.'/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
-                                                    $_imagePath                     = APPTHA_VGALLERY_BASEURL . 'images' . DS;
-                                                    $thumb_image                    = $videoView->image;               ## Get thumb image
-                                                    $file_type                      = $videoView->file_type;           ## Get file type of a video
-                                                    if ($thumb_image == '') {       ## If there is no thumb image for video
-                                                        $thumb_image                = $_imagePath . 'nothumbimage.jpg';
-                                                    } else {
-                                                        if ($file_type == 2 || $file_type == 5) {      ## For uploaded image
-                                                            $thumb_image            = $image_path . $thumb_image;
-                                                        }
-                                                    }  ?>
-                                                    <a title="Edit <?php echo $videoView->name; ?>"  href="<?php echo $_SERVER["PHP_SELF"]; ?>?page=newvideo&videoId=<?php echo $videoView->vid; ?>" >
-                                                        <img width="60" height="60" src="<?php echo $thumb_image; ?>" class="attachment-80x60" alt="Hydrangeas"></a>
                                                 </td>
                                                 <td>
                                                     <a title="Edit <?php echo $videoView->name; ?>" class="row-title" href="<?php echo $_SERVER["PHP_SELF"]; ?>?page=newvideo&videoId=<?php echo $videoView->vid; ?>" ><?php echo $videoView->name; ?></a>
                                                 </td>
-                                                <td class="description column-description"><?php echo $videoView->display_name; ?></td>
-                                                <td class="description column-description"><?php 
-                                                $videoOBJ = new VideoController();
-                                                $playlistData = $videoOBJ->get_playlist_detail($videoView->vid);
-                                                $incre                  = 0;
-                                                $playlistname = '';
-                                                foreach ($playlistData as $playlist) {
-                                                    if ($incre > 0) {
-                                                        $playlistname   .= ', '. $playlist->playlist_name;
-                                                    } else {
-                                                        $playlistname   .= $playlist->playlist_name;
-                                                    }
-                                                    $incre++;
-                                                }
-                                                echo $playlistname;
-                                                 ?></td>
+                                                <td class="description column-description"><?php echo $videoView->file; ?></td>
 
                                                 <td class="description column-featured" style="text-align:center"> <?php
                                             $feaStatus = 1;
@@ -268,7 +224,7 @@ if (isset($_GET['pagenum'])){
                                             <a  title="Edit <?php echo $videoView->name; ?>" href="<?php echo $selfurl; ?>&videoId=<?php echo $videoView->vid; ?>&featured=<?php echo $feaStatus; ?>">   <img src="<?php echo APPTHA_VGALLERY_BASEURL . 'images/' . $feaImage ?>" title="<?php echo $feaPublish; ?>" title="<?php echo $feaPublish; ?>"   />
                                             </a>
                                         </td>
-                                        <td class="description column-description"><?php echo date("Y/m/d",strtotime($videoView->post_date)); ?></td>
+                                        <td class="description column-description"><?php echo date("M j, Y",strtotime($videoView->post_date)); ?></td>
 
                                         <td class="description column-description column-publish" style="text-align:center"><?php
                                             $status = 1;
@@ -284,7 +240,7 @@ if (isset($_GET['pagenum'])){
 
                                         </td>
                                         <td style="text-align:center">
-                                            <?php echo $videoView->ordering; ?>
+                                            <a title="Edit <?php echo $videoView->ordering; ?>" class="row-title" ><?php echo $videoView->ordering; ?></a>
                                         </td>
                                     </tr>
                         <?php
@@ -305,18 +261,13 @@ if (isset($_GET['pagenum'])){
                                     <?php _e('', 'video_gallery'); ?> </span><span class="sorting-indicator"></span></th>
                                 <th scope="col"  class="manage-column column-name sortable desc" style="">
                                     <a href="<?php echo get_bloginfo('url') ?>/wp-admin/admin.php?page=video&orderby=id&order=<?php echo $reverse_direction; ?>"><span>
-                                        <?php _e('ID', 'video_gallery'); ?> </span><span class="sorting-indicator"></span></a></th>
-                            <th width="4%" scope="col"  style="">
-                                <span class="sorting-indicator"></span></th>
-                                <th scope="col"  class="manage-column column-name sortable desc" style="">
+                                        <?php _e('Video ID', 'video_gallery'); ?> </span><span class="sorting-indicator"></span></a></th>
+                            <th scope="col"  class="manage-column column-name sortable desc" style="">
                                 <a href="<?php echo get_bloginfo('url') ?>/wp-admin/admin.php?page=video&orderby=title&order=<?php echo $reverse_direction; ?>"><span>
                                         <?php _e('Title', 'video_gallery'); ?> </span><span class="sorting-indicator"></span></a></th>
                             <th scope="col"  class="manage-column column-description sortable desc" style="">
-                                <a href="<?php echo get_bloginfo('url') ?>/wp-admin/admin.php?page=video&orderby=author&order=<?php echo $reverse_direction; ?>"><span>
-                                        <?php _e('Author', 'video_gallery'); ?></span><span class="sorting-indicator"></span></a></th>
-                            <th scope="col"  class="manage-column column-description sortable desc" style="">
-                                <a href="<?php echo get_bloginfo('url') ?>/wp-admin/admin.php?page=video&orderby=category&order=<?php echo $reverse_direction; ?>"><span>
-                                        <?php _e('Categories', 'video_gallery'); ?></span><span class="sorting-indicator"></span></a></th>
+                                <a href="<?php echo get_bloginfo('url') ?>/wp-admin/admin.php?page=video&orderby=desc&order=<?php echo $reverse_direction; ?>"><span>
+                                        <?php _e('Path', 'video_gallery'); ?></span><span class="sorting-indicator"></span></a></th>
                             <th scope="col"  class="manage-column column-slug sortable desc" style="">
                                 <a href="<?php echo get_bloginfo('url') ?>/wp-admin/admin.php?page=video&orderby=fea&order=<?php echo $reverse_direction; ?>"><span>
                                         <?php _e('Featured', 'video_gallery'); ?></span><span class="sorting-indicator"></span></a></th>
@@ -328,7 +279,7 @@ if (isset($_GET['pagenum'])){
 
                             <th scope="col" class="manage-column column-description sortable desc" style="">
                                 <a href="<?php echo get_bloginfo('url') ?>/wp-admin/admin.php?page=video&orderby=ordering&order=<?php echo $reverse_direction; ?>">
-                                    <span><?php _e('Order', 'video_gallery'); ?></span><span class="sorting-indicator"></span>
+                                    <span><?php _e('Sort Order', 'video_gallery'); ?></span>
                                 </a>
                             </th>
 

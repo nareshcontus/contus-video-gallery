@@ -3,7 +3,7 @@
   Name: Wordpress Video Gallery
   Plugin URI: http://www.apptha.com/category/extension/Wordpress/Video-Gallery
   Description: Wordpress video gallery Recent videos widget.
-  Version: 2.5
+  Version: 2.3.1.0.1
   Author: Apptha
   Author URI: http://www.apptha.com
   License: GPL2
@@ -56,6 +56,8 @@ class widget_ContusRecentVideos_init extends WP_Widget {
         $dirPage                = $dirExp[0];
         ?>
 
+<script type="text/javascript" src="<?php echo $site_url; ?>/wp-content/plugins/<?php echo dirname(plugin_basename(__FILE__)) ?>/js/script.js"></script>
+
 <script type="text/javascript">
     var baseurl;
     baseurl = '<?php echo $site_url; ?>';
@@ -64,7 +66,7 @@ class widget_ContusRecentVideos_init extends WP_Widget {
 <!-- For Getting The Page Id More and Video-->
 <?php
         $moreName               = $wpdb->get_var("SELECT ID FROM " . $wpdb->prefix . "posts WHERE post_content='[videomore]' AND post_status='publish' AND post_type='page' LIMIT 1");
-        $settings_result        = $wpdb->get_row("SELECT ratingscontrol,view_visible FROM " . $wpdb->prefix . "hdflvvideoshare_settings WHERE settings_id='1'");
+        $ratingscontrol         = $wpdb->get_var("SELECT ratingscontrol FROM " . $wpdb->prefix . "hdflvvideoshare_settings WHERE settings_id='1'");
 ?>
 
         <!-- Recent videos -->
@@ -100,7 +102,7 @@ class widget_ContusRecentVideos_init extends WP_Widget {
             foreach ($posts as $post) {
                 $file_type      = $post->file_type; ## Video Type
                 $image          = $post->image;
-                $guid           = get_video_permalink($post->slug); ##guid
+                $guid           = $post->guid; ##guid
                 if ($image == '') {  ##If there is no thumb image for video
                     $image      = $_imagePath . 'nothumbimage.jpg';
                 } else {
@@ -125,17 +127,14 @@ class widget_ContusRecentVideos_init extends WP_Widget {
                     $div        .= $post->name;
                 }
                 $div            .= '</a><div class="clear"></div>';
-                if ($settings_result->view_visible == 1) {
-                    if ($post->hitcount > 1){
-                        $viewlanguage = $viewslang;
-                    } else {
-                        $viewlanguage = $viewlang;
-                    }
-                    $div             .= '<span class="views">' . $post->hitcount . ' ' . $viewlanguage;
-                    $div             .= '</span>';
-                }
+                if ($post->hitcount > 1)
+                    $viewlanguage = $viewslang;
+                else
+                    $viewlanguage = $viewlang;
+                $div             .= '<span class="views">' . $post->hitcount . ' ' . $viewlanguage;
+                $div             .= '</span>';
                 ## Rating starts here
-                if ($settings_result->ratingscontrol == 1) {
+                if ($ratingscontrol == 1) {
                         if (isset($post->ratecount) && $post->ratecount != 0) {
                             $ratestar    = round($post->rate / $post->ratecount);
                         } else {
@@ -153,8 +152,7 @@ class widget_ContusRecentVideos_init extends WP_Widget {
             $div                 .= "<li>" . __('No recent Videos', 'video_gallery') . "</li>";
         ## end list
         if (($show < $countR) || ($show == $countR)) {
-            $more_videos_link = get_morepage_permalink($moreName,'recent');
-            $div                 .= '<li><div class="right video-more"><a href="' . $more_videos_link . '">' . __('More Videos', 'video_gallery') . ' &#187;</a></div>';
+            $div                 .= '<li><div class="right video-more"><a href="' . $site_url . '/?page_id=' . $moreName . '&amp;more=rec">' . __('More Videos', 'video_gallery') . ' &#187;</a></div>';
             $div                 .= '<div class="clear"></div></li>';
         }
         $div                     .='</ul></div>';
