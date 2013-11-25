@@ -17,25 +17,25 @@ msgstr ""
 msgid "Featured Videos"
 msgstr "Featured Videos"
 
-#: ContusFeatureVideos.php:73 ContusPopularVideos.php:75
-#: ContusRecentVideos.php:76 ContusRelatedVideos.php:81 videohome.php:38
-#: videomore.php:33 videoshortcode.php:350
+#: ContusFeatureVideos.php:75 ContusPopularVideos.php:76
+#: ContusRecentVideos.php:78 ContusRelatedVideos.php:84 videohome.php:38
+#: videomore.php:29 videoshortcode.php:271
 msgid "Views"
 msgstr "Views"
 
-#: ContusFeatureVideos.php:74 ContusPopularVideos.php:76
-#: ContusRecentVideos.php:77 ContusRelatedVideos.php:82 videohome.php:39
-#: videomore.php:34
+#: ContusFeatureVideos.php:76 ContusPopularVideos.php:77
+#: ContusRecentVideos.php:79 ContusRelatedVideos.php:85 videohome.php:39
+#: videomore.php:30 videoshortcode.php:286
 msgid "View"
 msgstr "View"
 
-#: ContusFeatureVideos.php:159 ContusPopularVideos.php:157
-#: ContusRecentVideos.php:157 ContusRelatedVideos.php:179 videohome.php:302
-#: videohome.php:389 videomore.php:355
+#: ContusFeatureVideos.php:149 ContusPopularVideos.php:147
+#: ContusRecentVideos.php:148 ContusRelatedVideos.php:157 videohome.php:286
+#: videohome.php:361 videomore.php:311
 msgid "More Videos"
 msgstr "More Videos"
 
-#: ContusFeatureVideos.php:155
+#: ContusFeatureVideos.php:146
 msgid "No Featured Videos"
 msgstr "No Featured Videos"
 
@@ -43,7 +43,7 @@ msgstr "No Featured Videos"
 msgid "Popular Videos"
 msgstr "Popular Videos"
 
-#: ContusPopularVideos.php:153
+#: ContusPopularVideos.php:144
 msgid "No Popular videos"
 msgstr "No Popular videos"
 
@@ -51,28 +51,28 @@ msgstr "No Popular videos"
 msgid "Recent Videos"
 msgstr "Recent Videos"
 
-#: ContusRecentVideos.php:153
+#: ContusRecentVideos.php:145
 msgid "No recent Videos"
 msgstr "No recent Videos"
 
-#: ContusRelatedVideos.php:75 videoshortcode.php:573
+#: ContusRelatedVideos.php:75 videoshortcode.php:409
 msgid "Related Videos"
 msgstr "Related Videos"
 
-#: ContusRelatedVideos.php:171 ContusRelatedVideos.php:175
+#: ContusRelatedVideos.php:153
 msgid "No Related videos"
 msgstr "No Related videos"
 
-#: ContusVideoCategory.php:80 videomore.php:131
-#: videohome.php:211
+#: ContusVideoCategory.php:80 videomore.php:104 videomore.php:246
+#: videohome.php:207
 msgid "Video Categories"
 msgstr "Video Categories"
 
-#: ContusVideoCategory.php:89
+#: ContusVideoCategory.php:93
 msgid "No Categories"
 msgstr "No Categories"
 
-#: ContusVideoCategory.php:93
+#: ContusVideoCategory.php:97
 msgid "More Categories"
 msgstr "More Categories"
 
@@ -84,39 +84,41 @@ msgstr "Video Search ..."
 msgid "Search for:"
 msgstr "Search for:"
 
-#: ContusVideoSearch.php:71
+#: ContusVideoSearch.php:69
 msgid "Search"
 msgstr "Search"
 
-#: videohome.php:120 videoshortcode.php:227
+#: videohome.php:115 videoshortcode.php:205
 msgid "Html5 Not support This video Format."
 msgstr "Html5 Not support This video Format."
 
-#: videohome.php:143 videoshortcode.php:226
+#: videohome.php:141 videoshortcode.php:204
 msgid "Player doesnot support this video."
 msgstr "Player doesnot support this video."
 
-#: videohome.php:170 videomore.php:65
+#: videohome.php:168 videomore.php:58
 msgid "Popular"
 msgstr "Popular"
 
-#: videohome.php:184 videomore.php:78
+#: videohome.php:181 videomore.php:71
 msgid "Recent"
 msgstr "Recent"
 
-#: videohome.php:225 videohome.php:308 videomore.php:149 videomore.php:243 videomore.php:245
+#: videohome.php:221 videohome.php:392 videomore.php:130 videomore.php:210
+#: videomore.php:212
 msgid "Videos"
 msgstr "Videos"
 
-#: videohome.php:308 videohome.php:381 videomore.php:243 videomore.php:245 addvideo.php:139 addplaylist.php:49
+#: videohome.php:392 videohome.php:381 videomore.php:210 addvideo.php:139
+#: videomore.php:212 addplaylist.php:49
 msgid "No"
 msgstr "No"
 
-#: videomore.php:243
+#: videomore.php:210
 msgid "Under this Category"
 msgstr "Under this Category"
 
-#: videomore.php:103 videoshortcode.php:356 videosetting.php:16
+#: videomore.php:95 videoshortcode.php:285 videosetting.php:16
 msgid "Category"
 msgstr "Category"
 
@@ -124,27 +126,23 @@ msgstr "Category"
 msgid "Video Ads"
 msgstr "Video Ads"
 
-#: videomore.php:360 videohome.php:394
-msgid "No Videos for this Category"
-msgstr "No Videos for this Category"
+#: videomore.php:316 videohome.php:366
+msgid "No Videos For this Category"
+msgstr "No Videos For this Category"
 
-#: videomore.php:398
+#: videomore.php:353
 msgid "Search Results"
 msgstr "Search Results"
 
-#: videoshortcode.php:539
+#: videoshortcode.php:319
 msgid "Tweet"
 msgstr "Tweet"
 
-#: videoshortcode.php:346
+#: videoshortcode.php:283
 msgid "Posted on"
 msgstr "Posted on"
 
-#: videoshortcode.php:354
-msgid "Posted by"
-msgstr "Posted by"
-
-#: videoshortcode.php:513
+#: videoshortcode.php:298
 msgid "Tags"
 msgstr "Tags"
 
@@ -152,27 +150,27 @@ msgstr "Tags"
 msgid "Description"
 msgstr "Description"
 
-#: videoshortcode.php:555
+#: videoshortcode.php:389
 msgid "Embed Code"
 msgstr "Embed Code"
 
-#: videoshortcode.php:665
+#: videoshortcode.php:446
 msgid "Post Your Comments"
 msgstr "Post Your Comments"
 
-#: videoshortcode.php:690
+#: videoshortcode.php:469
 msgid "Please enable JavaScript to view the"
 msgstr "Please enable JavaScript to view the"
 
-#: videoshortcode.php:691
+#: videoshortcode.php:469
 msgid "comments powered by Disqus."
 msgstr "comments powered by Disqus."
 
-#: videoshortcode.php:490
+#: videoshortcode.php:470
 msgid "comments powered by"
 msgstr "comments powered by"
 
-#: videoshortcode.php:691
+#: videoshortcode.php:470
 msgid "Disqus"
 msgstr "Disqus"
 
@@ -206,16 +204,16 @@ msgid "Add Category"
 msgstr "Add Category"
 
 #: playlist.php:47
-msgid "Search Results for"
-msgstr "Search Results for"
+msgid "Search Result(s) for"
+msgstr "Search Result(s) for"
 
 #: playlist.php:47 playlist.php:49
 msgid "Back to Category List"
 msgstr "Back to Category List"
 
 #: playlist.php:49
-msgid "No Search Results for"
-msgstr "No Search Results for"
+msgid "No Search Result(s) for"
+msgstr "No Search Result(s) for"
 
 #: playlist.php:57
 msgid "Search Categories"
@@ -631,7 +629,7 @@ msgstr "Title"
 msgid "Path"
 msgstr "Path"
 
-#: video.php:169 video.php:254 videohome.php:198 videomore.php:91
+#: video.php:169 video.php:254 videohome.php:194 videomore.php:84
 msgid "Featured"
 msgstr "Featured"
 
@@ -640,7 +638,7 @@ msgstr "Featured"
 msgid "Publish"
 msgstr "Publish"
 
-#: video.php:232 videomore.php:463
+#: video.php:232
 msgid "No videos found."
 msgstr "No videos found."
 
@@ -649,8 +647,8 @@ msgid "Click and Drag"
 msgstr "Click and Drag"
 
 #: addvideo.php:70
-msgid "Add a new video"
-msgstr "Add a new video"
+msgid "Add a new video file"
+msgstr "Add a new video file"
 
 #: addvideo.php:80
 msgid "YouTube URL"
