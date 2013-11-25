@@ -240,6 +240,24 @@ $player_colors          = unserialize($settingsGrid->player_colors);
                                         <th scope='row'><?php _e("Display Default Image", "video_gallery"); ?></th>
                                         <td><input type='checkbox' class='check' name="imageDefault" <?php if ($settingsGrid->imageDefault == 1) { ?> checked <?php } ?> value="1" size=45  /></td>
                                     </tr>
+                                    <!--  Subtitle settings starts here-->
+                                     <tr>
+                                        <th scope='row'><?php _e("Subtitle Text Color", "video_gallery"); ?></th>
+                                        <td><input type='text' name="subTitleColor" value="<?php if (!empty($player_colors['subTitleColor'])) { echo $player_colors['subTitleColor']; } ?>" size=45  /></td>
+                                    </tr>
+                                     <tr>
+                                        <th scope='row'><?php _e("Subtitle Background Color", "video_gallery"); ?></th>
+                                        <td><input type='text' name="subTitleBgColor" value="<?php if (!empty($player_colors['subTitleBgColor'])) { echo $player_colors['subTitleBgColor']; } ?>" size=45  /></td>
+                                    </tr>
+                                     <tr>
+                                        <th scope='row'><?php _e("Subtitle Font Family", "video_gallery"); ?></th>
+                                        <td><input type='text' name="subTitleFontFamily" value="<?php if (!empty($player_colors['subTitleFontFamily'])) { echo $player_colors['subTitleFontFamily']; } ?>" size=45  /></td>
+                                    </tr>
+                                     <tr>
+                                        <th scope='row'><?php _e("Subtitle Font Size", "video_gallery"); ?></th>
+                                        <td><input type='text' name="subTitleFontSize" value="<?php if (!empty($player_colors['subTitleFontSize'])) { echo $player_colors['subTitleFontSize']; } ?>" size=45  /></td>
+                                    </tr>
+                                    <!--  Subtitle settings ends here-->
                                 </table>
                             </div>
                         </div>
@@ -552,6 +570,14 @@ $player_colors          = unserialize($settingsGrid->player_colors);
                               <tr>
                                   <th scope='row'><?php _e("Skin Autohide", "video_gallery"); ?></th>
                                   <td><input type='checkbox' class='check' <?php if ($settingsGrid->skin_autohide == 1) { ?> checked <?php } ?> name="skin_autohide" value="1" size=45  /></td>
+                              </tr>
+                              <tr>
+                                  <th scope='row'><?php _e("Skin Visible", "video_gallery"); ?></th>
+                                  <td><input type='checkbox' class='check' <?php if (isset($player_colors['skinVisible']) && $player_colors['skinVisible'] == 1) { ?> checked <?php } ?> name="skinVisible" value="1" size=45  /></td>
+                              </tr>
+                              <tr>
+                                  <th scope='row'><?php _e("Skin Opacity", "video_gallery"); ?></th>
+                                  <td><input type='text' name="skin_opacity" value="<?php if (isset($player_colors['skin_opacity'])) { echo $player_colors['skin_opacity']; } ?>" size=45  /></td>
                               </tr>
                           </table>
                       </div>

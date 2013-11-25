@@ -65,7 +65,16 @@ $postrollAds            = ($settingsData->postroll == 0) ? 'true' : 'false';
 $midroll_ads            = ($settingsData->midroll_ads == 0) ? 'true' : 'false';
 $trackCode              = ($settingsData->trackCode == 0) ? '' : $settingsData->trackCode;
 $player_colors          = unserialize($settingsData->player_colors);
-
+$skinVisible            = ($player_colors['skinVisible'] == 1) ? 'true' : 'false';
+$skin_opacity           = ($player_colors['skin_opacity'] == 0) ? '' : $player_colors['skinVisible'];
+$subTitleColor          = ($player_colors['subTitleColor'] == 0) ? '' : $player_colors['subTitleColor'];
+$subTitleBgColor        = ($player_colors['subTitleBgColor'] == 0) ? '' : $player_colors['subTitleBgColor'];
+if(isset($player_colors['subTitleFontFamily'])) { 
+    $subTitleFontFamily = $player_colors['subTitleFontFamily']; 
+} else { 
+    $subTitleFontFamily = ''; 
+}
+$subTitleFontSize       = ($player_colors['subTitleFontSize'] == 0) ? '' : $player_colors['subTitleFontSize'];
 ## Add http in URL if not exist
 $logotarget             = $settingsData->logo_target;
 if (!preg_match("~^(?:f|ht)tps?://~i", $logotarget)) {
@@ -136,6 +145,12 @@ echo '<config>
         <playlist_auto>' . $playlistAuto . '</playlist_auto>
         <progressControl>' . $progressControl . '</progressControl>
         <imageDefault>' . $imageDefault . '</imageDefault>
+        <skinVisible>'.$skinVisible.'</skinVisible>
+        <skin_opacity>'.$skin_opacity.'</skin_opacity>
+        <subTitleColor>'.$subTitleColor.'</subTitleColor>
+        <subTitleBgColor>'.$subTitleBgColor.'</subTitleBgColor>
+        <subTitleFontFamily>'.$subTitleFontFamily.'</subTitleFontFamily>
+        <subTitleFontSize>'.$subTitleFontSize.'</subTitleFontSize>
     </config>';
 ## Configuration ends 
 ?>

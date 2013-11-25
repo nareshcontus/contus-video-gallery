@@ -77,8 +77,16 @@ if (class_exists('SettingsController') != true) {//checks if the SettingsControl
                 $colMore = filter_input(INPUT_POST, 'colMore');
                 $playList = filter_input(INPUT_POST, 'playlist');
                 $fullScreen = filter_input(INPUT_POST, 'fullscreen');
-//                $default_player = filter_input(INPUT_POST, 'default_player');
                 $default_player = 0;
+                
+                $skinVisible = filter_input(INPUT_POST, 'skinVisible');
+                $skin_opacity = filter_input(INPUT_POST, 'skin_opacity');
+                
+                $subTitleColor = filter_input(INPUT_POST, 'subTitleColor');
+                $subTitleBgColor = filter_input(INPUT_POST, 'subTitleBgColor');
+                $subTitleFontFamily = filter_input(INPUT_POST, 'subTitleFontFamily');
+                $subTitleFontSize = filter_input(INPUT_POST, 'subTitleFontSize');
+                
                 $sharepanel_up_BgColor = filter_input(INPUT_POST, 'sharepanel_up_BgColor');
                 $sharepanel_down_BgColor = filter_input(INPUT_POST, 'sharepanel_down_BgColor');
                 $sharepaneltextColor = filter_input(INPUT_POST, 'sharepaneltextColor');
@@ -129,7 +137,13 @@ if (class_exists('SettingsController') != true) {//checks if the SettingsControl
                     'playerButtonBgColor' => $playerButtonBgColor,
                     'relatedVideoBgColor' => $relatedVideoBgColor,
                     'scroll_barColor' => $scroll_barColor,
-                    'scroll_BgColor' => $scroll_BgColor
+                    'scroll_BgColor' => $scroll_BgColor,
+                    'skinVisible' => $skinVisible,
+                    'skin_opacity' => $skin_opacity,
+                    'subTitleColor' => $subTitleColor,
+                    'subTitleBgColor' => $subTitleBgColor,
+                    'subTitleFontFamily' => $subTitleFontFamily,
+                    'subTitleFontSize' => $subTitleFontSize
                     );
                 
                 $settingsData = array(
