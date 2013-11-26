@@ -72,7 +72,7 @@ if (class_exists('ContusVideoView') != true) {
             $div                            = '<div>'; ## video player starts
             ## To increase hit count of a video
             $div                            .= '<script type="text/javascript" src="' . APPTHA_VGALLERY_BASEURL . 'js/script.js"></script>';
-            $div                            .= '<style type="text/css" scoped> .video-block {padding-left:' . $settingsData->gutterspace . 'px !important; } </style>';
+            $div                            .= '<style type="text/css" scoped> .video-block {padding-left:' . $settingsData->gutterspace . 'px !important; float:left;} </style>';
             $div                            .=' <script>
                                             var baseurl,folder,videoPage;
                                             baseurl = "' . $this->_site_url . '";
@@ -219,7 +219,7 @@ if (class_exists('ContusVideoView') != true) {
                 $image_path             = str_replace('plugins/'.$this->_plugin_name.'/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
                 if ($TypeSet) {                                             ## CHECKING FAETURED VIDEOS ENABLE STARTS
                     $div                = '<div class="video_wrapper" id="' . $type_name . '_video">';
-                    $div               .= '<style type="text/css" scoped> .video-block {padding-left:' . $this->_settingsData->gutterspace . 'px !important;}  </style>';
+                    $div               .= '<style type="text/css" scoped> .video-block {padding-left:' . $this->_settingsData->gutterspace . 'px !important;float:left;}  </style>';
 
                     if (!empty($TypeOFvideos)) {
                         $div           .= '<h2 class="video_header">' . $typename . ' ' . __('Videos', 'video_gallery') . '</h2>';
@@ -252,7 +252,7 @@ if (class_exists('ContusVideoView') != true) {
                         for ($j = 0; $j < count($TypeOFvideos); $j++) {
                             $class              = '<div class="clear"></div>';
                             if (($j % $colF) == 0 && $j != 0) {##COLUMN COUNT
-                                $div            .= '</ul><ul class="video-block-container">';
+                                $div            .= '</ul><div class="clear"></div><ul class="video-block-container">';
                             }
                             $div                .= '<li class="video-block">';
                             $div                .='<div  class="video-thumbimg"><a href="' . $guid[$j] . '">
@@ -317,7 +317,7 @@ if (class_exists('ContusVideoView') != true) {
             $div                = '';
             $ratearray = array("nopos1", "onepos1", "twopos1", "threepos1", "fourpos1", "fivepos1");
             $pagenum            = isset($pagenum) ? absint($pagenum) : 1;               ## Calculating page number
-            $div                .= '<style scoped> .video-block { padding-left:' . $this->_settingsData->gutterspace . 'px !important;} </style>';
+            $div                .= '<style scoped> .video-block { padding-left:' . $this->_settingsData->gutterspace . 'px !important;float:left;} </style>';
             foreach ($TypeOFvideos as $catList) {
             ## Fetch videos for every category
                 $sql            = "SELECT s.guid,w.* FROM " . $wpdb->prefix . "hdflvvideoshare as w
