@@ -280,7 +280,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                             } else if (strpos($videourl, 'viddler') > 0) {        ## For viddler videos
                                 $imgstr = explode("/", $videourl);
                                 ?>
-                                <iframe id="viddler-<?php echo $imgstr; ?>" src="//www.viddler.com/embed/<?php echo $imgstr; ?>/?f=1&autoplay=0&player=full&secret=26392356&loop=false&nologo=false&hd=false" frameborder="0" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+                                <iframe id="viddler-<?php echo $imgstr; ?>" src="//www.viddler.com/embed/<?php echo $imgstr[4]; ?>/?f=1&autoplay=0&player=full&secret=26392356&loop=false&nologo=false&hd=false" frameborder="0" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
                                 <?php
                             }
             
@@ -345,18 +345,18 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                 $output                 .='<div class="video-page-container '.$plugin_css.'">
                                        <div class="vido_info_container"><div class="video-page-info '.$no_views.'">';
                 if ($this->_post_type === 'videogallery' || $this->_page_post_type === 'videogallery') {
-                $output                 .='<div class="video-page-date"><strong>' . __("Posted on", "video_gallery") . '    </strong>: ' . date("d-M-Y", strtotime($post_date)) . '</div>';
+                $output                 .='<div class="video-page-date"><strong>' . __("Posted&nbsp;on", "video_gallery").':</strong><span>'.date("d-M-Y", strtotime($post_date)).'</span></div>';
                 }
                 
                 if($videogalleryviews==true){
-                $output                 .= '<div class="video-page-views"><strong>' . __("Views", "video_gallery") . '       </strong>: ' . $hitcount . '</div>';
+                $output                 .= '<div class="video-page-views"><strong>'. __("Views", "video_gallery").':</strong><span>'.$hitcount.'</span></div>';
                 }
                 $output                 .= '<div class="clearfix"></div>';
                 if ($this->_post_type === 'videogallery' || $this->_page_post_type === 'videogallery') {
                     $user_url           = get_user_permalink($this->_mPageid,$uploadedby_id,$uploadedby);
-                    $output             .= '<div class="video-page-username"><strong>' . __("Posted by", "video_gallery") . '    </strong>: <a href="' . $user_url . '">' . $uploadedby . '</a></div>';
+                    $output             .= '<div class="video-page-username"><strong>' . __("Posted&nbsp;by", "video_gallery") . ':</strong><span><a href="' . $user_url . '">' . $uploadedby . '</a></span></div>';
                 if($configXML->categorydisplay == 1){
-                    $output             .= '<div class="video-page-category"><strong>' . __("Category", "video_gallery") . ' </strong>: ';
+                    $output             .= '<div class="video-page-category"><strong>'. __("Category", "video_gallery").':</strong>';
                     foreach ($playlistData as $playlist) {
                         $playlist_url = get_playlist_permalink($this->_mPageid,$playlist->pid,$playlist->playlist_slugname);
                     if ($incre > 0) {
@@ -369,6 +369,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                 $output                .= $playlistname . '</div>';
                 }
                 }
+                $output                 .= '<div class="clearfix"></div>';
                 ## Rating starts here
                 if ($this->_post_type === 'videogallery' || ($this->_page_post_type === 'videogallery' && $this->_page_post_type == '')) {
                     $ratingscontrol = true;

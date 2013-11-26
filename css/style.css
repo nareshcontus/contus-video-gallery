@@ -124,11 +124,11 @@ h4.playlistName {float:left; }
 h3.related-videos{margin: 0 !important; padding: 0 !important; text-align: left;}
 .related-videos h3{text-align: left; margin: 0; padding: 0;}
 .video-page-container{ font-family: helvetica, arial, sans-serif; font-size: 12px; }
-.video-page-container .video-page-info strong{width: auto; display: inline-block;  }
-.video-page-container strong{width: auto; display: inline-block;}
-.video-page-container .video-page-date{width: auto; float: left;/*width: 50%; */}
-.video-page-container .video-page-views{ float: right; text-align: right;/*width: 50%;*/}
-.video-page-container .video-page-username{ float: left; text-align: left;/*width: 50%;*/}
+.video-page-container .video-page-info strong, .video-page-container .video-page-info span{/*width: auto;*/float:left;text-align:left; display: inline-block;  }
+.video-page-container strong{/*width: auto; */display: inline-block;}
+.video-page-container .video-page-date{/*width: auto;*/ float: left;text-align: left;}
+.video-page-container .video-page-views{ float: right; text-align: right;}
+.video-page-container .video-page-username{ float: left; text-align: left;}
 .video-page-container.shortcode .video-page-info{float: right;text-align: right;width: 100%;}
 .video-page-container.shortcode .video-page-info.noviews{width: 100%;}
 .video-page-container.shortcode .video-page-views {width:100%;float: right;text-align: right;}
@@ -143,8 +143,8 @@ h3.related-videos{margin: 0 !important; padding: 0 !important; text-align: left;
 .video-page-info{clear: both; overflow: hidden; padding-bottom: 5px; }
 .video-page-info .video-page-rating{float: right; }
 .video-page-info .video-page-rating .rateimgleft{float: right; }
-.video-page-info .video-page-rating .rateright-views{margin-right: 5px;padding-top: 2px;width: 120px;text-align: right;}
-.video-page-info .video-page-category{float: right;width: 49%;text-align: right;}
+.video-page-info .video-page-rating .rateright-views{margin-right: 5px;padding-top: 2px;/*width: 120px;*/text-align: right;}
+.video-page-info .video-page-category{float: right;text-align: right;}
 .player embed{margin: 0 0 10px 0 !important; }
 .embed{ padding: 0 10px; border: 1px solid #ccc; text-decoration: none; float: left; }
 .embed .embed_text{ float: left;  }
