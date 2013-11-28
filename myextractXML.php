@@ -39,7 +39,7 @@ if (!empty($type) && $type == 1) {                                     ## IF typ
 }
 $settingsContent        = $pageOBJ->settings_data();
 $tagsName               = $pageOBJ->Tag_detail($getVid);
-$videothum = $islive = $streamer = $duration = $videoPreview = $videotag = $postroll_id = $subtitle = '';
+$videothum = $islive = $streamer = $videoPreview = $videotag = $postroll_id = $subtitle = '';
 $pageOBJ->_imagePath    = APPTHA_VGALLERY_BASEURL . 'images' . DS;     ## declare image path
 ## autoplay value
 if ($settingsContent->playlistauto == 1) {
@@ -62,8 +62,11 @@ foreach ($singleVideodata as $media) {
     $file_type          = $media->file_type;
     if($file_type != 5) {
     $videoUrl           = $media->file;
-    if (!empty($media->duration))
+    if (!empty($media->duration)  && $media->duration != '0:00' ){
     $duration           = $media->duration;
+    } else {
+        $duration = '';
+    }
     $views              = $media->hitcount;
     $fbPath             = $media->guid;
     $hdvideoUrl         = $media->hdfile;
