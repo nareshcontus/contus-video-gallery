@@ -12,9 +12,11 @@
 $dir = dirname(plugin_basename(__FILE__));
 $dirExp = explode('/', $dir);
 $dirPage = $dirExp[0];
-$page = '';
+$page = $ordervalue = '';
+$url = get_bloginfo('url') . '/wp-admin/admin.php?page=video';
 if (isset($_GET['pagenum'])){
-        $page = '&pagenum=' . $_GET['pagenum'];}
+        $page = '&pagenum=' . $_GET['pagenum'];
+}
 ?>
 <script type="text/javascript">
     // When the document is ready set up our sortable with it's inherant function(s)
@@ -100,10 +102,15 @@ if (isset($_GET['pagenum'])){
         </div>
         <?php
                 endif;
+                $orderFilterlimit = filter_input(INPUT_GET, 'filter');
                 $orderField = filter_input(INPUT_GET, 'order');
+                $orderby = filter_input(INPUT_GET, 'orderby');
                 $direction = isset($orderField) ? $orderField : false;
+                if(!empty($orderby) && !empty($orderField)){
+                    $ordervalue = "&orderby=$orderby&order=$orderField";
+                }
+                
                 $reverse_direction = ($direction == 'DESC' ? 'ASC' : 'DESC');
-                $url = get_bloginfo('url') . '/wp-admin/admin.php?page=video';
                 if (isset($_REQUEST["videosearchbtn"])) {
         ?>
                     <div  class="updated below-h2">
@@ -134,8 +141,25 @@ if (isset($_GET['pagenum'])){
                     </select>
                     <input type="submit" name="videoapply"  class="button-secondary action" value="<?php _e('Apply', 'video_gallery'); ?> ">
                 </div>
+                 <div class="alignleft actions" style="margin-bottom:10px;">
+            <select name="videofilteraction" id="videofilteraction" onchange="window.location.href=this.value" >
+                <option value="" selected="selected">Select Limit</option>
+                <option <?php if($orderFilterlimit == 5) { echo 'selected'; } ?> value="<?php echo $url.$page.$ordervalue; ?>&filter=5#videofrm">5</option>                        
+                <option <?php if($orderFilterlimit == 10) { echo 'selected'; } ?> value="<?php echo $url.$page.$ordervalue; ?>&filter=10#videofrm">10</option>                        
+                <option <?php if($orderFilterlimit == 20) { echo 'selected'; } ?> value="<?php echo $url.$page.$ordervalue; ?>&filter=20#videofrm">20</option>                        
+                <option <?php if($orderFilterlimit == 50) { echo 'selected'; } ?> value="<?php echo $url.$page.$ordervalue; ?>&filter=50#videofrm">50</option>                        
+                <option <?php if($orderFilterlimit == 100) { echo 'selected'; } ?> value="<?php echo $url.$page.$ordervalue; ?>&filter=100#videofrm">100</option>                        
+                <option <?php if($orderFilterlimit == 'all') { echo 'selected'; } ?>value="<?php echo $url.$page.$ordervalue; ?>&filter=all#videofrm">All</option>                        
+            </select>
+         </div>
                 <?php
+                       if(!empty($orderFilterlimit) && $orderFilterlimit !== 'all'){
+                            $limit = $orderFilterlimit;
+                        } else if($orderFilterlimit === 'all'){
+                            $limit = $Video_count;
+                        } else {
                        $limit = 20;
+                        }
                        $pagenum = isset($_GET['pagenum']) ? absint($_GET['pagenum']) : 1;
                        $total = $Video_count;
                        $num_of_pages = ceil($total / $limit);

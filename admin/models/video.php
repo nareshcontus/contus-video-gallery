@@ -146,8 +146,7 @@ if(class_exists('VideoModel') != true)
                 $where .=  " WHERE a.member_id=".$current_user->ID;
             }
             $pagenum = isset( $_GET['pagenum'] ) ? absint( $_GET['pagenum'] ) : 1;
-            $limit = 20;
-            $offset = ( $pagenum - 1 ) * $limit;
+            $orderFilterlimit = filter_input(INPUT_GET, 'filter');
             if(isset($searchBtn))
             {
                 if(empty($where)){
@@ -161,6 +160,24 @@ if(class_exists('VideoModel') != true)
             {
                 $orderDirection = 'DESC';
             }
+           $query = "SELECT DISTINCT (a.vid) FROM ".$this->_videotable .' a 
+                    LEFT JOIN '. $this->_wpdb->prefix .'users u 
+                    ON u.ID=a.member_id 
+                    LEFT JOIN '. $this->_wpdb->prefix .'hdflvvideoshare_med2play p 
+                    ON p.media_id=a.vid 
+                    LEFT JOIN '. $this->_wpdb->prefix .'hdflvvideoshare_playlist pl 
+                    ON pl.pid=p.playlist_id 
+                    '.$where ." 
+                    ORDER BY ". $order . ' '.$orderDirection;
+            $total = count($this->_wpdb->get_results($query));
+            if(!empty($orderFilterlimit) && $orderFilterlimit !== 'all'){
+                $limit = $orderFilterlimit;
+            } else if($orderFilterlimit === 'all'){
+                $limit = $total;
+            } else {
+                $limit = 20;
+            }
+            $offset = ( $pagenum - 1 ) * $limit;
            $query = "SELECT DISTINCT (a.vid),a.*,u.display_name FROM ".$this->_videotable .' a 
                     LEFT JOIN '. $this->_wpdb->prefix .'users u 
                     ON u.ID=a.member_id 
