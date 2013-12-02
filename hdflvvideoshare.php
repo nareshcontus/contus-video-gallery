@@ -99,12 +99,17 @@ function add_my_rule() {
 }
 add_action('init', 'add_my_rule');
 $video_search = filter_var(filter_input(INPUT_GET, 'video_search'), FILTER_SANITIZE_STRING);
+	$wp_rewrite = new WP_Rewrite();
+$link = $wp_rewrite->get_page_permastruct();
 ## Convert non-sef URL to seo friendly URL
 
-if (!empty($video_search)) {
+if(!empty($video_search)) {
+    
+    if (!empty($link)) {
     $location = get_site_url() . "/search/" . $video_search;
     header("Location: $location", true, 301);
     exit;
+} 
 } 
 ## Video Sort order function
 add_action('wp_ajax_videosortorder', 'videosort_function');
