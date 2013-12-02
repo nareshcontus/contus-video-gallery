@@ -662,7 +662,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
              }
             ## Facebook Comments
             if ($configXML->comment_option == 2) {
-                $output                 .='<style type="text/css">#comments #respond,#comments.comments-area, #disqus_thread{ display: none!important; } </style>';
+                $output                 .='<style type="text/css">#comments #respond,#comments.comments-area, #disqus_thread, .comments-link{ display: none!important; } </style>';
                 $output                 .='<div class="clear"></div>
                                         <h2 class="related-videos">' . __("Post Your Comments", "video_gallery") . '</h2>
                                         <div id="fb-root"></div>
@@ -679,7 +679,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
             }
         ## Disqus Comment
             else if ($configXML->comment_option == 3) {
-                $output                 .='<style type="text/css">#comments #respond,#comments.comments-area{ display: none!important; } </style>';
+                $output                 .='<style type="text/css">#comments #respond,#comments.comments-area, .comments-link{ display: none!important; } </style>';
                 $output                 .='<div id="disqus_thread"></div>
                                         <script type="text/javascript">
                                         var disqus_shortname = "' . $configXML->keydisqusApps . '";

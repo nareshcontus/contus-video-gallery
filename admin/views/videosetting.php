@@ -43,12 +43,15 @@ $player_colors          = unserialize($settingsGrid->player_colors);
                 function enablefbapi(val) {
 	if(val == 0 || val == 1) {
 		document.getElementById('facebook_api').style.display = 'none';
+		document.getElementById('facebook_api_link').style.display = 'none';
 		document.getElementById('disqus_api').style.display = 'none';
 	} else if(val == 2) {
 		document.getElementById('facebook_api').style.display = 'table-row';
+		document.getElementById('facebook_api_link').style.display = 'table-row';
 		document.getElementById('disqus_api').style.display = 'none';
 	}else if(val == 3) {
 		document.getElementById('facebook_api').style.display = 'none';
+		document.getElementById('facebook_api_link').style.display = 'none';
 		document.getElementById('disqus_api').style.display = 'table-row';
 	}
 }
@@ -524,7 +527,7 @@ $player_colors          = unserialize($settingsGrid->player_colors);
                                         <th scope='row'><?php _e("Shot Name", "video_gallery"); ?></th>
                                         <td><input type='text' name="keydisqusApps" value="<?php echo $settingsGrid->keydisqusApps ?>" size=45  /></td>
                             </tr>
-                                    <tr><td> <a href="http://developers.facebook.com/" target="_blank"><?php _e("Link to create Facebook App ID", "video_gallery"); ?></a></td></tr>
+                                    <tr id="facebook_api_link" style="display: none;" ><td> <a href="http://developers.facebook.com/" target="_blank"><?php _e("Link to create Facebook App ID", "video_gallery"); ?></a></td></tr>
                         </table>
                     </div>
                 </div>
