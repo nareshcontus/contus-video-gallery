@@ -141,7 +141,8 @@ if (class_exists('ContusVideoShortcodeView') != true) {
         function HDFLV_shareRender($arguments= array()) {
             global $wpdb;
             $output = $videourl     = $imgurl = $player_div = $vid = $playlistid = $homeplayerData = $ratecount = $rate = $plugin_css = $no_views = '';
-            $video_playlist_id      = $videoId = $hitcount = $videodivId = 0;
+            $video_playlist_id      = $videoId = $hitcount = 0;
+            $videodivId             = rand();
             $image_path             = str_replace('plugins/'.$this->_plugin_name.'/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL);
             $_imagePath             = APPTHA_VGALLERY_BASEURL . 'images' . DS;
             $configXML              = $wpdb->get_row("SELECT ratingscontrol,view_visible,tagdisplay,categorydisplay,embed_visible,keydisqusApps,comment_option,keyApps,configXML,width,height FROM " . $wpdb->prefix . "hdflvvideoshare_settings");
@@ -157,7 +158,8 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                 $height             = $configXML->height;           ## get height from settings
             }
             if (isset($arguments['id'])) {
-                $vid = $videodivId = $arguments['id'];              ## get video id from short code
+                $videodivId .= $arguments['id'];              ## get video id from short code
+                $vid         = $arguments['id'];              
             }
             if (!empty($vid)) {
                 $homeplayerData      = $this->video_detail($vid);
@@ -190,7 +192,8 @@ if (class_exists('ContusVideoShortcodeView') != true) {
             $playlistname = $windo  = $htmlvideo = '';
 
             if (isset($arguments['playlistid'])) {
-                $playlistid = $videodivId = $arguments['playlistid'];   ## get playlist id from short code
+                $videodivId .= $arguments['playlistid'];   ## get playlist id from short code
+                $playlistid  = $arguments['playlistid'];   
                 $flashvars          .="&amp;mtype=playerModule";
             }
 
