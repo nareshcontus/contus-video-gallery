@@ -345,18 +345,18 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                 $output                 .='<div class="video-page-container '.$plugin_css.'">
                                        <div class="vido_info_container"><div class="video-page-info '.$no_views.'">';
                 if ($this->_post_type === 'videogallery' || $this->_page_post_type === 'videogallery') {
-                $output                 .='<div class="video-page-date"><strong>' . __("Posted&nbsp;on", "video_gallery").':</strong><span>'.date("d-M-Y", strtotime($post_date)).'</span></div>';
+                $output                 .='<div class="video-page-date"><strong>' . __("Posted&nbsp;on", "video_gallery").'&nbsp;:&nbsp;</strong><span>'.date("d-M-Y", strtotime($post_date)).'</span></div>';
                 }
                 
                 if($videogalleryviews==true){
-                $output                 .= '<div class="video-page-views"><strong>'. __("Views", "video_gallery").':</strong><span>'.$hitcount.'</span></div>';
+                $output                 .= '<div class="video-page-views"><strong>'. __("Views", "video_gallery").'&nbsp;:&nbsp;</strong><span>'.$hitcount.'</span></div>';
                 }
                 $output                 .= '<div class="clearfix"></div>';
                 if ($this->_post_type === 'videogallery' || $this->_page_post_type === 'videogallery') {
                     $user_url           = get_user_permalink($this->_mPageid,$uploadedby_id,$uploadedby);
-                    $output             .= '<div class="video-page-username"><strong>' . __("Posted&nbsp;by", "video_gallery") . ':</strong><span><a href="' . $user_url . '">' . $uploadedby . '</a></span></div>';
+                    $output             .= '<div class="video-page-username"><strong>' . __("Posted&nbsp;by", "video_gallery") . '&nbsp;:&nbsp;</strong><span><a href="' . $user_url . '">' . $uploadedby . '</a></span></div>';
                 if($configXML->categorydisplay == 1){
-                    $output             .= '<div class="video-page-category"><strong>'. __("Category", "video_gallery").':</strong>';
+                    $output             .= '<div class="video-page-category"><strong>'. __("Category", "video_gallery").'&nbsp;:&nbsp;</strong>';
                     foreach ($playlistData as $playlist) {
                         $playlist_url = get_playlist_permalink($this->_mPageid,$playlist->pid,$playlist->playlist_slugname);
                     if ($incre > 0) {
