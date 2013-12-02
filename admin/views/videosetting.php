@@ -543,7 +543,7 @@ $player_colors          = unserialize($settingsGrid->player_colors);
                                       <td>
                               </tr>
                               <tr>
-                                  <th scope='row'><?php _e("Display Zoom", "video_gallery"); ?></th>
+                                  <th scope='row'><?php _e("Display Zoom", "video_gallery"); ?> <br/>(Not supported for viddler videos)</th>
                                   <td><input type='checkbox' class='check' <?php if ($settingsGrid->zoom == 1) { ?> checked <?php } ?> name="zoom" value="1" /></td>
                               </tr>
                                <!-- Display Email Icon-->
