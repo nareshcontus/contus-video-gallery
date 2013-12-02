@@ -177,7 +177,7 @@ class widget_ContusRelatedVideos_init extends WP_Widget {
 
         if (($show < $countF) || ($show == $countF)) {
             $playlist_url = get_playlist_permalink($moreName,$playlistID,$playlist_slugname);
-            $div                .= '<li><div class="right video-more"><a href="' . $playlist_url . '">' . __('More Videos', 'video_gallery') . ' &#187;</a></div>';
+            $div                .= '<li><div class="right video-more"><a href="' . $playlist_url . '">' . __('More&nbsp;Videos', 'video_gallery') . '&nbsp;&#187;</a></div>';
             $div                .= '<div class="clear"></div></li>';
         }
         $div                    .= '</ul></div><div class="clear"></div>';

@@ -243,7 +243,7 @@ if (class_exists('ContusMoreView') != true) {
                                 } else {
                                        $viewlang = $this->_viewlang;
                                 }
-                            $div            .= $hitcount[$j] . ' '.$viewlang;
+                            $div            .= $hitcount[$j] . '&nbsp;'.$viewlang;
                             $div            .= '</span>';
                             }
                             $div            .= '</div>';
@@ -256,9 +256,9 @@ if (class_exists('ContusMoreView') != true) {
                 }
                 else{
                  if($typename=='Category'){
-                    $div                    .= __('No', 'video_gallery').' ' .__('Videos', 'video_gallery'). ' '.__('Under this Category', 'video_gallery');
+                    $div                    .= __('No', 'video_gallery').'&nbsp;' .__('Videos', 'video_gallery'). '&nbsp;'.__('Under&nbsp;this&nbsp;Category', 'video_gallery');
                     } else {
-                    $div                    .= __('No', 'video_gallery').' ' . $typename . ' '.__('Videos', 'video_gallery');
+                    $div                    .= __('No', 'video_gallery').'&nbsp;' . $typename . '&nbsp;'.__('Videos', 'video_gallery');
                     }
                 }
                 $div                        .= '</div>';
@@ -351,7 +351,7 @@ if (class_exists('ContusMoreView') != true) {
                                 } else {
                                            $viewlang = $this->_viewlang;
                                 }
-                                $div    .= '<span class="video_views">' . $playList->hitcount . ' '.$viewlang . '</span>';
+                                $div    .= '<span class="video_views">' . $playList->hitcount . '&nbsp;'.$viewlang . '</span>';
                             }
                         $div        .= '</div></li>';
 
@@ -368,12 +368,12 @@ if (class_exists('ContusMoreView') != true) {
                     $div            .= '</ul>';
                     if (($playlistCount > 8)) {
 
-                        $div        .= '<a class="video-more" href="' . $this->_site_url . '/?page_id=' .  $this->_mPageid . '&playid=' . $catList->pid . '">'.__('More Videos', 'video_gallery').'</a>';
+                        $div        .= '<a class="video-more" href="' . $this->_site_url . '/?page_id=' .  $this->_mPageid . '&playid=' . $catList->pid . '">'.__('More&nbsp;Videos', 'video_gallery').'</a>';
                     } else {
                         $div        .= '<div align="right"> </div>';
                     }
                 } else {                                                        ## If there is no video for category
-                    $div            .= '<div>'.__('No Videos for this Category', 'video_gallery').'</div>';
+                    $div            .= '<div>'.__('No&nbsp;Videos&nbsp;for&nbsp;this&nbsp;Category', 'video_gallery').'</div>';
                 }
             }
 
@@ -467,7 +467,7 @@ if (class_exists('ContusMoreView') != true) {
                             } else {
                                        $viewlang = $this->_viewlang;
                             }
-                            $div        .= '<span class="video_views">' . $playList->hitcount . ' '.$viewlang . '</span>';
+                            $div        .= '<span class="video_views">' . $playList->hitcount . '&nbsp;'.$viewlang . '</span>';
                         }
                         $div        .= '</div></li>';
 
@@ -476,7 +476,7 @@ if (class_exists('ContusMoreView') != true) {
                     $div            .= '</ul>';
 
                 } else { ## If there is no video for category
-                    $div            .= '<div>'.__('No Videos Found', 'video_gallery').'</div>';
+                    $div            .= '<div>'.__('No&nbsp;Videos&nbsp;Found', 'video_gallery').'</div>';
                 }
             $div                    .= '</div>';
 

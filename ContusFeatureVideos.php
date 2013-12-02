@@ -156,7 +156,7 @@ class widget_ContusFeaturedVideos_init extends WP_Widget {
         ## end list
         if (($show < $countF) || ($show == $countF)) {
             $more_videos_link = get_morepage_permalink($moreName,'featured');
-            $div            .='<li><div class="video-more"><a href="' . $more_videos_link . '">' . __('More Videos', 'video_gallery') . ' &#187;</a></div>';
+            $div            .='<li><div class="video-more"><a href="' . $more_videos_link . '">' . __('More&nbsp;Videos', 'video_gallery') . '&nbsp;&#187;</a></div>';
             $div            .='<div class="clear"></div></li>';
         } else {
             $div            .='<li><div align="right"> </div></li>';

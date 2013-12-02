@@ -8,10 +8,10 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2013-08-08 16:36+0530\n"
+"PO-Revision-Date: 2013-12-02 13:40+0530\n"
 "Last-Translator: \n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"X-Generator: Poedit 1.5.5\n"
+"X-Generator: Poedit 1.5.7\n"
 
 #: ContusFeatureVideos.php:78 videosetting.php:579
 msgid "Featured Videos"
@@ -32,8 +32,8 @@ msgstr "View"
 #: ContusFeatureVideos.php:159 ContusPopularVideos.php:157
 #: ContusRecentVideos.php:157 ContusRelatedVideos.php:179 videohome.php:302
 #: videohome.php:389 videomore.php:355
-msgid "More Videos"
-msgstr "More Videos"
+msgid "More&nbsp;Videos"
+msgstr "More&nbsp;Videos"
 
 #: ContusFeatureVideos.php:155
 msgid "No Featured Videos"
@@ -63,10 +63,9 @@ msgstr "Related Videos"
 msgid "No Related videos"
 msgstr "No Related videos"
 
-#: ContusVideoCategory.php:80 videomore.php:131
-#: videohome.php:211
-msgid "Video Categories"
-msgstr "Video Categories"
+#: ContusVideoCategory.php:80 videomore.php:131 videohome.php:211
+msgid "Video&nbsp;Categories"
+msgstr "Video&nbsp;Categories"
 
 #: ContusVideoCategory.php:89
 msgid "No Categories"
@@ -104,17 +103,19 @@ msgstr "Popular"
 msgid "Recent"
 msgstr "Recent"
 
-#: videohome.php:225 videohome.php:308 videomore.php:149 videomore.php:243 videomore.php:245
+#: videohome.php:225 videohome.php:308 videomore.php:149 videomore.php:243
+#: videomore.php:245
 msgid "Videos"
 msgstr "Videos"
 
-#: videohome.php:308 videohome.php:381 videomore.php:243 videomore.php:245 addvideo.php:139 addplaylist.php:49
+#: videohome.php:308 videohome.php:381 videomore.php:243 videomore.php:245
+#: addvideo.php:139 addplaylist.php:49
 msgid "No"
 msgstr "No"
 
 #: videomore.php:243
-msgid "Under this Category"
-msgstr "Under this Category"
+msgid "Under&nbsp;this&nbsp;Category"
+msgstr "Under&nbsp;this&nbsp;Category"
 
 #: videomore.php:103 videoshortcode.php:356 videosetting.php:16
 msgid "Category"
@@ -125,8 +126,8 @@ msgid "Video Ads"
 msgstr "Video Ads"
 
 #: videomore.php:360 videohome.php:394
-msgid "No Videos for this Category"
-msgstr "No Videos for this Category"
+msgid "No&nbsp;Videos&nbsp;for&nbsp;this&nbsp;Category"
+msgstr "No&nbsp;Videos&nbsp;for&nbsp;this&nbsp;Category"
 
 #: videomore.php:398
 msgid "Search Results"
@@ -137,12 +138,12 @@ msgid "Tweet"
 msgstr "Tweet"
 
 #: videoshortcode.php:346
-msgid "Posted on"
-msgstr "Posted on"
+msgid "Posted&nbsp;on"
+msgstr "Posted&nbsp;on"
 
 #: videoshortcode.php:354
-msgid "Posted by"
-msgstr "Posted by"
+msgid "Posted&nbsp;by"
+msgstr "Posted&nbsp;by"
 
 #: videoshortcode.php:513
 msgid "Tags"
@@ -153,8 +154,8 @@ msgid "Description"
 msgstr "Description"
 
 #: videoshortcode.php:555
-msgid "Embed Code"
-msgstr "Embed Code"
+msgid "Embed&nbsp;Code"
+msgstr "Embed&nbsp;Code"
 
 #: videoshortcode.php:665
 msgid "Post Your Comments"
@@ -641,8 +642,8 @@ msgid "Publish"
 msgstr "Publish"
 
 #: video.php:232 videomore.php:463
-msgid "No videos found."
-msgstr "No videos found."
+msgid "No&nbsp;videos&nbsp;found."
+msgstr "No&nbsp;videos&nbsp;found."
 
 #: video.php:187
 msgid "Click and Drag"

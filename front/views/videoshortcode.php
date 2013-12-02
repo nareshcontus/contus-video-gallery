@@ -432,7 +432,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                                 document.getElementById("rate' . $videodivId .$vid. '").className="ratethis fivepos";
                             else
                                 document.getElementById("rate' . $videodivId .$vid. '").className="ratethis nopos";
-                            document.getElementById("ratemsg' . $videodivId . $vid.'").innerHTML="Ratings: "+ratecount;
+                            document.getElementById("ratemsg' . $videodivId . $vid.'").innerHTML="Ratings&nbsp;:&nbsp;"+ratecount;
                         } 
                        ';
                 if (isset($ratestar) && isset($ratecount)) {
@@ -481,7 +481,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                                             }
                                             function insertReply' . $videodivId .$vid. '() {
                                                 if(http.readyState == 4) {
-                                                    document.getElementById("ratemsg' . $videodivId .$vid. '").innerHTML="Ratings: "+http.responseText;
+                                                    document.getElementById("ratemsg' . $videodivId .$vid. '").innerHTML="Ratings&nbsp;:&nbsp;"+http.responseText;
                                                     document.getElementById("rate' . $videodivId .$vid. '").className="";
                                                     document.getElementById("storeratemsg' . $videodivId .$vid. '").value=http.responseText;
                                                 }
@@ -491,20 +491,20 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                                                 document.getElementById("ratemsg1' . $videodivId .$vid. '").style.display="none";
                                                 document.getElementById("ratemsg' . $videodivId .$vid. '").style.display="block";
                                                 if(document.getElementById("storeratemsg' . $videodivId .$vid. '").value == "") {
-                                                    document.getElementById("ratemsg' . $videodivId . $vid.'").innerHTML="Ratings: '.$ratecount.'";
+                                                    document.getElementById("ratemsg' . $videodivId . $vid.'").innerHTML="Ratings&nbsp;:&nbsp;'.$ratecount.'";
                                                 } else {
-                                                    document.getElementById("ratemsg' . $videodivId .$vid. '").innerHTML="Ratings:  "+document.getElementById("storeratemsg' . $videodivId .$vid. '").value;
+                                                    document.getElementById("ratemsg' . $videodivId .$vid. '").innerHTML="Ratings&nbsp;:&nbsp;"+document.getElementById("storeratemsg' . $videodivId .$vid. '").value;
                                                 }
                                             }
                                             function displayrating' . $videodivId .$vid. '(t) {
                                                 if(t==1) {
                                                     document.getElementById("ratemsg' . $videodivId .$vid. '").innerHTML="Poor";
                                                 } else if(t==2) {
-                                                    document.getElementById("ratemsg' . $videodivId .$vid. '").innerHTML="Nothing Special";
+                                                    document.getElementById("ratemsg' . $videodivId .$vid. '").innerHTML="Nothing&nbsp;Special";
                                                 } else if(t==3) {
-                                                    document.getElementById("ratemsg' . $videodivId .$vid. '").innerHTML="Worth Watching";
+                                                    document.getElementById("ratemsg' . $videodivId .$vid. '").innerHTML="Worth&nbsp;Watching";
                                                 } else if(t==4) {
-                                                    document.getElementById("ratemsg' . $videodivId .$vid. '").innerHTML="Pretty Cool";
+                                                    document.getElementById("ratemsg' . $videodivId .$vid. '").innerHTML="Pretty&nbsp;Cool";
                                                 } else if(t==5) {
                                                     document.getElementById("ratemsg' . $videodivId .$vid. '").innerHTML="Awesome";
                                                 }
@@ -557,7 +557,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                     } else {
                         $embed_code         = '<embed src="' . $this->_swfPath . '" flashvars="' . $flashvars . '&amp;shareIcon=false&amp;email=false&amp;showPlaylist=false&amp;zoomIcon=false&amp;copylink=' . get_permalink() . '&amp;embedplayer=true" width="' . $width . '" height="' . $height . '" allowfullscreen="true" allowscriptaccess="always" type="application/x-shockwave-flash" wmode="transparent">';
                     }
-                    $output             .= '<a href="javascript:void(0)" onclick="enableEmbed();" class="embed" id="allowEmbed"><span class="embed_text">' . __("Embed Code", "video_gallery") . '</span><span class="embed_arrow"></span></a>
+                    $output             .= '<a href="javascript:void(0)" onclick="enableEmbed();" class="embed" id="allowEmbed"><span class="embed_text">' . __("Embed&nbsp;Code", "video_gallery") . '</span><span class="embed_arrow"></span></a>
                                            <textarea onclick="this.select()" id="embedcode" name="embedcode" style="display:none;" rows="7" >' . $embed_code . '</textarea>
                                            <input type="hidden" name="flagembed" id="flagembed" />';
                 }

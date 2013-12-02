@@ -154,7 +154,7 @@ class widget_ContusRecentVideos_init extends WP_Widget {
         ## end list
         if (($show < $countR) || ($show == $countR)) {
             $more_videos_link = get_morepage_permalink($moreName,'recent');
-            $div                 .= '<li><div class="right video-more"><a href="' . $more_videos_link . '">' . __('More Videos', 'video_gallery') . ' &#187;</a></div>';
+            $div                 .= '<li><div class="right video-more"><a href="' . $more_videos_link . '">' . __('More&nbsp;Videos', 'video_gallery') . '&nbsp;&#187;</a></div>';
             $div                 .= '<div class="clear"></div></li>';
         }
         $div                     .='</ul></div>';

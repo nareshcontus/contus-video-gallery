@@ -286,7 +286,7 @@ if (class_exists('ContusVideoView') != true) {
                                 $viewlang       = $this->_viewslang;
                             else
                                 $viewlang       = $this->_viewlang;
-                            $div                .= '<span class="video_views">' . $hitcount[$j] . ' ' . $viewlang;
+                            $div                .= '<span class="video_views">' . $hitcount[$j] . '&nbsp;' . $viewlang;
                             $div                .= '</span>';
                             }
                             $div                .= '</div>';
@@ -299,7 +299,7 @@ if (class_exists('ContusVideoView') != true) {
 
                         if (($dataLimit < $CountOFVideos)) {        ##PAGINATION STARTS
                             $more_videos_link = get_morepage_permalink($this->_mPageid,$morePage);
-                            $div                .= '<span class="more_title" ><a class="video-more" href="' . $more_videos_link .'">' . __('More Videos', 'video_gallery') . ' &#187;</a></span>';
+                            $div                .= '<span class="more_title" ><a class="video-more" href="' . $more_videos_link .'">' . __('More&nbsp;Videos', 'video_gallery') . '&nbsp;&#187;</a></span>';
                         } else if (($dataLimit == $CountOFVideos)) {
                             $div                .= '<div style="float:right"></div>';
                         }       ##PAGINATION ENDS
@@ -373,7 +373,7 @@ if (class_exists('ContusVideoView') != true) {
                         else
                             $viewlang = $this->_viewlang;
 
-                        $div         .= '<span class="video_views">' . $playList->hitcount . ' ' . $viewlang . '</span>';
+                        $div         .= '<span class="video_views">' . $playList->hitcount . '&nbsp;' . $viewlang . '</span>';
                         }
                             
                         $div         .= '</div></li>';
@@ -386,7 +386,7 @@ if (class_exists('ContusVideoView') != true) {
                     $div             .= '</ul>';
                     if (($playlistCount > 8)) {
                         $more_playlist_link = get_playlist_permalink($this->_mPageid,$catList->pid,$catList->playlist_slugname);
-                        $div         .= '<a class="video-more" href="' . $more_playlist_link .'">' . __('More Videos', 'video_gallery') . '</a>';
+                        $div         .= '<a class="video-more" href="' . $more_playlist_link .'">' . __('More&nbsp;Videos', 'video_gallery') . '</a>';
                     } else {
                         $div         .= '<div align="right"> </div>';
                     }
