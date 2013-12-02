@@ -168,7 +168,7 @@ h3.related-videos{margin: 0 !important; padding: 0 !important; text-align: left;
     display: inline-block !important;
     vertical-align: top;
     list-style-type: none;
-    margin: 0 !important;
+    /*margin: 0 !important;*/
 }
 .video_thumb_content{display: table;}
 .video_duration{ position: absolute; right: 0; bottom: 10px; font-size: 10px; background: #000; padding: 0 3px; color: #fff; line-height: 11px; -webkit-border-radius: 2px; -moz-border-radius: 2px; border-radius: 2px;}
