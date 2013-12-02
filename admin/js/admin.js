@@ -315,11 +315,6 @@ function VideodeleteIds()
     return false;
 }
 
-
-
-
-
-
 function Videotype()
 {
     if (document.getElementById('uploadbtn').checked === true)
@@ -440,21 +435,27 @@ function setStatus(form_handle, status)
     {
         case "normalvideoform":
             divprefix = 'f1';
+            divmsg = 'uploadmessage';
             break;
         case "hdvideoform":
             divprefix = 'f2';
+            divmsg = '';
             break;
         case "thumbimageform":
             divprefix = 'f3';
+            divmsg = 'uploadthumbmessage';
             break;
         case "previewimageform":
             divprefix = 'f4';
+            divmsg = '';
             break;
         case "subtitle1form":
             divprefix = 'f5';
+            divmsg = '';
             break;
         case "subtitle2form":
             divprefix = 'f6';
+            divmsg = '';
             break;
     }
     switch (status)
@@ -491,6 +492,9 @@ function setStatus(form_handle, status)
             document.getElementById(divprefix + "-upload-message").style.display = "";
             document.getElementById(divprefix + "-upload-message").style.backgroundColor = "#CEEEB2";
             document.getElementById(divprefix + "-upload-message").innerHTML = uploadmessage;
+            if(divmsg !== ''){
+                document.getElementById(divmsg).innerHTML = '';
+            }
             document.getElementById(divprefix + "-upload-cancel").innerHTML = '';
             break;
 
