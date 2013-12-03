@@ -220,9 +220,8 @@ if(class_exists('ContusVideo') != true)
                            INNER JOIN " . $this->_wpdb->prefix . "hdflvvideoshare_playlist p ON p.pid=m.playlist_id
                            INNER JOIN " . $this->_wpdb->prefix . "posts s ON s.ID=w.slug
                            WHERE w.publish='1' AND p.is_publish='1' $where AND w.vid != $videoid
-                           ORDER BY $thumImageorder LIMIT ".($numberofvideos-1);
+                           GROUP BY w.vid ORDER BY $thumImageorder LIMIT ".($numberofvideos-1);
             $playlist  = $this->_wpdb->get_results($query);
-
                ## Array rotation to autoplay the videos correctly
             $arr1 = array();
             $arr2 = array();
@@ -248,10 +247,10 @@ if(class_exists('ContusVideo') != true)
                 endforeach;
             }
 
-            $playlist = array_merge($rows,$arr1,$arr2);
+            $finalplaylist = array_merge($rows,$arr1,$arr2);
 
     }
-             return $playlist;
+             return $finalplaylist;
         }   ##function for getting settings data ends
 
     }   ##ContusVideo class ends
