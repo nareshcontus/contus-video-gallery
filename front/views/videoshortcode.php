@@ -363,9 +363,9 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                     foreach ($playlistData as $playlist) {
                         $playlist_url = get_playlist_permalink($this->_mPageid,$playlist->pid,$playlist->playlist_slugname);
                     if ($incre > 0) {
-                        $playlistname   .= ', ' . '<a href="' . $playlist_url . '">' . $playlist->playlist_name . '</a>';
+                        $playlistname   .= ',&nbsp;' . '<a href="' . $playlist_url . '">' . str_replace(' ', '&nbsp;', $playlist->playlist_name) . '</a>';
                     } else {
-                        $playlistname   .= '<a href="' . $playlist_url . '">' . $playlist->playlist_name . '</a>';
+                        $playlistname   .= '<a href="' . $playlist_url . '">' . str_replace(' ', '&nbsp;', $playlist->playlist_name) . '</a>';
                     }
                     $incre++;
                 }
