@@ -696,7 +696,7 @@ if (isset($_GET['videoId'])){
                                                                            <!-- End of sidebar -->
                                                                            <p>
                                                                                <input type="submit" name="add_video" class="button-primary"  onclick="return validateInput();" value="<?php echo _e($editbutton, 'video_gallery'); ?>" class="button" />
-                                                                               <input type="button" onclick="window.location.href='admin.php?page=video'" class="button-secondary" name="cancel" value="<?php _e('Cancel'); ?>" class="button" />
+                                                                               <input type="button" onclick="window.location.href='admin.php?page=video'" class="button-secondary" name="cancel" value="<?php _e('Cancel', 'video_gallery'); ?>" class="button" />
                                                                            </p>
                                                                    </div><!--END Post body -->
                                                                    </div><!--END Poststuff -->
