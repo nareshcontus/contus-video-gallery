@@ -77,8 +77,8 @@ if(class_exists('PlaylistController') != true)
                 }//update for playlist if ends
                 else 
                 {//adding playlist else starts
-                    $ordering    = $wpdb->get_var("SELECT count(playlist_order) FROM ".$wpdb->prefix . "hdflvvideoshare_playlist");
-                    $playlsitData['playlist_order'] = $ordering;
+                    $ordering    = $wpdb->get_var("SELECT count(pid) FROM ".$wpdb->prefix . "hdflvvideoshare_playlist");
+                    $playlsitData['playlist_order'] = $ordering+1;
                     $addflag = $this->insert_playlist($playlsitData);
                     
                     if (!$addflag)
