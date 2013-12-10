@@ -580,7 +580,9 @@ $player_colors          = unserialize($settingsGrid->player_colors);
                               </tr>
                               <tr>
                                   <th scope='row'><?php _e("Skin Opacity", "video_gallery"); ?></th>
-                                  <td><input type='text' name="skin_opacity" value="<?php if (isset($player_colors['skin_opacity'])) { echo $player_colors['skin_opacity']; } ?>" size=45  /></td>
+                                  <td><input type='text' name="skin_opacity" value="<?php if (isset($player_colors['skin_opacity'])) { echo $player_colors['skin_opacity']; } ?>" size=45  />
+                                  <br/> ( Range from 0 to 1 )
+                                  </td>
                               </tr>
                           </table>
                       </div>
