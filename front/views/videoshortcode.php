@@ -357,7 +357,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                 $output                 .= '<div class="clearfix"></div>';
                 if ($this->_post_type === 'videogallery' || $this->_page_post_type === 'videogallery') {
                     $user_url           = get_user_permalink($this->_mPageid,$uploadedby_id,$uploadedby);
-                    $output             .= '<div class="video-page-username"><strong>' . __("Posted&nbsp;by", "video_gallery") . '&nbsp;:&nbsp;</strong><span><a href="' . $user_url . '">' . $uploadedby . '</a></span></div>';
+                    $output             .= '<div class="video-page-username"><strong>' . __("Posted&nbsp;by", "video_gallery") . '&nbsp;:&nbsp;</strong><a href="' . $user_url . '">' . $uploadedby . '</a></div>';
                 if($configXML->categorydisplay == 1){
                     $output             .= '<div class="video-page-category"><strong>'. __("Category", "video_gallery").'&nbsp;:&nbsp;</strong>';
                     foreach ($playlistData as $playlist) {
