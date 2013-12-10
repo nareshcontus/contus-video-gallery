@@ -137,7 +137,7 @@ if (class_exists('VideoController') != true) {//checks if the VideoController cl
                     $duration = $this->convertTime($sec);
                 } else {
                     $act_filepath1 = $_REQUEST['normalvideoform-value'];
-                    $act_filepath1=$video_path.$act_filepath1;
+                    $act_filepath1=$srt_path.$act_filepath1;
                     $act_filepath = addslashes(trim($_POST['customurl']));
                     $ffmpeg_path = $this->_settingsData->ffmpeg_path;
                     $file_type = '2';
