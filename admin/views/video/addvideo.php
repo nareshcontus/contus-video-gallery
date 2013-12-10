@@ -196,7 +196,7 @@ if (isset($_GET['videoId'])){
                         <tr id="stream1" >
                             <th scope="row"><?php _e('Streamer Path', 'video_gallery') ?></th>
                             <td class="rtmp_td">
-                                <input type="text" name="streamname"  id="streamname" value="<?php
+                                <input type="text" name="streamname"  id="streamname" onkeyup="validatestreamurl();" value="<?php
                                        if (isset($videoEdit->file_type) && $videoEdit->file_type == 4)
                                                echo $videoEdit->streamer_path; ?>" />
 
@@ -224,7 +224,7 @@ if (isset($_GET['videoId'])){
                                 </tr>
                                 <tr>
                                     <th scope="row"><?php _e('Video URL', 'video_gallery') ?></th>
-                                    <td class="rtmp_td"><input type="text" size="50" name="filepath2" id="filepath2" value="<?php
+                                    <td class="rtmp_td"><input type="text" size="50" name="filepath2" id="filepath2" onkeyup="validatevideourl();" value="<?php
                                                if (isset($videoEdit->file_type)
 
                                                    )if ($videoEdit->file_type == 3 || $videoEdit->file_type == 4)
@@ -244,7 +244,7 @@ if (isset($_GET['videoId'])){
                                                     </td>
                                                 </tr>
                                                 <tr><th scope="row"><?php _e('Thumb Image URL', 'video_gallery') ?></th>
-                                                    <td class="rtmp_td"><input type="text" size="50" name="filepath4" id="filepath4" value="<?php
+                                                    <td class="rtmp_td"><input type="text" size="50" name="filepath4" id="filepath4" onkeyup="validatethumburl();"  value="<?php
                                                                if (isset($videoEdit->file_type)
 
                                                                    )if ($videoEdit->file_type == 3 || $videoEdit->file_type == 4)
@@ -485,7 +485,7 @@ if (isset($_GET['videoId'])){
                                                                     <th scope="row"><?php _e('Title / Name', 'video_gallery') ?></th>
                                                                     <td><input value="<?php if (isset($videoEdit->name)
 
-                                                                                   )echo $videoEdit->name; ?>" type="text" size="50" maxlength="200" name="name" id="name" />
+                                                                                   )echo $videoEdit->name; ?>" type="text" size="50" maxlength="200" name="name" onkeyup="validatevideotitle();" id="name" />
                                                                            <span id="titlemessage" style="display: block; margin-top:10px;color:red;font-size:12px;font-weight:bold;"></span>
                                                                        </td>
                                                                    </tr>
@@ -725,29 +725,7 @@ if (isset($_GET['videoId'])){
 <?php } else if (isset($videoEdit->publish) && $videoEdit->publish == '0') { ?>document.getElementById("publish_off").checked = true;
 <?php } else { ?>document.getElementById("publish_on").checked = true;
 <?php } ?>
-
                                                                      document.getElementById('generate').style.visibility  = "hidden";
-                                                                     function playlistdisplay()
-                                                                     {
-                                                                         document.getElementById('playlistcreate1').style.display = "block";
-                                                                     }
-                                                                     function playlistclose()
-                                                                     {
-                                                                         document.getElementById('playlistcreate1').style.display = "none";
-                                                                         document.getElementById('message').style.display = "none";
-                                                                     }
-
-                                                                     function generate12(str1)
-                                                                     {
-                                                                         var theurl=str1;
-                                                                        var theurl=document.getElementById("filepath1").value;
-                                                                        var regExp = /^.*(youtu.be\/|v\/|embed\/|watch\?|youtube.com\/user\/[^#]*#([^\/]*?\/)*)\??v?=?([^#\&\?]*).*/;
-                                                                        var match = theurl.match(regExp);
-                                                                        if (theurl.indexOf("youtu.be") !== -1 || theurl.indexOf("youtube.com") !== -1){
-                                                                             document.getElementById('generate').style.visibility = "visible";
-                                                                        }
-                                                                         else document.getElementById('generate').style.visibility  = "hidden";
-                                                                     }
                                                                </script>
 
                                                            </div><!--END wrap -->

@@ -153,7 +153,7 @@ function changeimaadtype(adtype)
 }
 
 function validateadInput() {
-    var tomatch = /(http:\/\/|https:\/\/)[A-Za-z0-9\.-]{3,}\.[A-Za-z]{3}|(http:\/\/|https:\/\/)/;
+    var tomatch = "/(http:\/\/|https:\/\/)[A-Za-z0-9\.-]{3,}\.[A-Za-z]{3}|(http:\/\/|https:\/\/)/";
     if (document.getElementById('targeturl').value !== '') {
         var thevideoadurl = document.getElementById("targeturl").value;
         if (!tomatch.test(thevideoadurl))
@@ -196,7 +196,7 @@ function validateadInput() {
                 return false;
             } else {
                 var thevideoadurl = document.getElementById("videoadfilepath").value;
-                var tomatch = /(http:\/\/|https:\/\/)[A-Za-z0-9\.-]{3,}\.[A-Za-z]{3}|(http:\/\/|https:\/\/)/
+                var tomatch = "/(http:\/\/|https:\/\/)[A-Za-z0-9\.-]{3,}\.[A-Za-z]{3}|(http:\/\/|https:\/\/)/";
                 if (!tomatch.test(thevideoadurl))
                 {
                     document.getElementById('filepatherrormessage').innerHTML = 'Enter Valid Ad URL';
@@ -238,7 +238,7 @@ function validateadInput() {
                     return false;
                 } else {
                     var thevideoadurl = document.getElementById("imaadpath").value;
-                    var tomatch = /(http:\/\/|https:\/\/)[A-Za-z0-9\.-]{3,}\.[A-Za-z]{3}|(http:\/\/|https:\/\/)/
+                    var tomatch = "/(http:\/\/|https:\/\/)[A-Za-z0-9\.-]{3,}\.[A-Za-z]{3}|(http:\/\/|https:\/\/)/";
                     if (!tomatch.test(thevideoadurl))
                     {
                         document.getElementById('imaadpatherrormessage').innerHTML = 'Enter Valid IMA Ad URL';
@@ -598,11 +598,12 @@ function validateInput() {
     if (document.getElementById('btn2').checked === true) {
         if (document.getElementById('filepath1').value === '') {
             document.getElementById('Youtubeurlmessage').innerHTML = 'Enter Youtube URL';
+            document.getElementById('Youtubeurlmessage').style.display = "block";
             document.getElementById('filepath1').focus();
             return false;
         } else {
             var theurl = document.getElementById("filepath1").value;
-            var regExp = /^.*(youtu.be\/|v\/|embed\/|watch\?|youtube.com\/user\/[^#]*#([^\/]*?\/)*)\??v?=?([^#\&\?]*).*/;
+            var regExp = "/^.*(youtu.be\/|v\/|embed\/|watch\?|youtube.com\/user\/[^#]*#([^\/]*?\/)*)\??v?=?([^#\&\?]*).*/";
             var match = theurl.match(regExp);
             if (!match && theurl.indexOf("dailymotion.com") === -1 && theurl.indexOf("viddler.com") === -1) {
                 document.getElementById('Youtubeurlmessage').innerHTML = 'Enter Valid Youtube URL';
@@ -621,21 +622,23 @@ function validateInput() {
     } else if (document.getElementById('btn3').checked === true) {
         if (document.getElementById('filepath2').value === '') {
             document.getElementById('videourlmessage').innerHTML = 'Enter Video URL';
+            document.getElementById('videourlmessage').style.display = "block";
             document.getElementById('filepath2').focus();
             return false;
         } else {
             var thevideourl = document.getElementById("filepath2").value;
-            var tomatch = /(http:\/\/|https:\/\/)[A-Za-z0-9\.-]{3,}\.[A-Za-z]{3}|(http:\/\/|https:\/\/)/;
+            var tomatch = "/(http:\/\/|https:\/\/)[A-Za-z0-9\.-]{3,}\.[A-Za-z]{3}|(http:\/\/|https:\/\/)/";
             if (!tomatch.test(thevideourl))
             {
                 document.getElementById('videourlmessage').innerHTML = 'Enter Valid Video URL';
+                document.getElementById('videourlmessage').style.display = "block";
                 document.getElementById("filepath2").focus();
                 return false;
             }
         }
         var thehdvideourl = document.getElementById("filepath3").value;
         if (thehdvideourl !== '') {
-            var tohdmatch = /(http:\/\/|https:\/\/)[A-Za-z0-9\.-]{3,}\.[A-Za-z]{3}|(http:\/\/|https:\/\/)/;
+            var tohdmatch = "/(http:\/\/|https:\/\/)[A-Za-z0-9\.-]{3,}\.[A-Za-z]{3}|(http:\/\/|https:\/\/)/";
             if (!tohdmatch.test(thehdvideourl))
             {
                 document.getElementById('videohdurlmessage').innerHTML = 'Enter Valid HD Video URL';
@@ -645,21 +648,23 @@ function validateInput() {
         }
         if (document.getElementById('filepath4').value === '') {
             document.getElementById('thumburlmessage').innerHTML = 'Enter Thumb Image URL';
+            document.getElementById('thumburlmessage').style.display = 'block';
             document.getElementById('filepath4').focus();
             return false;
         } else {
             var thethumburl = document.getElementById("filepath4").value;
-            var tothumbmatch = /(http:\/\/|https:\/\/)[A-Za-z0-9\.-]{3,}\.[A-Za-z]{3}|(http:\/\/|https:\/\/)/;
+            var tothumbmatch = "/(http:\/\/|https:\/\/)[A-Za-z0-9\.-]{3,}\.[A-Za-z]{3}|(http:\/\/|https:\/\/)/";
             if (!tothumbmatch.test(thethumburl))
             {
                 document.getElementById('thumburlmessage').innerHTML = 'Enter Valid Thmub Image URL';
+                document.getElementById('thumburlmessage').style.display = 'block';
                 document.getElementById("filepath4").focus();
                 return false;
             }
         }
         if (document.getElementById('filepath5').value !== '') {
             var thepreviewurl = document.getElementById("filepath5").value;
-            var topreviewmatch = /(http:\/\/|https:\/\/)[A-Za-z0-9\.-]{3,}\.[A-Za-z]{3}|(http:\/\/|https:\/\/)/;
+            var topreviewmatch = "/(http:\/\/|https:\/\/)[A-Za-z0-9\.-]{3,}\.[A-Za-z]{3}|(http:\/\/|https:\/\/)/";
             if (!topreviewmatch.test(thepreviewurl))
             {
                 document.getElementById('previewurlmessage').innerHTML = 'Enter Valid Preview Image URL';
@@ -672,17 +677,21 @@ function validateInput() {
         var streamer_name = document.getElementById('streamname').value;
         document.getElementById('streamerpath-value').value = streamer_name;
         var islivevalue2 = (document.getElementById('islive2').checked);
-        var tomatch1 = /(rtmp:\/\/|rtmpe:\/\/)[A-Za-z0-9\.-]{3,}\.[A-Za-z]{3}|(rtmp:\/\/|rtmpe:\/\/)/;
+        var tomatch1 = "/(rtmp:\/\/|rtmpe:\/\/)[A-Za-z0-9\.-]{3,}\.[A-Za-z]{3}|(rtmp:\/\/|rtmpe:\/\/)/";
         if (streamer_name === '') {
             document.getElementById('streamermessage').innerHTML = 'You must provide a streamer path!';
+            document.getElementById('streamermessage').style.display = "block";
+            document.getElementById('streamname').focus();
             return false;
         } else if (!tomatch1.test(streamer_name))
         {
             document.getElementById('streamermessage').innerHTML = 'Please enter a valid streamer path';
+            document.getElementById('streamermessage').style.display = "block";
             document.getElementById('streamname').focus();
             return false;
         } else if (document.getElementById('filepath2').value === '') {
             document.getElementById('videourlmessage').innerHTML = 'Enter Video URL';
+            document.getElementById('videourlmessage').style.display = "block";
             document.getElementById('filepath2').focus();
             return false;
         } else if (islivevalue2 === true) {
@@ -705,6 +714,7 @@ function validateInput() {
     }
     if (document.getElementById('name').value === '') {
         document.getElementById('titlemessage').innerHTML = 'Enter Title';
+        document.getElementById('titlemessage').style.display = "block";
         document.getElementById('name').focus();
         return false;
     }
@@ -756,4 +766,59 @@ function validateplyalistInput() {
         document.getElementById('playlistname').focus();
         return false;
     }
+}
+
+function playlistdisplay()
+{
+    document.getElementById('playlistcreate1').style.display = "block";
+}
+function playlistclose()
+{
+    document.getElementById('playlistcreate1').style.display = "none";
+    document.getElementById('message').style.display = "none";
+}
+
+function generate12(str1)
+{
+    var theurl=str1;
+   var theurl=document.getElementById("filepath1").value;
+   if (theurl.indexOf("youtu.be") !== -1 || theurl.indexOf("youtube.com") !== -1){
+        document.getElementById('generate').style.visibility = "visible";
+        document.getElementById('Youtubeurlmessage').style.display = "none";
+   } else {
+       document.getElementById('generate').style.visibility  = "hidden";
+   }
+   if (theurl.indexOf("viddler") !== -1 || theurl.indexOf("dailymotion") !== -1){
+         document.getElementById('Youtubeurlmessage').style.display = "none";
+   }
+    
+}
+function validatevideourl() {
+       var thevideourl = document.getElementById("filepath2").value;
+       var tomatch = /(http:\/\/|https:\/\/)[A-Za-z0-9\.-]{3,}\.[A-Za-z]{3}|(http:\/\/|https:\/\/)/;
+       if (tomatch.test(thevideourl))
+       {
+           document.getElementById('videourlmessage').style.display = "none";
+       }
+}
+function validatethumburl() {
+       var thevideourl = document.getElementById("filepath4").value;
+       var tomatch = /(http:\/\/|https:\/\/)[A-Za-z0-9\.-]{3,}\.[A-Za-z]{3}|(http:\/\/|https:\/\/)/;
+       if (tomatch.test(thevideourl))
+       {
+           document.getElementById('thumburlmessage').style.display = "none";
+       }
+}
+function validatestreamurl() {
+    var tomatch1 = /(rtmp:\/\/|rtmpe:\/\/)[A-Za-z0-9\.-]{3,}\.[A-Za-z]{3}|(rtmp:\/\/|rtmpe:\/\/)/;
+    var streamer_name = document.getElementById('streamname').value;
+       if (tomatch1.test(streamer_name))
+       {
+           document.getElementById('streamermessage').style.display = "none";
+       }
+}
+function validatevideotitle() {
+    if (document.getElementById('name').value !== '') {
+       document.getElementById('titlemessage').style.display = "none";
+   }
 }
