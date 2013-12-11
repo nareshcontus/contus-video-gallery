@@ -132,8 +132,8 @@ h3.related-videos{margin: 0 !important; padding: 0 !important; text-align: left;
 .video-page-container.shortcode .video-page-info{float: right;text-align: right;width: 100%;}
 .video-page-container.shortcode .video-page-info.noviews{width: 100%;}
 .video-page-container.shortcode .video-page-views {width:100%;float: right;text-align: right;}
-.video-page-container.shortcode .video-page-rating{width: 100%;float: right;}
-.video-page-container.shortcode .noviews .video-page-rating{width: 100%;}
+.video-page-container.shortcode .video-page-rating{width: auto;float: right;}
+.video-page-container.shortcode .noviews .video-page-rating{width: auto;}
 
 .video-page-container.shortcode .video-page-rating .floatleft {float: right;}
 .video-page-container.shortcode .video-page-rating .floatleft .rateimgleft{ float: right;}
