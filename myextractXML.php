@@ -15,9 +15,14 @@ $contOBJ                = new ContusVideoController();                 ## includ
 $getVid                 = $pageOBJ->_vId;                              ## Get video ID from video home view
 $getPid                 = $pageOBJ->_pId;                              ## Get playlist ID from video home view
 $numberofvideos         = filter_input(INPUT_GET, 'numberofvideos');   ## Get number of videos from URL
-if (empty($numberofvideos))
+if (empty($numberofvideos)) {
     $numberofvideos     = 4;
+}
+$banner = 0;
 $type                   = filter_input(INPUT_GET, 'type');
+if (!empty($numberofvideos) && !empty($type)) {
+    $banner = 1;
+}
 if (!empty($type) && $type == 1) {                                     ## IF type = popular video
     $thumImageorder     = 'w.hitcount DESC';
     $where              = '';
@@ -60,6 +65,7 @@ echo "<playlist autoplay = '$ap' random = 'false'>";
 //echo "<pre>";print_r($singleVideodata);exit;
 foreach ($singleVideodata as $media) {
     $file_type          = $media->file_type;
+    $fbPath = '';
     if($file_type != 5) {
     $videoUrl           = $media->file;
     if (!empty($media->duration)  && $media->duration != '0:00' ){
@@ -68,7 +74,9 @@ foreach ($singleVideodata as $media) {
         $duration = '';
     }
     $views              = $media->hitcount;
+    if($banner != 1){
     $fbPath             = $media->guid;
+    }
     $hdvideoUrl         = $media->hdfile;
     $opimage            = $media->opimage;
     $image              = $media->image;
