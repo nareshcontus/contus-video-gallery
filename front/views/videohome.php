@@ -300,6 +300,7 @@ if (class_exists('ContusVideoView') != true) {
                         if (($dataLimit < $CountOFVideos)) {        ##PAGINATION STARTS
                             $more_videos_link = get_morepage_permalink($this->_mPageid,$morePage);
                             $div                .= '<span class="more_title" ><a class="video-more" href="' . $more_videos_link .'">' . __('More&nbsp;Videos', 'video_gallery') . '&nbsp;&#187;</a></span>';
+                            $div                    .= '<div class="clear"></div>';
                         } else if (($dataLimit == $CountOFVideos)) {
                             $div                .= '<div style="float:right"></div>';
                         }       ##PAGINATION ENDS
