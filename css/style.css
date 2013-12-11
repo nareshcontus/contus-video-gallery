@@ -106,7 +106,7 @@ h4.playlistName {float:left; }
 .video-block a img,
 .video-block img {padding: 0 !important; margin: 0 !important; width: 140px !important; max-width: none;height: 90px !important; border:none}
 .videoHname, .playlistName{display: block;clear: both;text-decoration: none}
-.videoHname {font-size: 12px;font-weight: bold;min-height: 35px;border-width: 0px !important;}
+.videoHname {font-size: 12px;font-weight: bold;border-width: 0px !important;}
 .side_video_info .videoHname {line-height: 15px;}
 .video-block a{border-width: 0px !important;}
 #videos-category.sidebar-wrap .videoHname {height: auto;}
@@ -126,9 +126,9 @@ h3.related-videos{margin: 0 !important; padding: 0 !important; text-align: left;
 .video-page-container{ font-family: helvetica, arial, sans-serif; font-size: 12px; }
 .video-page-container .video-page-info strong, .video-page-container .video-page-info span{/*width: auto;*/float:left;text-align:left; display: inline-block;  }
 .video-page-container strong{/*width: auto; */display: inline-block;}
-.video-page-container .video-page-date{/*width: auto;*/ float: left;text-align: left;}
+.video-page-container .video-page-date{width: 48%; float: left;text-align: left;}
 .video-page-container .video-page-views{ float: right; text-align: right;}
-.video-page-container .video-page-username{ float: left; text-align: left;}
+.video-page-container .video-page-username{ width: 48%; float: left; text-align: left;}
 .video-page-container.shortcode .video-page-info{float: right;text-align: right;width: 100%;}
 .video-page-container.shortcode .video-page-info.noviews{width: 100%;}
 .video-page-container.shortcode .video-page-views {width:100%;float: right;text-align: right;}
@@ -141,7 +141,7 @@ h3.related-videos{margin: 0 !important; padding: 0 !important; text-align: left;
 .video-page-container .video-page-tag{ padding-bottom: 10px; margin-bottom: 5px; clear: both;}
 .video-page-container .video-page-category {}
 .video-page-info{clear: both; overflow: hidden; padding-bottom: 5px; }
-.video-page-info .video-page-rating{float: right; }
+.video-page-info .video-page-rating{float: right; *width:30%;}
 .video-page-info .video-page-rating .rateimgleft{float: right; }
 .video-page-info .video-page-rating .rateright-views{margin-right: 5px;padding-top: 2px;/*width: 120px;*/text-align: right;}
 .video-page-info .video-page-category{float: right;text-align: right;}
@@ -293,7 +293,7 @@ padding: 0px !important;
 h2.hoverable a{font-size:18px;}
 h2.hoverable a:hover{background:none;}
 /*.gr h2 {border-bottom:1px solid #C3C3C3;padding-bottom:5px;}*/
-ul.ratethis li a {text-indent: 100px; position:absolute;left:0;top:0;width:20px;height:20px;text-decoration:none;z-index: 200;}
+ul.ratethis li a {text-indent: 9999px; position:absolute;left:0;top:0;width:20px;height:20px;text-decoration:none;z-index: 200;}
 ul.ratethis li.one a {left:0}
 ul.ratethis li.two a {left:20px;}
 ul.ratethis li.three a {left:40px;}

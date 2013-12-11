@@ -82,7 +82,7 @@ For Getting The Page Id More and Video-->
                 $playlist_id    = $feature->pid;
                 $div            .= '<li>';
                 $playlist_url = get_playlist_permalink($moreName,$playlist_id,$playlist_slugname);
-                $div            .= '<div class="clear"></div><a class="videoHname "  href="' . $playlist_url . '">' . $fetched . '</a>';
+                $div            .= '<a class="videoHname "  href="' . $playlist_url . '">' . $fetched . '</a>';
                 $div            .= '</li>';
             }
         } else {

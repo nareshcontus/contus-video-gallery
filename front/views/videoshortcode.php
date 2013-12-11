@@ -372,7 +372,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                 $output                .= $playlistname . '</div>';
                 }
                 }
-                $output                 .= '<div class="clearfix"></div>';
+                $output                 .= '<div class="clear"></div>';
                 ## Rating starts here
                 if ($this->_post_type === 'videogallery' || ($this->_page_post_type === 'videogallery' && $this->_page_post_type == '')) {
                     if($configXML->ratingscontrol == 1){
@@ -422,6 +422,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                                                     </div>
                                                 </div>
                                         </div> ';
+                 $output                 .= '<div class="clear"></div>';
                 $output             .= '<script type="text/javascript">
                         function ratecal' . $videodivId .$vid. '(rating,ratecount)
                         {
