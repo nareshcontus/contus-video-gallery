@@ -544,7 +544,7 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                 $output                 .= '
                                         <!-- Facebook share Start -->
                                         <div class="video-socialshare">
-                                        <div class="floatleft" style=" margin-right: 5px; "><a href="' . $url_fb . '" class="fbshare" id="fbshare" target="_blank" ></a></div>
+                                        <div class="floatleft" style=" margin-right: 9px; "><a href="' . $url_fb . '" class="fbshare" id="fbshare" target="_blank" ></a></div>
                                         <!-- Facebook share End and Twitter like Start -->
                                         <div class="floatleft ttweet" ><a href="https://twitter.com/share" class="twitter-share-button" data-url="' . $current_url . '" data-via="' . $blog_title . '" data-text="' . $video_title . '">' . __('Tweet', 'video_gallery') . '</a><script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script></div>
                                         <!-- Twitter like End and Google plus one Start -->
