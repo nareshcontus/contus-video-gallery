@@ -90,8 +90,8 @@ text-align: left;
 }
 .video-more {float:right;clear:both; width: auto;text-decoration: none;font-size: 12px;font-weight: bold;}
 .sidebar-wrap .video-more {font-size: 11px;}
-.fb_iframe_widget iframe, .fb_iframe_widget{width:100% !important;}
-.fb_iframe_widget span:first-child{width:100% !important;}
+/*.fb_iframe_widget iframe, .fb_iframe_widget{width:100% !important;}*/
+/*.fb_iframe_widget span:first-child{width:100% !important;}*/
 
 .video-socialshare{float:right; height: 22px;}
 .video-socialshare li{float:left;margin-left:5px;list-style-image:none !important;list-style:none !important;}
