@@ -375,13 +375,18 @@ if (class_exists('ContusVideoShortcodeView') != true) {
                 $output                 .= '<div class="clearfix"></div>';
                 ## Rating starts here
                 if ($this->_post_type === 'videogallery' || ($this->_page_post_type === 'videogallery' && $this->_page_post_type == '')) {
+                    if($configXML->ratingscontrol == 1){
                     $ratingscontrol = true;
+                    } else {
+                        $ratingscontrol = false;
+                    }
+                    
                 } else if (isset($arguments['ratingscontrol']) && $arguments['ratingscontrol']=='on'){
                     $ratingscontrol = true;
                 } else{
                     $ratingscontrol = false;
                 }
-                if ($configXML->ratingscontrol == 1 || $ratingscontrol==true) {
+                if ($ratingscontrol==true) {
                     if (isset($ratecount) && $ratecount != 0) {
                         $ratestar = round($rate / $ratecount);
                     } else {
