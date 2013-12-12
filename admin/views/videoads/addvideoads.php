@@ -121,7 +121,7 @@ $image_path = str_replace('plugins/'.$dirPage.'/', 'uploads/videogallery/', APPT
                             <tr>
                                 <td scope="row"  width="150"><?php _e('Video Ad URL', 'video_gallery') ?></td>
                                 <td>
-                                    <input type="text" size="50" onchange="clear_upload();" name="videoadfilepath" id="videoadfilepath"  value="<?php echo (isset($videoadEdit->file_path)) ? $videoadEdit->file_path : ""; ?>"  />&nbsp;&nbsp
+                                    <input type="text" size="50" onchange="clear_upload();" onkeyup="validateerrormsg();" name="videoadfilepath" id="videoadfilepath"  value="<?php echo (isset($videoadEdit->file_path)) ? $videoadEdit->file_path : ""; ?>"  />&nbsp;&nbsp
                                     <br /><?php _e('Here you need to enter the video ad URL', 'video_gallery') ?>
                                     <br /><?php _e('It accept also a Youtube link : http://www.youtube.com/watch?v=tTGHCRUdlBs', 'video_gallery') ?>
                                 <span id="filepatherrormessage" style="display: block;color:red; "></span>
@@ -149,7 +149,7 @@ $image_path = str_replace('plugins/'.$dirPage.'/', 'uploads/videogallery/', APPT
                         <tr id="adimapath" style="display: none;">
 				<td scope="row"  width="150"><?php _e('IMA Ad Path', 'video_gallery') ?></td>
 				<td>
-                                <input type="text" size="50" name="imaadpath" id="imaadpath" value="<?php if(isset($videoadEdit->imaadpath)){ echo $videoadEdit->imaadpath; }else{ echo '';} ?>" />
+                                <input type="text" size="50" onkeyup="validateerrormsg();" name="imaadpath" id="imaadpath" value="<?php if(isset($videoadEdit->imaadpath)){ echo $videoadEdit->imaadpath; }else{ echo '';} ?>" />
                                 <span id="imaadpatherrormessage" style="display: block;color:red; "></span>
 				</td>
 			</tr>
@@ -167,20 +167,20 @@ $image_path = str_replace('plugins/'.$dirPage.'/', 'uploads/videogallery/', APPT
                         </tr>
 			<tr id="adimapublisher" style="display: none;">
 				<td scope="row"  width="150"><?php _e('Publisher ID', 'video_gallery') ?></td>
-				<td><input type="text" size="50" name="publisherId" id="publisherId" value="<?php echo (isset($videoadEdit->publisherId)) ? $videoadEdit->publisherId : ''; ?>" />
+				<td><input type="text" size="50" onkeyup="validateerrormsg();" name="publisherId" id="publisherId" value="<?php echo (isset($videoadEdit->publisherId)) ? $videoadEdit->publisherId : ''; ?>" />
                                 <span id="imapublisherIderrormessage" style="display: block;color:red; "></span>
                                 </td>
 			</tr>
 			<tr id="adimacontentid" style="display: none;">
 				<td scope="row"  width="150"><?php _e('Content ID', 'video_gallery') ?></td>
-				<td><input type="text" size="50" name="contentId" id="contentId" value="<?php echo (isset($videoadEdit->contentId)) ? $videoadEdit->contentId : ''; ?>" />
+				<td><input type="text" size="50" name="contentId" onkeyup="validateerrormsg();" id="contentId" value="<?php echo (isset($videoadEdit->contentId)) ? $videoadEdit->contentId : ''; ?>" />
                                 <span id="imacontentIderrormessage" style="display: block;color:red; "></span>
                                 </td>
 			</tr>
 			
 			<tr id="adimachannels" style="display: none;">
 				<td scope="row"  width="150"><?php _e('Channels', 'video_gallery') ?></td>
-				<td><input type="text" size="50" name="channels" id="channels" value="<?php echo (isset($videoadEdit->channels)) ? $videoadEdit->channels : ''; ?>" />
+				<td><input type="text" size="50" onkeyup="validateerrormsg();" name="channels" id="channels" value="<?php echo (isset($videoadEdit->channels)) ? $videoadEdit->channels : ''; ?>" />
                                 <span id="imachannelserrormessage" style="display: block;color:red; "></span>
                                 </td>
 			</tr>
@@ -189,7 +189,7 @@ $image_path = str_replace('plugins/'.$dirPage.'/', 'uploads/videogallery/', APPT
                         <tr id="adtitle"  style="display: none;">
                             <td scope="row"  width="150"><?php _e('Title / Name', 'video_gallery') ?></td>
                             <td>
-                                <input type="text" size="50" maxlength="200" name="videoadname" id="name" value="<?php echo (isset($videoadEdit->title)) ? $videoadEdit->title : ""; ?>"  />
+                                <input type="text" size="50" onkeyup="validateerrormsg();" maxlength="200" name="videoadname" id="name" value="<?php echo (isset($videoadEdit->title)) ? $videoadEdit->title : ""; ?>"  />
                             <span id="nameerrormessage" style="display: block;color:red; "></span>
                             </td>
                         </tr>

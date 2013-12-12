@@ -153,7 +153,7 @@ function changeimaadtype(adtype)
 }
 
 function validateadInput() {
-    var tomatch = "/(http:\/\/|https:\/\/)[A-Za-z0-9\.-]{3,}\.[A-Za-z]{3}|(http:\/\/|https:\/\/)/";
+    var tomatch = /(http:\/\/|https:\/\/)[A-Za-z0-9\.-]{3,}\.[A-Za-z]{3}|(http:\/\/|https:\/\/)/;
     if (document.getElementById('targeturl').value !== '') {
         var thevideoadurl = document.getElementById("targeturl").value;
         if (!tomatch.test(thevideoadurl))
@@ -196,9 +196,10 @@ function validateadInput() {
                 return false;
             } else {
                 var thevideoadurl = document.getElementById("videoadfilepath").value;
-                var tomatch = "/(http:\/\/|https:\/\/)[A-Za-z0-9\.-]{3,}\.[A-Za-z]{3}|(http:\/\/|https:\/\/)/";
+                var tomatch = /(http:\/\/|https:\/\/)[A-Za-z0-9\.-]{3,}\.[A-Za-z]{3}|(http:\/\/|https:\/\/)/;
                 if (!tomatch.test(thevideoadurl))
                 {
+                    document.getElementById('filepatherrormessage').style.display = 'block';
                     document.getElementById('filepatherrormessage').innerHTML = 'Enter Valid Ad URL';
                     document.getElementById("videoadfilepath").focus();
                     return false;
@@ -206,6 +207,7 @@ function validateadInput() {
             }
         }
         if (document.getElementById('name').value === '') {
+            document.getElementById('nameerrormessage').style.display = "block";
             document.getElementById('nameerrormessage').innerHTML = 'Enter Ad Name';
             document.getElementById('name').focus();
             return false;
@@ -238,7 +240,7 @@ function validateadInput() {
                     return false;
                 } else {
                     var thevideoadurl = document.getElementById("imaadpath").value;
-                    var tomatch = "/(http:\/\/|https:\/\/)[A-Za-z0-9\.-]{3,}\.[A-Za-z]{3}|(http:\/\/|https:\/\/)/";
+                    var tomatch = /(http:\/\/|https:\/\/)[A-Za-z0-9\.-]{3,}\.[A-Za-z]{3}|(http:\/\/|https:\/\/)/;
                     if (!tomatch.test(thevideoadurl))
                     {
                         document.getElementById('imaadpatherrormessage').innerHTML = 'Enter Valid IMA Ad URL';
@@ -250,7 +252,8 @@ function validateadInput() {
             }
         }
 
-    } else if (document.getElementById('name').value === '') {
+    } if (document.getElementById('name').value === '') {
+        document.getElementById('nameerrormessage').style.display = "block";
         document.getElementById('nameerrormessage').innerHTML = 'Enter Ad Name';
         document.getElementById('name').focus();
         return false;
@@ -436,26 +439,28 @@ function setStatus(form_handle, status)
         case "normalvideoform":
             divprefix = 'f1';
             divmsg = 'uploadmessage';
+            divmsg1 = 'filepathuploaderrormessage';
             break;
         case "hdvideoform":
             divprefix = 'f2';
-            divmsg = '';
+            divmsg = divmsg1 = '';
             break;
         case "thumbimageform":
             divprefix = 'f3';
             divmsg = 'uploadthumbmessage';
+            divmsg1 = '';
             break;
         case "previewimageform":
             divprefix = 'f4';
-            divmsg = '';
+            divmsg = divmsg1 = '';
             break;
         case "subtitle1form":
             divprefix = 'f5';
-            divmsg = '';
+            divmsg = divmsg1 = '';
             break;
         case "subtitle2form":
             divprefix = 'f6';
-            divmsg = '';
+            divmsg = divmsg1 = '';
             break;
     }
     switch (status)
@@ -494,6 +499,9 @@ function setStatus(form_handle, status)
             document.getElementById(divprefix + "-upload-message").innerHTML = uploadmessage;
             if(divmsg !== ''){
                 document.getElementById(divmsg).innerHTML = '';
+            }
+            if(divmsg1 !== ''){
+                document.getElementById(divmsg1).innerHTML = '';
             }
             document.getElementById(divprefix + "-upload-cancel").innerHTML = '';
             break;
@@ -603,7 +611,7 @@ function validateInput() {
             return false;
         } else {
             var theurl = document.getElementById("filepath1").value;
-            var regExp = "/^.*(youtu.be\/|v\/|embed\/|watch\?|youtube.com\/user\/[^#]*#([^\/]*?\/)*)\??v?=?([^#\&\?]*).*/";
+            var regExp = /^.*(youtu.be\/|v\/|embed\/|watch\?|youtube.com\/user\/[^#]*#([^\/]*?\/)*)\??v?=?([^#\&\?]*).*/;
             var match = theurl.match(regExp);
             if (!match && theurl.indexOf("dailymotion.com") === -1 && theurl.indexOf("viddler.com") === -1) {
                 document.getElementById('Youtubeurlmessage').innerHTML = 'Enter Valid Youtube URL';
@@ -627,7 +635,7 @@ function validateInput() {
             return false;
         } else {
             var thevideourl = document.getElementById("filepath2").value;
-            var tomatch = "/(http:\/\/|https:\/\/)[A-Za-z0-9\.-]{3,}\.[A-Za-z]{3}|(http:\/\/|https:\/\/)/";
+            var tomatch = /(http:\/\/|https:\/\/)[A-Za-z0-9\.-]{3,}\.[A-Za-z]{3}|(http:\/\/|https:\/\/)/;
             if (!tomatch.test(thevideourl))
             {
                 document.getElementById('videourlmessage').innerHTML = 'Enter Valid Video URL';
@@ -638,7 +646,7 @@ function validateInput() {
         }
         var thehdvideourl = document.getElementById("filepath3").value;
         if (thehdvideourl !== '') {
-            var tohdmatch = "/(http:\/\/|https:\/\/)[A-Za-z0-9\.-]{3,}\.[A-Za-z]{3}|(http:\/\/|https:\/\/)/";
+            var tohdmatch = /(http:\/\/|https:\/\/)[A-Za-z0-9\.-]{3,}\.[A-Za-z]{3}|(http:\/\/|https:\/\/)/;
             if (!tohdmatch.test(thehdvideourl))
             {
                 document.getElementById('videohdurlmessage').innerHTML = 'Enter Valid HD Video URL';
@@ -653,7 +661,7 @@ function validateInput() {
             return false;
         } else {
             var thethumburl = document.getElementById("filepath4").value;
-            var tothumbmatch = "/(http:\/\/|https:\/\/)[A-Za-z0-9\.-]{3,}\.[A-Za-z]{3}|(http:\/\/|https:\/\/)/";
+            var tothumbmatch = /(http:\/\/|https:\/\/)[A-Za-z0-9\.-]{3,}\.[A-Za-z]{3}|(http:\/\/|https:\/\/)/;
             if (!tothumbmatch.test(thethumburl))
             {
                 document.getElementById('thumburlmessage').innerHTML = 'Enter Valid Thmub Image URL';
@@ -664,7 +672,7 @@ function validateInput() {
         }
         if (document.getElementById('filepath5').value !== '') {
             var thepreviewurl = document.getElementById("filepath5").value;
-            var topreviewmatch = "/(http:\/\/|https:\/\/)[A-Za-z0-9\.-]{3,}\.[A-Za-z]{3}|(http:\/\/|https:\/\/)/";
+            var topreviewmatch = /(http:\/\/|https:\/\/)[A-Za-z0-9\.-]{3,}\.[A-Za-z]{3}|(http:\/\/|https:\/\/)/;
             if (!topreviewmatch.test(thepreviewurl))
             {
                 document.getElementById('previewurlmessage').innerHTML = 'Enter Valid Preview Image URL';
@@ -677,7 +685,7 @@ function validateInput() {
         var streamer_name = document.getElementById('streamname').value;
         document.getElementById('streamerpath-value').value = streamer_name;
         var islivevalue2 = (document.getElementById('islive2').checked);
-        var tomatch1 = "/(rtmp:\/\/|rtmpe:\/\/)[A-Za-z0-9\.-]{3,}\.[A-Za-z]{3}|(rtmp:\/\/|rtmpe:\/\/)/";
+        var tomatch1 = /(rtmp:\/\/|rtmpe:\/\/)[A-Za-z0-9\.-]{3,}\.[A-Za-z]{3}|(rtmp:\/\/|rtmpe:\/\/)/;
         if (streamer_name === '') {
             document.getElementById('streamermessage').innerHTML = 'You must provide a streamer path!';
             document.getElementById('streamermessage').style.display = "block";
@@ -794,12 +802,16 @@ function generate12(str1)
     
 }
 function validatevideourl() {
-       var thevideourl = document.getElementById("filepath2").value;
+    var thevideourl = document.getElementById("filepath2").value;
+    if (document.getElementById('btn4').checked === true && thevideourl !== '') {
+        document.getElementById('videourlmessage').style.display = "none";
+    } else {
        var tomatch = /(http:\/\/|https:\/\/)[A-Za-z0-9\.-]{3,}\.[A-Za-z]{3}|(http:\/\/|https:\/\/)/;
        if (tomatch.test(thevideourl))
        {
            document.getElementById('videourlmessage').style.display = "none";
        }
+    }
 }
 function validatethumburl() {
        var thevideourl = document.getElementById("filepath4").value;
@@ -821,4 +833,41 @@ function validatevideotitle() {
     if (document.getElementById('name').value !== '') {
        document.getElementById('titlemessage').style.display = "none";
    }
+}
+function validateerrormsg() {
+    if (document.getElementById('videoadfilepath').value !== '') {
+       document.getElementById('filepatherrormessage').style.display = "none";
+   }
+   if (document.getElementById('name').value !== '') {
+       document.getElementById('nameerrormessage').style.display = "none";
+   }
+   if (document.getElementById('imaadTypetext').checked === true && document.getElementById('publisherId').value !== '')
+        {
+            document.getElementById('imapublisherIderrormessage').innerHTML = '';
+
+        } 
+        if (document.getElementById('imaadTypetext').checked === true && document.getElementById('contentId').value !== '')
+        {
+            document.getElementById('imacontentIderrormessage').innerHTML = '';
+
+        } 
+        if (document.getElementById('imaadTypetext').checked === true && document.getElementById('channels').value !== '')
+        {
+            document.getElementById('imachannelserrormessage').innerHTML = '';
+
+        }
+   if (document.getElementById('imaadTypevideo').checked === true)
+            {
+                if (document.getElementById('imaadpath').value !== '') {
+                    document.getElementById('imaadpatherrormessage').innerHTML = '';
+                } else {
+                    var thevideoadurl = document.getElementById("imaadpath").value;
+                    var tomatch = /(http:\/\/|https:\/\/)[A-Za-z0-9\.-]{3,}\.[A-Za-z]{3}|(http:\/\/|https:\/\/)/;
+                    if (tomatch.test(thevideoadurl))
+                    {
+                        document.getElementById('imaadpatherrormessage').innerHTML = '';
+                    }
+                }
+
+            }
 }
