@@ -687,6 +687,7 @@ function video_morereplace() {
 
     $userid = filter_input(INPUT_GET, 'userid'); 
     $user_name = &$wp_query->query_vars["user_name"];
+    $user_name = str_replace('%20', ' ', $user_name);
     if (!empty($user_name)) {
         $userid = get_user_id($user_name);
     }
