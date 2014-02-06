@@ -28,47 +28,47 @@ $settingsData = $contusOBJ->_settingsData;
 $logoPath     = str_replace( 'plugins/' . $dirPage . '/', 'uploads/videogallery/', APPTHA_VGALLERY_BASEURL );
 
 ## Generate XML Paths
-$playXml		= $site_url . '/wp-admin/admin-ajax.php?action=myextractXML';
-$midrollXml		= $site_url . '/wp-admin/admin-ajax.php?action=mymidrollXML';
-$imaAdsXML		= $site_url . '/wp-admin/admin-ajax.php?action=myimaadsXML';
-$langXML		= $site_url . '/wp-admin/admin-ajax.php?action=languageXML';
-$emailPath		= $site_url . '/wp-admin/admin-ajax.php?action=email';
+$playXml				= $site_url . '/wp-admin/admin-ajax.php?action=myextractXML';
+$midrollXml			= $site_url . '/wp-admin/admin-ajax.php?action=mymidrollXML';
+$imaAdsXML				= $site_url . '/wp-admin/admin-ajax.php?action=myimaadsXML';
+$langXML			= $site_url . '/wp-admin/admin-ajax.php?action=languageXML';
+$emailPath				= $site_url . '/wp-admin/admin-ajax.php?action=email';
 $downloadPath	= $site_url . '/wp-admin/admin-ajax.php?action=download';
-$adsXml			= $site_url . '/wp-admin/admin-ajax.php?action=myadsXML';
+$adsXml				= $site_url . '/wp-admin/admin-ajax.php?action=myadsXML';
 
 ## Generated Skin path
-$skinPath		= APPTHA_VGALLERY_BASEURL . 'hdflvplayer' . DS . 'skin/skin_hdflv_white.swf';
+$skinPath	= APPTHA_VGALLERY_BASEURL . 'hdflvplayer' . DS . 'skin/skin_hdflv_white.swf';
 
 ## Generate Config XML values
-$playerTimer		= $settingsData->timer == 1 ? 'true' : 'false';
-$adsSkip			= $settingsData->adsSkip == 0 ? 'true' : 'false';
-$showTag			= $settingsData->showTag == 1 ? 'true' : 'false';
-$imageDefault		= $settingsData->imageDefault == 1 ? 'true' : 'false';
-$progressControl	= $settingsData->progressControl == 1 ? 'true' : 'false';
-$volumecontrol		= $settingsData->volumecontrol == 1 ? 'true' : 'false';
-$shareIcon			= $settingsData->shareIcon == 1 ? 'true' : 'false';
-$imaAds				= $settingsData->imaAds == 0 ? 'true' : 'false';
-$playerZoom			= $settingsData->zoom == 1 ? 'true' : 'false';
-$playerEmail		= $settingsData->email ? 'true' : 'false';
+$playerTimer					= $settingsData->timer == 1 ? 'true' : 'false';
+$adsSkip						= $settingsData->adsSkip == 0 ? 'true' : 'false';
+$showTag						= $settingsData->showTag == 1 ? 'true' : 'false';
+$imageDefault					= $settingsData->imageDefault == 1 ? 'true' : 'false';
+$progressControl		= $settingsData->progressControl == 1 ? 'true' : 'false';
+$volumecontrol				= $settingsData->volumecontrol == 1 ? 'true' : 'false';
+$shareIcon						= $settingsData->shareIcon == 1 ? 'true' : 'false';
+$imaAds							= $settingsData->imaAds == 0 ? 'true' : 'false';
+$playerZoom						= $settingsData->zoom == 1 ? 'true' : 'false';
+$playerEmail					= $settingsData->email ? 'true' : 'false';
 $playerFullscreen	= $settingsData->fullscreen == 1 ? 'true' : 'false';
-$playerAutoplay		= ( $settingsData->autoplay == 1 ) ? 'true' : 'false';
-$playlistAuto		= ( $settingsData->playlistauto == 1 ) ? 'true' : 'false';
-$hdDefault			= ( $settingsData->HD_default == 1 ) ? 'true' : 'false';
-$playerDownload		= ( $settingsData->download == 1 ) ? 'true' : 'false';
-$skinAutohide		= ( $settingsData->skin_autohide == 1 ) ? 'true' : 'false';
-$embedVisible		= ( $settingsData->embed_visible == 1 ) ? 'true' : 'false';
-$showPlaylist		= ( $settingsData->playlist == 1 ) ? 'true' : 'false';
-$playlist_open		= ( $settingsData->playlist_open == 1 ) ? 'true' : 'false';
-$playerDebug		= ( $settingsData->debug == 1 ) ? 'true' : 'false';
-$prerollAds			= ( $settingsData->preroll == 0 ) ? 'true' : 'false';
-$postrollAds		= ( $settingsData->postroll == 0 ) ? 'true' : 'false';
-$midroll_ads		= ( $settingsData->midroll_ads == 0 ) ? 'true' : 'false';
-$trackCode			= ( $settingsData->trackCode == 0 ) ? '' : $settingsData->trackCode;
-$player_colors		= unserialize( $settingsData->player_colors );
-$skinVisible		= ( $player_colors['skinVisible'] == 1 ) ? 'true' : 'false';
-$skin_opacity		= $player_colors['skin_opacity'];
-$subTitleColor		= ( $player_colors['subTitleColor'] == 0 ) ? '' : $player_colors['subTitleColor'];
-$subTitleBgColor	= ( $player_colors['subTitleBgColor'] == 0 ) ? '' : $player_colors['subTitleBgColor'];
+$playerAutoplay			= ( $settingsData->autoplay == 1 ) ? 'true' : 'false';
+$playlistAuto					= ( $settingsData->playlistauto == 1 ) ? 'true' : 'false';
+$hdDefault						= ( $settingsData->HD_default == 1 ) ? 'true' : 'false';
+$playerDownload			= ( $settingsData->download == 1 ) ? 'true' : 'false';
+$skinAutohide					= ( $settingsData->skin_autohide == 1 ) ? 'true' : 'false';
+$embedVisible					= ( $settingsData->embed_visible == 1 ) ? 'true' : 'false';
+$showPlaylist					= ( $settingsData->playlist == 1 ) ? 'true' : 'false';
+$playlist_open				= ( $settingsData->playlist_open == 1 ) ? 'true' : 'false';
+$playerDebug				= ( $settingsData->debug == 1 ) ? 'true' : 'false';
+$prerollAds					= ( $settingsData->preroll == 0 ) ? 'true' : 'false';
+$postrollAds				= ( $settingsData->postroll == 0 ) ? 'true' : 'false';
+$midroll_ads				= ( $settingsData->midroll_ads == 0 ) ? 'true' : 'false';
+$trackCode					= ( $settingsData->trackCode == 0 ) ? '' : $settingsData->trackCode;
+$player_colors				= unserialize( $settingsData->player_colors );
+$skinVisible				= ( $player_colors['skinVisible'] == 1 ) ? 'true' : 'false';
+$skin_opacity				= $player_colors['skin_opacity'];
+$subTitleColor				= ( $player_colors['subTitleColor'] == 0 ) ? '' : $player_colors['subTitleColor'];
+$subTitleBgColor		= ( $player_colors['subTitleBgColor'] == 0 ) ? '' : $player_colors['subTitleBgColor'];
 if ( isset( $player_colors['subTitleFontFamily'] ) ) {
 	$subTitleFontFamily = $player_colors['subTitleFontFamily'];
 } else {
@@ -78,7 +78,7 @@ $subTitleFontSize = ( $player_colors['subTitleFontSize'] == 0 ) ? '' : $player_c
 ## Add http in URL if not exist
 $logotarget = $settingsData->logo_target;
 if ( ! preg_match( '~^(?:f|ht)tps?://~i', $logotarget ) ) {
-	$logotarget = "http://" . $logotarget;
+	$logotarget = 'http://' . $logotarget;
 }
 
 ## Configuration Start
