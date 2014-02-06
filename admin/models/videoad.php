@@ -19,7 +19,7 @@ if ( class_exists( 'VideoadModel' ) != true ) {										## checks the VideoadMo
 			global $wpdb;
 			$this->_wpdb = $wpdb;
 			$this->_videoadtable = $this->_wpdb->prefix . 'hdflvvideoshare_vgads';
-			$this->_videoadId = filter_input( INPUT_GET, 'videoadId' );
+			$this->_videoadId    = filter_input( INPUT_GET, 'videoadId' );
 		}																			## contructor ends
 
 		public function insert_videoad( $videoadData, $videoadDataformat ) {		## function for inserting video starts
@@ -37,10 +37,10 @@ if ( class_exists( 'VideoadModel' ) != true ) {										## checks the VideoadMo
 		}																			## function for updating status of video ends
 
 		public function get_videoaddata( $searchValue, $searchBtn, $order, $orderDirection ) {	## function for getting search videos starts
-			$where = '';
+			$where   = '';
 			$pagenum = isset( $_GET['pagenum'] ) ? absint( $_GET['pagenum'] ) : 1;
-			$limit = 20;
-			$offset = ( $pagenum - 1 ) * $limit;
+			$limit   = 20;
+			$offset  = ( $pagenum - 1 ) * $limit;
 			if ( isset( $searchBtn ) ) {
 				$where = ' WHERE title LIKE "%' . $searchValue . '%" ';
 			}
