@@ -119,15 +119,15 @@ if ( class_exists( 'VideoModel' ) != true ) {							## checks the VideoModel cla
 			global $current_user;
 			get_currentuserinfo();
 			$user_roles = $current_user->roles;
-			$user_role	= array_shift( $user_roles );
+			$user_role  = array_shift( $user_roles );
 			return $user_role;
 		}
 
 		public function get_videodata( $searchValue, $searchBtn, $order, $orderDirection ) {		## function for getting search videos starts
 			global $wpdb;
 			$where = '';
-			$user_role		= $this->get_current_user_role();
-			$current_user	= wp_get_current_user();
+			$user_role    = $this->get_current_user_role();
+			$current_user = wp_get_current_user();
 			if ( $user_role != 'administrator' ) {
 				$where .= ' WHERE a.member_id=' . $current_user->ID;
 			}
@@ -162,7 +162,7 @@ if ( class_exists( 'VideoModel' ) != true ) {							## checks the VideoModel cla
 				$limit = 20;
 			}
 			$offset = ( $pagenum - 1 ) * $limit;
-			$query = 'SELECT DISTINCT ( a.vid ),a.*,u.display_name FROM ' . $this->_videotable . ' a 
+			$query  = 'SELECT DISTINCT ( a.vid ),a.*,u.display_name FROM ' . $this->_videotable . ' a 
 					LEFT JOIN $wpdb->users u 
 					ON u.ID=a.member_id 
 					LEFT JOIN ' . $this->_wpdb->prefix . 'hdflvvideoshare_med2play p 
@@ -177,11 +177,13 @@ if ( class_exists( 'VideoModel' ) != true ) {							## checks the VideoModel cla
 		
 		public function get_playlist_detail( $vid ) {					## function for getting Tag name starts
 			global $wpdb;
-			$video_count = $this->_wpdb->get_results( 'SELECT t3.playlist_name,t3.pid'
+			$video_count = $this->_wpdb->get_results(
+					'SELECT t3.playlist_name,t3.pid'
 					. ' FROM ' . $wpdb->prefix . 'hdflvvideoshare_playlist AS t3'
 					. ' LEFT JOIN  ' . $wpdb->prefix . 'hdflvvideoshare_med2play AS t2'
 					. ' ON t3.pid = t2.playlist_id'
-					. ' WHERE t3.is_publish=1 AND t2.media_id="' . intval( $vid ) . '"' );
+					. ' WHERE t3.is_publish=1 AND t2.media_id="' . intval( $vid ) . '"'
+					);
 			return $video_count;
 		}
 
