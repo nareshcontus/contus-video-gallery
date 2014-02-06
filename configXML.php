@@ -66,7 +66,7 @@ $midroll_ads				= ( $settingsData->midroll_ads == 0 ) ? 'true' : 'false';
 $trackCode					= ( $settingsData->trackCode == 0 ) ? '' : $settingsData->trackCode;
 $player_colors				= unserialize( $settingsData->player_colors );
 $skinVisible				= ( $player_colors['skinVisible'] == 1 ) ? 'true' : 'false';
-$skin_opacity				= $player_colors['skin_opacity'];
+$skin_opacity					= $player_colors['skin_opacity'];
 $subTitleColor				= ( $player_colors['subTitleColor'] == 0 ) ? '' : $player_colors['subTitleColor'];
 $subTitleBgColor		= ( $player_colors['subTitleBgColor'] == 0 ) ? '' : $player_colors['subTitleBgColor'];
 if ( isset( $player_colors['subTitleFontFamily'] ) ) {
