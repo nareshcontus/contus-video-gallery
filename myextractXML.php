@@ -24,15 +24,15 @@ if ( ! empty( $numberofvideos ) && ! empty( $type ) ) {
 	$banner = 1;
 }
 if ( ! empty( $type ) && $type == 1 ) {										## IF type = popular video
-	$thumImageorder = 'w.hitcount DESC';
+	$thumImageorder  = 'w.hitcount DESC';
 	$where = '';
 	$singleVideodata = $contOBJ->home_playxmldata( $getVid, $thumImageorder, $where, $numberofvideos );
 } else if ( ! empty( $type ) && $type == 2 ) {								## IF type = recent video
-	$thumImageorder = 'w.vid DESC';
+	$thumImageorder  = 'w.vid DESC';
 	$where = '';
 	$singleVideodata = $contOBJ->home_playxmldata( $getVid, $thumImageorder, $where, $numberofvideos );
 } else if ( ! empty( $type ) && $type == 3 ) {								## IF type = featured video
-	$thumImageorder = 'w.ordering ASC';
+	$thumImageorder  = 'w.ordering ASC';
 	$where = 'AND w.featured=1';
 	$singleVideodata = $contOBJ->home_playxmldata( $getVid, $thumImageorder, $where, $numberofvideos );
 } else if ( ! empty( $getVid ) ) {
@@ -43,7 +43,7 @@ if ( ! empty( $type ) && $type == 1 ) {										## IF type = popular video
 	$singleVideodata = $pageOBJ->_featuredvideodata;						## Get detail of featured videos
 }
 $settingsContent = $pageOBJ->settings_data();
-$tagsName = $pageOBJ->Tag_detail($getVid );
+$tagsName = $pageOBJ->Tag_detail( $getVid );
 $islive = $streamer = $videoPreview = $videotag = $postroll_id = $subtitle = '';
 $pageOBJ->_imagePath = APPTHA_VGALLERY_BASEURL . 'images' . DS;	 ## declare image path
 ## autoplay value
@@ -77,9 +77,9 @@ foreach ( $singleVideodata as $media ) {
 			$fbPath = $media->guid;
 		}
 		$hdvideoUrl = $media->hdfile;
-		$opimage = $media->opimage;
-		$image   = $media->image;
-		$vidoeId = $media->vid;
+		$opimage    = $media->opimage;
+		$image      = $media->image;
+		$vidoeId    = $media->vid;
 		## Get thumb image detail
 		if ( $image == '' ) {
 			$image = $pageOBJ->_imagePath . 'nothumbimage.jpg';
@@ -152,14 +152,14 @@ foreach ( $singleVideodata as $media ) {
 		}
 		## Get postroll ad detail
 		if ( $settingsContent->postroll == 1 ) {
-			$postroll   = ' allow_postroll = "false"';
+			$postroll    = ' allow_postroll = "false"';
 			$postroll_id = ' postroll_id = "0"';
 		} else {
 			if ( $media->postrollads != 0 ) {
-				$postroll = ' allow_postroll = "true"';
+				$postroll    = ' allow_postroll = "true"';
 				$postroll_id = ' postroll_id = "' . $media->postrollads . '"';
 			} else {
-				$postroll = ' allow_postroll = "false"';
+				$postroll    = ' allow_postroll = "false"';
 				$postroll_id = ' postroll_id = "0"';
 			}
 		}

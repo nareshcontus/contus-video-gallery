@@ -22,10 +22,10 @@ if ( count( $themediafiles ) > 0 ) {
 	foreach ( $themediafiles as $rows ) {
 		$admethod = $rows->admethod;
 		if ( $admethod == 'midroll' ) {			   ## Allow only if ad is a midroll ad
-			$targeturl		= $rows->targeturl;
+			$targeturl					= $rows->targeturl;
 			$clickurl		= $rows->clickurl;
 			$impressionurl	= $rows->impressionurl;
-			$description	= $rows->description;
+			$description			= $rows->description;
 			$title			= $rows->title;
 
 			echo '

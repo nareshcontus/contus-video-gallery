@@ -9,7 +9,7 @@
   License: GPL2
  */
 ob_clean();
-header( "content-type: text/xml" );
+header( 'content-type: text/xml' );
 require_once( dirname( __FILE__ ) . '/hdflv-config.php' );
 echo '<?xml version="1.0" encoding="utf-8"?>';
 echo '<language>';

@@ -2,7 +2,7 @@
 Name: Wordpress Video Gallery
 Plugin URI: http://www.apptha.com/category/extension/Wordpress/Video-Gallery
 Description: VIdeo Gallery plugin script file.
-Version: 2.5
+Version: 2.6
 Author: Apptha
 Author URI: http://www.apptha.com
 License: GPL2
@@ -18,7 +18,7 @@ function current_video(vid,title){
         if (xmlhttp.readyState==4) {
         }
     }
-    xmlhttp.open("GET",baseurl+"/wp-admin/admin-ajax.php?action=videohitCount&vid="+vid,true);
+    xmlhttp.open("GET",baseurl+"/wp-admin/admin-ajax.php?action=videohitcount&vid="+vid,true);
     xmlhttp.send();
 }
  

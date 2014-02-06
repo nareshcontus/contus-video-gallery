@@ -9,7 +9,7 @@
   License: GPL2
  */
 /* Used to import plugin configuration */
-require_once( dirname(__FILE__ ) . '/hdflv-config.php' );
+require_once( dirname( __FILE__ ) . '/hdflv-config.php' );
 ## get the path url from querystring
 global $wpdb;
 ## Get video details from database

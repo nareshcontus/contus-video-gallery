@@ -17,7 +17,7 @@ $themediafiles  = $wpdb->get_results( $selectPlaylist );
 $settings       = $wpdb->get_row( 'SELECT width,height FROM ' . $wpdb->prefix . 'hdflvvideoshare_settings' );
 
 ob_clean();
-header( 'content-type: text/xml');
+header( 'content-type: text/xml' );
 echo '<?xml version="1.0" encoding="utf-8"?>';
 echo '<ima>';
 if ( count( $themediafiles ) > 0 ) {
