@@ -17,9 +17,9 @@ if ( class_exists( 'AjaxPlaylistModel' ) != true ) {		## checks the VideoadModel
 
 		public function __construct() {					## contructor starts
 			global $wpdb;
-			$this->_wpdb			= $wpdb;
-			$this->_playlisttable	= $this->_wpdb->prefix . 'hdflvvideoshare_playlist';
-			$this->_playListId		= filter_input( INPUT_GET, 'playlistId' );
+			$this->_wpdb		  = $wpdb;
+			$this->_playlisttable = $this->_wpdb->prefix . 'hdflvvideoshare_playlist';
+			$this->_playListId    = filter_input( INPUT_GET, 'playlistId' );
 		}												## contructor ends
 	}													## PlaylistModel class ends
 }														## checks the PlaylistModel class has been defined if ends
