@@ -34,7 +34,7 @@ if ( class_exists( 'VideoadController' ) != true ) {			## checks if the VideoadC
 			$this->_update				= filter_input( INPUT_GET, 'update' );
 			$this->_add					= filter_input( INPUT_GET, 'add' );
 			$this->_del					= filter_input( INPUT_GET, 'del' );
-			$this->_orderDirection		= filter_input( INPUT_GET, 'order' );
+			$this->_orderDirection     = filter_input( INPUT_GET, 'order' );
 			$this->_orderBy				= filter_input( INPUT_GET, 'orderby' );
 		}													## contructor ends
 
@@ -44,24 +44,24 @@ if ( class_exists( 'VideoadController' ) != true ) {			## checks if the VideoadC
 			}												## updating status of video ad ends
 
 			if ( isset( $this->_addnewVideoad ) ) {
-				$videoadName	= filter_input( INPUT_POST, 'videoadname' );
-				$videoadwidth	= filter_input( INPUT_POST, 'videoimaadwidth' );
-				$videoadheight	= filter_input( INPUT_POST, 'videoimaadheight' );
-				$videoimaadpath = filter_input( INPUT_POST, 'imaadpath' );
-				$publisherId	= filter_input( INPUT_POST, 'publisherId' );
-				$contentId		= filter_input( INPUT_POST, 'contentId' );
-				$imaadType		= filter_input( INPUT_POST, 'imaadType' );
-				$channels		= filter_input( INPUT_POST, 'channels' );
-				$description	= filter_input( INPUT_POST, 'description' );
-				$targeturl		= filter_input( INPUT_POST, 'targeturl' );
-				$clickurl		= filter_input( INPUT_POST, 'clickurl' );
-				$impressionurl	= filter_input( INPUT_POST, 'impressionurl' );
-				$admethod		= filter_input( INPUT_POST, 'admethod' );
-				$adtype			= filter_input( INPUT_POST, 'adtype' );
+				$videoadName     = filter_input( INPUT_POST, 'videoadname' );
+				$videoadwidth    = filter_input( INPUT_POST, 'videoimaadwidth' );
+				$videoadheight   = filter_input( INPUT_POST, 'videoimaadheight' );
+				$videoimaadpath  = filter_input( INPUT_POST, 'imaadpath' );
+				$publisherId     = filter_input( INPUT_POST, 'publisherId' );
+				$contentId		 = filter_input( INPUT_POST, 'contentId' );
+				$imaadType		 = filter_input( INPUT_POST, 'imaadType' );
+				$channels		 = filter_input( INPUT_POST, 'channels' );
+				$description     = filter_input( INPUT_POST, 'description' );
+				$targeturl		 = filter_input( INPUT_POST, 'targeturl' );
+				$clickurl		 = filter_input( INPUT_POST, 'clickurl' );
+				$impressionurl   = filter_input( INPUT_POST, 'impressionurl' );
+				$admethod		 = filter_input( INPUT_POST, 'admethod' );
+				$adtype			 = filter_input( INPUT_POST, 'adtype' );
 				$videoadFilepath = filter_input( INPUT_POST, 'normalvideoform-value' );
-				$dir			= dirname( plugin_basename( __FILE__ ) );
-				$dirExp			= explode( '/', $dir );
-				$dirPage		= $dirExp[0];
+				$dir			 = dirname( plugin_basename( __FILE__ ) );
+				$dirExp			 = explode( '/', $dir );
+				$dirPage		 = $dirExp[0];
 				if ( empty( $videoadFilepath ) )
 					$videoadFilepath = filter_input( INPUT_POST, 'videoadfilepath' );
 				else {
@@ -103,7 +103,7 @@ if ( class_exists( 'VideoadController' ) != true ) {			## checks if the VideoadC
 				else {													## adding video ad else starts
 					$addflag = $this->insert_videoad( $videoadData, $videoadDataformat );
 
-					if (  ! $addflag ) {
+					if ( ! $addflag ) {
 						$this->admin_redirect( 'admin.php?page=videoads&add=0' );
 					} else {
 						$this->admin_redirect( 'admin.php?page=videoads&add=1' );
@@ -120,7 +120,7 @@ if ( class_exists( 'VideoadController' ) != true ) {			## checks if the VideoadC
 		## admin redirection url function ends
 		public function videoad_data() {								## getting videoad data function starts
 			$orderBy = array( 'id', 'title', 'path', 'publish' );
-			$order	 = 'id';
+			$order   = 'id';
 
 			if ( isset( $this->_orderBy ) && in_array( $this->_orderBy, $orderBy ) ) {
 				$order = $this->_orderBy;
@@ -172,17 +172,17 @@ if ( class_exists( 'VideoadController' ) != true ) {			## checks if the VideoadC
 
 		## displaying database message function ends
 		public function get_delete() {												## deleting videoad data function starts
-			$videoadApply		= filter_input( INPUT_POST, 'videoadapply' );
-			$videoadActionup	= filter_input( INPUT_POST, 'videoadactionup' );
-			$videoadActiondown	= filter_input( INPUT_POST, 'videoadactiondown' );
-			$videoadcheckId		= filter_input( INPUT_POST, 'videoad_id', FILTER_VALIDATE_INT, FILTER_REQUIRE_ARRAY );
+			$videoadApply      = filter_input( INPUT_POST, 'videoadapply' );
+			$videoadActionup   = filter_input( INPUT_POST, 'videoadactionup' );
+			$videoadActiondown = filter_input( INPUT_POST, 'videoadactiondown' );
+			$videoadcheckId    = filter_input( INPUT_POST, 'videoad_id', FILTER_VALIDATE_INT, FILTER_REQUIRE_ARRAY );
 
 			if ( isset( $videoadApply ) ) {												## apply button if starts
 				if ( $videoadActionup || $videoadActiondown == 'videoaddelete' ) {	## delete button if starts
 					if ( is_array( $videoadcheckId ) ) {
-						$videoadId = implode( ',', $videoadcheckId );
+						$videoadId  = implode( ',', $videoadcheckId );
 						$deleteflag = $this->videoad_delete( $videoadId );
-						if (  ! $deleteflag ) {
+						if ( ! $deleteflag ) {
 							$this->admin_redirect( 'admin.php?page=videoads&del=0' );
 						} else {
 							$this->admin_redirect( 'admin.php?page=videoads&del=1' );
@@ -199,14 +199,14 @@ if ( class_exists( 'VideoadController' ) != true ) {			## checks if the VideoadC
 $videoadOBJ = new VideoadController();												## creating object for VideoadController class
 $videoadOBJ->add_newvideoad();
 $videoadOBJ->get_delete();
-$videoadId = $videoadOBJ->_videoadId;
-$searchMsg = $videoadOBJ->_videoadsearchQuery;
-$searchBtn = $videoadOBJ->_searchBtn;
-$gridVideoad	= $videoadOBJ->videoad_data();
-$videoad_count	= $videoadOBJ->videoad_count( $searchMsg, $searchBtn );
-$videoadEdit	= $videoadOBJ->videoad_edit( $videoadId );
-$displayMsg		= $videoadOBJ->get_message();
-$adminPage		= filter_input( INPUT_GET, 'page' );
+$videoadId     = $videoadOBJ->_videoadId;
+$searchMsg     = $videoadOBJ->_videoadsearchQuery;
+$searchBtn     = $videoadOBJ->_searchBtn;
+$gridVideoad   = $videoadOBJ->videoad_data();
+$videoad_count = $videoadOBJ->videoad_count( $searchMsg, $searchBtn );
+$videoadEdit   = $videoadOBJ->videoad_edit( $videoadId );
+$displayMsg	   = $videoadOBJ->get_message();
+$adminPage     = filter_input( INPUT_GET, 'page' );
 if ( $adminPage == 'videoads' ) {														## including videoad form if starts
 	require_once( APPTHA_VGALLERY_BASEDIR . DS . 'admin/views/videoads/videoads.php' );
 }																					## including videoad form if starts
