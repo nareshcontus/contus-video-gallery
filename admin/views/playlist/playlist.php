@@ -14,6 +14,7 @@ $page = $class = '';
 if ( isset( $_GET['pagenum'] ) ) {
 	$page = '&pagenum=' . $_GET['pagenum'];
 }
+$apptha_base_url = APPTHA_VGALLERY_BASEURL;
 ?>
 <script type="text/javascript">
 // When the document is ready set up our sortable with it's inherant function(s)
@@ -39,16 +40,16 @@ if ( isset( $_GET['pagenum'] ) ) {
 
 	<!--   MENU OPTIONS STARTS  --->
 	<h2 class="nav-tab-wrapper">
-		<a href="?page=video" class="nav-tab"><?php __( 'All Videos', 'video_gallery' ); ?></a>
-		<a href="?page=playlist" class="nav-tab nav-tab-active"><?php __( 'Categories', 'video_gallery' ); ?></a>
-		<a href="?page=videoads" class="nav-tab"><?php __( 'Video Ads', 'video_gallery' ); ?></a>
-		<a href="?page=hdflvvideosharesettings" class="nav-tab"><?php __( 'Settings', 'video_gallery' ); ?></a>
+		<a href="?page=video" class="nav-tab"><?php esc_attr_e( 'All Videos', 'video_gallery' ); ?></a>
+		<a href="?page=playlist" class="nav-tab nav-tab-active"><?php esc_attr_e( 'Categories', 'video_gallery' ); ?></a>
+		<a href="?page=videoads" class="nav-tab"><?php esc_attr_e( 'Video Ads', 'video_gallery' ); ?></a>
+		<a href="?page=hdflvvideosharesettings" class="nav-tab"><?php esc_attr_e( 'Settings', 'video_gallery' ); ?></a>
 	</h2>
 	<!--  MENU OPTIONS ENDS --->
 	<div class="wrap">
 		<h2 class="option_title">
 			<?php echo "<img src='" . APPTHA_VGALLERY_BASEURL . "/images/manage_list.png' alt='move' width='30'/>"; ?>
-<?php __( 'Categories', 'video_gallery' ); ?>
+<?php esc_attr_e( 'Categories', 'video_gallery' ); ?>
 		</h2>
 		<div class="floatleft category_addpages">
 			<?php
@@ -61,8 +62,8 @@ if ( isset( $_GET['pagenum'] ) ) {
 			</script>
 			<div class="apptha_gallery">
 				<?php if ( isset( $playListId ) ) { ?>
-					<h3><?php __( 'Update Category', 'video_gallery' ); ?></h3>
-				<?php } else { ?> <h3><?php __( 'Add a New Category', 'video_gallery' ); ?></h3> <?php } ?>
+					<h3><?php esc_attr_e( 'Update Category', 'video_gallery' ); ?></h3>
+				<?php } else { ?> <h3><?php esc_attr_e( 'Add a New Category', 'video_gallery' ); ?></h3> <?php } ?>
 <?php if ( $displayMsg && $displayMsg[1] == 'addcategory' ): ?>
 					<div class="updated below-h2">
 						<p>
@@ -74,35 +75,40 @@ if ( isset( $_GET['pagenum'] ) ) {
 				<div id="post-body" class="has-sidebar">
 					<div id="post-body-content" class="has-sidebar-content">
 						<div class="stuffbox">
-							<h3 class="hndle"><span><?php __( 'Enter Title / Name', 'video_gallery' ); ?></span></h3>
+							<h3 class="hndle"><span><?php esc_attr_e( 'Enter Title / Name', 'video_gallery' ); ?></span></h3>
 							<div class="inside" style="margin:15px;">
 								<form name="adsform" method="post" enctype="multipart/form-data" >
 									<table class="form-table">
 										<tr>
-											<th scope="row"><?php __( 'Title / Name', 'video_gallery' ) ?></th>
+											<th scope="row"><?php esc_attr_e( 'Title / Name', 'video_gallery' ) ?></th>
 											<td>
-												<input type="text" size="50" maxlength="200" id="playlistname" name="playlistname" value="<?php echo ( isset( $playlistEdit->playlist_name ) ) ? $playlistEdit->playlist_name : ''; ?>"  />
+<?php if ( isset( $playlistEdit->playlist_name ) ) {
+	$playlist_name = $playlistEdit->playlist_name;
+} else {
+	$playlist_name = '';
+} ?>
+												<input type="text" size="50" maxlength="200" id="playlistname" name="playlistname" value="<?php echo balanceTags( $playlist_name ); ?>"  />
 												<span id="playlistnameerrormessage" style="display: block;color:red; "></span>
 											</td>
 										</tr>
 
 										<tr>
-											<th scope="row"><?php __( 'Publish', 'video_gallery' ) ?></th>
+											<th scope="row"><?php esc_attr_e( 'Publish', 'video_gallery' ) ?></th>
 											<td>
 												<input type="radio" name="ispublish" id="publish_yes" <?php if ( isset( $playlistEdit->is_publish ) && $playlistEdit->is_publish == 1 ) {
 	echo 'checked';
-} ?> value="1"> <label><?php __( 'Yes', 'video_gallery' ); ?></label>
+} ?> value="1"> <label><?php esc_attr_e( 'Yes', 'video_gallery' ); ?></label>
 												<input type="radio" name="ispublish" id="ispublish_no" <?php if ( isset( $playlistEdit->is_publish ) && $playlistEdit->is_publish == 0 ) {
 	echo 'checked';
-} ?> value="0"><label> <?php __( 'No', 'video_gallery' ); ?></label>
+} ?> value="0"><label> <?php esc_attr_e( 'No', 'video_gallery' ); ?></label>
 											</td>
 										</tr>
 									</table>
 <?php if ( isset( $playListId ) ) { ?>
-										<input type="submit" name="playlistadd" onclick="return validateplyalistInput();" class="button-primary"  value="<?php __( 'Update Category', 'video_gallery' ); ?>" class="button" /> 
-										<input type="button" onclick="window.location.href = 'admin.php?page=playlist'" class="button-secondary" name="cancel" value="<?php __( 'Cancel' ); ?>" class="button" />
+										<input type="submit" name="playlistadd" onclick="return validateplyalistInput();" class="button-primary"  value="<?php esc_attr_e( 'Update Category', 'video_gallery' ); ?>" class="button" /> 
+										<input type="button" onclick="window.location.href = 'admin.php?page=playlist'" class="button-secondary" name="cancel" value="<?php esc_attr_e( 'Cancel' ); ?>" class="button" />
 	<?php } else { ?>
-										<input type="submit" name="playlistadd" onclick="return validateplyalistInput();" class="button-primary"  value="<?php __( 'Add Category', 'video_gallery' ); ?>" class="button" /> <?php } ?>
+										<input type="submit" name="playlistadd" onclick="return validateplyalistInput();" class="button-primary"  value="<?php esc_attr_e( 'Add Category', 'video_gallery' ); ?>" class="button" /> <?php } ?>
 								</form>
 							</div>
 						</div>
@@ -133,9 +139,9 @@ if ( isset( $_REQUEST['playlistsearchbtn'] ) ) {
 		$url = get_bloginfo( 'url' ) . '/wp-admin/admin.php?page=playlist';
 		$searchmsg = filter_input( INPUT_POST, 'PlaylistssearchQuery' );
 	if ( count( $gridPlaylist ) ) {
-		echo __( 'Search Results for', 'video_gallery' ) . ' "' . $searchMsg . '"';
+		echo esc_attr_e( 'Search Results for', 'video_gallery' ) . ' "' . $searchMsg . '"';
 	} else {
-		echo __( 'No Search Results for', 'video_gallery' ) . ' "' . $searchMsg . '"';
+		echo esc_attr_e( 'No Search Results for', 'video_gallery' ) . ' "' . $searchMsg . '"';
 	}
 		?> </div> <?php } ?>
 			<form name="Playlists" action="" method="post" onsubmit="return Playlistsearch();">
@@ -144,15 +150,15 @@ if ( isset( $_REQUEST['playlistsearchbtn'] ) ) {
 					echo balanceTags( $searchmsg );
 				?>">
 					<input type="hidden"  name="page" value="Playlists">
-					<input type="submit" name="playlistsearchbtn"  class="button" value="<?php __( 'Search Categories', 'video_gallery' ); ?>"></p>
+					<input type="submit" name="playlistsearchbtn"  class="button" value="<?php esc_attr_e( 'Search Categories', 'video_gallery' ); ?>"></p>
 			</form>
 			<form  name="Playlistsfrm" action="" method="post" onsubmit="return PlaylistdeleteIds()">
 				<div class="alignleft actions bulk-actions">
 					<select name="playlistactionup" id="playlistactionup">
-						<option value="-1" selected="selected"><?php __( 'Bulk Actions', 'video_gallery' ); ?></option>
-						<option value="playlistdelete"><?php __( 'Delete', 'video_gallery' ); ?></option>
+						<option value="-1" selected="selected"><?php esc_attr_e( 'Bulk Actions', 'video_gallery' ); ?></option>
+						<option value="playlistdelete"><?php esc_attr_e( 'Delete', 'video_gallery' ); ?></option>
 					</select>
-					<input type="submit" name="playlistapply"  class="button-secondary action" value="<?php __( 'Apply', 'video_gallery' ); ?>">
+					<input type="submit" name="playlistapply"  class="button-secondary action" value="<?php esc_attr_e( 'Apply', 'video_gallery' ); ?>">
 				</div>
 				<?php
 				$limit   = 20;
@@ -174,9 +180,7 @@ if ( $page_links ) {
 	echo '<div class="tablenav"><div class="tablenav-pages" style="margin: 1em 0">' . $page_links . '</div></div>';
 }
 				?>
-				<div style="float:right ; font-weight: bold;" ><?php if ( isset( $pagelist ) )
-					echo $pagelist;
-				?></div>
+				<div style="float:right ; font-weight: bold;" ><?php if ( isset( $pagelist ) ) echo balanceTags( $pagelist ); ?></div>
 				<div style="clear: both;"></div>
 				<table class="wp-list-table widefat fixed tags" cellspacing="0">
 					<thead>
@@ -185,28 +189,28 @@ if ( $page_links ) {
 								<input type="checkbox" name="" >
 							</th>
 							<th scope="col"  style="">
-								<span><?php __( '', 'video_gallery' ); ?> </span>
+								<span><?php esc_attr_e( '', 'video_gallery' ); ?> </span>
 								<span class="sorting-indicator"></span>
 							</th>
 							<th scope="col"  class="manage-column column-name sortable desc" style="">
-								<a href="<?php echo get_bloginfo( 'url' ); ?>/wp-admin/admin.php?page=playlist&orderby=id&order=<?php echo $reverse_direction; ?>">
-									<span><?php __( 'ID', 'video_gallery' ); ?></span>
+								<a href="<?php echo get_bloginfo( 'url' ); ?>/wp-admin/admin.php?page=playlist&orderby=id&order=<?php echo balanceTags( $reverse_direction ); ?>">
+									<span><?php esc_attr_e( 'ID', 'video_gallery' ); ?></span>
 									<span class="sorting-indicator"></span>
 								</a>
 							</th>
 							<th scope="col"  class="manage-column column-name sortable desc" style="">
-								<a href="<?php echo get_bloginfo( 'url' ); ?>/wp-admin/admin.php?page=playlist&orderby=title&order=<?php echo $reverse_direction; ?>">
-									<span><?php __( 'Title', 'video_gallery' ); ?></span>
+								<a href="<?php echo get_bloginfo( 'url' ); ?>/wp-admin/admin.php?page=playlist&orderby=title&order=<?php echo balanceTags( $reverse_direction ); ?>">
+									<span><?php esc_attr_e( 'Title', 'video_gallery' ); ?></span>
 									<span class="sorting-indicator"></span>
 								</a>
 							</th>
 							<th scope="col" class="manage-column column-Expiry sortable desc" style="">
-								<a href="<?php echo get_bloginfo( 'url' ); ?>/wp-admin/admin.php?page=playlist&orderby=publish&order=<?php echo $reverse_direction; ?>"><span><?php __( 'Publish', 'video_gallery' ); ?></span>
+								<a href="<?php echo get_bloginfo( 'url' ); ?>/wp-admin/admin.php?page=playlist&orderby=publish&order=<?php echo balanceTags( $reverse_direction ); ?>"><span><?php esc_attr_e( 'Publish', 'video_gallery' ); ?></span>
 									<span class="sorting-indicator"></span>
 								</a>
 							</th>
 							<th scope="col" class="manage-column column-sortorder sortable desc" style="">
-								<a href="<?php echo get_bloginfo( 'url' ); ?>/wp-admin/admin.php?page=playlist&orderby=sorder&order=<?php echo $reverse_direction; ?>"><span><?php __( 'Order', 'video_gallery' ); ?></span>
+								<a href="<?php echo get_bloginfo( 'url' ); ?>/wp-admin/admin.php?page=playlist&orderby=sorder&order=<?php echo balanceTags( $reverse_direction ); ?>"><span><?php esc_attr_e( 'Order', 'video_gallery' ); ?></span>
 									<span class="sorting-indicator"></span>
 								</a>
 							</th>
@@ -218,37 +222,37 @@ if ( $page_links ) {
 foreach ( $gridPlaylist as $playlistView ) {
 	$class = ( $class == 'class="alternate"' ) ? '' : 'class="alternate"';
 	?>
-						<tr id="listItem_<?php echo $playlistView->pid; ?>" <?php echo $class; ?> >
+						<tr id="listItem_<?php echo balanceTags( $playlistView->pid ); ?>" <?php echo balanceTags( $class ); ?> >
 							<th scope="row" class="check-column">
-								<input type="checkbox" name="pid[]" value="<?php echo $playlistView->pid ?>">
+								<input type="checkbox" name="pid[]" value="<?php echo balanceTags( $playlistView->pid ); ?>">
 							</th>
 							<td>
-								<span class="hasTip content" title="<?php __( 'Click and Drag', 'video_gallery' ); ?>" style="padding: 6px;">
-									<img src="<?php echo APPTHA_VGALLERY_BASEURL . 'images/arrow.png'; ?>" alt="move"
+								<span class="hasTip content" title="<?php esc_attr_e( 'Click and Drag', 'video_gallery' ); ?>" style="padding: 6px;">
+									<img src="<?php echo balanceTags( $apptha_base_url ) . 'images/arrow.png'; ?>" alt="move"
 										 width="16" height="16" class="handle" />
 								</span>
 							</td>
 							<td class="id-column">
-								<a title="Edit <?php echo $playlistView->playlist_name; ?>" href="<?php echo get_bloginfo( 'url' ); ?>/wp-admin/admin.php?page=newplaylist&playlistId=<?php echo $playlistView->pid; ?>" ><?php echo $playlistView->pid; ?></a><div class="row-actions">
+								<a title="Edit <?php echo balanceTags( $playlistView->playlist_name ); ?>" href="<?php echo get_bloginfo( 'url' ); ?>/wp-admin/admin.php?page=newplaylist&playlistId=<?php echo balanceTags( $playlistView->pid ); ?>" ><?php echo balanceTags( $playlistView->pid ); ?></a><div class="row-actions">
 							</td>
 							<td class="title-column">
-								<a title="Edit <?php echo $playlistView->playlist_name; ?>" class="row-title" href="<?php echo get_bloginfo( 'url' ); ?>/wp-admin/admin.php?page=newplaylist&playlistId=<?php echo $playlistView->pid; ?>" ><?php echo $playlistView->playlist_name; ?></a>
+								<a title="Edit <?php echo balanceTags( $playlistView->playlist_name ); ?>" class="row-title" href="<?php echo get_bloginfo( 'url' ); ?>/wp-admin/admin.php?page=newplaylist&playlistId=<?php echo balanceTags( $playlistView->pid ); ?>" ><?php echo balanceTags( $playlistView->playlist_name ); ?></a>
 							</td>
 							<td class="pub-column Expiry column-Expiry">
 								<?php
 								$status  = 1;
 								$image   = 'deactivate.jpg';
 								$publish = __( 'Click here to Activate', 'video_gallery' );
-								if ( $playlistView->is_publish == 1 ) {
-									$status  = 0;
-									$image   = 'activate.jpg';
-									$publish = __( 'Click here to Deactivate', 'video_gallery' );
-								}
+	if ( $playlistView->is_publish == 1 ) {
+		$status  = 0;
+		$image   = 'activate.jpg';
+		$publish = __( 'Click here to Deactivate', 'video_gallery' );
+	}
 								?>
-								<a href="<?php echo get_bloginfo( 'url' ); ?>/wp-admin/admin.php?page=playlist<?php if ( isset( $_GET['pagenum'] ) ) echo '&pagenum=' . $_GET['pagenum']; ?>&playlistId=<?php echo $playlistView->pid; ?>&status=<?php echo $status; ?>">   <img src="<?php echo APPTHA_VGALLERY_BASEURL . 'images/' . $image ?>" title="<?php echo $publish; ?>"   /> </a>
+								<a href="<?php echo get_bloginfo( 'url' ); ?>/wp-admin/admin.php?page=playlist<?php if ( isset( $_GET['pagenum'] ) ) echo '&pagenum=' . $_GET['pagenum']; ?>&playlistId=<?php echo balanceTags( $playlistView->pid ); ?>&status=<?php echo balanceTags( $status ); ?>">   <img src="<?php echo balanceTags( $apptha_base_url ) . 'images/' . $image ?>" title="<?php echo balanceTags( $publish ); ?>"   /> </a>
 							</td>
 							<td class="order-column Expiry column-Expiry">
-						<?php echo $playlistView->playlist_order; ?>
+						<?php echo balanceTags( $playlistView->playlist_order ); ?>
 							</td>
 						</tr>
 						<?php
@@ -268,28 +272,28 @@ if ( count( $gridPlaylist ) == 0 ) {
 								<input type="checkbox" name="" >
 							</th>
 							<th width="3%" scope="col"  style="">
-								<span><?php __( '', 'video_gallery' ); ?> </span>
+								<span><?php esc_attr_e( '', 'video_gallery' ); ?> </span>
 								<span class="sorting-indicator"></span>
 							</th>
 							<th scope="col"  class="manage-column column-name sortable desc" style="">
-								<a href="<?php echo get_bloginfo( 'url' ); ?>/wp-admin/admin.php?page=playlist&orderby=id&order=<?php echo $reverse_direction; ?>">
-									<span><?php __( 'ID', 'video_gallery' ); ?></span>
+								<a href="<?php echo get_bloginfo( 'url' ); ?>/wp-admin/admin.php?page=playlist&orderby=id&order=<?php echo balanceTags( $reverse_direction ); ?>">
+									<span><?php esc_attr_e( 'ID', 'video_gallery' ); ?></span>
 									<span class="sorting-indicator"></span>
 								</a>
 							</th>
 							<th scope="col"  class="manage-column column-name sortable desc" style="">
-								<a href="<?php echo get_bloginfo( 'url' ); ?>/wp-admin/admin.php?page=playlist&orderby=title&order=<?php echo $reverse_direction; ?>">
-									<span><?php __( 'Title', 'video_gallery' ); ?></span>
+								<a href="<?php echo get_bloginfo( 'url' ); ?>/wp-admin/admin.php?page=playlist&orderby=title&order=<?php echo balanceTags( $reverse_direction ); ?>">
+									<span><?php esc_attr_e( 'Title', 'video_gallery' ); ?></span>
 									<span class="sorting-indicator"></span>
 								</a>
 							</th>
 							<th scope="col" class="manage-column column-Expiry sortable desc" style="">
-								<a href="<?php echo get_bloginfo( 'url' ); ?>/wp-admin/admin.php?page=playlist&orderby=publish&order=<?php echo $reverse_direction; ?>"><span><?php __( 'Publish', 'video_gallery' ); ?></span>
+								<a href="<?php echo get_bloginfo( 'url' ); ?>/wp-admin/admin.php?page=playlist&orderby=publish&order=<?php echo balanceTags( $reverse_direction ); ?>"><span><?php esc_attr_e( 'Publish', 'video_gallery' ); ?></span>
 									<span class="sorting-indicator"></span>
 								</a>
 							</th>
 							<th scope="col" class="manage-column column-sortorder sortable desc" style="">
-								<a href="<?php echo get_bloginfo( 'url' ); ?>/wp-admin/admin.php?page=playlist&orderby=sorder&order=<?php echo $reverse_direction; ?>"><span><?php __( 'Order', 'video_gallery' ); ?></span>
+								<a href="<?php echo get_bloginfo( 'url' ); ?>/wp-admin/admin.php?page=playlist&orderby=sorder&order=<?php echo balanceTags( $reverse_direction ); ?>"><span><?php esc_attr_e( 'Order', 'video_gallery' ); ?></span>
 									<span class="sorting-indicator"></span>
 								</a>
 							</th>
@@ -300,10 +304,10 @@ if ( count( $gridPlaylist ) == 0 ) {
 				<div class="alignleft actions" style="margin-top:10px;">
 					<select name="playlistactiondown" id="playlistactiondown">
 						<option value="-1" selected="selected">
-				<?php __( 'Bulk Actions', 'video_gallery' ); ?>
+				<?php esc_attr_e( 'Bulk Actions', 'video_gallery' ); ?>
 						</option>    
 						<option value="playlistdelete">
-				<?php __( 'Delete', 'video_gallery' ); ?>
+				<?php esc_attr_e( 'Delete', 'video_gallery' ); ?>
 						</option>
 					</select>
 					<input type="submit" name="playlistapply"  class="button-secondary action" value="Apply">
