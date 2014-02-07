@@ -16,7 +16,7 @@ $dirExp  = explode( '/', $dir );
 $dirPage = $dirExp[0];
 ?>
 <script type="text/javascript">
-	folder = '<?php echo $dirPage; ?>'
+	folder = '<?php echo balanceTags( $dirPage ); ?>'
 </script>
 <?php
 $act_vid = 0;
@@ -29,7 +29,7 @@ if ( isset( $_GET['videoId'] ) ) {
 	<?php if ( $displayMsg ) { ?>
 		<div class="updated below-h2">
 			<p>
-				<?php echo $displayMsg; ?>
+				<?php echo balanceTags( $displayMsg ); ?>
 			</p>
 		</div>
 	<?php } ?>
@@ -144,7 +144,7 @@ if ( $adminPage == 'newvideo' && ! empty( $videoId ) ) {
 			<?php if ( isset( $get_key ) && $get_title != $get_key ) {
 				?>
 				<a href="http://www.apptha.com/shop/checkout/cart/add/product/12" target="_blank">
-					<img src="<?php echo $site_url . '/wp-content/plugins/' . $folder . '/images/buynow.png'; ?>" style="float:right;margin-top: 4px;" width="125" height="28"  height="43" /></a>
+					<img src="<?php echo balanceTags( $site_url ) . '/wp-content/plugins/' . $folder . '/images/buynow.png'; ?>" style="float:right;margin-top: 4px;" width="125" height="28"  height="43" /></a>
 			<?php } ?>
 			<div class="stuffbox videoform" name="youtube" >
 				<h3 class="hndle videoform_title">
@@ -164,9 +164,9 @@ if ( $adminPage == 'newvideo' && ! empty( $videoId ) ) {
 							<tr>
 								<th scope="row"><?php esc_attr_e( 'Video URL', 'video_gallery' ) ?></th>
 								<td class="rtmp_td"><input type="text" size="50" name="filepath" value="<?php
-									if ( isset( $videoEdit->file_type ) && $videoEdit->file_type == 1 ) {
-											echo $videoEdit->link;
-									}
+if ( isset( $videoEdit->file_type ) && $videoEdit->file_type == 1 ) {
+		echo balanceTags( $videoEdit->link );
+}
 											?>" id="filepath1" onkeyup="generate12( this.value );" />&nbsp;&nbsp<input id="generate" type="submit" name="youtube_media" class="button-primary" value="<?php esc_attr_e( 'Generate details', 'video_gallery' ); ?>" />
 									<span id="Youtubeurlmessage" style="display: block; "></span>
 									<p><?php esc_attr_e( 'Here you need to enter the video URL', 'video_gallery' ) ?></p>
@@ -183,7 +183,7 @@ if ( $adminPage == 'newvideo' && ! empty( $videoId ) ) {
 							<tr>
 								<th scope="row"><?php esc_attr_e( 'Embed Code', 'video_gallery' ) ?></th>
 								<td class="rtmp_td">
-									<textarea id="embedcode" name="embedcode" rows="5" cols="60"><?php if ( isset( $videoEdit->embedcode ) ) echo stripslashes( $videoEdit->embedcode ); ?></textarea>
+									<textarea id="embedcode" name="embedcode" rows="5" cols="60"><?php if ( isset( $videoEdit->embedcode ) ) echo balanceTags( stripslashes( $videoEdit->embedcode ) ); ?></textarea>
 									<span id="embedmessage" style="display: block; margin-top:10px;color:red;font-size:12px;font-weight:bold;"></span>
 								</td>
 							</tr>
@@ -197,7 +197,7 @@ if ( $adminPage == 'newvideo' && ! empty( $videoId ) ) {
 								<td class="rtmp_td">
 									<input type="text" name="streamname"  id="streamname" onkeyup="validatestreamurl();" value="<?php
 									if ( isset( $videoEdit->file_type ) && $videoEdit->file_type == 4 )
-										echo $videoEdit->streamer_path;
+										echo balanceTags( $videoEdit->streamer_path );
 									?>" />
 
 									<span id="streamermessage" style="display: block;"></span>
@@ -219,24 +219,24 @@ if ( $adminPage == 'newvideo' && ! empty( $videoId ) ) {
 							<tr>
 								<th scope="row"><?php esc_attr_e( 'Video URL', 'video_gallery' ) ?></th>
 								<td class="rtmp_td">
-									<input type="text" size="50" name="filepath2" id="filepath2" onkeyup="validatevideourl();" value="<?php if ( isset( $videoEdit->file_type ) && ( $videoEdit->file_type == 3 || $videoEdit->file_type == 4 ) ) { echo $videoEdit->file; } ?>"/>
+									<input type="text" size="50" name="filepath2" id="filepath2" onkeyup="validatevideourl();" value="<?php if ( isset( $videoEdit->file_type ) && ( $videoEdit->file_type == 3 || $videoEdit->file_type == 4 ) ) { echo balanceTags( $videoEdit->file ); } ?>"/>
 									<span id="videourlmessage" style="display: block;"></span>
 									<p><?php esc_attr_e( 'Here you need to enter the video URL', 'video_gallery' ) ?></p>
 								</td></tr>
 							<tr id="hdvideourl"><th scope="row"><?php esc_attr_e( 'HD Video URL ( Optional )', 'video_gallery' ) ?></th>
-								<td class="rtmp_td"><input type="text" size="50" name="filepath3" id="filepath3" value="<?php if ( isset( $videoEdit->file_type ) && ( $videoEdit->file_type == 3 || $videoEdit->file_type == 4 ) ) { echo $videoEdit->hdfile; } ?>"/>
+								<td class="rtmp_td"><input type="text" size="50" name="filepath3" id="filepath3" value="<?php if ( isset( $videoEdit->file_type ) && ( $videoEdit->file_type == 3 || $videoEdit->file_type == 4 ) ) { echo balanceTags( $videoEdit->hdfile ); } ?>"/>
 									<span id="videohdurlmessage" style="display: block;"></span>
 									<p><?php esc_attr_e( 'Here you need to enter the HD video URL ', 'video_gallery' ) ?></p>
 								</td>
 							</tr>
 							<tr><th scope="row"><?php esc_attr_e( 'Thumb Image URL', 'video_gallery' ) ?></th>
-								<td class="rtmp_td"><input type="text" size="50" name="filepath4" id="filepath4" onkeyup="validatethumburl();"  value="<?php if ( isset( $videoEdit->file_type ) && ( $videoEdit->file_type == 3 || $videoEdit->file_type == 4 ) ) { echo $videoEdit->image; } ?>"/>
+								<td class="rtmp_td"><input type="text" size="50" name="filepath4" id="filepath4" onkeyup="validatethumburl();"  value="<?php if ( isset( $videoEdit->file_type ) && ( $videoEdit->file_type == 3 || $videoEdit->file_type == 4 ) ) { echo balanceTags( $videoEdit->image ); } ?>"/>
 									<span id="thumburlmessage" style="display: block;"></span>
 									<p><?php esc_attr_e( 'Here you need to enter the URL of thumb image', 'video_gallery' ) ?></p>
 								</td>
 							</tr>
 							<tr><th scope="row"><?php esc_attr_e( 'Preview Image URL ( Optional )', 'video_gallery' ) ?></th>
-								<td class="rtmp_td"><input type="text" size="50" name="filepath5" id="filepath5" value="<?php if ( isset( $videoEdit->file_type ) && ( $videoEdit->file_type == 3 || $videoEdit->file_type == 4 ) ) { echo $videoEdit->opimage; } ?>"/>
+								<td class="rtmp_td"><input type="text" size="50" name="filepath5" id="filepath5" value="<?php if ( isset( $videoEdit->file_type ) && ( $videoEdit->file_type == 3 || $videoEdit->file_type == 4 ) ) { echo balanceTags( $videoEdit->opimage ); } ?>"/>
 									<span id="previewurlmessage" style="display: block;"></span>
 									<p><?php esc_attr_e( 'Here you need to enter the URL of preview image', 'video_gallery' ) ?></p>
 								</td>
@@ -256,13 +256,13 @@ if ( $adminPage == 'newvideo' && ! empty( $videoId ) ) {
 										<input type="button" class="button" name="uploadBtn" value="<?php esc_attr_e( 'Upload Video', 'video_gallery' ) ?>" disabled="disabled" onclick="return addQueue( this.form.name, this.form.myfile.value );" />
 										<input type="hidden" name="mode" value="video" />
 										<label id="lbl_normal"><?php if ( isset( $videoEdit->file_type ) && $videoEdit->file_type == 2 )
-										echo $videoEdit->file;
+										echo balanceTags( $videoEdit->file );
 									?></label>
 									</form>
 								</div>
 								<span id="uploadmessage" style="display: block; margin-top:10px;color:red;font-size:12px;font-weight:bold;"></span>
 								<div id="f1-upload-progress" style="display:none">
-									<div style="float:left"><img id="f1-upload-image" src="<?php echo get_option( 'siteurl' ) . '/wp-content/plugins/' . $dirPage . '/images/empty.gif' ?>" alt="Uploading"  style="padding-top:2px"/>
+									<div style="float:left"><img id="f1-upload-image" src="<?php echo balanceTags( get_option( 'siteurl' ) . '/wp-content/plugins/' . $dirPage . '/images/empty.gif' ); ?>" alt="Uploading"  style="padding-top:2px"/>
 										<label style="padding-top:0px;padding-left:4px;font-size:14px;font-weight:bold;vertical-align:top"  id="f1-upload-filename">PostRoll.flv</label></div>
 									<div style="float:right"> <span id="f1-upload-cancel">
 											<a style="float:right;padding-right:10px;" href="javascript:cancelUpload( 'normalvideoform' );" name="submitcancel">Cancel</a>
@@ -284,13 +284,13 @@ if ( $adminPage == 'newvideo' && ! empty( $videoId ) ) {
 										<input type="button" class="button" name="uploadBtn" value="Upload Video" disabled="disabled" onclick="return addQueue( this.form.name, this.form.myfile.value );" />
 										<input type="hidden" name="mode" value="video" />
 										<label id="lbl_normal"><?php if ( isset( $videoEdit->file_type ) && $videoEdit->file_type == 2 )
-										echo $videoEdit->hdfile;
+										echo balanceTags( $videoEdit->hdfile );
 									?></label>
 									</form>
 								</div>
 
 								<div id="f2-upload-progress" style="display:none">
-									<div style="float:left"><img id="f2-upload-image" src="<?php echo get_option( 'siteurl' ) . '/wp-content/plugins/' . $dirPage . '/images/empty.gif' ?>" alt="Uploading"  style="padding-top:2px" />
+									<div style="float:left"><img id="f2-upload-image" src="<?php echo balanceTags( get_option( 'siteurl' ) . '/wp-content/plugins/' . $dirPage . '/images/empty.gif' ); ?>" alt="Uploading"  style="padding-top:2px" />
 										<label style="padding-top:0px;padding-left:4px;font-size:14px;font-weight:bold;vertical-align:top"  id="f2-upload-filename">PostRoll.flv</label></div>
 									<div style="float:right"><span id="f2-upload-cancel">
 											<a style="float:right;padding-right:10px;" href="javascript:cancelUpload( 'hdvideoform' );" name="submitcancel">Cancel</a>
@@ -314,13 +314,13 @@ if ( $adminPage == 'newvideo' && ! empty( $videoId ) ) {
 										<input type="button" class="button" name="uploadBtn" value="Upload Image"  disabled="disabled" onclick="return addQueue( this.form.name, this.form.myfile.value );" />
 										<input type="hidden" name="mode" value="image" />
 										<label id="lbl_normal"><?php if ( isset( $videoEdit->file_type ) && ( $videoEdit->file_type == 2 || $videoEdit->file_type == 5 ) )
-										echo $videoEdit->image;
+										echo balanceTags( $videoEdit->image );
 									?></label>
 									</form>
 								</div>
 								<span id="uploadthumbmessage" style="display: block; margin-top:10px;color:red;font-size:12px;font-weight:bold;"></span>
 								<div id="f3-upload-progress" style="display:none">
-									<div style="float:left"><img id="f3-upload-image" src="<?php echo get_option( 'siteurl' ) . '/wp-content/plugins/' . $dirPage . '/images/empty.gif' ?>" alt="Uploading" style="padding-top:2px" />
+									<div style="float:left"><img id="f3-upload-image" src="<?php echo balanceTags( get_option( 'siteurl' ) . '/wp-content/plugins/' . $dirPage . '/images/empty.gif' ); ?>" alt="Uploading" style="padding-top:2px" />
 										<label style="padding-top:0px;padding-left:4px;font-size:14px;font-weight:bold;vertical-align:top"  id="f3-upload-filename">PostRoll.flv</label></div>
 									<div style="float:right"> <span id="f3-upload-cancel">
 											<a style="float:right;padding-right:10px;" href="javascript:cancelUpload( 'thumbimageform' );" name="submitcancel">Cancel</a>
@@ -341,12 +341,12 @@ if ( $adminPage == 'newvideo' && ! empty( $videoId ) ) {
 										<input type="button" class="button" name="uploadBtn" value="Upload Image" disabled="disabled" onclick="return addQueue( this.form.name, this.form.myfile.value );" />
 										<input type="hidden" name="mode" value="image" />
 										<label id="lbl_normal"><?php if ( isset( $videoEdit->file_type ) && $videoEdit->file_type == 2 )
-										echo $videoEdit->opimage;
+										echo balanceTags( $videoEdit->opimage );
 									?></label>
 									</form>
 								</div>
 								<div id="f4-upload-progress" style="display:none">
-									<div style="float:left"><img id="f4-upload-image" src="<?php echo get_option( 'siteurl' ) . '/wp-content/plugins/' . $dirPage . '/images/empty.gif' ?>" alt="Uploading" style="padding-top:2px" />
+									<div style="float:left"><img id="f4-upload-image" src="<?php echo balanceTags( get_option( 'siteurl' ) . '/wp-content/plugins/' . $dirPage . '/images/empty.gif' ); ?>" alt="Uploading" style="padding-top:2px" />
 										<label style="padding-top:0px;padding-left:4px;font-size:14px;font-weight:bold;vertical-align:top"  id="f4-upload-filename">PostRoll.flv</label></div>
 									<div style="float:right"><span id="f4-upload-cancel">
 											<a style="float:right;padding-right:10px;" href="javascript:cancelUpload( 'previewimageform' );" name="submitcancel">Cancel</a>
@@ -371,13 +371,13 @@ if ( $adminPage == 'newvideo' && ! empty( $videoId ) ) {
 										<input type="button" class="button" name="uploadBtn" value="Upload File" disabled="disabled" onclick="return addQueue( this.form.name, this.form.myfile.value );" />
 										<input type="hidden" name="mode" value="srt" />
 										<label id="lbl_normal"><?php if ( isset( $videoEdit->file_type ) && $videoEdit->file_type != 5 )
-										echo $videoEdit->srtfile1;
+										echo balanceTags( $videoEdit->srtfile1 );
 									?></label>
 									</form>
 								</div>
 
 								<div id="f5-upload-progress" style="display:none">
-									<div style="float:left"><img id="f5-upload-image" src="<?php echo get_option( 'siteurl' ) . '/wp-content/plugins/' . $dirPage . '/images/empty.gif' ?>" alt="Uploading" style="padding-top:2px" />
+									<div style="float:left"><img id="f5-upload-image" src="<?php echo balanceTags( get_option( 'siteurl' ) . '/wp-content/plugins/' . $dirPage . '/images/empty.gif' ); ?>" alt="Uploading" style="padding-top:2px" />
 										<label style="padding-top:0px;padding-left:4px;font-size:14px;font-weight:bold;vertical-align:top"  id="f5-upload-filename">SubTitle.srt</label></div>
 									<div style="float:right"><span id="f5-upload-cancel">
 											<a style="float:right;padding-right:10px;" href="javascript:cancelUpload( 'subtitle1form' );" name="submitcancel">Cancel</a>
@@ -391,7 +391,7 @@ if ( $adminPage == 'newvideo' && ! empty( $videoId ) ) {
 								</div>
 							</td></tr>
 						<tr id="subtilelang1" style="display:none;"><th width="17%"><?php echo esc_attr_e( 'Enter subtile1 language' ); ?></th>
-							<td width="83%"><input type="text" name="subtile_lang1"  id="subtile_lang1" style="width:300px" maxlength="250" value="<?php if ( isset( $videoEdit->subtitle_lang1 ) ) echo htmlentities( $videoEdit->subtitle_lang1 ); ?>" />
+							<td width="83%"><input type="text" name="subtile_lang1"  id="subtile_lang1" style="width:300px" maxlength="250" value="<?php if ( isset( $videoEdit->subtitle_lang1 ) ) echo balanceTags( htmlentities( $videoEdit->subtitle_lang1 ) ); ?>" />
 								<span id="uploadsrt1message" style="display: block; margin-top:10px;color:red;font-size:12px;font-weight:bold;"></span>
 							</td>
 						</tr>
@@ -403,13 +403,13 @@ if ( $adminPage == 'newvideo' && ! empty( $videoId ) ) {
 										<input type="button" class="button" name="uploadBtn" value="Upload File" disabled="disabled" onclick="return addQueue( this.form.name, this.form.myfile.value );" />
 										<input type="hidden" name="mode" value="srt" />
 										<label id="lbl_normal"><?php if ( isset( $videoEdit->file_type ) && $videoEdit->file_type != 5 )
-										echo $videoEdit->srtfile2;
+										echo balanceTags( $videoEdit->srtfile2 );
 									?></label>
 									</form>
 								</div>
 
 								<div id="f6-upload-progress" style="display:none">
-									<div style="float:left"><img id="f6-upload-image" src="<?php echo get_option( 'siteurl' ) . '/wp-content/plugins/' . $dirPage . '/images/empty.gif' ?>" alt="Uploading" style="padding-top:2px" />
+									<div style="float:left"><img id="f6-upload-image" src="<?php echo balanceTags( get_option( 'siteurl' ) . '/wp-content/plugins/' . $dirPage . '/images/empty.gif' ); ?>" alt="Uploading" style="padding-top:2px" />
 										<label style="padding-top:0px;padding-left:4px;font-size:14px;font-weight:bold;vertical-align:top"  id="f6-upload-filename">SubTitle.srt</label></div>
 									<div style="float:right"><span id="f6-upload-cancel">
 											<a style="float:right;padding-right:10px;" href="javascript:cancelUpload( 'subtitle2form' );" name="submitcancel">Cancel</a>
@@ -423,7 +423,7 @@ if ( $adminPage == 'newvideo' && ! empty( $videoId ) ) {
 								</div>
 							</td></tr>
 						<tr id="subtilelang2" style="display:none;"><th width="17%"><?php echo esc_attr_e( 'Enter subtile2 language' ); ?></th>
-							<td width="83%"><input type="text" name="subtile_lang2"  id="subtile_lang2" style="width:300px" maxlength="250" value="<?php if ( isset( $videoEdit->subtitle_lang2 ) ) echo htmlentities( $videoEdit->subtitle_lang2 ); ?>" />
+							<td width="83%"><input type="text" name="subtile_lang2"  id="subtile_lang2" style="width:300px" maxlength="250" value="<?php if ( isset( $videoEdit->subtitle_lang2 ) ) echo balanceTags( htmlentities( $videoEdit->subtitle_lang2 ) ); ?>" />
 								<span id="uploadsrt2message" style="display: block; margin-top:10px;color:red;font-size:12px;font-weight:bold;"></span>
 							</td>
 						</tr>
@@ -433,24 +433,12 @@ if ( $adminPage == 'newvideo' && ! empty( $videoId ) ) {
 		</div>
 
 		<form name="table_options" enctype="multipart/form-data" method="post" id="video_options" onsubmit="return chkbut()">
-			<input type="hidden" name="normalvideoform-value" id="normalvideoform-value" value="<?php if ( isset( $videoEdit->file_type ) && $videoEdit->file_type == 2 )
-										echo $videoEdit->file;
-									?>"  />
-			<input type="hidden" name="hdvideoform-value" id="hdvideoform-value" value="<?php if ( isset( $videoEdit->file_type ) && $videoEdit->file_type == 2 )
-										echo $videoEdit->hdfile;
-									?>" />
-			<input type="hidden" name="thumbimageform-value" id="thumbimageform-value"  value="<?php if ( isset( $videoEdit->file_type ) && ( $videoEdit->file_type == 2 || $videoEdit->file_type == 5 ) )
-					   echo $videoEdit->image;
-									?>" />
-			<input type="hidden" name="previewimageform-value" id="previewimageform-value"  value="<?php if ( isset( $videoEdit->file_type ) && $videoEdit->file_type == 2 )
-					   echo $videoEdit->opimage;
-									?>" />
-			<input type="hidden" name="subtitle1form-value" id="subtitle1form-value"  value="<?php if ( isset( $videoEdit->file_type ) && $videoEdit->file_type != 5 )
-					   echo $videoEdit->srtfile1;
-									?>" />
-			<input type="hidden" name="subtitle2form-value" id="subtitle2form-value"  value="<?php if ( isset( $videoEdit->file_type ) && $videoEdit->file_type != 5 )
-					   echo $videoEdit->srtfile2;
-									?>" />
+			<input type="hidden" name="normalvideoform-value" id="normalvideoform-value" value="<?php if ( isset( $videoEdit->file_type ) && $videoEdit->file_type == 2 ) echo balanceTags( $videoEdit->file ); ?>"  />
+			<input type="hidden" name="hdvideoform-value" id="hdvideoform-value" value="<?php if ( isset( $videoEdit->file_type ) && $videoEdit->file_type == 2 ) echo balanceTags( $videoEdit->hdfile ); ?>" />
+			<input type="hidden" name="thumbimageform-value" id="thumbimageform-value"  value="<?php if ( isset( $videoEdit->file_type ) && ( $videoEdit->file_type == 2 || $videoEdit->file_type == 5 ) ) echo balanceTags( $videoEdit->image ); ?>" />
+			<input type="hidden" name="previewimageform-value" id="previewimageform-value"  value="<?php if ( isset( $videoEdit->file_type ) && $videoEdit->file_type == 2 ) echo balanceTags( $videoEdit->opimage ); ?>" />
+			<input type="hidden" name="subtitle1form-value" id="subtitle1form-value"  value="<?php if ( isset( $videoEdit->file_type ) && $videoEdit->file_type != 5 ) echo balanceTags( $videoEdit->srtfile1 ); ?>" />
+			<input type="hidden" name="subtitle2form-value" id="subtitle2form-value"  value="<?php if ( isset( $videoEdit->file_type ) && $videoEdit->file_type != 5 ) echo balanceTags( $videoEdit->srtfile2 ); ?>" />
 			<input type="hidden" name="subtitle_lang1" id="subtitle_lang1" value="" />
 			<input type="hidden" name="subtitle_lang2" id="subtitle_lang2" value="" />
 			<input type="hidden" name="youtube-value" id="youtube-value"  value="" />
@@ -459,7 +447,7 @@ if ( $adminPage == 'newvideo' && ! empty( $videoId ) ) {
 			<input type="hidden" name="islive-value" id="islive-value" value="0" />
 			<input type="hidden" name="customurl" id="customurl1"  value="" />
 			<input type="hidden" name="customhd" id="customhd1"  value="" />
-			<input type="hidden" name="member_id" id="member_id"  value="<?php if ( isset( $videoEdit->member_id ) ) echo $videoEdit->member_id; ?>" />
+			<input type="hidden" name="member_id" id="member_id"  value="<?php if ( isset( $videoEdit->member_id ) ) echo balanceTags( $videoEdit->member_id ); ?>" />
 			<input type="hidden" name="customimage" id="customimage"  value="" />
 			<input type="hidden" name="custompreimage" id="custompreimage"  value="" />
 			<div id="poststuff">
@@ -472,10 +460,7 @@ if ( $adminPage == 'newvideo' && ! empty( $videoId ) ) {
 								<table class="form-table">
 									<tr>
 										<th scope="row"><?php esc_attr_e( 'Title / Name', 'video_gallery' ) ?></th>
-										<td><input value="<?php if ( isset( $videoEdit->name )
-											 )
-												echo $videoEdit->name;
-									?>" type="text" size="50" maxlength="200" name="name" onkeyup="validatevideotitle();" id="name" />
+										<td><input value="<?php if ( isset( $videoEdit->name ) ) echo balanceTags( $videoEdit->name ); ?>" type="text" size="50" maxlength="200" name="name" onkeyup="validatevideotitle();" id="name" />
 											<span id="titlemessage" style="display: block; margin-top:10px;color:red;font-size:12px;font-weight:bold;"></span>
 										</td>
 									</tr>
@@ -485,7 +470,7 @@ if ( $adminPage == 'newvideo' && ! empty( $videoId ) ) {
 									</tr>
 									<tr>
 										<th scope="row"><?php esc_attr_e( 'Tags / Keywords', 'video_gallery' ) ?></th>
-										<td><input value="<?php if ( isset( $videoEdit->tags_name ) ) { echo $videoEdit->tags_name; } ?>" type="text" size="50" maxlength="200" name="tags_name" id="tags_name" />
+										<td><input value="<?php if ( isset( $videoEdit->tags_name ) ) { echo balanceTags( $videoEdit->tags_name ); } ?>" type="text" size="50" maxlength="200" name="tags_name" id="tags_name" />
 										</td>
 									</tr>
 									<tr>
@@ -535,11 +520,11 @@ if ( $settings[0]->preroll == 0 || $settings[0]->postroll == 0 || $settings[0]->
 													<select name="prerollads" id="prerollads" >
 														<option value="0" >select</option>
 	<?php foreach ( $tables as $table ) { ?>
-															<option id="6<?php echo $table->ads_id; ?>" name="<?php echo $table->ads_id ?>" value="<?php echo $table->ads_id ?>" > <?php echo $table->title ?></option>
+															<option id="6<?php echo balanceTags( $table->ads_id ); ?>" name="<?php echo balanceTags( $table->ads_id ); ?>" value="<?php echo balanceTags( $table->ads_id ); ?>" > <?php echo balanceTags( $table->title ); ?></option>
 	<?php } ?>
 													</select>
-														<?php
-														if ( isset( $videoEdit->prerollads ) ) { echo '<script>document.getElementById( "6' . $videoEdit->prerollads . '" ).selected="selected"</script>'; } ?>
+		<?php
+		if ( isset( $videoEdit->prerollads ) ) { echo '<script>document.getElementById( "6' . $videoEdit->prerollads . '" ).selected="selected"</script>'; } ?>
 												</td>
 											</tr>
 										</table>
@@ -551,7 +536,7 @@ if ( $settings[0]->preroll == 0 || $settings[0]->postroll == 0 || $settings[0]->
 													<select name="postrollads" id="postrollads" >
 														<option value="0" >select</option>
 	<?php foreach ( $tables as $table ) { ?>
-															<option id="5<?php echo $table->ads_id; ?>" name="<?php echo $table->ads_id ?>" value="<?php echo $table->ads_id ?>" > <?php echo $table->title ?></option>
+															<option id="5<?php echo balanceTags( $table->ads_id ); ?>" name="<?php echo balanceTags( $table->ads_id ); ?>" value="<?php echo balanceTags( $table->ads_id ); ?>" > <?php echo balanceTags( $table->title ); ?></option>
 	<?php } ?>
 													</select>
 													<?php
@@ -607,7 +592,7 @@ if ( $settings[0]->preroll == 0 || $settings[0]->postroll == 0 || $settings[0]->
 											<h4><span>
 													<a style="cursor:pointer"  onclick="playlistdisplay()"><?php esc_attr_e( 'Create New', 'video_gallery' ) ?></a></span></h4>
 											<div id="playlistcreate1"><?php esc_attr_e( 'Name', 'video_gallery' ); ?><input type="text" size="20" name="p_name" id="p_name" value="" />
-												<input type="button" class="button-primary" name="add_pl1" value="<?php esc_attr_e( 'Add' ); ?>" onclick="return savePlaylist( document.getElementById( 'p_name' ), <?php echo $act_vid ?> );" class="button button-highlighted" />
+												<input type="button" class="button-primary" name="add_pl1" value="<?php esc_attr_e( 'Add' ); ?>" onclick="return savePlaylist( document.getElementById( 'p_name' ), <?php echo balanceTags( $act_vid ); ?> );" class="button button-highlighted" />
 												<a style="cursor:pointer;margin: 5px 0 0 175px;display: inline-block;text-decoration: underline;" onclick="playlistclose()"><b>Close</b></a></div>
 											<div id="jaxcat"></div>
 											<div id="playlistchecklist"><?php $ajaxplaylistOBJ->get_playlist(); ?></div>
@@ -660,15 +645,15 @@ if ( $settings[0]->preroll == 0 || $settings[0]->postroll == 0 || $settings[0]->
 if ( isset( $_POST['youtube_media'] ) ) {
 	$act1 = $videoOBJ->youtubeurl();
 	?>          <input type="hidden" name="act" id="act3" value="<?php if ( isset( $act1[3] ) )
-		echo $act1[3]
+		echo balanceTags( $act1[3] );
 		?>" />
-	<input type="hidden" name="act" id="act0" value="<?php echo stripslashes( str_replace( '"', '', $act1[0] ) ); ?>" />
-	<input type="hidden" name="act" id="act4" value="<?php echo $act1[4] ?>" />
+	<input type="hidden" name="act" id="act0" value="<?php echo balanceTags( stripslashes( str_replace( '"', '', $act1[0] ) ) ); ?>" />
+	<input type="hidden" name="act" id="act4" value="<?php echo balanceTags( $act1[4] ); ?>" />
 	<input type="hidden" name="act" id="act5" value="<?php if ( isset( $act1[5] ) )
-		echo $act1[5];
+		echo balanceTags( $act1[5] );
 	?>" />
 	<input type="hidden" name="act" id="act6" value="<?php if ( isset( $act1[6] ) )
-		echo $act1[6]
+		echo balanceTags( $act1[6] );
 		?>" />
 	<script>
 		document.getElementById( 'name' ).value = document.getElementById( 'act0' ).value;
