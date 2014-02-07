@@ -120,7 +120,7 @@ if ( isset( $_REQUEST['videosearchbtn'] ) ) {
 		<?php
 		$searchmsg = filter_input( INPUT_POST, 'videosearchQuery' );
 	if ( count( $gridVideo ) ) {
-		echo count( $gridVideo ) . '   Search Result( s ) for "' . $searchmsg . '".&nbsp&nbsp&nbsp<a href="'.$url.'" >Back to Videos List</a>';
+		echo balanceTags( count( $gridVideo ) ) . '   Search Result( s ) for "' . $searchmsg . '".&nbsp&nbsp&nbsp<a href="'.$url.'" >Back to Videos List</a>';
 	} else {
 		echo ' No Search Result( s ) for "' . $searchmsg . '".&nbsp&nbsp&nbsp<a href="'.$url.'" >Back to Videos List</a>';
 	}
@@ -183,8 +183,9 @@ if ( ! empty( $orderFilterlimit ) && $orderFilterlimit !== 'all' ) {
 							'format' => '',
 							'prev_text' => __( '&laquo;', 'aag' ),
 							'next_text' => __( '&raquo;', 'aag' ),
-							'total' => $num_of_pages,'current' => $pagenum
-						)
+							'total' => $num_of_pages,
+							'current' => $pagenum,
+							)
 						);
 
 if ( $page_links ) {
@@ -278,7 +279,7 @@ foreach ( $gridVideo as $videoView ) {
 								<td class="description column-description"><?php echo balanceTags( $videoView->display_name ); ?></td>
 								<td class="description column-description">
 	<?php
-	$videoOBJ = new VideoController();
+	$videoOBJ     = new VideoController();
 	$playlistData = $videoOBJ->get_playlist_detail( $videoView->vid );
 	$incre = 0;
 	$playlistname = '';
@@ -298,26 +299,26 @@ foreach ( $gridVideo as $videoView ) {
 									$feaStatus  = 1;
 									$feaImage   = esc_attr_e( 'deactivate.jpg' );
 									$feaPublish = esc_attr_e( 'Click here to Activate' );
-									if ( $videoView->featured == 1 ) {
-										$feaStatus  = 0;
-										$feaImage   = esc_attr_e( 'activate.jpg' );
-										$feaPublish = esc_attr_e( 'Click here to InActivate' );
-									}
+	if ( $videoView->featured == 1 ) {
+		$feaStatus  = 0;
+		$feaImage   = esc_attr_e( 'activate.jpg' );
+		$feaPublish = esc_attr_e( 'Click here to InActivate' );
+	}
 									?>
 									<a  title="Edit <?php echo balanceTags( $videoView->name ); ?>" href="<?php echo balanceTags( $selfurl ); ?>&videoId=<?php echo balanceTags( $videoView->vid ); ?>&featured=<?php echo balanceTags( $feaStatus ); ?>">   <img src="<?php echo balanceTags( APPTHA_VGALLERY_BASEURL ) . 'images/' . $feaImage ?>" title="<?php echo balanceTags( $feaPublish ); ?>" title="<?php echo balanceTags( $feaPublish ); ?>"   />
 									</a>
 								</td>
-								<td class="description column-description"><?php echo date( "Y/m/d", strtotime( $videoView->post_date ) ); ?></td>
+								<td class="description column-description"><?php echo balanceTags( date( 'Y/m/d', strtotime( $videoView->post_date ) ) ); ?></td>
 
 								<td class="description column-description column-publish" style="text-align:center"><?php
 							$status  = 1;
 							$image   = esc_attr_e( 'deactivate.jpg' );
 							$publish = esc_attr_e( 'Click here to Activate' );
-							if ( $videoView->publish == 1 ) {
-								$status  = 0;
-								$image   = esc_attr_e( 'activate.jpg' );
-								$publish = esc_attr_e( 'Click here to InActivate' );
-							}
+	if ( $videoView->publish == 1 ) {
+		$status  = 0;
+		$image   = esc_attr_e( 'activate.jpg' );
+		$publish = esc_attr_e( 'Click here to InActivate' );
+	}
 							?>
 									<a  title="Edit <?php echo balanceTags( $videoView->name ); ?>" href="<?php echo balanceTags( $selfurl ); ?>&videoId=<?php echo balanceTags( $videoView->vid ); ?>&status=<?php echo balanceTags( $status ); ?>">   <img src="<?php echo balanceTags( APPTHA_VGALLERY_BASEURL ) . 'images/' . $image ?>" title="<?php echo balanceTags( $publish ); ?>" title="<?php echo balanceTags( $publish ); ?>"   /> </a>
 
@@ -329,10 +330,10 @@ foreach ( $gridVideo as $videoView ) {
 											<?php
 										}
 
-										if ( count( $gridVideo ) == 0 ) {
+if ( count( $gridVideo ) == 0 ) {
 											?>
 							<tr class="no-items"><td class="colspanchange" colspan="5"><?php esc_attr_e( 'No videos found.', 'video_gallery' ); ?></td></tr> <?php
-									}
+}
 										?>
 					</tbody>
 					<tfoot>
