@@ -80,7 +80,13 @@ if ( isset( $videoadEdit->file_path ) && ! strstr( $videoadEdit->file_path, 'wp-
 										<input type="button" class="button" name="uploadBtn" value="<?php esc_attr_e( 'Upload Video', 'video_gallery' ) ?>" disabled="disabled" onclick="return addQueue( this.form.name, this.form.myfile.value );" />
 										<input type="hidden" name="mode" value="video" />
 										<label id="lbl_normal"><?php 
-						echo ( isset( $videoadEdit->file_path ) && $uploaded_video == 1 ) ? balanceTags( str_replace( $image_path, '', $videoadEdit->file_path ) ) : ''; ?></label>
+if ( isset( $videoadEdit->file_path ) && $uploaded_video == 1 ) {
+	$file_path = str_replace( $image_path, '', $videoadEdit->file_path );
+} else  {
+		$file_path = '';
+}
+	echo balanceTags( $file_path ); ?>
+										</label>
 									</form>
 									<?php esc_attr_e( '<b>Supported video formats:</b>(  MP4, M4V, M4A, MOV, Mp4v or F4V )', 'video_gallery' ) ?>
 								</div>
@@ -107,7 +113,16 @@ if ( isset( $videoadEdit->file_path ) && ! strstr( $videoadEdit->file_path, 'wp-
 							<tr>
 								<td scope="row"  width="150"><?php esc_attr_e( 'Video Ad URL', 'video_gallery' ) ?></td>
 								<td>
-									<input type="text" size="50" onchange="clear_upload();" onkeyup="validateerrormsg();" name="videoadfilepath" id="videoadfilepath"  value="<?php echo ( isset( $videoadEdit->file_path ) ) ? balanceTags( $videoadEdit->file_path ) : ''; ?>"  />&nbsp;&nbsp
+									<input type="text" size="50" onchange="clear_upload();" onkeyup="validateerrormsg();" name="videoadfilepath" id="videoadfilepath"  value="
+<?php 
+if ( isset( $videoadEdit->file_path ) ) {
+	$file_path_url = $videoadEdit->file_path; 
+} else {
+	$file_path_url = '';
+}
+echo balanceTags( $file_path_url );
+?>
+										   "  />&nbsp;&nbsp
 									<br /><?php esc_attr_e( 'Here you need to enter the video ad URL', 'video_gallery' ) ?>
 									<br /><?php esc_attr_e( 'It accept also a Youtube link : http://www.youtube.com/watch?v=tTGHCRUdlBs', 'video_gallery' ) ?>
 									<span id="filepatherrormessage" style="display: block;color:red; "></span>
@@ -132,31 +147,66 @@ if ( isset( $videoadEdit->file_path ) && ! strstr( $videoadEdit->file_path, 'wp-
 						<tr id="adimawidth" style="display: none;">
 							<td scope="row"  width="150"><?php esc_attr_e( 'Ad Slot Width', 'video_gallery' ) ?></td>
 							<td>
-								<input type="text" size="50" name="videoimaadwidth" id="adwidth" value="<?php echo ( isset( $videoadEdit->imaadwidth ) ) ? balanceTags( $videoadEdit->imaadwidth ) : ''; ?>"  />
+								<input type="text" size="50" name="videoimaadwidth" id="adwidth" value="<?php 
+if ( isset( $videoadEdit->imaadwidth ) ) {
+	$imaadwidth = $videoadEdit->imaadwidth;
+} else {
+	$imaadwidth = '';
+}
+								echo balanceTags( $imaadwidth ); 
+								?>"  />
 							</td>
 						</tr>
 						<tr id="adimaheight" style="display: none;">
 							<td scope="row"  width="150"><?php esc_attr_e( 'Ad Slot Height', 'video_gallery' ) ?></td>
 							<td>
-								<input type="text" size="50" name="videoimaadheight" id="adheight" value="<?php echo ( isset( $videoadEdit->imaadheight ) ) ? balanceTags( $videoadEdit->imaadheight ) : ''; ?>"  />
+								<input type="text" size="50" name="videoimaadheight" id="adheight" value="<?php 
+if ( isset( $videoadEdit->imaadheight ) ) {
+	$imaadheight = $videoadEdit->imaadheight; 
+} else {
+	$imaadheight = '';
+}
+									echo balanceTags( $imaadheight );
+									?>"  />
 							</td>
 						</tr>
 						<tr id="adimapublisher" style="display: none;">
 							<td scope="row"  width="150"><?php esc_attr_e( 'Publisher ID', 'video_gallery' ) ?></td>
-							<td><input type="text" size="50" onkeyup="validateerrormsg();" name="publisherId" id="publisherId" value="<?php echo ( isset( $videoadEdit->publisherId ) ) ? balanceTags( $videoadEdit->publisherId ) : ''; ?>" />
+							<td><input type="text" size="50" onkeyup="validateerrormsg();" name="publisherId" id="publisherId" value="<?php 
+if ( isset( $videoadEdit->publisherId ) ) {
+	$publisherId = $videoadEdit->publisherId; 
+} else {
+	$publisherId = '';
+}
+							echo balanceTags( $publisherId );
+							?>" />
 								<span id="imapublisherIderrormessage" style="display: block;color:red; "></span>
 							</td>
 						</tr>
 						<tr id="adimacontentid" style="display: none;">
 							<td scope="row"  width="150"><?php esc_attr_e( 'Content ID', 'video_gallery' ) ?></td>
-							<td><input type="text" size="50" name="contentId" onkeyup="validateerrormsg();" id="contentId" value="<?php echo ( isset( $videoadEdit->contentId ) ) ? balanceTags( $videoadEdit->contentId ) : ''; ?>" />
+							<td><input type="text" size="50" name="contentId" onkeyup="validateerrormsg();" id="contentId" value="<?php 
+if ( isset( $videoadEdit->contentId ) ) {
+	$contentId = $videoadEdit->contentId; 
+} else {
+	$contentId = '';
+}
+							echo balanceTags( $contentId );
+							?>" />
 								<span id="imacontentIderrormessage" style="display: block;color:red; "></span>
 							</td>
 						</tr>
 
 						<tr id="adimachannels" style="display: none;">
 							<td scope="row"  width="150"><?php esc_attr_e( 'Channels', 'video_gallery' ) ?></td>
-							<td><input type="text" size="50" onkeyup="validateerrormsg();" name="channels" id="channels" value="<?php echo ( isset( $videoadEdit->channels ) ) ? balanceTags( $videoadEdit->channels ) : ''; ?>" />
+							<td><input type="text" size="50" onkeyup="validateerrormsg();" name="channels" id="channels" value="<?php 
+if ( isset( $videoadEdit->channels ) ) {
+	$channels = $videoadEdit->channels; 
+} else {
+	$channels = '';
+}
+							echo balanceTags( $channels );
+							?>" />
 								<span id="imachannelserrormessage" style="display: block;color:red; "></span>
 							</td>
 						</tr>
@@ -165,32 +215,67 @@ if ( isset( $videoadEdit->file_path ) && ! strstr( $videoadEdit->file_path, 'wp-
 						<tr id="adtitle"  style="display: none;">
 							<td scope="row"  width="150"><?php esc_attr_e( 'Title / Name', 'video_gallery' ) ?></td>
 							<td>
-								<input type="text" size="50" onkeyup="validateerrormsg();" maxlength="200" name="videoadname" id="name" value="<?php echo ( isset( $videoadEdit->title ) ) ? balanceTags( $videoadEdit->title ) : ''; ?>"  />
+								<input type="text" size="50" onkeyup="validateerrormsg();" maxlength="200" name="videoadname" id="name" value="<?php 
+if ( isset( $videoadEdit->title ) ) {
+	$title = $videoadEdit->title; 
+} else {
+	$title = '';
+}
+								echo balanceTags( $title );
+								?>"  />
 								<span id="nameerrormessage" style="display: block;color:red; "></span>
 							</td>
 						</tr>
 						<tr id="addescription"  style="display: none;">
 							<td scope="row"  width="150"><?php esc_attr_e( 'Description', 'video_gallery' ) ?></td>
 							<td>
-								<input type="text" size="50" name="description" id="description" value="<?php echo ( isset( $videoadEdit->description ) ) ? balanceTags( $videoadEdit->description ) : ''; ?>"  />
+								<input type="text" size="50" name="description" id="description" value="<?php 
+if ( isset( $videoadEdit->description ) ) {
+	$description = $videoadEdit->description;
+} else {
+	$description = '';
+}
+								echo balanceTags( $description );
+								?>"  />
 							</td>
 						</tr>
 						<tr id="adtargeturl"  style="display: none;">
 							<td scope="row"  width="150"><?php esc_attr_e( 'Target URL', 'video_gallery' ) ?></td>
 							<td>
-								<input type="text" size="50" name="targeturl" id="targeturl" value="<?php echo ( isset( $videoadEdit->targeturl ) ) ? balanceTags( $videoadEdit->targeturl ) : ''; ?>" />
+								<input type="text" size="50" name="targeturl" id="targeturl" value="<?php 
+if ( isset( $videoadEdit->targeturl ) ) {
+	$targeturl = $videoadEdit->targeturl; 
+} else {
+	$targeturl = '';
+}
+								echo balanceTags( $targeturl );
+								?>" />
 								<span id="targeterrormessage" style="display: block;color:red; "></span>
 							</td>
 						</tr>
 						<tr id="adclickurl"  style="display: none;">
 							<td scope="row"  width="150"><?php esc_attr_e( 'Click Hits URL', 'video_gallery' ) ?></td>
-							<td><input type="text" size="50" name="clickurl" id="clickurl" value="<?php echo ( isset( $videoadEdit->clickurl ) ) ? balanceTags( $videoadEdit->clickurl ) : ''; ?>" />
+							<td><input type="text" size="50" name="clickurl" id="clickurl" value="<?php 
+if ( isset( $videoadEdit->clickurl ) ) {
+	$clickurl = $videoadEdit->clickurl; 
+} else {
+	$clickurl = '';
+}
+							echo balanceTags( $clickurl );
+							?>" />
 								<span id="clickerrormessage" style="display: block;color:red; "></span>
 							</td>
 						</tr>
 						<tr  id="adimpresurl"  style="display: none;">
 							<td scope="row"  width="150"><?php esc_attr_e( 'Impression Hits URL', 'video_gallery' ) ?></td>
-							<td><input type="text" size="50" name="impressionurl" id="impressionurl" value="<?php echo ( isset( $videoadEdit->impressionurl ) ) ? balanceTags( $videoadEdit->impressionurl ) : ''; ?>" />
+							<td><input type="text" size="50" name="impressionurl" id="impressionurl" value="<?php 
+if ( isset( $videoadEdit->impressionurl ) ) {
+	$impressionurl = $videoadEdit->impressionurl; 
+} else {
+	$impressionurl = '';
+}
+							echo balanceTags( $impressionurl );
+							?>" />
 								<span id="impressionerrormessage" style="display: block;color:red; "></span>
 							</td>
 						</tr>
@@ -212,8 +297,22 @@ if ( isset( $videoadEdit->file_path ) && ! strstr( $videoadEdit->file_path, 'wp-
 						<input type="submit" name="videoadsadd" class="button-primary" onclick="return validateadInput();"  value="<?php esc_attr_e( 'Update Video Ad', 'video_gallery' ); ?>" class="button" /> <?php } else { ?> <input type="submit" name="videoadsadd" class="button-primary" onclick="return validateadInput();" value="<?php esc_attr_e( 'Add Video Ad', 'video_gallery' ); ?>" class="button" /> <?php } ?>
 					<input type="button" onclick="window.location.href = 'admin.php?page=videoads'" class="button-secondary" name="cancel" value="<?php esc_attr_e( 'Cancel' ); ?>" class="button" />
 					<input type="hidden" name="normalvideoform-value" id="normalvideoform-value" value="<?php if ( isset( $videoadEdit->file_path ) && $uploaded_video == 1 ) { echo balanceTags( str_replace( $image_path, '', $videoadEdit->file_path ) ); } else { echo ''; } ?>"  />
-					<input type="hidden" name="admethod" id="admethod" value="<?php echo ( isset( $videoadEdit->admethod ) ) ? balanceTags( $videoadEdit->admethod ) : ''; ?>"  />
-					<input type="hidden" name="adtype" id="adtype" value="<?php echo ( isset( $videoadEdit->adtype ) ) ? balanceTags( $videoadEdit->adtype ) : ''; ?>"  />
+					<input type="hidden" name="admethod" id="admethod" value="<?php 
+if ( isset( $videoadEdit->admethod ) ) {
+	$admethod = $videoadEdit->admethod; 
+} else {
+	$admethod = '';
+}
+					echo balanceTags( $admethod );
+					?>"  />
+					<input type="hidden" name="adtype" id="adtype" value="<?php 
+if ( isset( $videoadEdit->adtype ) ) {
+	$adtype = $videoadEdit->adtype; 
+} else {
+	$adtype = '';
+}
+					echo balanceTags( $adtype );
+					?>"  />
 				</form>
 
 			</div>
