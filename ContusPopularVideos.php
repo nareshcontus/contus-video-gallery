@@ -22,8 +22,8 @@ class Widget_ContusPopularVideos_init extends WP_Widget {
 		$title = esc_attr( $instance['title'] );
 		$show  = esc_attr( $instance['show'] );
 		?>
-		<p><label for='<?php echo $this->get_field_id( 'title' ); ?>'>Title: <input class='widefat' id='<?php echo $this->get_field_id( 'title' ); ?>' name='<?php echo $this->get_field_name( 'title' ); ?>' type='text' value='<?php echo $title; ?>' /></label></p>
-		<p><label for='<?php echo $this->get_field_id( 'show' ); ?>'>Show: <input class='widefat' id='<?php echo $this->get_field_id( 'show' ); ?>' name='<?php echo $this->get_field_name( 'show' ); ?>' type='text' value='<?php echo $show; ?>' /></label></p>
+		<p><label for='<?php echo esc_html( $this->get_field_id( 'title' ) ); ?>'>Title: <input class='widefat' id='<?php echo esc_html( $this->get_field_id( 'title' ) ); ?>' name='<?php echo esc_html( $this->get_field_name( 'title' ) ); ?>' type='text' value='<?php echo esc_html( $title ); ?>' /></label></p>
+		<p><label for='<?php echo esc_html( $this->get_field_id( 'show' ) ); ?>'>Show: <input class='widefat' id='<?php echo esc_html( $this->get_field_id( 'show' ) ); ?>' name='<?php echo esc_html( $this->get_field_name( 'show' ) ); ?>' type='text' value='<?php echo esc_html( $show ); ?>' /></label></p>
 				<?php
 			}
 
@@ -46,22 +46,13 @@ class Widget_ContusPopularVideos_init extends WP_Widget {
 		$dirExp   = explode( '/', $dir );
 		$dirPage  = $dirExp[0];
 		?>
-
-		<script type='text/javascript'>
-			var baseurl;
-			baseurl = '<?php echo $site_url; ?>';
-			folder = '<?php echo $dirPage; ?>'
-		</script>
 		<!-- For Getting The Page Id More and Video Page-->
 		<?php
 		$moreName = $wpdb->get_var( 'SELECT ID FROM ' . $wpdb->prefix . 'posts WHERE post_content="[videomore]" AND post_status="publish" AND post_type="page" LIMIT 1' );
 		$settings_result = $wpdb->get_row( 'SELECT ratingscontrol,view_visible FROM ' . $wpdb->prefix . 'hdflvvideoshare_settings WHERE settings_id="1"' );
 		?>
-
 		<!-- For Popular videos -->
-
 		<?php
-		echo $before_widget;
 		$fetched   = '';
 		$ratearray = array( 'nopos1', 'onepos1', 'twopos1', 'threepos1', 'fourpos1', 'fivepos1' );
 		$viewslang = __( 'Views', 'video_gallery' );
@@ -153,9 +144,7 @@ class Widget_ContusPopularVideos_init extends WP_Widget {
 			$div .= '<li><div align="right"> </div></li>';
 		}
 		$div .= '</ul></div>';
-		echo $div;
-		## echo widget closing tag
-		echo $after_widget;
+		echo balanceTags( $div );
 	}
 
 }
