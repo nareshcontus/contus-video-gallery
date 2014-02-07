@@ -180,7 +180,7 @@ function ratecount_function() {
 		$wpdb->update( $wpdb->prefix . 'hdflvvideoshare', array( 'rate' => ( intval( $get_rate ) + $ratecount->rate ), 'ratecount' => ( 1 + $ratecount->ratecount ) ), array( 'vid' => intval( $vid ) ) );
 		## Get rate count for particular video and display it
 		$rating = $ratecount->ratecount + 1;
-		print $rating;
+		echo balanceTags( $rating );
 		die();
 	}
 }
