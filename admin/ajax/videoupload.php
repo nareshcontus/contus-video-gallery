@@ -177,7 +177,7 @@ function doupload( $file ) {
 ?>
 <script language='javascript' type='text/javascript'>
 
-	window.top.window.updateQueue( <?php echo $errorcode;
-?>, '<?php echo $errormsg[$errorcode]; ?>', '<?php echo $file_name; ?>' );
+	window.top.window.updateQueue( <?php echo balanceTags( $errorcode );
+?>, '<?php echo balanceTags( $errormsg[$errorcode] ); ?>', '<?php echo balanceTags( $file_name ); ?>' );
 
 </script>
